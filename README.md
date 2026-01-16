@@ -2,11 +2,7 @@
 
 ## LikeLion 14th homepage frontend code space
 
----
-
 ## **🎯 Git Convention**
-
----
 
 - 🎉 **Start:** Start New Project [:tada:]
 - ✨ **Feat:** 새로운 기능을 추가 [:sparkles:]
@@ -25,8 +21,6 @@
 
 ## 🌲 Branch Convention
 
----
-
 - **`main`**: 배포 가능한 브랜치, 항상 배포 가능한 상태를 유지
 - **`develop`**: 다음 버전을 위한 개발 브랜치, 팀원들의 작업 결과물이 모이는 '중심점'
 - **`ui/#이슈번호/명칭`**: 화면 UI 구현이나 스타일링 작업을 할 때 사용
@@ -35,8 +29,6 @@
   - _예: `api/#45/fetch-user-profile`_
 
 ## 🌊 Flow
-
----
 
 1. Issue 생성
 2. 최신 상태의 **`develop`** 에서 새 브랜치 생성
