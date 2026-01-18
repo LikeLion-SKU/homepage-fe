@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router';
 
-// @ts-ignore
 import Logo from '@/assets/icons/Logo_icon.png';
 
 export default function Header() {
@@ -11,7 +10,7 @@ export default function Header() {
   };
 
   return (
-    <header className="w-screen h-20 flex justify-between border-b">
+    <header className="w-full h-20 flex justify-between border-b">
       <div
         onClick={() => clickMenu('/')}
         className="w-102 flex items-center justify-center text-[1.1rem] font-bold border-r cursor-pointer"
