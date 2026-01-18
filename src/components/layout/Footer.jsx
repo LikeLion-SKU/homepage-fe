@@ -1,8 +1,8 @@
 // @ts-ignore
-// @ts-ignore
 import GitHub from '@/assets/icons/GitHub_icon.svg?react';
 // @ts-ignore
 import Instagram from '@/assets/icons/Instagram_icon.svg?react';
+// @ts-ignore
 import LionLogo from '@/assets/icons/LionLogo_icon.svg?react';
 
 export default function Footer() {
