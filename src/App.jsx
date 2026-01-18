@@ -2,10 +2,10 @@ import { RouterProvider, createBrowserRouter } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import ProtectedRoute from '@/layouts/ProtectedRoute';
 import RootLayout from '@/layouts/RootLayout';
 import ServiceLayout from '@/layouts/ServiceLayout';
 import Main from '@/pages/Main/Main';
+import ProtectedRoute from '@/router/ProtectedRoute';
 
 const router = createBrowserRouter([
   // 일반 서비스 브랜치 (RootLayout 사용)
