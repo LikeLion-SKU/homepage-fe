@@ -92,7 +92,7 @@ export default function MyPage() {
       <Modal
         isOpen={isPasswordModalOpen}
         cancel={() => setIsPasswordModalOpen(false)}
-        confirm={() => setIsPasswordModalOpen(false)}
+        confirm={() => setIsPasswordModalOpen(false) /* TODO: 추후 이동할 페이지 추가 필요 */}
       >
         로그아웃 하시겠습니까?
       </Modal>
