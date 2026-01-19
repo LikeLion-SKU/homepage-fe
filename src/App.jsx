@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import RootLayout from '@/layouts/RootLayout';
 import ServiceLayout from '@/layouts/ServiceLayout';
 import Main from '@/pages/Main/Main';
+import MyPage from '@/pages/MyPage/MyPage';
 import Project from '@/pages/Project/Project';
 import ProtectedRoute from '@/router/ProtectedRoute';
 
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
         // 보호가 필요한 페이지들,ProtectedRoute에서 토큰 검사
         Component: ProtectedRoute,
         children: [
+          { path: '/mypage', Component: MyPage },
           // { path: "", Component:  },
         ],
       },
