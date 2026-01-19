@@ -2,6 +2,7 @@
 //import { useLocation } from 'react-router';
 import { Outlet, ScrollRestoration } from 'react-router';
 
+import CustomCursor from '@/components/common/CustomCursor';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 
@@ -15,6 +16,7 @@ export default function RootLayout() {
 
   return (
     <main className="flex flex-col w-full min-h-screen">
+      <CustomCursor />
       <Header />
       <Outlet /* context={{ onModalChange: setIsModalOpen }} */ />
       <ScrollRestoration />

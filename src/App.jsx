@@ -6,7 +6,8 @@ import RootLayout from '@/layouts/RootLayout';
 import ServiceLayout from '@/layouts/ServiceLayout';
 import Main from '@/pages/Main/Main';
 import MyPage from '@/pages/MyPage/MyPage';
-import Project from '@/pages/Project/Project';
+import ProjectList from '@/pages/Project/ProjectList';
+import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
 import ProtectedRoute from '@/router/ProtectedRoute';
 
 const router = createBrowserRouter([
@@ -26,7 +27,10 @@ const router = createBrowserRouter([
       },
       {
         // 기타 공개 페이지들, 로그인 없이도 볼 수 있는 페이지
-        children: [{ path: '/project', Component: Project }],
+        children: [
+          { path: '/project', Component: ProjectList },
+          { path: '/project/viewDetail', Component: ProjectViewDetail },
+        ],
       },
     ],
   },
