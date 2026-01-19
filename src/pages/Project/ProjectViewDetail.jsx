@@ -1,6 +1,6 @@
-//@ts-ignore
 import { useState } from 'react';
 
+//@ts-ignore
 import Left from '@/assets/icons/left_anglebraket_icon.svg?react';
 //@ts-ignore
 import Right from '@/assets/icons/right_anglebraket_icon.svg?react';
