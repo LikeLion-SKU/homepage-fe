@@ -1,9 +1,15 @@
 //@ts-ignore
+import { useNavigate } from 'react-router';
+
 import Right from '@/assets/icons/right_icon.svg?react';
 
 export default function ProjectCard({ props }) {
+  const navigate = useNavigate();
   return (
-    <div className="group relative w-101 h-86 border overflow-hidden cursor-pointer">
+    <div
+      onClick={() => navigate('/project/viewDetail')}
+      className="group relative w-101 h-86 border overflow-hidden cursor-pointer"
+    >
       <div className="flex flex-col w-101 h-86">
         <img src={props.imgUrl} className="h-55 w-101" />
         <div className="flex flex-col gap-3 w-101 h-29 p-5 ">

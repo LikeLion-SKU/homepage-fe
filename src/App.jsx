@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import RootLayout from '@/layouts/RootLayout';
 import ServiceLayout from '@/layouts/ServiceLayout';
 import Main from '@/pages/Main/Main';
-import Project from '@/pages/Project/Project';
+import Project from '@/pages/Project/ProjectList';
 import ProtectedRoute from '@/router/ProtectedRoute';
 
 const router = createBrowserRouter([
