@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import Home from '@/assets/icons/4.svg';
 import Camera from '@/assets/icons/mdi-light_camera.svg';
 import Button from '@/components/common/Button/Button';
+import Modal from '@/components/common/Modal/ConfirmModal';
 
 export default function MyPage() {
   const userData = {
@@ -14,6 +15,7 @@ export default function MyPage() {
   // TODO: 지원서 존재여부로 지정
   const [hasApplication, _setHasApplication] = useState(false);
   const navigate = useNavigate();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const buttonStyle = `
     w-full h-12 bg-white border border-black
@@ -75,11 +77,25 @@ export default function MyPage() {
           </Button>
         </div>
         <div className="self-stretch">
-          <Button onClick={() => {}} data-variant="" data-size="" className={buttonStyle}>
+          <Button
+            onClick={() => {
+              setIsPasswordModalOpen(true);
+            }}
+            data-variant=""
+            data-size=""
+            className={buttonStyle}
+          >
             로그아웃
           </Button>
         </div>
       </div>
+      <Modal
+        isOpen={isPasswordModalOpen}
+        cancel={() => setIsPasswordModalOpen(false)}
+        confirm={() => setIsPasswordModalOpen(false)}
+      >
+        로그아웃 하시겠습니까?
+      </Modal>
       <div className="w-146 h-145 left-186 top-46.25 absolute">
         <img src={Home}></img>
       </div>
