@@ -1,6 +1,6 @@
-//@ts-ignore
 import { useNavigate } from 'react-router';
 
+//@ts-ignore
 import Right from '@/assets/icons/right_icon.svg?react';
 
 export default function ProjectCard({ props }) {
