@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 export default function ProjectOption() {
   const ordirnalNum = ['전체', '14기', '13기', '12기', '11기'];
   const contestName = [
@@ -9,15 +11,31 @@ export default function ProjectOption() {
     '블라블라',
     '블블라',
   ];
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedNum, setSelectedNum] = useState('기수별');
+
   return (
     <div className="flex gap-15">
-      <details className="relative z-50 group">
+      <details
+        open={isOpen}
+        onToggle={(e) => setIsOpen(e.currentTarget.open)}
+        className="relative z-50 group"
+      >
         <summary className="flex w-28 h-10 list-none bg-[#D9D9D9] border justify-center items-center text-[1rem] font-bold">
-          기수별<span className="mb-2 ml-2">⌵</span>
+          {selectedNum}
+          <span className="mb-2 ml-2">⌵</span>
         </summary>
         <ul className="flex flex-col absolute items-center w-28 px-3 bg-[#D9D9D9] mt-2 text-[1rem] font-bold divide-y divide-black border">
           {ordirnalNum.map((num) => (
-            <li className="w-22 text-[1rem] text-center py-3">{num}</li>
+            <li
+              onClick={() => {
+                setIsOpen(false);
+                setSelectedNum(num);
+              }}
+              className="w-22 text-[1rem] text-center py-3"
+            >
+              {num}
+            </li>
           ))}
         </ul>
       </details>
