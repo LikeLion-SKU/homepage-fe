@@ -25,8 +25,8 @@ export default function MyPage() {
   `;
 
   return (
-    <div className="w-[1440px] h-[916px] relative bg-white overflow-hidden">
-      <div className="relative w-[568px] h-44 left-[185px] top-[222px] inline-flex justify-start items-center gap-9">
+    <div className="w-360 h-229 relative bg-white overflow-hidden">
+      <div className="relative w-142 h-44 left-46.25 top-55.5 inline-flex justify-start items-center gap-9">
         <div className="w-44 h-44 relative">
           <div className="relative w-44 h-44 bg-zinc-300 border border-black">
             <img src={userData.profileImage}></img> {/* 프로필 사진 */}
@@ -52,7 +52,7 @@ export default function MyPage() {
         </div>
       </div>
 
-      <div className="w-96 left-[902px] top-[221px] absolute inline-flex flex-col justify-start items-start gap-4">
+      <div className="w-96 left-222.5 top-55.25 absolute inline-flex flex-col justify-start items-start gap-4">
         <div className="self-stretch">
           <Button
             onClick={() => {
@@ -80,7 +80,7 @@ export default function MyPage() {
           </Button>
         </div>
       </div>
-      <div className="w-[584px] h-[580px] left-[744px] top-[185px] absolute">
+      <div className="w-146 h-145 left-186 top-46.25 absolute">
         <img src={Home}></img>
       </div>
     </div>
