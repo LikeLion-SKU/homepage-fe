@@ -25,7 +25,7 @@ export default function ProjectCard({ props }) {
           <p className="text-[0.9rem]">{props.explanation}</p>
         </div>
       </div>
-      <div className="absolute inset-0 bg-[rgba(137,137,137,0.62)] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className="absolute inset-0 bg-[rgba(137,137,137,0.62)] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         <div className="flex w-41 h-12 bg-white">
           <div className="flex justify-center items-center bg-[#D9D9D9] w-12 h-12 border-r-[0.5px] border-[#8C8C8C]">
             <Right />
