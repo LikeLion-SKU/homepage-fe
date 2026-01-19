@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 
-function Frame({ children, className = '', cornerScale = 1, borderWidth = 2 }) {
+function Frame({
+  children,
+  className = '',
+  cornerScale = 1,
+  borderWidth = 2,
+  letterSpacing = -0.88,
+}) {
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
@@ -30,6 +36,7 @@ function Frame({ children, className = '', cornerScale = 1, borderWidth = 2 }) {
 
   // borderWidth를 rem으로 변환
   const borderWidthRem = pxToRem(borderWidth, false); // scale 적용 안 함
+  const letterSpacingRem = pxToRem(letterSpacing, false); // scale 적용 안 함
 
   return (
     <div
@@ -37,6 +44,7 @@ function Frame({ children, className = '', cornerScale = 1, borderWidth = 2 }) {
       style={{
         padding: `${pxToRem(12)}rem ${pxToRem(20)}rem`,
         borderWidth: `${borderWidthRem}rem`,
+        letterSpacing: `${letterSpacingRem}rem`,
       }}
     >
       {/* 모서리 코너 */}

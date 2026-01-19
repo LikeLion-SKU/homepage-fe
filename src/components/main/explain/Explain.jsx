@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
 
-import blackDotSvg from '@/assets/icons/black-dot.svg';
+import labelBlah1Icon from '@/assets/icons/main/label-blah1.svg';
+import labelBlah2Icon from '@/assets/icons/main/label-blah2.svg';
+import leftBlahIcon from '@/assets/icons/main/left-blah.svg';
+import rightBlahIcon from '@/assets/icons/main/right-blah.svg';
 import SmallFrameBox from '@/components/layout/frame/Frame';
+import ExplainBackground from '@/components/main/explain/background/ExplainBackground';
 
-// 기본 크기 (1440px 기준) - rem 단위로 변환
-const BASE_WIDTH_PX = 1440;
-const BASE_WIDTH_REM = BASE_WIDTH_PX / 16; // 90rem
+import ExplainText from './text/ExplainText';
 
 function Explain() {
   const [scale, setScale] = useState(1);
 
-  // 화면 크기에 따라 scale 계산 (rem 단위 기준)
   useEffect(() => {
     const calculateScale = () => {
       const windowWidth = window.innerWidth;
+      const baseWidth = 1440;
       const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-
-      // 화면 너비에 맞춰 비율로 조정 (1440px 기준)
-      const calculatedScale = windowWidth / (BASE_WIDTH_PX * (rootFontSize / 16));
+      const calculatedScale = windowWidth / (baseWidth * (rootFontSize / 16));
       setScale(calculatedScale);
     };
 
@@ -26,71 +26,97 @@ function Explain() {
     return () => window.removeEventListener('resize', calculateScale);
   }, []);
 
-  // rem 값 계산 (1440px 기준, scale 적용)
-  const widthRem = BASE_WIDTH_REM * scale;
-  const minHeightRem = (1358 / 16) * scale;
-  const paddingRem = (160 / 16) * scale;
-  const borderRadiusRem = (42 / 16) * scale;
-  const borderWidthRem = (1 / 16) * scale;
-  const backgroundWidthRem = (1453 / 16) * scale;
-  const containerPaddingRem = (175 / 16) * scale;
-
   return (
-    <section
-      className="relative w-full mx-auto bg-[#d9d9d9] overflow-hidden"
-      style={{
-        maxWidth: `${widthRem}rem`,
-        minHeight: `${minHeightRem}rem`,
-        paddingTop: `${paddingRem}rem`,
-        paddingBottom: `${paddingRem}rem`,
-        borderTopWidth: `${borderWidthRem}rem`,
-        borderBottomWidth: `${borderWidthRem}rem`,
-        borderTopColor: 'rgba(0, 0, 0, 0.2)',
-        borderBottomColor: 'rgba(0, 0, 0, 0.2)',
-        borderTopStyle: 'solid',
-        borderBottomStyle: 'solid',
-        borderRadius: `${borderRadiusRem}rem`,
-      }}
-    >
-      {/* 배경 - black dot pattern 및 이미지 */}
+    <ExplainBackground>
+      <SmallFrameBox className="mb-12" cornerScale={0.9} borderWidth={2} letterSpacing={-0.88}>
+        <div className="flex flex-col items-start justify-center w-full">
+          <h2
+            className="font-bold text-[#1a1a1a] m-0"
+            style={{
+              fontSize: `${(36 / 16) * scale}rem`,
+              fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+              fontWeight: '700',
+            }}
+          >
+            서경대학교 멋쟁이사자처럼
+          </h2>
+        </div>
+      </SmallFrameBox>
+
+      {/* 본문 텍스트 */}
+      <ExplainText />
+
+      {/* BLAH 이미지 좌측 */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none z-0"
+        className="flex justify-end mb-8"
         style={{
-          width: `${backgroundWidthRem}rem`,
-          backgroundImage: `url(${blackDotSvg})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'top center',
-          backgroundSize: 'contain',
+          marginTop: `${(160 / 16) * scale}rem`,
         }}
       >
         <img
-          src={blackDotSvg}
-          alt=""
-          className="absolute top-0 left-0 w-full h-full object-cover pointer-events-none z-0 opacity-[0.02]"
+          src={leftBlahIcon}
+          alt="BLAH"
+          className="object-contain"
+          style={{
+            width: `${(180 / 16) * scale}rem`,
+            height: `${(61 / 16) * scale}rem`,
+            marginRight: `${(60 / 16) * scale}rem`,
+          }}
         />
       </div>
 
-      {/* 컨테이너 */}
+      {/* BLAH 이미지 우측 */}
       <div
-        className="relative z-10 mx-auto"
+        className="flex justify-start mb-8"
         style={{
-          maxWidth: `${widthRem}rem`,
-          paddingLeft: `${containerPaddingRem}rem`,
-          paddingRight: `${containerPaddingRem}rem`,
+          marginTop: `${(80 / 16) * scale}rem`,
         }}
       >
-        <SmallFrameBox className="mb-12" cornerScale={0.9} borderWidth={2}>
-          <div className="flex flex-col items-start justify-center w-full">
-            <h2
-              className="font-bold text-[#1a1a1a] m-0"
-              style={{ fontSize: `${(36 / 16) * scale}rem` }}
-            >
-              서경대학교 멋쟁이사자처럼
-            </h2>
-          </div>
-        </SmallFrameBox>
+        <img
+          src={rightBlahIcon}
+          alt="BLAH"
+          className="object-contain"
+          style={{
+            width: `${(177 / 16) * scale}rem`,
+            height: `${(55 / 16) * scale}rem`,
+            marginLeft: `${(300 / 16) * scale}rem`,
+          }}
+        />
       </div>
-    </section>
+
+      {/* Label BLAH 1 */}
+      <div
+        className="flex justify-start mb-3 animate-fade-in-left"
+        style={{
+          marginTop: `${(160 / 16) * scale}rem`,
+        }}
+      >
+        <img
+          src={labelBlah1Icon}
+          alt="Label BLAH 1"
+          className="object-contain"
+          style={{
+            width: `${(1220 / 16) * scale}rem`,
+            height: `${(140 / 16) * scale}rem`,
+            marginLeft: `${(180 / 16) * scale}rem`,
+          }}
+        />
+      </div>
+
+      {/* Label BLAH 2 */}
+      <div className="flex justify-end mb-[-15px] animate-fade-in-right">
+        <img
+          src={labelBlah2Icon}
+          alt="Label BLAH 2"
+          className="object-contain"
+          style={{
+            width: `${(1220 / 16) * scale}rem`,
+            height: `${(140 / 16) * scale}rem`,
+            marginRight: `${(180 / 16) * scale}rem`,
+          }}
+        />
+      </div>
+    </ExplainBackground>
   );
 }
 
