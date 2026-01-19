@@ -1,1 +1,33 @@
 @import 'tailwindcss';
+
+/* 전역 커서 숨기기 - 모든 요소에 적용 */
+*,
+*::before,
+*::after {
+  cursor: none !important;
+}
+
+/* 커서 관련 클래스도 무시 */
+.cursor-pointer,
+.cursor-default,
+.cursor-not-allowed,
+.cursor-wait,
+.cursor-text,
+.cursor-move,
+.cursor-help,
+.cursor-grab,
+.cursor-grabbing {
+  cursor: none !important;
+}
+
+/* 버튼, 링크, 클릭 가능한 요소도 커서 숨김 */
+button,
+a,
+[role='button'],
+[onclick],
+input[type='button'],
+input[type='submit'],
+input[type='reset'],
+select {
+  cursor: none !important;
+}

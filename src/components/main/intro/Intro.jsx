@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
 import cursorIcon from '@/assets/icons/cursor-pointer.svg';
-import GridSection from '@/components/background/GridSection';
+import GridSection from '@/components/layout/background/GridSection';
+import BigFrameBox from '@/components/layout/frame/Frame';
 
 // Grid configuration: 24 columns x 16 rows
 const columns = 24;
@@ -32,6 +33,7 @@ function Intro() {
   const [cursorRelativePos, setCursorRelativePos] = useState({ x: -1000, y: -1000 }); // 그리드 내 상대 좌표
   const [affectedSquares, setAffectedSquares] = useState(new Set()); // 영향받는 사각형들
   const [squareSize, setSquareSize] = useState(baseSquareSize);
+  const [scale, setScale] = useState(1);
   const gridRef = useRef(null);
 
   // 화면 크기에 따라 squareSize 계산
@@ -39,10 +41,12 @@ function Intro() {
     const calculateSquareSize = () => {
       const windowWidth = window.innerWidth;
       const baseGridWidthPx = baseGridWidth;
+      const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 
       // 화면 너비에 맞춰 비율로 조정 (작으면 축소, 크면 확대) - 헤더/푸터와 동일
-      const scale = windowWidth / baseGridWidthPx;
-      setSquareSize(baseSquareSize * scale);
+      const calculatedScale = windowWidth / (baseGridWidthPx * (rootFontSize / 16));
+      setScale(calculatedScale);
+      setSquareSize(baseSquareSize * (windowWidth / baseGridWidthPx));
     };
 
     calculateSquareSize();
@@ -213,9 +217,13 @@ function Intro() {
   };
 
   const squareSizeRem = pxToRem(squareSize);
+  const gridHeightRem = pxToRem(rows * squareSize);
 
   return (
-    <section className="relative w-full min-h-screen overflow-hidden" style={{ cursor: 'none' }}>
+    <section
+      className="relative w-full overflow-hidden"
+      style={{ cursor: 'none', minHeight: `${gridHeightRem}rem` }}
+    >
       <GridSection />
       {/* predefinedSquares와 커서 효과를 위한 오버레이 */}
       <div
@@ -254,7 +262,20 @@ function Intro() {
           display: cursorPosition.x < 0 ? 'none' : 'block',
         }}
       />
-      {/* 여기에 Intro 내용 추가 */}
+      {/* Intro 내용 */}
+      <div
+        className="relative z-20 flex items-center justify-center w-full pointer-events-none"
+        style={{ minHeight: `${gridHeightRem}rem` }}
+      >
+        <BigFrameBox cornerScale={1.4} borderWidth={3}>
+          <h1
+            className="font-bold text-[#1a1a1a] m-0 whitespace-nowrap"
+            style={{ fontSize: `${(120 / 16) * scale}rem` }}
+          >
+            당신의 상상
+          </h1>
+        </BigFrameBox>
+      </div>
     </section>
   );
 }
