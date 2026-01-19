@@ -1,4 +1,5 @@
 import TitleSection from '@/components/common/TitleSection';
+import ProjectSection from '@/components/project/ProjectSection';
 
 export default function Project() {
   return (
@@ -9,6 +10,7 @@ export default function Project() {
       >
         <></>
       </TitleSection>
+      <ProjectSection />
     </div>
   );
 }
