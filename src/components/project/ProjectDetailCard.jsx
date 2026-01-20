@@ -1,9 +1,9 @@
-//@ts-ignore
 import { useRef, useState } from 'react';
 
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
+//@ts-ignore
 import Left from '@/assets/icons/left_image_icon.svg?react';
 //@ts-ignore
 import Right from '@/assets/icons/right_image_icon.svg?react';
