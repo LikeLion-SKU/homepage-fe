@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import Home from '@/assets/icons/4.svg';
 import Camera from '@/assets/icons/mdi-light_camera.svg';
 import Button from '@/components/common/Button/Button';
+import Modal from '@/components/common/Modal/ConfirmModal';
 
 export default function MyPage() {
   const userData = {
@@ -14,6 +15,7 @@ export default function MyPage() {
   // TODO: 지원서 존재여부로 지정
   const [hasApplication, _setHasApplication] = useState(false);
   const navigate = useNavigate();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const buttonStyle = `
     w-full h-12 bg-white border border-black
@@ -25,8 +27,8 @@ export default function MyPage() {
   `;
 
   return (
-    <div className="w-[1440px] h-[916px] relative bg-white overflow-hidden">
-      <div className="relative w-[568px] h-44 left-[185px] top-[222px] inline-flex justify-start items-center gap-9">
+    <div className="w-360 h-229 relative bg-white overflow-hidden">
+      <div className="relative w-142 h-44 left-46.25 top-55.5 inline-flex justify-start items-center gap-9">
         <div className="w-44 h-44 relative">
           <div className="relative w-44 h-44 bg-zinc-300 border border-black">
             <img src={userData.profileImage}></img> {/* 프로필 사진 */}
@@ -52,7 +54,7 @@ export default function MyPage() {
         </div>
       </div>
 
-      <div className="w-96 left-[902px] top-[221px] absolute inline-flex flex-col justify-start items-start gap-4">
+      <div className="w-96 left-222.5 top-55.25 absolute inline-flex flex-col justify-start items-start gap-4">
         <div className="self-stretch">
           <Button
             onClick={() => {
@@ -75,12 +77,26 @@ export default function MyPage() {
           </Button>
         </div>
         <div className="self-stretch">
-          <Button onClick={() => {}} data-variant="" data-size="" className={buttonStyle}>
+          <Button
+            onClick={() => {
+              setIsPasswordModalOpen(true);
+            }}
+            data-variant=""
+            data-size=""
+            className={buttonStyle}
+          >
             로그아웃
           </Button>
         </div>
       </div>
-      <div className="w-[584px] h-[580px] left-[744px] top-[185px] absolute">
+      <Modal
+        isOpen={isPasswordModalOpen}
+        cancel={() => setIsPasswordModalOpen(false)}
+        confirm={() => setIsPasswordModalOpen(false) /* TODO: 추후 이동할 페이지 추가 필요 */}
+      >
+        로그아웃 하시겠습니까?
+      </Modal>
+      <div className="w-146 h-145 left-186 top-46.25 absolute">
         <img src={Home}></img>
       </div>
     </div>
