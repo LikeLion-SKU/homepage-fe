@@ -9,7 +9,7 @@ import ProjectDetailCard from '@/components/project/ProjectDetailCard';
 export default function ProjectViewDetail() {
   const data = {
     isPrize: 1,
-    imgUrl: '@/assets/icons/Logo_icon.png',
+    imgUrl: ['1', '2', '3'],
     projectName: '단추',
     ordinalNumber: 13,
     contestName: '중앙톤',
@@ -29,7 +29,7 @@ export default function ProjectViewDetail() {
       <div className="mt-85">
         <Left />
       </div>
-      <ProjectDetailCard props={data} />
+      <ProjectDetailCard data={data} />
       <div className="mt-85">
         <Right onClick={() => onToastMessage()} />
       </div>
