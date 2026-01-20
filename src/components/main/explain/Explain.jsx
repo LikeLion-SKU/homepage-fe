@@ -21,6 +21,9 @@ function Explain() {
               fontSize: `${(36 / 16) * scale}rem`,
               fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
               fontWeight: '700',
+              textRendering: 'optimizeLegibility',
+              WebkitFontSmoothing: 'antialiased',
+              MozOsxFontSmoothing: 'grayscale',
             }}
           >
             서경대학교 멋쟁이사자처럼
@@ -46,6 +49,8 @@ function Explain() {
             width: `${(180 / 16) * scale}rem`,
             height: `${(61 / 16) * scale}rem`,
             marginRight: `${(60 / 16) * scale}rem`,
+            imageRendering: 'crisp-edges',
+            transform: 'translateZ(0)',
           }}
         />
       </div>
@@ -65,6 +70,8 @@ function Explain() {
             width: `${(177 / 16) * scale}rem`,
             height: `${(55 / 16) * scale}rem`,
             marginLeft: `${(300 / 16) * scale}rem`,
+            imageRendering: 'crisp-edges',
+            transform: 'translateZ(0)',
           }}
         />
       </div>
@@ -84,6 +91,8 @@ function Explain() {
             width: `${(1220 / 16) * scale}rem`,
             height: `${(140 / 16) * scale}rem`,
             marginLeft: `${(180 / 16) * scale}rem`,
+            imageRendering: 'crisp-edges',
+            transform: 'translateZ(0)',
           }}
         />
       </div>
@@ -98,6 +107,8 @@ function Explain() {
             width: `${(1220 / 16) * scale}rem`,
             height: `${(140 / 16) * scale}rem`,
             marginRight: `${(180 / 16) * scale}rem`,
+            imageRendering: 'crisp-edges',
+            transform: 'translateZ(0)',
           }}
         />
       </div>

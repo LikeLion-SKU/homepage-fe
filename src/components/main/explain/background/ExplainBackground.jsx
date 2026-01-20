@@ -15,8 +15,9 @@ function ExplainBackground({ children }) {
 
   return (
     <section
-      className="relative w-full bg-[#d9d9d9] overflow-hidden"
+      className="relative w-full overflow-hidden"
       style={{
+        backgroundColor: '#f9f9f9',
         minHeight: `${minHeightRem}rem`,
         paddingTop: `${paddingRem}rem`,
         paddingBottom: `${paddingRem}rem`,
@@ -39,12 +40,13 @@ function ExplainBackground({ children }) {
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'top center',
           backgroundSize: 'contain',
+          opacity: 0.7,
         }}
       >
         <img
           src={blackDotSvg}
           alt=""
-          className="absolute top-0 left-0 w-full h-full object-cover pointer-events-none z-0 opacity-[0.02]"
+          className="absolute top-0 left-0 w-full h-full object-cover pointer-events-none z-0 opacity-[0.15]"
         />
       </div>
 
