@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useOutletContext } from 'react-router-dom';
 
-export default function AdinRoute() {
+export default function AdninRoute() {
   const token = localStorage.getItem('accessToken');
   const context = useOutletContext();
 
