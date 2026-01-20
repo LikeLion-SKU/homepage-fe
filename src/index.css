@@ -1,4 +1,8 @@
 @import 'tailwindcss';
+/* 색상 추가 */
+@theme {
+  --color-buttongreen: #c6e400;
+}
 
 /* Pixel 폰트 정의 (피그마의 pixel 폰트) */
 /* 폰트 파일이 있다면 아래 주석을 해제하고 경로를 수정하세요 */
@@ -18,7 +22,8 @@
 /* 피그마에서 폰트 파일을 내보내면 위의 @font-face를 사용하세요 */
 @font-face {
   font-family: 'pixel';
-  src: url('https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2') format('woff2');
+  src: url('https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2')
+    format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -58,8 +63,13 @@ select {
 
 /* 타이핑 커서 깜빡임 애니메이션 */
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .animate-blink {
@@ -68,7 +78,8 @@ select {
 
 /* 스크롤 바운스 애니메이션 */
 @keyframes scrollBounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(-50%, 4px);
     opacity: 0.65;
   }
@@ -80,7 +91,7 @@ select {
 
 .hero-scroll {
   font-family: 'pixel', monospace;
-  color: #1928B0;
+  color: #1928b0;
   position: relative;
   left: 50%;
   transform: translateX(-50%);

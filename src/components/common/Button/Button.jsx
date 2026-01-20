@@ -11,7 +11,7 @@ export default function Button({
       onClick={onClick}
       data-variant={variant}
       data-size={size}
-      className={`relative bg-white ${className}`}
+      className={`relative  ${className}`}
       {...props}
     >
       {children}
