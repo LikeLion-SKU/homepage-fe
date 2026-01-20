@@ -1,7 +1,8 @@
 @import 'tailwindcss';
 /* 색상 추가 */
 @theme {
-  --color-buttongreen: #c6e400;
+  --color-button-green: #c6e400;
+  --color-toggle-green: #f8fbe7;
 }
 
 /* Pixel 폰트 정의 (피그마의 pixel 폰트) */
