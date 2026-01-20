@@ -26,7 +26,7 @@ export default function AdminPage() {
   `;
 
   return (
-    <div className="w-360 h-229 relative bg-white overflow-hidden">
+    <div className="w-360 h-191 relative bg-white overflow-hidden">
       <div className="relative w-142 h-44 left-46.25 top-55.5 inline-flex justify-start items-center gap-9">
         <div className="w-44 h-44 relative">
           <div className="relative w-44 h-44 bg-zinc-300 border border-black">
@@ -56,27 +56,32 @@ export default function AdminPage() {
       <div className="w-96 left-222.5 top-55.25 absolute inline-flex flex-col justify-start items-start gap-4">
         <div className="self-stretch">
           <Button onClick={() => navigate('/admin/user')} className={buttonStyle}>
-            구성원 편집
+            사용자 관리
+          </Button>
+        </div>
+        <div className="self-stretch">
+          <Button onClick={() => navigate('/admin/option')} className={buttonStyle}>
+            기수 / 트랙명 / 대회명 관리
           </Button>
         </div>
         <div className="self-stretch">
           <Button onClick={() => navigate('/admin/project')} className={buttonStyle}>
-            프로젝트 편집
+            프로젝트 관리
           </Button>
         </div>
         <div className="self-stretch">
-          <Button onClick={() => navigate('/admin/application')} className={buttonStyle}>
-            지원서 편집
+          <Button onClick={() => navigate('/admin/notice')} className={buttonStyle}>
+            모집 공고 관리
           </Button>
         </div>
         <div className="self-stretch">
           <Button onClick={() => navigate('/admin/interview')} className={buttonStyle}>
-            면접 일정 확인
+            면접 일정 관리
           </Button>
         </div>
         <div className="self-stretch">
-          <Button onClick={() => navigate('/admin/pass')} className={buttonStyle}>
-            합격/불합격 선택
+          <Button onClick={() => navigate('/admin/application')} className={buttonStyle}>
+            지원자/지원서 관리
           </Button>
         </div>
         <div className="self-stretch">

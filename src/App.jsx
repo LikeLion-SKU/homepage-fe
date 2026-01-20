@@ -6,8 +6,9 @@ import RootLayout from '@/layouts/RootLayout';
 import ServiceLayout from '@/layouts/ServiceLayout';
 import AdminApplication from '@/pages/Admin/AdminApplication';
 import AdminInterview from '@/pages/Admin/AdminInterview';
+import AdminNotice from '@/pages/Admin/AdminNotice';
+import AdminOption from '@/pages/Admin/AdminOption';
 import AdminPage from '@/pages/Admin/AdminPage';
-import AdminPass from '@/pages/Admin/AdminPass';
 import AdminProject from '@/pages/Admin/AdminProject';
 import AdminUser from '@/pages/Admin/AdminUser';
 import Main from '@/pages/Main/Main';
@@ -45,10 +46,12 @@ const router = createBrowserRouter([
         children: [
           { index: true, Component: AdminPage },
           { path: 'user', Component: AdminUser },
+          { path: 'option', Component: AdminOption },
           { path: 'project', Component: AdminProject },
+          { path: 'notice', Component: AdminNotice },
           { path: 'interview', Component: AdminInterview },
           { path: 'application', Component: AdminApplication },
-          { path: 'pass', Component: AdminPass },
+
           //{path: '', Component: },
         ],
       },
