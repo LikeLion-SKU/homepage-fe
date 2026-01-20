@@ -4,6 +4,7 @@ import Logo from '@/assets/icons/Logo_icon.png';
 
 export default function Header() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('accessToken');
 
   const clickMenu = (menu) => {
     navigate(menu);
@@ -18,8 +19,16 @@ export default function Header() {
         <img src={Logo} className="w-23 h-23" />
         멋쟁이사자처럼 서경대학교
       </div>
-      <div className="w-162 flex">
-        <div className="w-100 flex justify-center items-center gap-15 border-x">
+      <div className="w-min-162 flex ">
+        <div className="w-min-100 flex justify-center items-center gap-15 border-x px-10">
+          {!!token && (
+            <button
+              onClick={() => clickMenu('/join')}
+              className="text-[1.1rem] font-semibold cursor-pointer"
+            >
+              관리자
+            </button>
+          )}
           <button
             onClick={() => clickMenu('/join')}
             className="text-[1.1rem] font-semibold cursor-pointer"
