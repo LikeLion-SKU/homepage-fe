@@ -22,11 +22,11 @@ export default function ProjectOption() {
         onToggle={(e) => setIsOpen(e.currentTarget.open)}
         className="relative z-50 group"
       >
-        <summary className="flex w-28 h-10 list-none bg-[#D9D9D9] border justify-center items-center text-[1rem] font-bold">
+        <summary className="flex w-28 h-10 list-none  border justify-center items-center text-[1rem] font-bold">
           {selectedNum}
           <span className="mb-2 ml-2">⌵</span>
         </summary>
-        <ul className="flex flex-col absolute items-center w-28 px-3 bg-[#D9D9D9] mt-2 text-[1rem] font-bold divide-y divide-black border">
+        <ul className="flex flex-col absolute items-center w-28 px-3 bg-white mt-2 text-[1rem] font-bold divide-y divide-black border">
           {ordirnalNum.map((num) => (
             <li
               onClick={() => {
