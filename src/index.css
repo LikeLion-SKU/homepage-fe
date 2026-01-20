@@ -3,6 +3,7 @@
 @theme {
   --color-button-green: #c6e400;
   --color-toggle-green: #f8fbe7;
+  --color-button-hover: #afd200;
 }
 
 /* Pixel 폰트 정의 (피그마의 pixel 폰트) */
@@ -129,8 +130,8 @@ select {
   top: 0;
   min-width: calc(140px * var(--scale, 1));
   height: calc(48px * var(--scale, 1));
-  background-color: #F9F9F9;
-  border: calc(9px * var(--scale, 1)) solid #1928B0;
+  background-color: #f9f9f9;
+  border: calc(9px * var(--scale, 1)) solid #1928b0;
   border-radius: 0;
   transform: translate3d(-9999px, -9999px, 0);
   pointer-events: none;
@@ -154,8 +155,13 @@ select {
   font-size: calc(20px * var(--scale, 1));
   letter-spacing: 0;
   text-transform: uppercase;
-  color: #1928B0;
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  color: #1928b0;
+  font-family:
+    'Pretendard',
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif;
   font-weight: 500;
   line-height: 1;
   position: relative;
@@ -163,8 +169,13 @@ select {
 
 .awards-drag-cursor-arrow {
   font-size: calc(32px * var(--scale, 1));
-  color: #1928B0;
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  color: #1928b0;
+  font-family:
+    'Pretendard',
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif;
   font-weight: 400;
   line-height: 1;
   position: relative;
@@ -179,7 +190,7 @@ select {
 }
 
 /* 드래그 상태 시각 피드백 */
-.awards-drag-cursor[data-state="down"] {
+.awards-drag-cursor[data-state='down'] {
   /* "잡는" 느낌 */
   min-width: calc(150px * var(--scale, 1));
   height: calc(52px * var(--scale, 1));
