@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import aprilIcon from '@/assets/icons/main/track/april.svg';
 import augustIcon from '@/assets/icons/main/track/august.svg';
 import decemberIcon from '@/assets/icons/main/track/december.svg';
@@ -22,11 +24,30 @@ import novemberIcon from '@/assets/icons/main/track/november.svg';
 import octoberIcon from '@/assets/icons/main/track/october.svg';
 import sebtemberIcon from '@/assets/icons/main/track/sebtember.svg';
 import umbrellaIcon from '@/assets/icons/main/track/umbrella.svg';
+import ScheduleModal from '@/components/common/Modal/ScheduleModal/ScheduleModal';
 import useScale from '@/components/main/hooks/useScale';
 import MainSectionLayout from '@/components/main/layout';
+import { scheduleMonthData } from '@/components/main/schedule/scheduleModalData';
 
 function Schedule() {
   const scale = useScale();
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleMonthClick = (monthName) => {
+    setSelectedMonth(monthName);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedMonth(null);
+  };
+
+  // 현재 선택된 월의 데이터
+  const currentMonthData = selectedMonth
+    ? scheduleMonthData[selectedMonth]
+    : scheduleMonthData['3월'];
 
   // 월별 아이콘 데이터
   const months = [
@@ -75,6 +96,8 @@ function Schedule() {
           <img
             src={aprilIcon}
             alt="april"
+            className="cursor-pointer"
+            onClick={() => handleMonthClick('4월')}
             style={{
               width: `${(65 / 16) * scale}rem`,
               height: `${(60 / 16) * scale}rem`,
@@ -112,6 +135,8 @@ function Schedule() {
           <img
             src={julyIcon}
             alt="july"
+            className="cursor-pointer"
+            onClick={() => handleMonthClick('7월')}
             style={{
               width: `${(60 / 16) * scale}rem`,
               height: `${(60 / 16) * scale}rem`,
@@ -140,6 +165,8 @@ function Schedule() {
           <img
             src={augustIcon}
             alt="august"
+            className="cursor-pointer"
+            onClick={() => handleMonthClick('8월')}
             style={{
               width: `${(60 / 16) * scale}rem`,
               height: `${(60 / 16) * scale}rem`,
@@ -156,6 +183,8 @@ function Schedule() {
           <img
             src={sebtemberIcon}
             alt="september"
+            className="cursor-pointer"
+            onClick={() => handleMonthClick('9월')}
             style={{
               width: `${(60 / 16) * scale}rem`,
               height: `${(60 / 16) * scale}rem`,
@@ -175,7 +204,8 @@ function Schedule() {
         <img
           src={novemberIcon}
           alt="november"
-          className="absolute"
+          className="absolute cursor-pointer"
+          onClick={() => handleMonthClick('11월')}
           style={{
             width: `${(100 / 16) * scale}rem`,
             height: `${(70 / 16) * scale}rem`,
@@ -242,7 +272,8 @@ function Schedule() {
         <img
           src={marchIcon}
           alt="march"
-          className="absolute"
+          className="absolute cursor-pointer"
+          onClick={() => handleMonthClick('3월')}
           style={{
             width: `${(100 / 16) * scale}rem`,
             height: `${(100 / 16) * scale}rem`,
@@ -254,19 +285,23 @@ function Schedule() {
         <img
           src={mayIcon}
           alt="may"
-          className="absolute"
+          className="absolute cursor-pointer"
+          onClick={() => handleMonthClick('5월')}
           style={{
             width: `${(100 / 16) * scale}rem`,
             height: `${(100 / 16) * scale}rem`,
             left: `${(820 / 16) * scale}rem`, // doteM5Icon 위치 계산
             top: `${(-35 / 16) * scale}rem`,
+            zIndex: 10,
+            pointerEvents: 'auto',
           }}
         />
         {/* june 아이콘 독립적으로 배치 */}
         <img
           src={juneIcon}
           alt="june"
-          className="absolute"
+          className="absolute cursor-pointer"
+          onClick={() => handleMonthClick('6월')}
           style={{
             width: `${(100 / 16) * scale}rem`,
             height: `${(100 / 16) * scale}rem`,
@@ -278,19 +313,23 @@ function Schedule() {
         <img
           src={octoberIcon}
           alt="october"
-          className="absolute"
+          className="absolute cursor-pointer"
+          onClick={() => handleMonthClick('10월')}
           style={{
             width: `${(160 / 16) * scale}rem`,
             height: `${(100 / 16) * scale}rem`,
             left: `${(550 / 16) * scale}rem`, // marginLeft(25) + marginLeft(535)
             top: `${(420 / 16) * scale}rem`, // marginTop(60) + marginTop(33)
+            zIndex: 10,
+            pointerEvents: 'auto',
           }}
         />
         {/* december 아이콘 독립적으로 배치 */}
         <img
           src={decemberIcon}
           alt="december"
-          className="absolute"
+          className="absolute cursor-pointer"
+          onClick={() => handleMonthClick('12월')}
           style={{
             width: `${(100 / 16) * scale}rem`,
             height: `${(100 / 16) * scale}rem`,
@@ -395,6 +434,31 @@ function Schedule() {
           })}
         </div>
       </div>
+      <ScheduleModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title={currentMonthData.title}
+        contentImage={currentMonthData.contentImage}
+        contentTitle={currentMonthData.contentTitle}
+        contentDescription={currentMonthData.contentDescription}
+        overlayBgColor="rgba(0, 0, 0, 0.5)"
+        overlayOpacity={0.7}
+        titleBarBgColor="#FFFFFF"
+        titleBarIconBoxColor="#00156A"
+        titleBarTitleBoxColor="#B3B3B3"
+        titleBarBoxSize={1}
+        placeholderBgColor="#636363"
+        placeholderHeight="280px"
+        placeholderPaddingHorizontal="29.3px"
+        placeholderPaddingTop="20px"
+        textTitleColor="#1a1a1a"
+        textDescriptionColor="#1a1a1a"
+        textBgColor="#FFFFFF"
+        windowBgColor="#FFFFFF"
+        windowBorderColor="#00156A"
+        windowBorderWidth={2.5}
+        scale={scale}
+      />
     </MainSectionLayout>
   );
 }
