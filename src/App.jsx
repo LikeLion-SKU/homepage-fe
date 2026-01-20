@@ -4,10 +4,17 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import RootLayout from '@/layouts/RootLayout';
 import ServiceLayout from '@/layouts/ServiceLayout';
+import AdminApplication from '@/pages/Admin/AdminApplication';
+import AdminInterview from '@/pages/Admin/AdminInterview';
+import AdminPage from '@/pages/Admin/AdminPage';
+import AdminPass from '@/pages/Admin/AdminPass';
+import AdminProject from '@/pages/Admin/AdminProject';
+import AdminUser from '@/pages/Admin/AdminUser';
 import Main from '@/pages/Main/Main';
 import MyPage from '@/pages/MyPage/MyPage';
 import ProjectList from '@/pages/Project/ProjectList';
 import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
+import AdminRoute from '@/router/AdminRoute';
 import ProtectedRoute from '@/router/ProtectedRoute';
 
 const router = createBrowserRouter([
@@ -30,6 +37,19 @@ const router = createBrowserRouter([
         children: [
           { path: '/project', Component: ProjectList },
           { path: '/project/viewDetail', Component: ProjectViewDetail },
+        ],
+      },
+      {
+        path: '/admin',
+        Component: AdminRoute,
+        children: [
+          { index: true, Component: AdminPage },
+          { path: 'user', Component: AdminUser },
+          { path: 'project', Component: AdminProject },
+          { path: 'interview', Component: AdminInterview },
+          { path: 'application', Component: AdminApplication },
+          { path: 'pass', Component: AdminPass },
+          //{path: '', Component: },
         ],
       },
     ],
