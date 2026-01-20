@@ -15,7 +15,7 @@ export default function MyPage() {
   // TODO: 지원서 존재여부로 지정
   const [hasApplication, _setHasApplication] = useState(false);
   const navigate = useNavigate();
-  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const buttonStyle = `
     w-full h-12 bg-white border border-black
@@ -79,7 +79,7 @@ export default function MyPage() {
         <div className="self-stretch">
           <Button
             onClick={() => {
-              setIsPasswordModalOpen(true);
+              setIsModalOpen(true);
             }}
             data-variant=""
             data-size=""
@@ -90,9 +90,9 @@ export default function MyPage() {
         </div>
       </div>
       <Modal
-        isOpen={isPasswordModalOpen}
-        cancel={() => setIsPasswordModalOpen(false)}
-        confirm={() => setIsPasswordModalOpen(false) /* TODO: 추후 이동할 페이지 추가 필요 */}
+        isOpen={isModalOpen}
+        cancel={() => setIsModalOpen(false)}
+        confirm={() => setIsModalOpen(false) /* TODO: 추후 이동할 페이지 추가 필요 */}
       >
         로그아웃 하시겠습니까?
       </Modal>
