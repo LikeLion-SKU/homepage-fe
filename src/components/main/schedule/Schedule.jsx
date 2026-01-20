@@ -64,7 +64,7 @@ function Schedule() {
   ];
 
   return (
-    <MainSectionLayout title="2026 연간 일정">
+    <MainSectionLayout title="2026 연간 일정" showTopBorder={false} paddingBottomScale={0.2}>
       <div className="relative" style={{ minHeight: `${(800 / 16) * scale}rem` }}>
         {/* 프레임 텍스트 아래 40px에 가로로 나열 */}
         <div
