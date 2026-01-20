@@ -1,51 +1,54 @@
-import { useState } from 'react';
-
 //@ts-ignore
-import Left from '@/assets/icons/left_anglebraket_icon.svg?react';
+import Left from '@/assets/icons/left_image_icon.svg?react';
 //@ts-ignore
-import Right from '@/assets/icons/right_anglebraket_icon.svg?react';
-import ProjectDetailCard from '@/components/project/ProjectDetailCard';
+import Right from '@/assets/icons/right_image_icon.svg?react';
+import OptionBox from '@/components/common/Option/optionBox';
+import ProjectMember from '@/components/project/ProjectMember';
 
 export default function AdminProjectEdit() {
-  const data = {
-    isPrize: 1,
-    imgUrl: ['1', '2', '3', '4', '5', '6'],
-    projectName: '단추',
-    ordinalNumber: 13,
-    contestName: '중앙톤',
-    explanation: '지류 쿠폰을 디지털화하여 편리하게 관리하고 단골이 되어보세요!',
-  };
-  const [isToast, setIsToast] = useState(false);
-  const onToastMessage = () => {
-    if (isToast) return;
-    setIsToast(true);
-    setTimeout(() => {
-      setIsToast(false);
-    }, 2000);
-  };
-
+  const optionData = ['14기', '13기', '12기', '11기'];
   return (
-    <div className="flex justify-center py-15 gap-7.5">
-      <div className="mt-85">
-        <Left />
-      </div>
-      <ProjectDetailCard data={data} />
-      <div className="mt-85">
-        <Right onClick={() => onToastMessage()} />
-      </div>
+    <div className="flex flex-col items-center py-15 gap-7">
+      <div className="flex flex-col w-285 h-256 bg-[#F2F2F2] py-10 px-8 gap-10">
+        <img className="w-269 h-151 bg-[#D9D9D9]" />
+        <div className="flex justify-between">
+          <div className="flex flex-col gap-8 w-164">
+            <input
+              placeholder="프로젝트 이름"
+              className="text-[2rem] font-bold placeholder:text-black focus:outline-none"
+            />
+            <div className="flex gap-2.5">
+              <OptionBox initValue="기수선택" optionData={optionData} bgColor="#D9D9D9" />
+              <OptionBox initValue="수상여부" optionData={optionData} bgColor="#D9D9D9" />
+              <OptionBox initValue="대회선택" optionData={optionData} bgColor="#D9D9D9" />
+            </div>
+            <textarea
+              placeholder="프로젝트 설명"
+              className="h-42 text-[1.1rem] w-164 placeholder:text-black "
+            />
+          </div>
 
-      <div
-        className={`fixed inset-0 flex items-center justify-center transition-all duration-700 ease-in-out
-        ${
-          isToast
-            ? 'opacity-100 backdrop-blur-md bg-white/30 pointer-events-auto' /*토스트 온이면 배경 화이트에 투명도 적용, 블러처리,마우스 이멘트 를 토스트가 받음*/
-            : 'opacity-0 backdrop-blur-none bg-white/0 pointer-events-none' /*부드럽게 가기위해 초기값을 다 0으로 설정,안보일 때는 마우스 이벤트 안 먹음 */
-        }`}
-      >
-        <div className="flex w-117 h-27 bg-white justify-center items-center text-[1.1rem] font-bold rounded-2xl">
-          마지막 프로젝트입니다.
+          <div className="flex flex-col gap-11 ">
+            <div className="flex gap-9 items-center ml-5">
+              <button className="w-43 h-10 border text-[1rem] text-center items-center bg-[#D9D9D9]">
+                이미지 첨부
+              </button>
+              <div className="flex gap-5">
+                <button className="flex justify-center items-center bg-[#D9D9D9] w-12 h-12">
+                  <Left />
+                </button>
+                <button className="flex justify-center items-center bg-[#D9D9D9] w-12 h-12">
+                  <Right />
+                </button>
+              </div>
+            </div>
+            <div className="flex px-8 py-2 border w-84 h-58">
+              <OptionBox initValue="트랙선택" optionData={optionData} bgColor="#D9D9D9" />
+            </div>
+          </div>
         </div>
       </div>
+      <button className="w-40 h-12 border bg-[#D9D9D9] text-center items-center">저장하기</button>
     </div>
   );
 }

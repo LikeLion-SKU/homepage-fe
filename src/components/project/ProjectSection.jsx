@@ -1,17 +1,21 @@
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 //@ts-ignore
 import Plus from '@/assets/icons/plus_icon.svg?react';
 import ProjectCard from '@/components/project/ProjectCard';
 
 export default function ProjectSection({ data }) {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith('/admin');
 
   return (
     <div className="flex flex-col mt-6">
       {isAdmin && (
-        <div className="flex w-318 h-15 border justify-center items-center ">
+        <div
+          onClick={() => navigate('/admin/project/edit')}
+          className="flex w-318 h-15 border justify-center items-center "
+        >
           <Plus />
         </div>
       )}
