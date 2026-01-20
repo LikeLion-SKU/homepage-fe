@@ -12,6 +12,7 @@ function Intro() {
   const [scale, setScale] = useState(1);
   const [squareSizeRem, setSquareSizeRem] = useState(0);
   const [shouldStartSecondTyping, setShouldStartSecondTyping] = useState(false);
+  const [shouldStartImaginationTyping, setShouldStartImaginationTyping] = useState(false);
 
   // squareSize를 rem으로 변환하는 헬퍼 함수
   const pxToRem = (px) => {
@@ -43,23 +44,33 @@ function Intro() {
             top: `${4.5 * squareSizeRem}rem`,
           }}
         >
-          <BigFrameBox cornerScale={1.4} borderWidth={3}>
-            <h1
-              className="text-[#1a1a1a] m-0 whitespace-nowrap"
-              style={{
-                fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-                fontWeight: '800',
-              }}
-            >
+          <h1
+            className="text-[#1a1a1a] m-0 whitespace-nowrap inline-flex items-center"
+            style={{
+              fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+              fontWeight: '800',
+            }}
+          >
+            {/* "당신의" 텍스트 - 프레임 없음 */}
+            <TypingAnimation
+              text="당신의 "
+              speed={150}
+              fontSize={`${(120 / 16) * scale}rem`}
+              onComplete={() => setShouldStartImaginationTyping(true)}
+              showCursor={false}
+            />
+            {/* "상상" 텍스트 - 프레임 있음 */}
+            <BigFrameBox cornerScale={1.4} borderWidth={3} className="inline-block">
               <TypingAnimation
-                text="당신의 상상"
+                text="상상,"
                 speed={150}
                 fontSize={`${(120 / 16) * scale}rem`}
+                shouldStart={shouldStartImaginationTyping}
                 onComplete={() => setShouldStartSecondTyping(true)}
                 showCursor={false}
               />
-            </h1>
-          </BigFrameBox>
+            </BigFrameBox>
+          </h1>
         </div>
       )}
       {/* 세상 밖으로 텍스트 - 8-10.3 위치에 배치 */}
@@ -79,13 +90,68 @@ function Intro() {
             }}
           >
             <TypingAnimation
-              text="세상 밖으로"
+              text="세상 밖으로!"
               speed={150}
               fontSize={`${(120 / 16) * scale}rem`}
               shouldStart={shouldStartSecondTyping}
               showCursor={true}
             />
           </h2>
+        </div>
+      )}
+      {/* SCROLL 텍스트와 화살표 */}
+      {squareSizeRem > 0 && (
+        <div
+          className="absolute z-20 pointer-events-none"
+          style={{
+            left: '50%',
+            top: `${15.2 * squareSizeRem}rem`,
+            transform: 'translateX(-50%)',
+          }}
+        >
+          <div
+            className="hero-scroll"
+            style={{
+              marginBottom: `${(20 / 16) * scale}rem`,
+              fontSize: `${(16 / 16) * scale}rem`,
+              lineHeight: `${(24 / 16) * scale}rem`,
+            }}
+          >
+            SCROLL
+          </div>
+          <div
+            className="hero-scroll"
+            style={{
+              fontSize: `${(16 / 16) * scale}rem`,
+              lineHeight: `${(24 / 16) * scale}rem`,
+              textAlign: 'center',
+              marginTop: 0,
+            }}
+          >
+            v
+          </div>
+          <div
+            className="hero-scroll"
+            style={{
+              fontSize: `${(16 / 16) * scale}rem`,
+              lineHeight: `${(24 / 16) * scale}rem`,
+              textAlign: 'center',
+              marginTop: 0,
+            }}
+          >
+            v
+          </div>
+          <div
+            className="hero-scroll"
+            style={{
+              fontSize: `${(16 / 16) * scale}rem`,
+              lineHeight: `${(24 / 16) * scale}rem`,
+              textAlign: 'center',
+              marginTop: 0,
+            }}
+          >
+            v
+          </div>
         </div>
       )}
     </section>

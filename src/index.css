@@ -1,5 +1,29 @@
 @import 'tailwindcss';
 
+/* Pixel 폰트 정의 (피그마의 pixel 폰트) */
+/* 폰트 파일이 있다면 아래 주석을 해제하고 경로를 수정하세요 */
+/*
+@font-face {
+  font-family: 'pixel';
+  src: url('/fonts/pixel.woff2') format('woff2'),
+       url('/fonts/pixel.woff') format('woff'),
+       url('/fonts/pixel.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+*/
+
+/* 임시로 Press Start 2P를 pixel 폰트로 사용 */
+/* 피그마에서 폰트 파일을 내보내면 위의 @font-face를 사용하세요 */
+@font-face {
+  font-family: 'pixel';
+  src: url('https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* 전역 커서 숨기기 - 모든 요소에 적용 */
 *,
 *::before,
@@ -40,6 +64,28 @@ select {
 
 .animate-blink {
   animation: blink 1s step-end infinite;
+}
+
+/* 스크롤 바운스 애니메이션 */
+@keyframes scrollBounce {
+  0%, 100% {
+    transform: translate(-50%, 4px);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translate(-50%, -8px);
+    opacity: 1;
+  }
+}
+
+.hero-scroll {
+  font-family: 'pixel', monospace;
+  color: #1928B0;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scrollBounce 2.3s ease-in-out infinite;
+  white-space: nowrap;
 }
 
 @layer utilities {

@@ -1,30 +1,15 @@
-import { useEffect, useState } from 'react';
-
 import labelBlah1Icon from '@/assets/icons/main/label-blah1.svg';
 import labelBlah2Icon from '@/assets/icons/main/label-blah2.svg';
 import leftBlahIcon from '@/assets/icons/main/left-blah.svg';
 import rightBlahIcon from '@/assets/icons/main/right-blah.svg';
 import SmallFrameBox from '@/components/layout/frame/Frame';
 import ExplainBackground from '@/components/main/explain/background/ExplainBackground';
+import useScale from '@/components/main/hooks/useScale';
 
 import ExplainText from './text/ExplainText';
 
 function Explain() {
-  const [scale, setScale] = useState(1);
-
-  useEffect(() => {
-    const calculateScale = () => {
-      const windowWidth = window.innerWidth;
-      const baseWidth = 1440;
-      const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-      const calculatedScale = windowWidth / (baseWidth * (rootFontSize / 16));
-      setScale(calculatedScale);
-    };
-
-    calculateScale();
-    window.addEventListener('resize', calculateScale);
-    return () => window.removeEventListener('resize', calculateScale);
-  }, []);
+  const scale = useScale();
 
   return (
     <ExplainBackground>

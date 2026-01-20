@@ -1,21 +1,7 @@
-import { useEffect, useState } from 'react';
+import useScale from '@/components/main/hooks/useScale';
 
 function TrackBackground({ children }) {
-  const [scale, setScale] = useState(1);
-
-  useEffect(() => {
-    const calculateScale = () => {
-      const windowWidth = window.innerWidth;
-      const baseWidth = 1440;
-      const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-      const calculatedScale = windowWidth / (baseWidth * (rootFontSize / 16));
-      setScale(calculatedScale);
-    };
-
-    calculateScale();
-    window.addEventListener('resize', calculateScale);
-    return () => window.removeEventListener('resize', calculateScale);
-  }, []);
+  const scale = useScale();
 
   // rem 값 계산 (1440x1024px 기준, scale 적용)
   const widthRem = (1440 / 16) * scale;
