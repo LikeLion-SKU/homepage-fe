@@ -8,6 +8,7 @@ import Main from '@/pages/Main/Main';
 import MyPage from '@/pages/MyPage/MyPage';
 import ProjectList from '@/pages/Project/ProjectList';
 import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
+import Recruitment from '@/pages/Recruitment/Recruitment';
 import ProtectedRoute from '@/router/ProtectedRoute';
 
 const router = createBrowserRouter([
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
         children: [
           { path: '/project', Component: ProjectList },
           { path: '/project/viewDetail', Component: ProjectViewDetail },
+          { path: '/recruit', Component: Recruitment },
         ],
       },
     ],
