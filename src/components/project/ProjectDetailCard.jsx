@@ -14,6 +14,7 @@ export default function ProjectDetailCard({ data }) {
   const [imgNum, setImgNum] = useState(0);
   const imgCount = data.imgUrl.length;
   const barRef = useRef(null);
+  const imgUrl = data.imgUrl[imgNum];
 
   const changeImg = async (direction) => {
     const nextNum = imgNum + direction;
@@ -27,20 +28,7 @@ export default function ProjectDetailCard({ data }) {
       setImgNum(nextNum);
     }
   };
-  const imgUrl = data.imgUrl[imgNum];
-  //const barW = 89 / imgCount;
-
-  const handleDragEnd = (event, info) => {
-    // 오른쪽으로 50px 이상 밀었을 때
-    if (info.offset.x > 50) {
-      changeImg(-1); // 이전 이미지
-    }
-    // 왼쪽으로 50px 이상 밀었을 때
-    else if (info.offset.x < -50) {
-      changeImg(1); // 다음 이미지
-    }
-  };
-  // 3. 인덱스에 따른 바의 위치 계산 (이미지 개수에 따라 w-1/3, w-1/4 등이 됨)
+  // 인덱스에 따른 바의 위치 계산 (이미지 개수에 따라 w-1/3, w-1/4 등이 됨)
   // 인라인 스타일로 처리하여 매번 변하는 값을 적용합니다.
   const handleWidth = 89 / imgCount;
   const handleLeft = `${(imgNum / imgCount) * 100}%`;
@@ -61,7 +49,6 @@ export default function ProjectDetailCard({ data }) {
                   drag="x"
                   dragConstraints={barRef}
                   dragElastic={0.1}
-                  onDragEnd={handleDragEnd}
                   animate={{ left: handleLeft }} // 버튼 클릭 시에도 위치 이동
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   style={{

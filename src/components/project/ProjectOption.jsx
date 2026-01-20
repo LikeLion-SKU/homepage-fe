@@ -13,9 +13,10 @@ export default function ProjectOption() {
   ];
   const [isOpen, setIsOpen] = useState(false);
   const [selectedNum, setSelectedNum] = useState('기수별');
+  const [selectMenu, setSelectMenu] = useState('전체');
 
   return (
-    <div className="flex gap-15">
+    <div className="flex h-20 items-center gap-15">
       <details
         open={isOpen}
         onToggle={(e) => setIsOpen(e.currentTarget.open)}
@@ -39,9 +40,15 @@ export default function ProjectOption() {
           ))}
         </ul>
       </details>
-      <div className="flex w-180 text-[1rem] font-bold gap-15 items-center overflow-x-auto no-scrollbar">
+      <div className="flex w-180 h-20 text-[1rem] gap-5 items-center overflow-x-auto no-scrollbar">
         {contestName.map((name) => (
-          <div className="flex shrink-0">{name}</div>
+          <div
+            key={name}
+            onClick={() => setSelectMenu(name)}
+            className={`px-5 h-10 items-center flex shrink-0 ${selectMenu == name ? 'font-bold' : 'font-medium'}`}
+          >
+            {name}
+          </div>
         ))}
       </div>
     </div>
