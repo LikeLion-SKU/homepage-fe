@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-// Grid configuration: 24 columns x 19 rows
+// Grid configuration: 24 columns x 18 rows
 const columns = 24;
-const rows = 19;
+const rows = 18;
 const baseSquareSize = 60; // 기본 크기 (1440px 기준)
 const baseGridWidth = columns * baseSquareSize; // 1440px
 

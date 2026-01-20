@@ -36,7 +36,6 @@ function Frame({
 
   // borderWidth를 rem으로 변환
   const borderWidthRem = pxToRem(borderWidth, false); // scale 적용 안 함
-  const letterSpacingRem = pxToRem(letterSpacing, false); // scale 적용 안 함
 
   return (
     <div
@@ -44,7 +43,7 @@ function Frame({
       style={{
         padding: `${pxToRem(12)}rem ${pxToRem(20)}rem`,
         borderWidth: `${borderWidthRem}rem`,
-        letterSpacing: `${letterSpacingRem}rem`,
+        letterSpacing: `${letterSpacing}px`,
       }}
     >
       {/* 모서리 코너 */}
