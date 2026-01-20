@@ -1,6 +1,7 @@
 import TitleSection from '@/components/common/TitleSection';
 import ProjectOption from '@/components/project/ProjectOption';
 import ProjectSection from '@/components/project/ProjectSection';
+import { projectData } from '@/components/project/projectDummyData';
 
 export default function Project() {
   return (
@@ -11,7 +12,12 @@ export default function Project() {
       >
         <ProjectOption />
       </TitleSection>
-      <ProjectSection />
+      <ProjectSection data={projectData} />
+      {!(projectData.length > 0) && (
+        <div className="flex w-330 h-40 justify-center items-center text-[1.1rem] font-bold">
+          검색 결과가 없습니다.
+        </div>
+      )}
     </div>
   );
 }
