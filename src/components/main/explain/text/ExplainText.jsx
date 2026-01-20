@@ -27,6 +27,10 @@ function ExplainText() {
         fontSize,
         fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
         lineHeight,
+        textRendering: 'optimizeLegibility',
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
+        transform: 'translateZ(0)',
       }}
       className="break-words"
     >
