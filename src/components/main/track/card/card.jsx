@@ -5,7 +5,7 @@ import CardPlaceholder from './placeholder';
 
 function Card({ title, description, image = null }) {
   return (
-    <div className="w-full h-full border border-black/12 flex flex-col bg-white">
+    <div className="w-full h-full border border-[#00156A] flex flex-col bg-white">
       <CardHeader title={title} />
       <CardPlaceholder image={image} />
       <CardContent description={description} />

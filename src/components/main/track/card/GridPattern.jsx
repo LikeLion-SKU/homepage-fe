@@ -12,7 +12,7 @@ function GridPattern({ className = '', style = {}, children }) {
           linear-gradient(90deg, transparent 23%, rgba(230, 230, 230, 1) 24%, rgba(230, 230, 230, 1) 26%, transparent 27%)
         `,
         backgroundSize: `${(20 / 16) * scale}rem ${(20 / 16) * scale}rem`,
-        backgroundPosition: `${(-5 / 16) * scale}rem ${(1 / 16) * scale}rem`,
+        backgroundPosition: `${(-3 / 16) * scale}rem ${(1 / 16) * scale}rem`,
         backgroundRepeat: 'repeat',
         backgroundAttachment: 'local',
         ...style,

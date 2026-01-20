@@ -1,3 +1,5 @@
+import birdImage2 from '@/assets/images/bird2-image.jpg';
+import birdImage3 from '@/assets/images/bird3-image.png';
 import birdImage from '@/assets/images/bird-image.png';
 import MainSectionLayout from '@/components/main/layout';
 
@@ -14,10 +16,10 @@ function Track() {
           <Card title="PROJECT OWNER (PO)" description={description} image={birdImage} />
         </div>
         <div className="flex-1 relative top-5">
-          <Card title="FRONTEND" description={description} />
+          <Card title="FRONTEND" description={description} image={birdImage2} />
         </div>
         <div className="flex-1 relative top-10">
-          <Card title="BACKEND" description={description} />
+          <Card title="BACKEND" description={description} image={birdImage3} />
         </div>
       </div>
     </MainSectionLayout>
