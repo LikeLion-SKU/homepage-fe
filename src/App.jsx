@@ -10,6 +10,7 @@ import AdminNotice from '@/pages/Admin/AdminNotice';
 import AdminOption from '@/pages/Admin/AdminOption';
 import AdminPage from '@/pages/Admin/AdminPage';
 import AdminProject from '@/pages/Admin/AdminProject';
+import AdminProjectEdit from '@/pages/Admin/AdminProjectEdit';
 import AdminUser from '@/pages/Admin/AdminUser';
 import Main from '@/pages/Main/Main';
 import MyPage from '@/pages/MyPage/MyPage';
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
           { path: 'user', Component: AdminUser },
           { path: 'option', Component: AdminOption },
           { path: 'project', Component: AdminProject },
+          { path: 'project/edit', Component: AdminProjectEdit },
           { path: 'notice', Component: AdminNotice },
           { path: 'interview', Component: AdminInterview },
           { path: 'application', Component: AdminApplication },

@@ -35,7 +35,12 @@ export default function ProjectCard({ props, isAdmin }) {
               <div className="flex justify-center items-center bg-[#D9D9D9] w-12 h-12 border-r-[0.5px] border-[#8C8C8C]">
                 <Right />
               </div>
-              <div className="flex w-29 h-12 text-[1.1rem] justify-center items-center">
+              <div
+                onClick={() => {
+                  navigate('/admin/project/edit');
+                }}
+                className="flex w-29 h-12 text-[1.1rem] justify-center items-center"
+              >
                 수정하기
               </div>
             </div>
