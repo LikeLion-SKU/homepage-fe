@@ -6,6 +6,7 @@ function Frame({
   cornerScale = 1,
   borderWidth = 2,
   letterSpacing = -0.88,
+  color = 'black',
 }) {
   const [scale, setScale] = useState(1);
 
@@ -39,48 +40,57 @@ function Frame({
 
   return (
     <div
-      className={`relative border-black inline-block ${className}`}
+      className={`relative inline-block border ${className}`}
       style={{
         padding: `${pxToRem(12)}rem ${pxToRem(20)}rem`,
         borderWidth: `${borderWidthRem}rem`,
+        borderColor: color,
         letterSpacing: `${letterSpacing}px`,
       }}
     >
       {/* 모서리 코너 */}
       <div
-        className="absolute bg-black border"
+        className="absolute border"
         style={{
           width: `${cornerSize}rem`,
           height: `${cornerSize}rem`,
           top: `-${cornerOffset}rem`,
           left: `-${cornerOffset}rem`,
+          backgroundColor: color,
+          borderColor: color,
         }}
       />
       <div
-        className="absolute bg-black border"
+        className="absolute border"
         style={{
           width: `${cornerSize}rem`,
           height: `${cornerSize}rem`,
           top: `-${cornerOffset}rem`,
           right: `-${cornerOffset}rem`,
+          backgroundColor: color,
+          borderColor: color,
         }}
       />
       <div
-        className="absolute bg-black border"
+        className="absolute border"
         style={{
           width: `${cornerSize}rem`,
           height: `${cornerSize}rem`,
           bottom: `-${cornerOffset}rem`,
           left: `-${cornerOffset}rem`,
+          backgroundColor: color,
+          borderColor: color,
         }}
       />
       <div
-        className="absolute bg-black border"
+        className="absolute border"
         style={{
           width: `${cornerSize}rem`,
           height: `${cornerSize}rem`,
           bottom: `-${cornerOffset}rem`,
           right: `-${cornerOffset}rem`,
+          backgroundColor: color,
+          borderColor: color,
         }}
       />
       {children}

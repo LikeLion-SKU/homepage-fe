@@ -27,8 +27,8 @@ function ExplainBackground({ children }) {
         borderBottomStyle: 'solid',
         borderTopLeftRadius: `${borderRadiusRem}rem`,
         borderTopRightRadius: `${borderRadiusRem}rem`,
-        borderBottomLeftRadius: `${borderRadiusRem}rem`,
-        borderBottomRightRadius: `${borderRadiusRem}rem`,
+        borderBottomLeftRadius: '0',
+        borderBottomRightRadius: '0',
       }}
     >
       {/* 배경 - black dot pattern 및 이미지 */}

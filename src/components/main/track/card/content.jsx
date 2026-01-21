@@ -1,7 +1,5 @@
 import useScale from '@/components/main/hooks/useScale';
 
-import GridPattern from './GridPattern';
-
 function CardContent({ description }) {
   const scale = useScale();
 
@@ -10,8 +8,8 @@ function CardContent({ description }) {
   }
 
   return (
-    <GridPattern
-      className="bg-white"
+    <div
+      className="bg-transparent"
       style={{
         padding: `${(24 / 16) * scale}rem`,
       }}
@@ -24,7 +22,7 @@ function CardContent({ description }) {
       >
         {description}
       </p>
-    </GridPattern>
+    </div>
   );
 }
 
