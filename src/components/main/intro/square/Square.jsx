@@ -9,25 +9,6 @@ const rows = 18;
 const baseSquareSize = 60; // 기본 크기 (1440px 기준)
 const baseGridWidth = columns * baseSquareSize; // 1440px
 
-// 디자인에 따라 정의된 사각형 위치 수정 완(색상은 추후 변경)
-const predefinedSquares = {
-  '3-4': '#636363',
-  '2-13': '#d9d9d9',
-  '1-14': '#d9d9d9',
-  '0-20': '#636363',
-  '3-17': '#636363',
-  '5-16': '#636363',
-  '6-23': '#d9d9d9',
-  '8-0': '#636363',
-  '12-3': '#636363',
-  '13-16': '#636363',
-  '14-18': '#636363',
-  '14-19': '#636363',
-  '14-20': '#636363',
-  '11-3': '#d9d9d9',
-  '10-2': '#d9d9d9',
-};
-
 function Square({ onScaleChange, onSquareSizeRemChange }) {
   const [cursorPosition, setCursorPosition] = useState({ x: -1000, y: -1000 }); // 절대 좌표 (clientX, clientY)
   const [cursorRelativePos, setCursorRelativePos] = useState({ x: -1000, y: -1000 }); // 그리드 내 상대 좌표
@@ -87,16 +68,10 @@ function Square({ onScaleChange, onSquareSizeRemChange }) {
 
       // 모든 사각형과의 거리 계산
       const squareDistances = [];
-      const d9d9d9Squares = []; // #d9d9d9 사각형들 (커서 근처에 있으면 무조건 포함)
 
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < columns; col++) {
           const key = `${row}-${col}`;
-          // 이미 색이 지정된 사각형은 제외 (#d9d9d9 제외)
-          if (predefinedSquares[key] && predefinedSquares[key] !== '#d9d9d9') {
-            continue;
-          }
-
           // 커서가 직접 가리키는 사각형은 제외 (나중에 별도로 추가)
           if (key === cursorSquareKey) {
             continue;
@@ -107,12 +82,6 @@ function Square({ onScaleChange, onSquareSizeRemChange }) {
           const dx = squareX - x;
           const dy = squareY - y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-
-          // #d9d9d9 사각형은 커서 근처에 있으면 무조건 포함
-          if (predefinedSquares[key] === '#d9d9d9' && distance < squareSize * 2) {
-            d9d9d9Squares.push({ key, distance, row, col });
-            continue;
-          }
 
           // 커서 방향으로의 거리 (커서가 가리키는 방향)
           const projDistance = dx * cursorDirX + dy * cursorDirY;
@@ -134,17 +103,8 @@ function Square({ onScaleChange, onSquareSizeRemChange }) {
       squareDistances.sort((a, b) => a.distance - b.distance);
       const closestSquares = new Set(squareDistances.slice(0, 3).map((s) => s.key));
 
-      // #d9d9d9 사각형들 추가 (커서 근처에 있는 것들)
-      d9d9d9Squares.forEach((s) => closestSquares.add(s.key));
-
-      // 커서가 직접 가리키는 사각형도 포함 (유효한 범위 내에 있고 이미 색이 지정되지 않은 경우)
-      if (
-        cursorRow >= 0 &&
-        cursorRow < rows &&
-        cursorCol >= 0 &&
-        cursorCol < columns &&
-        (!predefinedSquares[cursorSquareKey] || predefinedSquares[cursorSquareKey] === '#d9d9d9')
-      ) {
+      // 커서가 직접 가리키는 사각형도 포함 (유효한 범위 내)
+      if (cursorRow >= 0 && cursorRow < rows && cursorCol >= 0 && cursorCol < columns) {
         closestSquares.add(cursorSquareKey);
       }
 
@@ -158,14 +118,9 @@ function Square({ onScaleChange, onSquareSizeRemChange }) {
   const getSquareColor = (row, col) => {
     const key = `${row}-${col}`;
 
-    // Check if it's a predefined colored square (not #d9d9d9)
-    if (predefinedSquares[key] && predefinedSquares[key] !== '#d9d9d9') {
-      return predefinedSquares[key];
-    }
-
     // 영향받는 사각형에만 그라데이션 효과 적용
     if (!affectedSquares.has(key)) {
-      return predefinedSquares[key] || 'transparent';
+      return 'transparent';
     }
 
     // 영향받는 사각형에 그라데이션 효과
@@ -179,25 +134,10 @@ function Square({ onScaleChange, onSquareSizeRemChange }) {
     const maxDistance = squareSize * 1.5; // 약 90px
     const ratio = Math.max(0, Math.min(1, 1 - distance / maxDistance));
 
-    // If it's a predefined #d9d9d9 square, start from #d9d9d9
-    // Otherwise start from transparent
-    const startColor = predefinedSquares[key] === '#d9d9d9' ? '#d9d9d9' : 'transparent';
-
-    if (ratio === 0) {
-      return startColor;
-    }
-
-    // Interpolate between start color and #636363
-    let r1, g1, b1;
-    if (startColor === 'transparent') {
-      r1 = 255; // white background
-      g1 = 255;
-      b1 = 255;
-    } else {
-      r1 = parseInt('#d9d9d9'.substring(1, 3), 16);
-      g1 = parseInt('#d9d9d9'.substring(3, 5), 16);
-      b1 = parseInt('#d9d9d9'.substring(5, 7), 16);
-    }
+    // Interpolate between transparent(white base) and #636363
+    const r1 = 255; // white background
+    const g1 = 255;
+    const b1 = 255;
 
     const r2 = parseInt('#636363'.substring(1, 3), 16);
     const g2 = parseInt('#636363'.substring(3, 5), 16);
@@ -234,7 +174,7 @@ function Square({ onScaleChange, onSquareSizeRemChange }) {
   return (
     <>
       <GridSection />
-      {/* predefinedSquares와 커서 효과를 위한 오버레이 */}
+      {/* 커서 효과를 위한 오버레이 */}
       <div
         ref={gridRef}
         className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col z-10 max-w-screen box-border pointer-events-none"

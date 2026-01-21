@@ -12,6 +12,7 @@ function AwardCard({ title, image, onClick }) {
         marginRight: `${(35 / 16) * scale}rem`,
         display: 'flex',
         flexDirection: 'column',
+        borderRadius: 0,
       }}
       onClick={onClick}
     >
@@ -24,6 +25,7 @@ function AwardCard({ title, image, onClick }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            borderRadius: 0,
           }}
         >
           <img
@@ -32,7 +34,10 @@ function AwardCard({ title, image, onClick }) {
             style={{
               width: '100%',
               height: '100%',
-              objectFit: 'contain',
+              // 카드 이미지 영역 전체를 채우도록
+              objectFit: 'cover',
+              objectPosition: 'center',
+              borderRadius: 0,
             }}
           />
         </div>
@@ -42,6 +47,7 @@ function AwardCard({ title, image, onClick }) {
             width: '100%',
             height: '100%',
             backgroundColor: '#B0B0B0',
+            borderRadius: 0,
           }}
         />
       )}

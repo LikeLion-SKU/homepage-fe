@@ -25,7 +25,7 @@ function CardHeader({ title }) {
         }}
       />
       <div
-        className="bg-[#E0E0E0] flex items-center justify-center flex-shrink-0 relative"
+        className="bg-[#c6e400] flex items-center justify-center flex-shrink-0 relative"
         style={{
           padding: `${(8 / 16) * scale}rem`,
           width: `${(40 / 16) * scale}rem`,
@@ -44,7 +44,7 @@ function CardHeader({ title }) {
         />
       </div>
       <span
-        className="font-['Pretendard',_-apple-system,_BlinkMacSystemFont,_'system-ui',_sans-serif] font-bold text-[#1a1a1a] uppercase relative"
+        className="font-['Pretendard',_-apple-system,_BlinkMacSystemFont,_'system-ui',_sans-serif] font-bold text-[var(--color-navy-blue)] uppercase relative"
         style={{
           fontSize: `${(18 / 16) * scale}rem`,
           letterSpacing: `${(0.5 / 16) * scale}rem`,

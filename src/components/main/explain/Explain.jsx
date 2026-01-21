@@ -13,10 +13,16 @@ function Explain() {
 
   return (
     <ExplainBackground>
-      <SmallFrameBox className="mb-12" cornerScale={0.9} borderWidth={2} letterSpacing={-0.88}>
+      <SmallFrameBox
+        className="mb-12"
+        cornerScale={0.9}
+        borderWidth={2}
+        letterSpacing={-0.88}
+        color="var(--color-navy-blue)"
+      >
         <div className="flex flex-col items-start justify-center w-full">
           <h2
-            className="font-bold text-[#1a1a1a] m-0"
+            className="font-bold text-[var(--color-navy-blue)] m-0"
             style={{
               fontSize: `${(36 / 16) * scale}rem`,
               fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',

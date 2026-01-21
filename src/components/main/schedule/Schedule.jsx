@@ -1,29 +1,30 @@
 import { useState } from 'react';
 
-import aprilIcon from '@/assets/icons/main/track/april.svg';
-import augustIcon from '@/assets/icons/main/track/august.svg';
-import decemberIcon from '@/assets/icons/main/track/december.svg';
-import dinoIcon from '@/assets/icons/main/track/dino.svg';
-import doteC5Icon from '@/assets/icons/main/track/dote-c5.svg';
-import doteC7Icon from '@/assets/icons/main/track/dote-c7.svg';
-import doteC9Icon from '@/assets/icons/main/track/dote-c9.svg';
-import doteC11Icon from '@/assets/icons/main/track/dote-c11.svg';
-import doteLIcon from '@/assets/icons/main/track/dote-l.svg';
-import doteM1Icon from '@/assets/icons/main/track/dote-m1.svg';
-import doteM2Icon from '@/assets/icons/main/track/dote-m2.svg';
-import doteM3Icon from '@/assets/icons/main/track/dote-m3.svg';
-import doteM4Icon from '@/assets/icons/main/track/dote-m4.svg';
-import doteM5Icon from '@/assets/icons/main/track/dote-m5.svg';
-import doteSIcon from '@/assets/icons/main/track/dote-s.svg';
-import dotSquareIcon from '@/assets/icons/main/track/dote-square.svg';
-import julyIcon from '@/assets/icons/main/track/july.svg';
-import juneIcon from '@/assets/icons/main/track/june.svg';
-import marchIcon from '@/assets/icons/main/track/march.svg';
-import mayIcon from '@/assets/icons/main/track/may.svg';
-import novemberIcon from '@/assets/icons/main/track/november.svg';
-import octoberIcon from '@/assets/icons/main/track/october.svg';
-import sebtemberIcon from '@/assets/icons/main/track/sebtember.svg';
-import umbrellaIcon from '@/assets/icons/main/track/umbrella.svg';
+import scheduleBlahIcon from '@/assets/icons/main/schedule/2026-blah.svg';
+import aprilIcon from '@/assets/icons/main/schedule/april.svg';
+import augustIcon from '@/assets/icons/main/schedule/august.svg';
+import decemberIcon from '@/assets/icons/main/schedule/december.svg';
+import dinoIcon from '@/assets/icons/main/schedule/dino.svg';
+import doteC5Icon from '@/assets/icons/main/schedule/dote-c5.svg';
+import doteC7Icon from '@/assets/icons/main/schedule/dote-c7.svg';
+import doteC9Icon from '@/assets/icons/main/schedule/dote-c9.svg';
+import doteC11Icon from '@/assets/icons/main/schedule/dote-c11.svg';
+import doteLIcon from '@/assets/icons/main/schedule/dote-l.svg';
+import doteM1Icon from '@/assets/icons/main/schedule/dote-m1.svg';
+import doteM2Icon from '@/assets/icons/main/schedule/dote-m2.svg';
+import doteM3Icon from '@/assets/icons/main/schedule/dote-m3.svg';
+import doteM4Icon from '@/assets/icons/main/schedule/dote-m4.svg';
+import doteM5Icon from '@/assets/icons/main/schedule/dote-m5.svg';
+import doteSIcon from '@/assets/icons/main/schedule/dote-s.svg';
+import dotSquareIcon from '@/assets/icons/main/schedule/dote-square.svg';
+import julyIcon from '@/assets/icons/main/schedule/july.svg';
+import juneIcon from '@/assets/icons/main/schedule/june.svg';
+import marchIcon from '@/assets/icons/main/schedule/march.svg';
+import mayIcon from '@/assets/icons/main/schedule/may.svg';
+import novemberIcon from '@/assets/icons/main/schedule/november.svg';
+import octoberIcon from '@/assets/icons/main/schedule/october.svg';
+import sebtemberIcon from '@/assets/icons/main/schedule/sebtember.svg';
+import umbrellaIcon from '@/assets/icons/main/schedule/umbrella.svg';
 import ScheduleModal from '@/components/common/Modal/ScheduleModal/ScheduleModal';
 import useScale from '@/components/main/hooks/useScale';
 import MainSectionLayout from '@/components/main/layout';
@@ -66,6 +67,19 @@ function Schedule() {
   return (
     <MainSectionLayout title="2026 연간 일정" showTopBorder={false} paddingBottomScale={0.2}>
       <div className="relative" style={{ minHeight: `${(800 / 16) * scale}rem` }}>
+        {/* 타이틀 옆 장식 아이콘 (개별 위치 조정 가능) */}
+        <img
+          src={scheduleBlahIcon}
+          alt="schedule blah"
+          className="absolute pointer-events-none"
+          style={{
+            left: `${(210 / 16) * scale}rem`,
+            top: `${(-225 / 16) * scale}rem`,
+            width: `${(159 / 16) * scale}rem`,
+            height: 'auto',
+            zIndex: 30,
+          }}
+        />
         {/* 프레임 텍스트 아래 40px에 가로로 나열 */}
         <div
           className="flex items-center"

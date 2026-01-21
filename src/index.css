@@ -3,7 +3,10 @@
 @theme {
   --color-button-green: #c6e400;
   --color-toggle-green: #f8fbe7;
+  --color-bright-blue: #1928B0;
+  --color-navy-blue: #00156A;
   --color-button-hover: #afd200;
+
 }
 
 /* Pixel 폰트 정의 (피그마의 pixel 폰트) */
@@ -104,12 +107,17 @@ select {
 
 .hero-scroll {
   font-family: 'pixel', monospace;
-  color: #1928b0;
+  color: var(--color-bright-blue);
   position: relative;
   left: 50%;
   transform: translateX(-50%);
   animation: scrollBounce 2.3s ease-in-out infinite;
   white-space: nowrap;
+}
+
+/* hero-scroll 클래스가 absolute 위치 요소에도 적용되도록 */
+.hero-scroll.absolute {
+  position: absolute;
 }
 
 @layer utilities {
