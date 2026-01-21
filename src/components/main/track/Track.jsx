@@ -1,3 +1,6 @@
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
+
 import tracksBlahIcon from '@/assets/icons/main/track/tracks-blah.svg';
 import BEImage from '@/assets/images/BE-explain.svg';
 import FEImage from '@/assets/images/FE-explain.svg';
@@ -42,15 +45,45 @@ function Track() {
         />
 
         <div className="flex gap-8 w-[120%] -ml-[10%] mt-[42px]">
-          <div className="flex-1">
+          <motion.div
+            className="flex-1"
+            initial={{ y: 60, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{
+              duration: 0.7,
+              ease: 'easeOut',
+              delay: 0,
+            }}
+          >
             <Card title="PO 프로젝트 오너" description={poDescription} image={POImage} />
-          </div>
-          <div className="flex-1 relative top-10">
+          </motion.div>
+          <motion.div
+            className="flex-1 relative top-10"
+            initial={{ y: 60, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{
+              duration: 0.7,
+              ease: 'easeOut',
+              delay: 0.3,
+            }}
+          >
             <Card title="FRONTEND 프론트엔드 개발자" description={feDescription} image={FEImage} />
-          </div>
-          <div className="flex-1 relative top-20">
+          </motion.div>
+          <motion.div
+            className="flex-1 relative top-20"
+            initial={{ y: 60, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{
+              duration: 0.7,
+              ease: 'easeOut',
+              delay: 0.6,
+            }}
+          >
             <Card title="BACKEND 백엔드 개발자" description={beDescription} image={BEImage} />
-          </div>
+          </motion.div>
         </div>
       </div>
     </MainSectionLayout>
