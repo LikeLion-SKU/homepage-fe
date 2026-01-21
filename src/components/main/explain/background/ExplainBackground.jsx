@@ -13,6 +13,11 @@ function ExplainBackground({ children }) {
   const backgroundWidthRem = (1453 / 16) * scale;
   const containerPaddingRem = (175 / 16) * scale;
 
+  // "IT'S SKU" 텍스트 위치 (임의로 조정 가능)
+  const itsSkuTop = (115 / 16) * scale; // 상단에서의 거리 (기본값: 60px)
+  const itsSkuLeft = (120 / 16) * scale; // 좌측에서의 거리 (기본값: 80px)
+  const itsSkuFontSize = (24 / 16) * scale; // 폰트 크기 (기본값: 24px)
+
   return (
     <section
       className="relative w-full overflow-hidden"
@@ -48,6 +53,21 @@ function ExplainBackground({ children }) {
           alt=""
           className="absolute top-0 left-0 w-full h-full object-cover pointer-events-none z-0 opacity-[0.15]"
         />
+      </div>
+
+      {/* "IT'S SKU" 텍스트 - 좌측 상단 */}
+      <div
+        className="absolute z-20 pointer-events-none"
+        style={{
+          top: `${itsSkuTop}rem`,
+          left: `${itsSkuLeft}rem`,
+          fontFamily: 'pixel, monospace',
+          fontSize: `${itsSkuFontSize}rem`,
+          color: '#1C1B1A',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        IT'S SKU
       </div>
 
       {/* 컨테이너 */}
