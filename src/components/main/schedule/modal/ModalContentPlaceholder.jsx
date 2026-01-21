@@ -5,6 +5,7 @@ function ModalContentPlaceholder({
   paddingTop,
   contentImage,
   title,
+  scale = 1,
 }) {
   return (
     <div
@@ -25,6 +26,7 @@ function ModalContentPlaceholder({
           alignItems: 'center',
           justifyContent: 'center',
           overflow: 'hidden',
+          borderRadius: `${(10 / 16) * scale}rem`,
         }}
       >
         {contentImage && (

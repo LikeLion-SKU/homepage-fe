@@ -8,10 +8,8 @@ import ModalWindow from './ModalWindow';
 function ScheduleModal({
   isOpen,
   onClose,
-  title = '3월',
-  contentImage,
-  contentTitle,
-  contentDescription,
+  modalData = [], // 배열 형태로 받음: [{ title, contentImage, contentTitle, contentDescription }, ...]
+  modalGap = 32, // 두 모달 사이 gap (px)
   // Overlay props
   overlayBgColor,
   overlayOpacity,
@@ -38,49 +36,46 @@ function ScheduleModal({
 }) {
   const scale = useScale();
   const finalScale = customScale !== undefined ? customScale : scale;
-  if (!isOpen) return null;
+  if (!isOpen || !modalData || modalData.length === 0) return null;
+
+  // 최대 2개까지만 표시
+  const modalsToShow = modalData.slice(0, 2);
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-[1000] flex items-center justify-center">
       <ModalOverlay onClick={onClose} backgroundColor={overlayBgColor} opacity={overlayOpacity} />
-      {/* 모달 창 크기만큼의 배경 사각형 (오른쪽 5px, 아래 5px 오프셋) */}
-      <div className="relative">
-        <div
-          style={{
-            position: 'absolute',
-            top: `${(6 / 16) * finalScale}rem`,
-            left: `${(18 / 16) * finalScale}rem`,
-            backgroundColor: '#00156A',
-            maxWidth: `${(480 / 16) * finalScale}rem`,
-            width: '97%',
-            minWidth: '280px',
-            minHeight: `${(560 / 16) * finalScale}rem`,
-            maxHeight: '90vh',
-            zIndex: 0,
-          }}
-        />
-        <ModalWindow
-          title={title}
-          contentImage={contentImage}
-          contentTitle={contentTitle}
-          contentDescription={contentDescription}
-          titleBarBgColor={titleBarBgColor}
-          titleBarIconBoxColor={titleBarIconBoxColor}
-          titleBarTitleBoxColor={titleBarTitleBoxColor}
-          titleBarBoxSize={titleBarBoxSize}
-          placeholderBgColor={placeholderBgColor}
-          placeholderHeight={placeholderHeight}
-          placeholderPaddingHorizontal={placeholderPaddingHorizontal}
-          placeholderPaddingTop={placeholderPaddingTop}
-          textTitleColor={textTitleColor}
-          textDescriptionColor={textDescriptionColor}
-          textBgColor={textBgColor}
-          windowBgColor={windowBgColor}
-          windowBorderColor={windowBorderColor}
-          windowBorderWidth={windowBorderWidth}
-          scale={finalScale}
-          onClose={onClose}
-        />
+      <div
+        className="flex items-center"
+        style={{
+          gap: `${(modalGap / 16) * finalScale}rem`,
+          flexWrap: 'nowrap',
+        }}
+      >
+        {modalsToShow.map((data, index) => (
+          <ModalWindow
+            key={index}
+            title={data.title}
+            contentImage={data.contentImage}
+            contentTitle={data.contentTitle}
+            contentDescription={data.contentDescription}
+            titleBarBgColor={titleBarBgColor}
+            titleBarIconBoxColor={titleBarIconBoxColor}
+            titleBarTitleBoxColor={titleBarTitleBoxColor}
+            titleBarBoxSize={titleBarBoxSize}
+            placeholderBgColor={placeholderBgColor}
+            placeholderHeight={placeholderHeight}
+            placeholderPaddingHorizontal={placeholderPaddingHorizontal}
+            placeholderPaddingTop={placeholderPaddingTop}
+            textTitleColor={textTitleColor}
+            textDescriptionColor={textDescriptionColor}
+            textBgColor={textBgColor}
+            windowBgColor={windowBgColor}
+            windowBorderColor={windowBorderColor}
+            windowBorderWidth={windowBorderWidth}
+            scale={finalScale}
+            onClose={onClose}
+          />
+        ))}
       </div>
     </div>,
     document.getElementById('modal-root') || document.body
