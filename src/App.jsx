@@ -12,6 +12,7 @@ import AdminPage from '@/pages/Admin/AdminPage';
 import AdminProject from '@/pages/Admin/AdminProject';
 import AdminProjectEdit from '@/pages/Admin/AdminProjectEdit';
 import AdminUser from '@/pages/Admin/AdminUser';
+import ApplyComplete from '@/pages/Apply/ApplyComplete';
 import Main from '@/pages/Main/Main';
 import MyPage from '@/pages/MyPage/MyPage';
 import ProjectList from '@/pages/Project/ProjectList';
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
         Component: ProtectedRoute,
         children: [
           { path: '/mypage', Component: MyPage },
-          // { path: "", Component:  },
+          { path: '/apply/complete', Component: ApplyComplete },
         ],
       },
       {

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import Toggle from '@/assets/icons/under_toggle.svg';
 import ApplyStickyBox from '@/components/animation/ApplyStickyBox';
@@ -9,6 +10,7 @@ export default function Recruitment() {
   // 열려있는 토글들의 인덱스 배열로 저장
   const [openToggle, setOpenToggle] = useState([]);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleToggle = (index) => {
     if (openToggle.includes(index)) {
@@ -162,35 +164,21 @@ export default function Recruitment() {
           onClickModal={() => setIsApplyModalOpen(true)}
           buttonStyle={buttonStyle}
         />
-        {/* 오른쪽 지원 상자 */}
-        {/* <div className="w-96 h-60 px-7 py-9 outline">
-          <div className="w-80 flex flex-col justify-start items-start gap-6">
-            <div className="w-52 flex flex-col gap-3">
-              <div className="self-stretch h-4 justify-center text-stone-500 text-sm font-medium font-['Pretendard']">
-                마감일
-              </div>
-              <div className="self-stretch h-7 justify-center text-black text-xl font-bold font-['Pretendard']">
-                2026.03.30 오후 5:00
-              </div>
-            </div>
-            <div className="w-80 border-t border-black"></div>
-            <Button
-              onClick={() => {
-                setIsApplyModalOpen(true);
-              }}
-              data-variant=""
-              data-size=""
-              className={buttonStyle}
-            >
-              지원하기
-            </Button>
-          </div>
-        </div> */}
       </div>
       <Modal
         isOpen={isApplyModalOpen}
         cancel={() => setIsApplyModalOpen(false)}
-        confirm={() => setIsApplyModalOpen(false) /* TODO: 추후 이동할 페이지 추가 필요 */}
+        confirm={() => {
+          setIsApplyModalOpen(false);
+          // 백엔드 연결 전 임시 로직
+          const hasSubmitted = true; // 나중에 API 결과값으로 대체
+
+          if (hasSubmitted) {
+            navigate('/apply/complete'); // 이미 제출했으면 완료 페이지로
+          } else {
+            navigate('/application'); // 제출 안 했으면 신청 페이지로
+          }
+        }}
       >
         지원하러 가시겠습니까?
       </Modal>
