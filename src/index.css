@@ -3,10 +3,10 @@
 @theme {
   --color-button-green: #c6e400;
   --color-toggle-green: #f8fbe7;
-  --color-bright-blue: #1928B0;
-  --color-navy-blue: #00156A;
+  --color-bright-blue: #1928b0;
+  --color-navy-blue: #00156a;
   --color-button-hover: #afd200;
-
+  --color-modal-white: #ffffff;
 }
 
 /* Pixel 폰트 정의 (피그마의 pixel 폰트) */
