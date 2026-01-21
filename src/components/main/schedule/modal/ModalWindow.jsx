@@ -34,83 +34,17 @@ function ModalWindow({
       style={{
         backgroundColor: windowBgColor,
         border: `${windowBorderWidth}px solid ${windowBorderColor}`,
-        width: `${(480 / 16) * scale}rem`,
-        maxWidth: `${(480 / 16) * scale}rem`,
-        minWidth: `${(480 / 16) * scale}rem`,
-        minHeight: `${(560 / 16) * scale}rem`,
-        maxHeight: '90vh',
+        borderRadius: `${(32 / 16) * scale}rem`,
+        width: `${(468 / 16) * scale}rem`,
+        maxWidth: `${(468 / 16) * scale}rem`,
+        minWidth: `${(468 / 16) * scale}rem`,
+        height: `${(552 / 16) * scale}rem`,
+        minHeight: `${(552 / 16) * scale}rem`,
+        maxHeight: `${(552 / 16) * scale}rem`,
         overflow: 'auto',
+        flexShrink: 0,
       }}
     >
-      {/* 좌측 상단 사각형들 */}
-      <div
-        className="flex items-center absolute"
-        style={{
-          gap: 0,
-          display: 'inline-flex',
-          top: `${(42 / 16) * scale}rem`,
-          left: `${(30 / 16) * scale}rem`,
-          zIndex: 10,
-        }}
-      >
-        <div
-          onClick={onClose}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: titleBarIconBoxColor,
-            width: `${(38 / 16) * scale * (titleBarBoxSize || 1)}rem`,
-            height: `${(21 / 16) * scale * (titleBarBoxSize || 1)}rem`,
-            fontFamily: "'pixel', monospace",
-            color: '#F8F8F8',
-            fontSize: `${(20 / 16) * scale * (titleBarBoxSize || 1)}rem`,
-            cursor: 'pointer',
-          }}
-        >
-          <span
-            style={{
-              display: 'inline-block',
-              transform: `translateY(-${(10 / 16) * scale * (titleBarBoxSize || 1)}rem)`,
-              fontWeight: 'bold',
-            }}
-          >
-            →
-          </span>
-        </div>
-      </div>
-      {/* 우측 상단 사각형들 */}
-      <div
-        className="flex items-center absolute"
-        style={{
-          gap: 0,
-          display: 'inline-flex',
-          top: `${(42 / 16) * scale}rem`,
-          right: `${(30 / 16) * scale}rem`,
-          zIndex: 10,
-        }}
-      >
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: titleBarTitleBoxColor,
-            width: `${(38 / 16) * scale * (titleBarBoxSize || 1)}rem`,
-            height: `${(21 / 16) * scale * (titleBarBoxSize || 1)}rem`,
-          }}
-        />
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: titleBarIconBoxColor,
-            width: `${(38 / 16) * scale * (titleBarBoxSize || 1)}rem`,
-            height: `${(21 / 16) * scale * (titleBarBoxSize || 1)}rem`,
-          }}
-        />
-      </div>
       <ModalTitleBar
         title={title}
         backgroundColor={titleBarBgColor}
@@ -127,6 +61,7 @@ function ModalWindow({
         paddingTop={placeholderPaddingTop}
         contentImage={contentImage}
         title={title}
+        scale={scale}
       />
       <ModalTextContent
         title={contentTitle}
@@ -153,10 +88,10 @@ function ModalWindow({
             key={index}
             style={{
               display: 'inline-flex',
-              backgroundColor: '#B3B3B3',
+              backgroundColor: '#1928B0',
               width: `${(22 / 16) * scale}rem`,
               height: `${(100 / 16) * scale}rem`,
-              opacity: 0.3,
+              opacity: 0.1,
               marginRight: `${(12 / 16) * scale}rem`,
             }}
           />

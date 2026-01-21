@@ -25,9 +25,9 @@ import novemberIcon from '@/assets/icons/main/schedule/november.svg';
 import octoberIcon from '@/assets/icons/main/schedule/october.svg';
 import sebtemberIcon from '@/assets/icons/main/schedule/sebtember.svg';
 import umbrellaIcon from '@/assets/icons/main/schedule/umbrella.svg';
-import ScheduleModal from '@/components/common/Modal/ScheduleModal/ScheduleModal';
 import useScale from '@/components/main/hooks/useScale';
 import MainSectionLayout from '@/components/main/layout';
+import ScheduleModal from '@/components/main/schedule/modal/ScheduleModal';
 import { scheduleMonthData } from '@/components/main/schedule/scheduleModalData';
 
 function Schedule() {
@@ -45,10 +45,10 @@ function Schedule() {
     setSelectedMonth(null);
   };
 
-  // 현재 선택된 월의 데이터
+  // 현재 선택된 월의 데이터 (배열 형태)
   const currentMonthData = selectedMonth
-    ? scheduleMonthData[selectedMonth]
-    : scheduleMonthData['3월'];
+    ? scheduleMonthData[selectedMonth] || []
+    : scheduleMonthData['3월'] || [];
 
   // 월별 아이콘 데이터
   const months = [
@@ -451,10 +451,8 @@ function Schedule() {
       <ScheduleModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        title={currentMonthData.title}
-        contentImage={currentMonthData.contentImage}
-        contentTitle={currentMonthData.contentTitle}
-        contentDescription={currentMonthData.contentDescription}
+        modalData={currentMonthData}
+        modalGap={40}
         overlayBgColor="rgba(0, 0, 0, 0.5)"
         overlayOpacity={0.7}
         titleBarBgColor="#FFFFFF"
@@ -469,7 +467,7 @@ function Schedule() {
         textDescriptionColor="#1a1a1a"
         textBgColor="#FFFFFF"
         windowBgColor="#FFFFFF"
-        windowBorderColor="#00156A"
+        windowBorderColor="#A8A8A8"
         windowBorderWidth={2.5}
         scale={scale}
       />

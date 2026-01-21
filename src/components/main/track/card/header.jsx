@@ -17,7 +17,7 @@ function CardHeader({ title }) {
       <div
         className="bg-[#FFFFFF] absolute"
         style={{
-          width: `${(380 / 16) * scale}rem`,
+          width: `${(360 / 16) * scale}rem`,
           height: `${(40 / 16) * scale}rem`,
           left: `${(22 / 16) * scale}rem`,
           top: `${(16 / 16) * scale}rem`,

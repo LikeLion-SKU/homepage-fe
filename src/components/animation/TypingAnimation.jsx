@@ -5,6 +5,7 @@ function TypingAnimation({
   speed = 150,
   className = '',
   fontSize = '1rem',
+  fontFamily = undefined,
   onComplete = undefined,
   shouldStart = true,
   showCursor = true,
@@ -62,11 +63,31 @@ function TypingAnimation({
     showCursor && !isTyping && displayedText.length === text.length;
 
   return (
-    <span className={`relative inline-block ${className}`} style={{ fontSize }}>
+    <span
+      className={`relative inline-block ${className}`}
+      style={{
+        fontSize,
+        fontFamily: fontFamily || 'inherit',
+        overflow: 'visible',
+        minWidth: 'fit-content',
+      }}
+    >
       {/* 전체 텍스트를 투명하게 렌더링하여 공간 확보 */}
-      <span className="opacity-0 pointer-events-none whitespace-nowrap">{text}</span>
+      <span
+        className="opacity-0 pointer-events-none whitespace-nowrap"
+        style={{ display: 'inline-block' }}
+      >
+        {text}
+      </span>
       {/* 타이핑으로 나타나는 텍스트를 absolute로 오버레이 */}
-      <span className="absolute left-0 top-0 whitespace-nowrap inline-flex items-center">
+      <span
+        className="absolute left-0 top-0 whitespace-nowrap inline-flex items-center"
+        style={{
+          fontFamily: fontFamily || 'inherit',
+          overflow: 'visible',
+          minWidth: 'fit-content',
+        }}
+      >
         {displayedText}
         {/* 타이핑 중일 때는 항상 커서 표시 (showCursor와 관계없이) */}
         {shouldShowCursorWhileTyping && (

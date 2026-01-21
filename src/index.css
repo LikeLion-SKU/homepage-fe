@@ -7,6 +7,7 @@
   --color-navy-blue: #00156a;
   --color-button-hover: #afd200;
   --color-modal-white: #ffffff;
+  --color-button-gray: #f9f9f9;
 }
 
 /* Pixel 폰트 정의 (피그마의 pixel 폰트) */
@@ -34,6 +35,33 @@
   font-display: swap;
 }
 
+/* HOTSPOT 폰트 정의 */
+@font-face {
+  font-family: 'HOTSPOT';
+  src: url('/fonts/HOTSPOT-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* HOTSPOT 폰트 Bold (font-weight: 800용) */
+@font-face {
+  font-family: 'HOTSPOT';
+  src: url('/fonts/HOTSPOT-Regular.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* pixel 폰트*/
+@font-face {
+  font-family: 'pixel';
+  src: url('/fonts/pixel.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 /* 전역 커서 숨기기 - 모든 요소에 적용 */
 *,
 *::before,
