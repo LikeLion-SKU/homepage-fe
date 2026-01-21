@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import TypingAnimation from '@/components/animation/TypingAnimation';
 import BigFrameBox from '@/components/layout/frame/Frame';
+import IntroIcons from '@/components/main/intro/IntroIcons';
 import Square from '@/components/main/intro/square/Square';
 
 // Grid configuration: 24 columns x 19 rows(피그마 디자인)
@@ -35,6 +36,8 @@ function Intro() {
       }}
     >
       <Square onScaleChange={setScale} onSquareSizeRemChange={setSquareSizeRem} />
+      {/* 아이콘 배치 - 격자 배경 아래 */}
+      {squareSizeRem > 0 && <IntroIcons squareSizeRem={squareSizeRem} scale={scale} />}
       {/* Intro 내용 - 4.5-3 위치에 배치 */}
       {squareSizeRem > 0 && (
         <div
@@ -47,7 +50,8 @@ function Intro() {
           <h1
             className="text-[#1a1a1a] m-0 whitespace-nowrap inline-flex items-center"
             style={{
-              fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+              fontFamily:
+                'HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
               fontWeight: '800',
             }}
           >
@@ -60,16 +64,31 @@ function Intro() {
               showCursor={false}
             />
             {/* "상상" 텍스트 - 프레임 있음 */}
-            <BigFrameBox cornerScale={1.4} borderWidth={3} className="inline-block">
-              <TypingAnimation
-                text="상상,"
-                speed={150}
-                fontSize={`${(120 / 16) * scale}rem`}
-                shouldStart={shouldStartImaginationTyping}
-                onComplete={() => setShouldStartSecondTyping(true)}
-                showCursor={false}
-              />
-            </BigFrameBox>
+            <span
+              className="inline-block"
+              style={{
+                // 프레임(박스) 자체도 오른쪽으로 이동
+                marginLeft: `${(20 / 16) * scale}rem`,
+              }}
+            >
+              <BigFrameBox cornerScale={1.4} borderWidth={3} className="inline-block">
+                <div
+                  style={{
+                    // 프레임 내부에서 텍스트만 오른쪽으로 이동
+                    paddingLeft: `${(16 / 16) * scale}rem`,
+                  }}
+                >
+                  <TypingAnimation
+                    text="상상,"
+                    speed={150}
+                    fontSize={`${(120 / 16) * scale}rem`}
+                    shouldStart={shouldStartImaginationTyping}
+                    onComplete={() => setShouldStartSecondTyping(true)}
+                    showCursor={false}
+                  />
+                </div>
+              </BigFrameBox>
+            </span>
           </h1>
         </div>
       )}
@@ -85,7 +104,8 @@ function Intro() {
           <h2
             className="text-[#1a1a1a] m-0 whitespace-nowrap"
             style={{
-              fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+              fontFamily:
+                'HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
               fontWeight: '800',
             }}
           >
@@ -118,39 +138,6 @@ function Intro() {
             }}
           >
             SCROLL
-          </div>
-          <div
-            className="hero-scroll"
-            style={{
-              fontSize: `${(16 / 16) * scale}rem`,
-              lineHeight: `${(24 / 16) * scale}rem`,
-              textAlign: 'center',
-              marginTop: 0,
-            }}
-          >
-            v
-          </div>
-          <div
-            className="hero-scroll"
-            style={{
-              fontSize: `${(16 / 16) * scale}rem`,
-              lineHeight: `${(24 / 16) * scale}rem`,
-              textAlign: 'center',
-              marginTop: 0,
-            }}
-          >
-            v
-          </div>
-          <div
-            className="hero-scroll"
-            style={{
-              fontSize: `${(16 / 16) * scale}rem`,
-              lineHeight: `${(24 / 16) * scale}rem`,
-              textAlign: 'center',
-              marginTop: 0,
-            }}
-          >
-            v
           </div>
         </div>
       )}

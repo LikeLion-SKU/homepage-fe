@@ -3,6 +3,9 @@
 @theme {
   --color-button-green: #c6e400;
   --color-toggle-green: #f8fbe7;
+  
+  --color-bright-blue: #1928B0;
+  --color-navy-blue: #00156A;
 }
 
 /* Pixel 폰트 정의 (피그마의 pixel 폰트) */
@@ -103,12 +106,17 @@ select {
 
 .hero-scroll {
   font-family: 'pixel', monospace;
-  color: #1928b0;
+  color: var(--color-bright-blue);
   position: relative;
   left: 50%;
   transform: translateX(-50%);
   animation: scrollBounce 2.3s ease-in-out infinite;
   white-space: nowrap;
+}
+
+/* hero-scroll 클래스가 absolute 위치 요소에도 적용되도록 */
+.hero-scroll.absolute {
+  position: absolute;
 }
 
 @layer utilities {
@@ -130,7 +138,7 @@ select {
   min-width: calc(140px * var(--scale, 1));
   height: calc(48px * var(--scale, 1));
   background-color: #F9F9F9;
-  border: calc(9px * var(--scale, 1)) solid #1928B0;
+  border: calc(9px * var(--scale, 1)) solid var(--color-bright-blue);
   border-radius: 0;
   transform: translate3d(-9999px, -9999px, 0);
   pointer-events: none;
@@ -154,7 +162,7 @@ select {
   font-size: calc(20px * var(--scale, 1));
   letter-spacing: 0;
   text-transform: uppercase;
-  color: #1928B0;
+  color: var(--color-bright-blue);
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   font-weight: 500;
   line-height: 1;
@@ -163,7 +171,7 @@ select {
 
 .awards-drag-cursor-arrow {
   font-size: calc(32px * var(--scale, 1));
-  color: #1928B0;
+  color: var(--color-bright-blue);
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   font-weight: 400;
   line-height: 1;

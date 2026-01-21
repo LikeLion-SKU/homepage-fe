@@ -1,6 +1,6 @@
 import useScale from '@/components/main/hooks/useScale';
 
-function GridPattern({ className = '', style = {}, children }) {
+function GridPattern({ className = '', style = {}, children = null }) {
   const scale = useScale();
 
   return (
