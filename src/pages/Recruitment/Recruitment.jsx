@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import Toggle from '@/assets/icons/under_toggle.svg';
+import ApplyStickyBox from '@/components/animation/ApplyStickyBox';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
 
@@ -67,9 +68,9 @@ export default function Recruitment() {
   `;
 
   return (
-    <div className="flex">
+    <div className="flex pl-17.25 pt-18">
       {/* 왼쪽 부분은 패딩으로 자동 왼쪽 정렬 */}
-      <div className="w-full bg-white flex flex-col items-start pl-21 pt-24.25 gap-20">
+      <div className="w-full bg-white flex flex-col items-start  gap-20">
         {/* 제목 부분 */}
         <div className="flex flex-col gap-7">
           <h1 className="text-black text-4xl font-extrabold font-['Pretendard']">
@@ -154,9 +155,15 @@ export default function Recruitment() {
           </section>
         </div>
       </div>
-      <div className="flex justify-end w-full pt-45.5 pr-15">
+      <div className="flex justify-end w-full pr-15">
+        {/* 추후 변경 필요 */}
+        <ApplyStickyBox
+          deadline="2026.03.30 오후 5:00"
+          onClickModal={() => setIsApplyModalOpen(true)}
+          buttonStyle={buttonStyle}
+        />
         {/* 오른쪽 지원 상자 */}
-        <div className="w-96 h-60 px-7 py-9 outline">
+        {/* <div className="w-96 h-60 px-7 py-9 outline">
           <div className="w-80 flex flex-col justify-start items-start gap-6">
             <div className="w-52 flex flex-col gap-3">
               <div className="self-stretch h-4 justify-center text-stone-500 text-sm font-medium font-['Pretendard']">
@@ -178,7 +185,7 @@ export default function Recruitment() {
               지원하기
             </Button>
           </div>
-        </div>
+        </div> */}
       </div>
       <Modal
         isOpen={isApplyModalOpen}
