@@ -1,38 +1,21 @@
 // @ts-ignore
-import GitHub from '@/assets/icons/GitHub_icon.svg?react';
-// @ts-ignore
-import Instagram from '@/assets/icons/Instagram_icon.svg?react';
-// @ts-ignore
-import LionLogo from '@/assets/icons/LionLogo_icon.svg?react';
+import Skon from '@/assets/icons/SKON_icon.svg?react';
+//@ts-ignore
+import Text from '@/assets/icons/footer_text.svg?react';
 
 export default function Footer() {
   return (
-    <footer className="w-full h-66 flex flex-col items-center justify-center bg-[#D9D9D9]  gap-5 mt-auto">
-      <div className="flex items-center text-[2.5rem] font-bold">
-        <LionLogo />
-        SKU LIKELION
-      </div>
-      <div className="flex items-center">
-        <a
-          href="https://www.instagram.com/likelion_skuniv/"
-          className="cursor-pointer"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Instagram />
-        </a>
-        <a
-          href="https://github.com/"
-          className="cursor-pointer"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <GitHub />
-        </a>
-      </div>
-      <div className="text-[0.8rem] font-medium text-[#9F9C98] mt-5">
-        © 2026 SKU LIKELION. All rights reserved.
-      </div>
+    <footer className="w-full h-40 flex items-center justify-between bg-[#F9F9F9] gap-5 mt-auto px-12 pt-15">
+      <Text />
+      {/* <div>
+        <p>
+          SKU SK U LIKELION. ALL RIGHTS RESERVED.
+        </p>
+        <p>
+          Seokyeong University, 124 Seokyeong-ro, Seongbuk-gu, Seoul, 02726, Republic of Korea
+        </p>
+      </div> */}
+      <Skon />
     </footer>
   );
 }
