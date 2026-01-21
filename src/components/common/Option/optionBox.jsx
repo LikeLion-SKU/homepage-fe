@@ -7,7 +7,7 @@ export default function OptionBox({ initValue, optionData, bgColor = 'white' }) 
     <details
       open={isOpen}
       onToggle={(e) => setIsOpen(e.currentTarget.open)}
-      className="relative z-50 group w-28"
+      className={`relative group w-28 ${isOpen ? 'z-15' : 'z-10'}`}
     >
       <summary
         style={{ backgroundColor: bgColor }}

@@ -8,11 +8,13 @@ export default function AdminTitleSection({ props, children }) {
         </div>
         <p className="w-100 h-15 text-[1.1rem] font-semibold">{props.explain}</p>
       </div>
-      <div className="flex flex-col items-center justify-center w-92 h-26 bg-[#F9F9F9] border">
-        {props.rule.map((string) => (
-          <p className="text-[1rem] font-semibold">{string}</p>
-        ))}
-      </div>
+      {props.rule.length > 0 && (
+        <div className="flex flex-col items-center justify-center w-92 h-26 bg-[#F9F9F9] border">
+          {props.rule.map((string) => (
+            <p className="text-[1rem] font-semibold">{string}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

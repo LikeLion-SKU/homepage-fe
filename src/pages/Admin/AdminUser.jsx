@@ -1,10 +1,8 @@
 import { useState } from 'react';
 
-//@ts-ignore
-import Search from '@/assets/icons/Search_icon.svg?react';
 import AdminTitleSection from '@/components/admin/AdminTitleSection';
-import AdminUserMember from '@/components/admin/AdminUserMember';
-import Table from '@/components/admin/Table';
+import AdminMember from '@/components/admin/User/AdminMember';
+import AdminUserMember from '@/components/admin/User/AdminUserMember';
 
 export default function AdminUser() {
   const propsData = {
@@ -16,12 +14,17 @@ export default function AdminUser() {
       '3. 권한 변경 완료',
     ],
   };
+  const propsData2 = {
+    title: '사용자 관리',
+    explain: '게스트에게 구성원 권한을 부여하거나 구성원을 게스트 권한으로 변경하는 페이지입니다.',
+    rule: [],
+  };
 
   const [isSelected, setIsSelected] = useState(true);
 
   return (
     <div className="flex flex-col p-21 gap-14">
-      <AdminTitleSection props={propsData}>
+      <AdminTitleSection props={isSelected ? propsData : propsData2}>
         <div className="flex gap-3">
           <div
             onClick={() => setIsSelected(true)}
@@ -37,9 +40,7 @@ export default function AdminUser() {
           </div>
         </div>
       </AdminTitleSection>
-      <div className="flex border-t">
-        <AdminUserMember />
-      </div>
+      <div className="flex border-t">{isSelected ? <AdminUserMember /> : <AdminMember />}</div>
     </div>
   );
 }

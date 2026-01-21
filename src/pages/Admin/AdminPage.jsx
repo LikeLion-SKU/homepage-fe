@@ -26,7 +26,7 @@ export default function AdminPage() {
   `;
 
   return (
-    <div className="w-360 h-191 relative bg-white overflow-hidden">
+    <div className="h-191 relative bg-white overflow-hidden border-b-8 border-[#D9D9D9]">
       <div className="relative w-142 h-44 left-46.25 top-55.5 inline-flex justify-start items-center gap-9">
         <div className="w-44 h-44 relative">
           <div className="relative w-44 h-44 bg-zinc-300 border border-black">
