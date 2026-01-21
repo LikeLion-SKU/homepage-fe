@@ -1,6 +1,6 @@
-//@ts-ignore
 import { useState } from 'react';
 
+//@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 import Table from '@/components/admin/Table';
 
