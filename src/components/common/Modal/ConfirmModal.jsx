@@ -8,10 +8,7 @@ const Modal = ({ isOpen, cancel, confirm, children }) => {
   return ReactDom.createPortal(
     <div className="fixed inset-0 z-1000 flex items-center justify-center">
       {/* 블러 배경 */}
-      <div
-        className="fixed inset-0 bg-white/10 backdrop-blur-[1.50px] opacity-70"
-        onClick={cancel}
-      ></div>
+      <div className="fixed inset-0 bg-modal-white/11 backdrop-blur-[2.7px]" onClick={cancel}></div>
 
       {/* 모달 박스 */}
       <div className="relative z-10 w-117 min-h-48 bg-white shadow-[0px_0px_9px_0px_rgba(0,0,0,0.25)] flex flex-col justify-center items-center px-10 py-8">
