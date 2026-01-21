@@ -21,7 +21,7 @@ export default function ProjectViewDetail() {
     setIsToast(true);
     setTimeout(() => {
       setIsToast(false);
-    }, 2000);
+    }, 1500);
   };
 
   return (
@@ -48,14 +48,14 @@ export default function ProjectViewDetail() {
       </div>
 
       <div
-        className={`fixed z-10 inset-0 flex items-center justify-center transition-all duration-700 ease-in-out
+        className={`fixed z-10 inset-0 flex items-center justify-center transition-all duration-500 ease-in-out
         ${
           isToast
-            ? 'opacity-100 backdrop-blur-md bg-white/30 pointer-events-auto' /*토스트 온이면 배경 화이트에 투명도 적용, 블러처리,마우스 이멘트 를 토스트가 받음*/
-            : 'opacity-0 backdrop-blur-none bg-white/0 pointer-events-none' /*부드럽게 가기위해 초기값을 다 0으로 설정,안보일 때는 마우스 이벤트 안 먹음 */
+            ? 'opacity-100  pointer-events-auto' /*토스트 온이면 배경 화이트에 투명도 적용, 블러처리,마우스 이멘트 를 토스트가 받음*/
+            : 'opacity-0  pointer-events-none' /*부드럽게 가기위해 초기값을 다 0으로 설정,안보일 때는 마우스 이벤트 안 먹음 */
         }`}
       >
-        <div className="flex w-117 h-27 bg-white justify-center items-center text-[1.1rem] font-bold rounded-2xl">
+        <div className="flex w-97 h-13 bg-white justify-center items-center text-[1.1rem] font-bold border shadow-lg">
           마지막 프로젝트입니다.
         </div>
       </div>

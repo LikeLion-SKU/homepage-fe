@@ -25,9 +25,9 @@ import novemberIcon from '@/assets/icons/main/schedule/november.svg';
 import octoberIcon from '@/assets/icons/main/schedule/october.svg';
 import sebtemberIcon from '@/assets/icons/main/schedule/sebtember.svg';
 import umbrellaIcon from '@/assets/icons/main/schedule/umbrella.svg';
-import ScheduleModal from '@/components/common/Modal/ScheduleModal/ScheduleModal';
 import useScale from '@/components/main/hooks/useScale';
 import MainSectionLayout from '@/components/main/layout';
+import ScheduleModal from '@/components/main/schedule/modal/ScheduleModal';
 import { scheduleMonthData } from '@/components/main/schedule/scheduleModalData';
 
 function Schedule() {

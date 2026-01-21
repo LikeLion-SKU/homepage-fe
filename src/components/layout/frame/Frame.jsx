@@ -7,6 +7,8 @@ function Frame({
   borderWidth = 2,
   letterSpacing = -0.88,
   color = 'black',
+  paddingX = null, // 가로 padding 커스텀 (null이면 기본값 사용)
+  paddingY = null, // 세로 padding 커스텀 (null이면 기본값 사용)
 }) {
   const [scale, setScale] = useState(1);
 
@@ -38,11 +40,15 @@ function Frame({
   // borderWidth를 rem으로 변환
   const borderWidthRem = pxToRem(borderWidth, false); // scale 적용 안 함
 
+  // padding 계산
+  const paddingTopBottom = paddingY !== null ? paddingY : pxToRem(12);
+  const paddingLeftRight = paddingX !== null ? paddingX : pxToRem(20);
+
   return (
     <div
       className={`relative inline-block border ${className}`}
       style={{
-        padding: `${pxToRem(12)}rem ${pxToRem(20)}rem`,
+        padding: `${paddingTopBottom}rem ${paddingLeftRight}rem`,
         borderWidth: `${borderWidthRem}rem`,
         borderColor: color,
         letterSpacing: `${letterSpacing}px`,
