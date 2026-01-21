@@ -1,7 +1,9 @@
+import img from '@/assets/images/danchu_image.png';
+
 export const projectData = [
   {
     isPrize: 1,
-    imgUrl: '@/assets/icons/Logo_icon.png',
+    imgUrl: img,
     projectName: '단추',
     ordinalNumber: 13,
     contestName: '중앙톤',
@@ -9,7 +11,7 @@ export const projectData = [
   },
   {
     isPrize: 1,
-    imgUrl: '@/assets/icons/Logo_icon.png',
+    imgUrl: img,
     projectName: '단추',
     ordinalNumber: 13,
     contestName: '중앙톤',
@@ -17,7 +19,7 @@ export const projectData = [
   },
   {
     isPrize: 1,
-    imgUrl: '@/assets/icons/Logo_icon.png',
+    imgUrl: img,
     projectName: '단추',
     ordinalNumber: 13,
     contestName: '중앙톤',
@@ -25,7 +27,7 @@ export const projectData = [
   },
   {
     isPrize: 1,
-    imgUrl: '@/assets/icons/Logo_icon.png',
+    imgUrl: img,
     projectName: '단추',
     ordinalNumber: 13,
     contestName: '중앙톤',
@@ -33,7 +35,7 @@ export const projectData = [
   },
   {
     isPrize: 1,
-    imgUrl: '@/assets/icons/Logo_icon.png',
+    imgUrl: img,
     projectName: '단추',
     ordinalNumber: 13,
     contestName: '중앙톤',

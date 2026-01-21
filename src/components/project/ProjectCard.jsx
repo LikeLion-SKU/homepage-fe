@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 
 //@ts-ignore
-import Right from '@/assets/icons/right_icon.svg?react';
+import Right from '@/assets/icons/right_navy_icon.svg?react';
 import ProjectCategory from '@/components/project/ProjectCategory';
 
 export default function ProjectCard({ props, isAdmin }) {
@@ -11,7 +11,7 @@ export default function ProjectCard({ props, isAdmin }) {
       onClick={() => {
         !isAdmin && navigate('/project/viewDetail');
       }}
-      className="group relative w-101 h-86 border overflow-hidden cursor-pointer"
+      className="group relative w-101 h-86 border overflow-hidden bg-[#F9F9F9] "
     >
       <div className="flex flex-col w-101 h-86">
         <img src={props.imgUrl} className="h-55 w-101 bg-[#D9D9D9]" />
@@ -54,11 +54,11 @@ export default function ProjectCard({ props, isAdmin }) {
             </div>
           </>
         ) : (
-          <div className="flex w-41 h-12 bg-[#F8F8F8]">
-            <div className="flex justify-center items-center bg-[#D9D9D9] w-12 h-12 border-r-[0.5px] border-[#8C8C8C]">
+          <div className="flex w-41 h-12 bg-[#F8F8F8] border">
+            <div className="flex justify-center items-center bg-[#C6E400] w-12 border-r ">
               <Right />
             </div>
-            <div className="flex w-29 h-12 text-[1.1rem] justify-center items-center">
+            <div className="flex w-29 h-12 text-[1.1rem] justify-center items-center font-semibold">
               자세히 보기
             </div>
           </div>
