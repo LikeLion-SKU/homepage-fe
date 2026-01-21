@@ -2,10 +2,12 @@ import { useState } from 'react';
 
 import Toggle from '@/assets/icons/under_toggle.svg';
 import Button from '@/components/common/Button/Button';
+import Modal from '@/components/common/Modal/ConfirmModal';
 
 export default function Recruitment() {
   // 열려있는 토글들의 인덱스 배열로 저장
   const [openToggle, setOpenToggle] = useState([]);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
 
   const handleToggle = (index) => {
     if (openToggle.includes(index)) {
@@ -165,12 +167,26 @@ export default function Recruitment() {
               </div>
             </div>
             <div className="w-80 border-t border-black"></div>
-            <Button onClick={() => {}} data-variant="" data-size="" className={buttonStyle}>
+            <Button
+              onClick={() => {
+                setIsApplyModalOpen(true);
+              }}
+              data-variant=""
+              data-size=""
+              className={buttonStyle}
+            >
               지원하기
             </Button>
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={isApplyModalOpen}
+        cancel={() => setIsApplyModalOpen(false)}
+        confirm={() => setIsApplyModalOpen(false) /* TODO: 추후 이동할 페이지 추가 필요 */}
+      >
+        지원하러 가시겠습니까?
+      </Modal>
     </div>
   );
 }
