@@ -11,7 +11,7 @@ export default function ProjectCard({ props, isAdmin }) {
       onClick={() => {
         !isAdmin && navigate('/project/viewDetail');
       }}
-      className="group relative w-101 h-86 border overflow-hidden cursor-pointer"
+      className="group relative w-101 h-86 border overflow-hidden bg-[#F9F9F9] "
     >
       <div className="flex flex-col w-101 h-86">
         <img src={props.imgUrl} className="h-55 w-101 bg-[#D9D9D9]" />
