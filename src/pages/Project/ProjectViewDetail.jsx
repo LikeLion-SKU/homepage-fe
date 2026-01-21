@@ -47,7 +47,7 @@ export default function ProjectViewDetail() {
           다음 프로젝트 보기
         </p>
       </div>
-      <Toast isToast={isToast} />
+      <Toast isToast={isToast} message="마지막 프로젝트 입니다." />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-export default function Toast({ isToast }) {
+export default function Toast({ isToast, message }) {
   return (
     <div
       className={`fixed z-10 inset-0 flex items-center justify-center transition-all duration-500 ease-in-out
@@ -9,7 +9,7 @@ export default function Toast({ isToast }) {
         }`}
     >
       <div className="flex w-97 h-13 bg-white justify-center items-center text-[1.1rem] font-bold border shadow-lg">
-        마지막 프로젝트입니다.
+        {message}
       </div>
     </div>
   );
