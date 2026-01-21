@@ -14,6 +14,12 @@ function Intro() {
   const [squareSizeRem, setSquareSizeRem] = useState(0);
   const [shouldStartSecondTyping, setShouldStartSecondTyping] = useState(false);
   const [shouldStartImaginationTyping, setShouldStartImaginationTyping] = useState(false);
+  const [showExclamation, setShowExclamation] = useState(false);
+
+  // "!" 위치 미세조정(오른쪽/아래) - 값만 바꾸면 됨
+  const exclamationOffsetX = (8 / 16) * scale; // 오른쪽으로 이동 (px)
+  const exclamationOffsetY = (6 / 16) * scale; // 아래로 이동 (px)
+  const exclamationCaretOffsetX = (20 / 16) * scale; // 느낌표 뒤 커서(작대기) 추가로 오른쪽 이동 (px)
 
   // squareSize를 rem으로 변환하는 헬퍼 함수
   const pxToRem = (px) => {
@@ -26,13 +32,14 @@ function Intro() {
 
   return (
     <section
-      className="relative w-full overflow-hidden"
+      className="relative w-full"
       style={{
         cursor: 'none',
         height: squareSizeRem > 0 ? `${squareSizeRem * rows}rem` : 'auto',
         minHeight: `${gridHeightRem}rem`,
         marginBottom: 0,
         paddingBottom: 0,
+        overflow: 'visible',
       }}
     >
       <Square onScaleChange={setScale} onSquareSizeRemChange={setSquareSizeRem} />
@@ -60,18 +67,25 @@ function Intro() {
               text="당신의 "
               speed={150}
               fontSize={`${(120 / 16) * scale}rem`}
+              fontFamily="HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
               onComplete={() => setShouldStartImaginationTyping(true)}
               showCursor={false}
             />
             {/* "상상" 텍스트 - 프레임 있음 */}
             <span
-              className="inline-block"
+              className="text-[#1928B0] inline-block"
               style={{
                 // 프레임(박스) 자체도 오른쪽으로 이동
                 marginLeft: `${(20 / 16) * scale}rem`,
               }}
             >
-              <BigFrameBox cornerScale={1.4} borderWidth={3} className="inline-block">
+              <BigFrameBox
+                cornerScale={1.4}
+                borderWidth={1.5}
+                className="inline-block"
+                color="#1928B0"
+                paddingX={(40 / 16) * scale} // 가로 padding 증가 (기본 20px -> 40px)
+              >
                 <div
                   style={{
                     // 프레임 내부에서 텍스트만 오른쪽으로 이동
@@ -82,6 +96,7 @@ function Intro() {
                     text="상상,"
                     speed={150}
                     fontSize={`${(120 / 16) * scale}rem`}
+                    fontFamily="HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
                     shouldStart={shouldStartImaginationTyping}
                     onComplete={() => setShouldStartSecondTyping(true)}
                     showCursor={false}
@@ -99,23 +114,58 @@ function Intro() {
           style={{
             left: `calc(50% - ${(squareSizeRem * columns) / 2}rem + ${10.3 * squareSizeRem}rem)`,
             top: `${8 * squareSizeRem}rem`,
+            overflow: 'visible',
+            width: 'max-content',
+            minWidth: 'max-content',
+            right: 'auto',
           }}
         >
           <h2
-            className="text-[#1a1a1a] m-0 whitespace-nowrap"
+            className="text-[#1a1a1a] m-0 inline-flex items-center"
             style={{
               fontFamily:
                 'HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
               fontWeight: '800',
+              whiteSpace: 'nowrap',
+              overflow: 'visible',
+              width: 'max-content',
+              minWidth: 'max-content',
             }}
           >
             <TypingAnimation
-              text="세상 밖으로!"
+              text="세상 밖으로"
               speed={150}
               fontSize={`${(120 / 16) * scale}rem`}
+              fontFamily="HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
               shouldStart={shouldStartSecondTyping}
-              showCursor={true}
+              showCursor={false}
+              onComplete={() => {
+                setTimeout(() => setShowExclamation(true), 150);
+              }}
             />
+            {showExclamation && (
+              <span
+                style={{
+                  fontSize: `${(130 / 16) * scale}rem`,
+                  fontFamily: 'Aclonica, sans-serif',
+                  display: 'inline-block',
+                  lineHeight: '1',
+                  transform: `translate(${exclamationOffsetX}rem, ${exclamationOffsetY}rem)`,
+                }}
+              >
+                !
+              </span>
+            )}
+            {showExclamation && (
+              <span
+                className="inline-block w-0.5 bg-[#1a1a1a] ml-0.5 animate-blink"
+                style={{
+                  height: `${(120 / 16) * scale * 1.2}rem`,
+                  verticalAlign: 'middle',
+                  transform: `translateX(${exclamationCaretOffsetX}rem)`,
+                }}
+              />
+            )}
           </h2>
         </div>
       )}
