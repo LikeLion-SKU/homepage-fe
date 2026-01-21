@@ -18,7 +18,7 @@ export default function ProjectOption() {
   return (
     <div className="flex h-20 items-center gap-15">
       <OptionBox initValue="기수별" optionData={ordirnalNum} />
-      <div className="flex w-180 h-20 text-[1rem] gap-5 items-center overflow-x-auto no-scrollbar">
+      <div className="flex w-160 h-10 text-[1rem] gap-5 items-center overflow-x-auto no-scrollbar border-r">
         {contestName.map((name) => (
           <div
             key={name}

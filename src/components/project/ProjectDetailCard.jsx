@@ -4,9 +4,9 @@ import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 //@ts-ignore
-import Left from '@/assets/icons/left_image_icon.svg?react';
+import Left from '@/assets/icons/left_yellowgreen_icon.svg?react';
 //@ts-ignore
-import Right from '@/assets/icons/right_image_icon.svg?react';
+import Right from '@/assets/icons/right_yellowgreen_icon.svg?react';
 import ProjectCategory from '@/components/project/ProjectCategory';
 import ProjectMember from '@/components/project/ProjectMember';
 
@@ -34,13 +34,13 @@ export default function ProjectDetailCard({ data }) {
   const handleLeft = `${(imgNum / imgCount) * 100}%`;
 
   return (
-    <div className="flex flex-col w-285 h-256 bg-[#F2F2F2] py-10 px-8 gap-10">
+    <div className="relative z-2 flex flex-col w-285 h-256 bg-[#F9F9F9] py-10 px-8 gap-10 rounded-3xl shadow-[0_0_9px_0_rgba(0,0,0,0.25)]">
       <img src={imgUrl} alt={`Project image ${imgNum}`} className="w-269 h-151 bg-[#D9D9D9]" />
       <div className="flex flex-col gap-3">
         <div className="flex justify-between">
           <p className="text-[2rem] font-bold">{data.projectName}</p>
           <div className="flex gap-12 items-center">
-            <div className="flex pl-2 w-93 h-5 bg-[#CACACA] items-center overflow-hidden">
+            <div className="flex pl-2 w-93 h-5 bg-[#00156A] items-center overflow-hidden">
               <div
                 ref={barRef}
                 className="relative w-full h-full flex items-center overflow-hidden"
@@ -64,13 +64,13 @@ export default function ProjectDetailCard({ data }) {
             <div className="flex gap-5">
               <button
                 onClick={() => changeImg(-1)}
-                className="flex justify-center items-center bg-[#D9D9D9] w-12 h-12"
+                className="flex justify-center items-center bg-[#00156A] w-12 h-12"
               >
                 <Left />
               </button>
               <button
                 onClick={() => changeImg(+1)}
-                className="flex justify-center items-center bg-[#D9D9D9] w-12 h-12"
+                className="flex justify-center items-center bg-[#00156A] w-12 h-12"
               >
                 <Right />
               </button>
@@ -83,7 +83,7 @@ export default function ProjectDetailCard({ data }) {
           contestName={data.contestName}
         />
         <div className="flex justify-between items-center">
-          <a className="text-[1.1rem] w-164 ">{data.explanation}</a>
+          <p className="flex text-[1.1rem] w-164 h-50  text-[#3C3C3C] p-0 ">{data.explanation}</p>
           <ProjectMember />
         </div>
       </div>

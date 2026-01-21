@@ -25,17 +25,30 @@ export default function ProjectViewDetail() {
   };
 
   return (
-    <div className="flex justify-center py-15 gap-7.5">
-      <div className="mt-85">
-        <Left />
+    <div className="flex justify-center py-15 ">
+      <div className="flex flex-col ">
+        <div className="flex items-center justify-center rounded-l-2xl mt-85 w-20 h-32 bg-[#F9F9F9] ml-auto">
+          <Left />
+        </div>
+        <p className="text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter mr-5">
+          이전 프로젝트 보기
+        </p>
       </div>
       <ProjectDetailCard data={data} />
-      <div className="mt-85">
-        <Right onClick={() => onToastMessage()} />
+      <div className="flex flex-col ">
+        <button
+          onClick={() => onToastMessage()}
+          className="flex items-center justify-center rounded-r-2xl mt-85 w-20 h-32 bg-[#F9F9F9] mr-auto relative z-1"
+        >
+          <Right />
+        </button>
+        <p className="text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter ml-5">
+          다음 프로젝트 보기
+        </p>
       </div>
 
       <div
-        className={`fixed inset-0 flex items-center justify-center transition-all duration-700 ease-in-out
+        className={`fixed z-10 inset-0 flex items-center justify-center transition-all duration-700 ease-in-out
         ${
           isToast
             ? 'opacity-100 backdrop-blur-md bg-white/30 pointer-events-auto' /*토스트 온이면 배경 화이트에 투명도 적용, 블러처리,마우스 이멘트 를 토스트가 받음*/
