@@ -1,7 +1,7 @@
 // @ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 
-export default function TitleSection({ title, pageExplanation, children }) {
+export default function TitleSection({ title, pageExplanation, onSearch = true, children }) {
   //children으로 dom구조 받아서 넣으므로 내용으로 옵션박스 넣기
   return (
     <div className="flex flex-col gap-5.5 px-7 border-b">
@@ -15,13 +15,15 @@ export default function TitleSection({ title, pageExplanation, children }) {
       <p className="text-[1.1rem]">{pageExplanation}</p>
       <div className="flex justify-between h-30 items-center">
         <div>{children}</div>
-        <div className="w-83 h-10 border flex justify-between items-center px-7 bg-[#F9F9F9] gap-7 ">
-          <Search />
-          <input
-            placeholder="검색하기"
-            className="w-61 cursor-pointer focus:outline-none placeholder:text-[1rem] placeholder:font-bold placeholder:text-black"
-          />
-        </div>
+        {onSearch && (
+          <div className="w-83 h-10 border flex justify-between items-center px-7 bg-[#F9F9F9] gap-7 ">
+            <Search />
+            <input
+              placeholder="검색하기"
+              className="w-61 cursor-pointer focus:outline-none placeholder:text-[1rem] placeholder:font-bold placeholder:text-black"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
