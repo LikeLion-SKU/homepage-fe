@@ -10,6 +10,7 @@ import ExplainBackground from '@/components/main/explain/background/ExplainBackg
 import useScale from '@/components/main/hooks/useScale';
 
 import ExplainText from './text/ExplainText';
+import Number from './text/Number';
 
 function Explain() {
   const scale = useScale();
@@ -19,7 +20,7 @@ function Explain() {
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.1, margin: '-100px' }}
         transition={{
           duration: 1.5,
           ease: 'easeOut',
@@ -60,7 +61,7 @@ function Explain() {
           }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1, margin: '-100px' }}
           transition={{
             duration: 1.5,
             ease: 'easeOut',
@@ -88,7 +89,7 @@ function Explain() {
           }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1, margin: '-100px' }}
           transition={{
             duration: 1.5,
             ease: 'easeOut',
@@ -115,7 +116,7 @@ function Explain() {
           }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1, margin: '-100px' }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
         >
           {/* Label BLAH 1 */}
@@ -150,6 +151,11 @@ function Explain() {
             />
           </div>
         </motion.div>
+
+        {/* 숫자 */}
+
+        <Number value={50} initialX={495} initialY={40} />
+        <Number value={54} initialX={140} initialY={-100} />
       </motion.div>
     </ExplainBackground>
   );
