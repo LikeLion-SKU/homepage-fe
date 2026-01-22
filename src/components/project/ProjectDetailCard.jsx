@@ -84,7 +84,7 @@ export default function ProjectDetailCard({ data }) {
         />
         <div className="flex justify-between items-center">
           <p className="flex text-[1.1rem] w-164 h-50  text-[#3C3C3C] p-0 ">{data.explanation}</p>
-          <ProjectMember />
+          <ProjectMember memberData={data.member} />
         </div>
       </div>
     </div>
