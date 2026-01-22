@@ -1,3 +1,6 @@
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
+
 import labelBlah1Icon from '@/assets/icons/main/label-blah1.svg';
 import labelBlah2Icon from '@/assets/icons/main/label-blah2.svg';
 import leftBlahIcon from '@/assets/icons/main/left-blah.svg';
@@ -13,111 +16,141 @@ function Explain() {
 
   return (
     <ExplainBackground>
-      <SmallFrameBox
-        className="mb-12"
-        cornerScale={0.9}
-        borderWidth={2}
-        letterSpacing={-0.88}
-        color="var(--color-navy-blue)"
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{
+          duration: 1.5,
+          ease: 'easeOut',
+        }}
       >
-        <div className="flex flex-col items-start justify-center w-full">
-          <h2
-            className="font-bold text-[var(--color-navy-blue)] m-0"
+        <SmallFrameBox
+          className="mb-12"
+          cornerScale={0.9}
+          borderWidth={2}
+          letterSpacing={-0.88}
+          color="var(--color-navy-blue)"
+        >
+          <div className="flex flex-col items-start justify-center w-full">
+            <h2
+              className="font-bold text-[var(--color-navy-blue)] m-0"
+              style={{
+                fontSize: `${(36 / 16) * scale}rem`,
+                fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                fontWeight: '700',
+                textRendering: 'optimizeLegibility',
+                WebkitFontSmoothing: 'antialiased',
+                MozOsxFontSmoothing: 'grayscale',
+              }}
+            >
+              서경대학교 멋쟁이사자처럼
+            </h2>
+          </div>
+        </SmallFrameBox>
+
+        {/* 본문 텍스트 */}
+        <ExplainText />
+
+        {/* BLAH 이미지 좌측 */}
+        <motion.div
+          className="flex justify-end mb-8"
+          style={{
+            marginTop: `${(160 / 16) * scale}rem`,
+          }}
+          initial={{ y: 20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{
+            duration: 1.5,
+            ease: 'easeOut',
+          }}
+        >
+          <img
+            src={leftBlahIcon}
+            alt="BLAH"
+            className="object-contain"
             style={{
-              fontSize: `${(36 / 16) * scale}rem`,
-              fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-              fontWeight: '700',
-              textRendering: 'optimizeLegibility',
-              WebkitFontSmoothing: 'antialiased',
-              MozOsxFontSmoothing: 'grayscale',
+              width: `${(180 / 16) * scale}rem`,
+              height: `${(61 / 16) * scale}rem`,
+              marginRight: `${(15 / 16) * scale}rem`,
+              imageRendering: 'crisp-edges',
+              transform: 'translateY(150%)',
             }}
-          >
-            서경대학교 멋쟁이사자처럼
-          </h2>
-        </div>
-      </SmallFrameBox>
+          />
+        </motion.div>
 
-      {/* 본문 텍스트 */}
-      <ExplainText />
-
-      {/* BLAH 이미지 좌측 */}
-      <div
-        className="flex justify-end mb-8"
-        style={{
-          marginTop: `${(160 / 16) * scale}rem`,
-        }}
-      >
-        <img
-          src={leftBlahIcon}
-          alt="BLAH"
-          className="object-contain"
+        {/* BLAH 이미지 우측 */}
+        <motion.div
+          className="flex justify-start mb-8"
           style={{
-            width: `${(180 / 16) * scale}rem`,
-            height: `${(61 / 16) * scale}rem`,
-            marginRight: `${(60 / 16) * scale}rem`,
-            imageRendering: 'crisp-edges',
-            transform: 'translateZ(0)',
+            marginTop: `${(80 / 16) * scale}rem`,
           }}
-        />
-      </div>
+          initial={{ y: 20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{
+            duration: 1.5,
+            ease: 'easeOut',
+          }}
+        >
+          <img
+            src={rightBlahIcon}
+            alt="BLAH"
+            className="object-contain"
+            style={{
+              width: `${(177 / 16) * scale}rem`,
+              height: `${(55 / 16) * scale}rem`,
+              marginLeft: `${(332 / 16) * scale}rem`,
+              imageRendering: 'crisp-edges',
+              transform: 'translateY(140%)',
+            }}
+          />
+        </motion.div>
 
-      {/* BLAH 이미지 우측 */}
-      <div
-        className="flex justify-start mb-8"
-        style={{
-          marginTop: `${(80 / 16) * scale}rem`,
-        }}
-      >
-        <img
-          src={rightBlahIcon}
-          alt="BLAH"
-          className="object-contain"
+        {/* Label BLAH 1 + 2 (같이 이동) */}
+        <motion.div
           style={{
-            width: `${(177 / 16) * scale}rem`,
-            height: `${(55 / 16) * scale}rem`,
-            marginLeft: `${(300 / 16) * scale}rem`,
-            imageRendering: 'crisp-edges',
-            transform: 'translateZ(0)',
+            marginTop: `${(330 / 16) * scale}rem`, // ← 여기 값만 조절
           }}
-        />
-      </div>
+          initial={{ y: 20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+        >
+          {/* Label BLAH 1 */}
+          <div className="flex justify-start mb-3">
+            <img
+              src={labelBlah1Icon}
+              alt="Label BLAH 1"
+              className="object-contain"
+              style={{
+                width: `${(1220 / 16) * scale}rem`,
+                height: `${(140 / 16) * scale}rem`,
+                marginLeft: `${(180 / 16) * scale}rem`,
+                imageRendering: 'crisp-edges',
+                transform: 'translateY(-40%)',
+              }}
+            />
+          </div>
 
-      {/* Label BLAH 1 */}
-      <div
-        className="flex justify-start mb-3 animate-fade-in-left"
-        style={{
-          marginTop: `${(160 / 16) * scale}rem`,
-        }}
-      >
-        <img
-          src={labelBlah1Icon}
-          alt="Label BLAH 1"
-          className="object-contain"
-          style={{
-            width: `${(1220 / 16) * scale}rem`,
-            height: `${(140 / 16) * scale}rem`,
-            marginLeft: `${(180 / 16) * scale}rem`,
-            imageRendering: 'crisp-edges',
-            transform: 'translateZ(0)',
-          }}
-        />
-      </div>
-
-      {/* Label BLAH 2 */}
-      <div className="flex justify-end mb-[-15px] animate-fade-in-right">
-        <img
-          src={labelBlah2Icon}
-          alt="Label BLAH 2"
-          className="object-contain"
-          style={{
-            width: `${(1220 / 16) * scale}rem`,
-            height: `${(140 / 16) * scale}rem`,
-            marginRight: `${(180 / 16) * scale}rem`,
-            imageRendering: 'crisp-edges',
-            transform: 'translateZ(0)',
-          }}
-        />
-      </div>
+          {/* Label BLAH 2 */}
+          <div className="flex justify-end mb-[-15px]">
+            <img
+              src={labelBlah2Icon}
+              alt="Label BLAH 2"
+              className="object-contain"
+              style={{
+                width: `${(1220 / 16) * scale}rem`,
+                height: `${(140 / 16) * scale}rem`,
+                marginRight: `${(180 / 16) * scale}rem`,
+                imageRendering: 'crisp-edges',
+                transform: 'translateY(-30%)',
+              }}
+            />
+          </div>
+        </motion.div>
+      </motion.div>
     </ExplainBackground>
   );
 }
