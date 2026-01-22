@@ -11,12 +11,11 @@ export default function ApplyComplete() {
   const buttonName = '내 지원서 보러가기';
   const navigate = useNavigate();
   return (
-    <div>
-      <GridSection></GridSection>
+    <GridSection>
       <div className="flex flex-col min-h-screen justify-center items-center gap-16">
         <StatusMessage title={title} content={content}></StatusMessage>
         <RedirectButton buttonName={buttonName} onClick={navigate('/application')}></RedirectButton>
       </div>
-    </div>
+    </GridSection>
   );
 }
