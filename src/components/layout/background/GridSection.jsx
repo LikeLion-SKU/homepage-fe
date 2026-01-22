@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 
 // Grid configuration: 24 columns x 18 rows
 const columns = 24;
-const rows = 18;
 const baseSquareSize = 60; // 기본 크기 (1440px 기준)
 const baseGridWidth = columns * baseSquareSize; // 1440px
 
-function GridSection({ children }) {
+function GridSection({ children, rows = 18 }) {
   const [squareSize, setSquareSize] = useState(baseSquareSize);
 
   // 화면 크기에 따라 squareSize 계산
