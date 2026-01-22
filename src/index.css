@@ -1,4 +1,12 @@
 @import 'tailwindcss';
+
+/* 좌측 스크롤 제거 */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 /* 색상 추가 */
 @theme {
   --color-button-green: #c6e400;

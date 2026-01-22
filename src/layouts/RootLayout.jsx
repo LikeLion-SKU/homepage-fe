@@ -15,7 +15,7 @@ export default function RootLayout() {
   //const hideNav = !hasToken && pathname === '/'; //하단바 판단 변수
 
   return (
-    <main className="flex flex-col w-full min-h-screen">
+    <main className="flex flex-col w-full min-h-screen overflow-x-hidden">
       <CustomCursor />
       <Header />
       <Outlet /* context={{ onModalChange: setIsModalOpen }} */ />
