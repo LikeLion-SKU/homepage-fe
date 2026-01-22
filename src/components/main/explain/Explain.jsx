@@ -122,7 +122,7 @@ function Explain() {
         >
           {/* Label BLAH 1 */}
           <div className="flex justify-start mb-3" style={{ transform: 'translateY(-40%)' }}>
-            <LabelAnimation direction="right" maxOffset={300}>
+            <LabelAnimation direction="right" maxOffset={150} startX={150}>
               <img
                 src={labelBlah1Icon}
                 alt="Label BLAH 1"
@@ -132,7 +132,7 @@ function Explain() {
                   height: `${(140 / 16) * scale}rem`,
                   minWidth: `${(1220 / 16) * scale}rem`,
                   minHeight: `${(140 / 16) * scale}rem`,
-                  marginLeft: `${(400 / 16) * scale}rem`,
+                  marginLeft: `${(100 / 16) * scale}rem`,
                   imageRendering: 'crisp-edges',
                   display: 'block',
                 }}
@@ -142,7 +142,7 @@ function Explain() {
 
           {/* Label BLAH 2 */}
           <div className="flex justify-end mb-[-15px]" style={{ transform: 'translateY(-30%)' }}>
-            <LabelAnimation direction="left" maxOffset={500}>
+            <LabelAnimation direction="left" maxOffset={150} startX={-150}>
               <img
                 src={labelBlah2Icon}
                 alt="Label BLAH 2"
@@ -152,7 +152,7 @@ function Explain() {
                   height: `${(140 / 16) * scale}rem`,
                   minWidth: `${(1220 / 16) * scale}rem`,
                   minHeight: `${(140 / 16) * scale}rem`,
-                  marginRight: `${(500 / 16) * scale}rem`,
+                  marginRight: `${(100 / 16) * scale}rem`,
                   imageRendering: 'crisp-edges',
                   display: 'block',
                 }}
