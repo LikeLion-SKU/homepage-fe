@@ -14,6 +14,7 @@ import AdminProjectEdit from '@/pages/Admin/AdminProjectEdit';
 import AdminUser from '@/pages/Admin/AdminUser';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
 import Main from '@/pages/Main/Main';
+import Member from '@/pages/Member/Member';
 import MyPage from '@/pages/MyPage/MyPage';
 import ProjectList from '@/pages/Project/ProjectList';
 import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
           { path: '/project', Component: ProjectList },
           { path: '/project/viewDetail', Component: ProjectViewDetail },
           { path: '/recruit', Component: Recruitment },
+          { path: '/member', Component: Member },
         ],
       },
       {
