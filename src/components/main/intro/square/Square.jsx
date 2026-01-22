@@ -376,7 +376,7 @@ export default function Square({ onScaleChange, onSquareSizeRemChange }) {
 
   return (
     <>
-      <GridSection />
+      <GridSection>{null}</GridSection>
 
       {/* 커서 영향 오버레이 */}
       <div
