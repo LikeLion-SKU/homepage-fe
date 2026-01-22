@@ -49,7 +49,7 @@ export default function Header() {
           </button>
         </div>
         <button
-          onClick={() => clickMenu('/auth')}
+          onClick={() => clickMenu('/login')}
           className="w-62 text-[1.1rem] font-semibold items-center justify-center cursor-pointer"
         >
           로그인/회원가입
