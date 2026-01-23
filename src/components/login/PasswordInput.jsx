@@ -17,19 +17,28 @@ export default function PasswordInput({
     setShowPassword((prev) => !prev);
   };
 
+  // maxWidth가 숫자면 픽셀 값으로 변환, 문자열이면 Tailwind 클래스로 사용
+  const maxWidthClass = typeof maxWidth === 'number' ? '' : maxWidth;
+  const maxWidthStyle = typeof maxWidth === 'number' ? { maxWidth: `${maxWidth}px` } : {};
+
   return (
     <div className={`flex flex-col gap-2 ${mb}`}>
       {!hideLabel && (
         <label className="text-black text-base font-medium font-['Pretendard']">비밀번호</label>
       )}
-      <div className={`flex items-center ${rightButton ? 'justify-between' : ''} gap-4`}>
-        <div className={`relative ${rightButton ? '' : 'w-full'} ${maxWidth}`}>
+      <div
+        className={`flex flex-col sm:flex-row items-stretch sm:items-center ${rightButton ? 'sm:justify-between' : ''} gap-3 sm:gap-4`}
+      >
+        <div
+          className={`relative ${rightButton ? 'w-full sm:w-auto' : 'w-full'} ${maxWidthClass}`}
+          style={maxWidthStyle}
+        >
           <input
             type={showPassword ? 'text' : 'password'}
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className="w-full h-14 px-4 py-3 pr-14 bg-[#FFFFFF] border border-[1px] border-[#B0B0B0] text-black text-base font-['Pretendard'] focus:outline-none"
+            className="w-full h-14 px-4 py-3 pr-35 bg-[#FFFFFF] border border-[1px] border-[#B0B0B0] text-black text-base font-['Pretendard'] focus:outline-none"
           />
           <button
             type="button"
@@ -70,7 +79,7 @@ export default function PasswordInput({
             )}
           </button>
         </div>
-        {rightButton}
+        {rightButton && <div className="w-full sm:w-auto">{rightButton}</div>}
       </div>
     </div>
   );
