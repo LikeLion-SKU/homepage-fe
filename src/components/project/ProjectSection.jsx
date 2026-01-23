@@ -10,11 +10,11 @@ export default function ProjectSection({ data }) {
   const isAdmin = pathname.startsWith('/admin');
 
   return (
-    <div className="flex flex-col mt-6">
+    <div className="flex flex-col mt-6 px-7">
       {isAdmin && (
         <div
           onClick={() => navigate('/admin/project/edit')}
-          className="flex w-318 h-15 border justify-center items-center "
+          className="flex h-15 border justify-center items-center "
         >
           <Plus />
         </div>
