@@ -16,6 +16,7 @@ body {
   --color-button-hover: #afd200;
   --color-modal-white: #ffffff;
   --color-button-gray: #f9f9f9;
+  --color-text-gray: #b0b0b0;
 }
 
 /* Pixel 폰트 정의 (피그마의 pixel 폰트) */
@@ -60,7 +61,6 @@ body {
   font-style: normal;
   font-display: swap;
 }
-
 
 /* pixel 폰트*/
 @font-face {
