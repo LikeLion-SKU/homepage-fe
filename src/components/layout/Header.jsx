@@ -33,7 +33,7 @@ export default function Header() {
           )}
           {date > resultDate[0] && date < resultDate[1] && (
             <button
-              onClick={() => clickMenu('/result')}
+              onClick={() => clickMenu('/result/notice')}
               className="text-[1.1rem] font-semibold cursor-pointer"
             >
               결과

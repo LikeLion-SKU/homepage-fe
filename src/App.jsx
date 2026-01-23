@@ -23,6 +23,7 @@ import ProjectList from '@/pages/Project/ProjectList';
 import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
 import Recruitment from '@/pages/Recruitment/Recruitment';
 import Result from '@/pages/Result/Result';
+import ResultNotice from '@/pages/Result/ResultNotice';
 import AdminRoute from '@/router/AdminRoute';
 import ProtectedRoute from '@/router/ProtectedRoute';
 
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
           { path: '/mypage', Component: MyPage },
           { path: '/apply/complete', Component: ApplyComplete },
           { path: '/result', Component: Result },
+          { path: '/result/notice', Component: ResultNotice },
         ],
       },
       {

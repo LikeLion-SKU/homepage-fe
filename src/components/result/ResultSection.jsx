@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import PageTitle from '@/components/common/PageTitle';
 import CheckButton from '@/components/result/CheckButton';
 
-export default function InterviewNotice() {
+export default function ResultSection() {
   const navigate = useNavigate();
   const notPass = `안녕하세요. IT동아리 멋쟁이사자처럼 운영진입니다.
         먼저 저희 동아리에 지원해주셔서 감사합니다.
@@ -14,11 +14,21 @@ export default function InterviewNotice() {
         다시 한번 소중한 시간을 내어 면접에 응해 주셔서
         진심으로 감사드립니다.
         지원자님의 정보는 한 달 이내로 일괄 삭제하겠습니다.`;
+  const date = new Date().getTime();
+  const applyResultDate = [
+    new Date(2026, 0, 22, 0, 0).getTime(),
+    new Date(2026, 1, 25, 0, 0).getTime(),
+  ];
+  const interviewResultDate = [
+    new Date(2026, 1, 22, 0, 0).getTime(),
+    new Date(2026, 2, 25, 0, 0).getTime(),
+  ];
   return (
     <div className="flex flex-col justify-center items-center gap-9 pt-50">
       <PageTitle title="면접 결과 안내" width="290px" color="Navy" />
       <div className="flex w-186 h-90 justify-center items-center bg-[#F9F9F9] whitespace-pre-line text-center text-[1rem] px-27 py-15 drop-shadow-[3px_4px_0px_rgba(212,212,212,1)]">
-        {notPass}
+        {date > applyResultDate[0] && date < applyResultDate[1] && notPass}
+        {date > interviewResultDate[0] && date < interviewResultDate[1]}
       </div>
       <CheckButton buttonName="확인했어요" onClick={() => navigate('/')} />
     </div>
