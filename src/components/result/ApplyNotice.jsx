@@ -1,6 +1,6 @@
-//@ts-ignore
 import { useNavigate } from 'react-router';
 
+//@ts-ignore
 import Heart from '@/assets/icons/green_heart_icon.svg?react';
 import PageTitle from '@/components/common/PageTitle';
 import CheckButton from '@/components/result/CheckButton';
