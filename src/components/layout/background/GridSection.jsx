@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 
 // Grid configuration: 24 columns x 18 rows
 const columns = 24;
-const rows = 18;
 const baseSquareSize = 60; // 기본 크기 (1440px 기준)
 const baseGridWidth = columns * baseSquareSize; // 1440px
 
-function GridSection() {
+function GridSection({ children, rows = 18 }) {
   const [squareSize, setSquareSize] = useState(baseSquareSize);
 
   // 화면 크기에 따라 squareSize 계산
@@ -34,30 +33,33 @@ function GridSection() {
   const squareSizeRem = pxToRem(squareSize);
 
   return (
-    <div
-      className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col z-0 box-border"
-      style={{
-        width: `${gridWidthRem}rem`,
-        height: `${gridHeightRem}rem`,
-        maxWidth: '100vw',
-      }}
-    >
-      {Array.from({ length: rows }).map((_, row) => (
-        <div key={row} className="flex">
-          {Array.from({ length: columns }).map((_, col) => (
-            <div
-              key={`${row}-${col}`}
-              className="box-border pointer-events-auto"
-              style={{
-                width: `${squareSizeRem}rem`,
-                height: `${squareSizeRem}rem`,
-                border: '0.8px solid rgba(0, 0, 0, 0.08)',
-              }}
-            />
-          ))}
-        </div>
-      ))}
-    </div>
+    <main className="relative overflow-hidden" style={{ minHeight: `${gridHeightRem}rem` }}>
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col z-0 box-border pointer-events-none"
+        style={{
+          width: `${gridWidthRem}rem`,
+          height: `${gridHeightRem}rem`,
+          maxWidth: '100vw',
+        }}
+      >
+        {Array.from({ length: rows }).map((_, row) => (
+          <div key={row} className="flex">
+            {Array.from({ length: columns }).map((_, col) => (
+              <div
+                key={`${row}-${col}`}
+                className="box-border"
+                style={{
+                  width: `${squareSizeRem}rem`,
+                  height: `${squareSizeRem}rem`,
+                  border: '0.8px solid rgba(0, 0, 0, 0.08)',
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+      {children && <div className="relative z-10">{children}</div>}
+    </main>
   );
 }
 

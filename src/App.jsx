@@ -14,7 +14,10 @@ import AdminProjectEdit from '@/pages/Admin/AdminProjectEdit';
 import AdminUser from '@/pages/Admin/AdminUser';
 import ApplyBasicInfo from '@/pages/Apply/ApplyBasicInfo';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
+import Login from '@/pages/Login/Login';
+import SignUp from '@/pages/Login/SignUp';
 import Main from '@/pages/Main/Main';
+import Member from '@/pages/Member/Member';
 import MyPage from '@/pages/MyPage/MyPage';
 import ProjectList from '@/pages/Project/ProjectList';
 import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
@@ -44,6 +47,9 @@ const router = createBrowserRouter([
           { path: '/project', Component: ProjectList },
           { path: '/project/viewDetail', Component: ProjectViewDetail },
           { path: '/recruit', Component: Recruitment },
+          { path: '/member', Component: Member },
+          { path: '/login', Component: Login },
+          { path: '/signup', Component: SignUp },
         ],
       },
       {

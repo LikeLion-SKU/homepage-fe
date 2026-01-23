@@ -33,6 +33,7 @@ export function withBottomUpAnimation(Component, styling) {
     return (
       <AnimatePresence mode="wait">
         <motion.div
+          style={{ position: 'relative', width: '100%', height: '100%' }}
           variants={pageVariants}
           initial="initial"
           whileInView="animate"
