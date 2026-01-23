@@ -5,7 +5,7 @@ import ForgotPasswordLink from './ForgotPasswordLink';
 import LoginButton from './LoginButton';
 import LoginTitle from './LoginTitle';
 import PasswordInput from './PasswordInput';
-import SignupLink from './SignupLink';
+import SignUpLink from './SignUpLink';
 
 export default function LoginForm({ onSubmit }) {
   const [email, setEmail] = useState('');
@@ -29,7 +29,7 @@ export default function LoginForm({ onSubmit }) {
       <div className="w-full">
         <LoginButton onClick={handleSubmit} disabled={!email || !password} />
       </div>
-      <SignupLink />
+      <SignUpLink />
     </div>
   );
 }
