@@ -1,7 +1,7 @@
 export default function EmailInput({
   value,
   onChange,
-  placeholder = '이메일을 입력하세요',
+  placeholder = 'abc1234',
   mb = 'mb-6',
   rightButton = null,
   disabled = false,

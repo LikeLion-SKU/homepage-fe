@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import EmailInput from './EmailInput';
-import LoginButton from './LoginButton';
-import LoginTitle from './LoginTitle';
-import PasswordInput from './PasswordInput';
-import SignupLink from './SignUpLink';
-import VerificationButton from './VerificationButton';
+import EmailInput from '../login/EmailInput';
+import LoginButton from '../login/LoginButton';
+import LoginTitle from '../login/LoginTitle';
+import PasswordInput from '../login/PasswordInput';
+import VerificationButton from '../login/VerificationButton';
 
-export default function SignUpForm({ onSubmit }) {
+export default function PasswordFindForm({ onSubmit }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isVerificationSent, setIsVerificationSent] = useState(false);
@@ -24,11 +23,11 @@ export default function SignUpForm({ onSubmit }) {
 
   const handleVerificationSend = async () => {
     try {
-      // TODO: 회원가입용 인증번호 전송 API 호출
+      // TODO: 비밀번호 찾기용 인증번호 전송 API 호출
       // 엔드포인트 api/v1/auth/email/verify/request
       // await APIService.public.post('api/v1/auth/email/verify/request', { email });
 
-      console.log('인증번호 전송 (회원가입)');
+      console.log('인증번호 전송 (비밀번호 찾기)');
       setIsVerificationSent(true);
       setCountdown(300); // 5분 = 300초
       // 임시로 인증번호 123456으로 테스트
@@ -49,11 +48,11 @@ export default function SignUpForm({ onSubmit }) {
     }
 
     try {
-      // TODO: 회원가입용 인증번호 확인 API 호출
-      // 엔드포인트/api/v1/auth/email/verify/confirm
-      // const response = await APIService.public.post('api/v1/auth/email/verify/confirm', { email, code: password });
+      // TODO: 비밀번호 찾기용 인증번호 확인 API 호출
+      // 엔드포인트 api/v1/auth/password/reissue
+      // const response = await APIService.public.post('api/v1/auth/password/reissue', { email, code: password });
 
-      console.log('인증번호 확인 (회원가입)');
+      console.log('인증번호 확인 (비밀번호 찾기)');
       // 임시로 하드코딩된 코드와 비교
       if (password === correctCode) {
         setVerificationStatus('success');
@@ -87,7 +86,7 @@ export default function SignUpForm({ onSubmit }) {
   return (
     <div className="w-full max-w-lg mx-auto px-4 sm:px-0">
       <form onSubmit={handleSubmit}>
-        <LoginTitle title="회원가입" />
+        <LoginTitle title="비밀번호 찾기" />
         <EmailInput
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -157,12 +156,22 @@ export default function SignUpForm({ onSubmit }) {
           </div>
         </div>
       </form>
-      <div className="w-full mt-26">
+      <div className="w-full mb-6 text-center">
+        <div
+          className="border border-gray-300 rounded px-4 py-5 bg-white"
+          style={{ transform: 'translateY(45px)' }}
+        >
+          <p className="text-black text-sm font-['Pretendard'] mb-1">아이디가 생각나지 않을 경우</p>
+          <p className="text-black text-sm font-['Pretendard']">
+            skuofficial@likelion.org로 문의바랍니다.
+          </p>
+        </div>
+      </div>
+      <div className="w-full mt-20">
         <LoginButton onClick={handleSubmit} disabled={!email || !password}>
-          다음
+          비밀번호 찾기
         </LoginButton>
       </div>
-      <SignupLink questionText="이미 계정이 있으신가요?" linkText="로그인" linkPath="/login" />
     </div>
   );
 }
