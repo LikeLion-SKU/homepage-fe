@@ -44,9 +44,9 @@ function Track() {
           }}
         />
 
-        <div className="flex gap-8 w-[120%] -ml-[10%] mt-[42px]">
+        <div className="flex flex-col sm:flex-row gap-8 w-full sm:w-[120%] sm:-ml-[10%] mt-[42px] pb-20 sm:pb-0">
           <motion.div
-            className="flex-1"
+            className="flex-1 w-full"
             initial={{ y: 60, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -59,7 +59,7 @@ function Track() {
             <Card title="PO 프로젝트 오너" description={poDescription} image={POImage} />
           </motion.div>
           <motion.div
-            className="flex-1 relative top-10"
+            className="flex-1 w-full sm:relative sm:top-10"
             initial={{ y: 60, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -72,7 +72,7 @@ function Track() {
             <Card title="FRONTEND 프론트엔드 개발자" description={feDescription} image={FEImage} />
           </motion.div>
           <motion.div
-            className="flex-1 relative top-20"
+            className="flex-1 w-full sm:relative sm:top-20"
             initial={{ y: 60, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.2 }}

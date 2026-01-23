@@ -3,6 +3,7 @@ import { useState } from 'react';
 import AdminTitleSection from '@/components/admin/AdminTitleSection';
 import AdminMember from '@/components/admin/User/AdminMember';
 import AdminUserMember from '@/components/admin/User/AdminUserMember';
+import ButtonGroup from '@/components/admin/User/ButtonGroup';
 
 export default function AdminUser() {
   const propsData = {
@@ -19,25 +20,35 @@ export default function AdminUser() {
     explain: '게스트에게 구성원 권한을 부여하거나 구성원을 게스트 권한으로 변경하는 페이지입니다.',
     rule: [],
   };
+  const buttonData = ['14기', '13기', '12기', '11기'];
 
   const [isSelected, setIsSelected] = useState(true);
 
   return (
-    <div className="flex flex-col p-21 gap-14">
+    <div className="relative flex flex-col p-21 gap-14">
+      <div className="absolute left-70 top-23 flex gap-3">
+        <div
+          onClick={() => setIsSelected(true)}
+          className={`flex w-30 h-10 justify-center items-center text-[1rem] border ${isSelected ? 'bg-[#CBCBCB]' : 'bg-white'}`}
+        >
+          게스트 관리
+        </div>
+        <div
+          onClick={() => setIsSelected(false)}
+          className={`flex w-30 h-10 justify-center items-center text-[1rem] border ${isSelected ? 'bg-white' : 'bg-[#CBCBCB]'}`}
+        >
+          구성원 관리
+        </div>
+      </div>
       <AdminTitleSection props={isSelected ? propsData : propsData2}>
-        <div className="flex gap-3">
-          <div
-            onClick={() => setIsSelected(true)}
-            className={`flex w-30 h-10 justify-center items-center text-[1rem] border ${isSelected ? 'bg-[#CBCBCB]' : 'bg-white'}`}
-          >
-            게스트 관리
-          </div>
-          <div
-            onClick={() => setIsSelected(false)}
-            className={`flex w-30 h-10 justify-center items-center text-[1rem] border ${isSelected ? 'bg-white' : 'bg-[#CBCBCB]'}`}
-          >
-            구성원 관리
-          </div>
+        <div className="flex flex-col gap-5">
+          {!isSelected && (
+            <>
+              <ButtonGroup buttonData={buttonData} />
+              <ButtonGroup buttonData={buttonData} />
+              <ButtonGroup buttonData={buttonData} />
+            </>
+          )}
         </div>
       </AdminTitleSection>
       <div className="flex border-t">{isSelected ? <AdminUserMember /> : <AdminMember />}</div>

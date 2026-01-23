@@ -8,7 +8,7 @@ function CardHeader({ title }) {
 
   return (
     <GridPattern
-      className="bg-white flex items-center relative"
+      className="bg-white flex items-center relative overflow-hidden"
       style={{
         padding: `${(16 / 16) * scale}rem ${(22 / 16) * scale}rem`,
         gap: `${(14 / 16) * scale}rem`,
@@ -17,7 +17,8 @@ function CardHeader({ title }) {
       <div
         className="bg-[#FFFFFF] absolute"
         style={{
-          width: `${(360 / 16) * scale}rem`,
+          width: `calc(100% - ${(44 / 16) * scale}rem)`,
+          maxWidth: `${(360 / 16) * scale}rem`,
           height: `${(40 / 16) * scale}rem`,
           left: `${(22 / 16) * scale}rem`,
           top: `${(16 / 16) * scale}rem`,

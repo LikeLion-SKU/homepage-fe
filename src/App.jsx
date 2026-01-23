@@ -19,6 +19,7 @@ import SignUp from '@/pages/Login/SignUp';
 import Main from '@/pages/Main/Main';
 import Member from '@/pages/Member/Member';
 import MyPage from '@/pages/MyPage/MyPage';
+import PasswordFind from '@/pages/PasswordFind/PasswordFind';
 import ProjectList from '@/pages/Project/ProjectList';
 import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
 import Recruitment from '@/pages/Recruitment/Recruitment';
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
           { path: '/member', Component: Member },
           { path: '/login', Component: Login },
           { path: '/signup', Component: SignUp },
+          { path: '/password/find', Component: PasswordFind },
         ],
       },
       {
