@@ -50,7 +50,7 @@ function Intro() {
         <div
           className="absolute z-20 pointer-events-none"
           style={{
-            left: `calc(50% - ${(squareSizeRem * columns) / 2}rem + ${3 * squareSizeRem}rem)`,
+            left: `calc(50% - ${(squareSizeRem * columns) / 2}rem + ${2.5 * squareSizeRem}rem)`,
             top: `${4.5 * squareSizeRem}rem`,
           }}
         >
@@ -112,7 +112,7 @@ function Intro() {
         <div
           className="absolute z-20 pointer-events-none"
           style={{
-            left: `calc(50% - ${(squareSizeRem * columns) / 2}rem + ${10.3 * squareSizeRem}rem)`,
+            left: `calc(50% - ${(squareSizeRem * columns) / 2}rem + ${9.6 * squareSizeRem}rem)`,
             top: `${8 * squareSizeRem}rem`,
             overflow: 'visible',
             width: 'max-content',
