@@ -23,7 +23,12 @@ export default function LoginForm({ onSubmit }) {
       <form onSubmit={handleSubmit}>
         <LoginTitle />
         <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
-        <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
+        <PasswordInput
+          label="비밀번호"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          hideLabel
+        />
         <ForgotPasswordLink />
       </form>
       <div className="w-full">

@@ -4,10 +4,12 @@ export default function PasswordInput({
   value,
   onChange,
   placeholder = '비밀번호를 입력하세요',
+  label,
   hideLabel = false,
   mb = 'mb-4',
-  maxWidth = 'max-w-[460px]',
+  maxWidth = null,
   rightButton = null,
+  required = false,
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -17,14 +19,18 @@ export default function PasswordInput({
     setShowPassword((prev) => !prev);
   };
 
-  // maxWidth가 숫자면 픽셀 값으로 변환, 문자열이면 Tailwind 클래스로 사용
-  const maxWidthClass = typeof maxWidth === 'number' ? '' : maxWidth;
-  const maxWidthStyle = typeof maxWidth === 'number' ? { maxWidth: `${maxWidth}px` } : {};
+  // maxWidth가 숫자면 픽셀 값으로 변환, 문자열이면 Tailwind 클래스로 사용, null이면 전체 너비
+  const maxWidthClass = maxWidth === null ? '' : typeof maxWidth === 'number' ? '' : maxWidth;
+  const maxWidthStyle =
+    maxWidth === null ? {} : typeof maxWidth === 'number' ? { maxWidth: `${maxWidth}px` } : {};
 
   return (
     <div className={`flex flex-col gap-2 ${mb}`}>
       {!hideLabel && (
-        <label className="text-black text-base font-medium font-['Pretendard']">비밀번호</label>
+        <label className="text-black text-base font-medium font-['Pretendard']">
+          {label || '비밀번호'}
+          {required && <span className="text-black-500 ml-1">*</span>}
+        </label>
       )}
       <div
         className={`flex flex-col sm:flex-row items-stretch sm:items-center ${rightButton ? 'sm:justify-between' : ''} gap-3 sm:gap-4`}
@@ -38,7 +44,7 @@ export default function PasswordInput({
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className="w-full h-14 px-4 py-3 pr-35 bg-[#FFFFFF] border border-[1px] border-[#B0B0B0] text-black text-base font-['Pretendard'] focus:outline-none"
+            className="w-full h-14 px-4 py-3 pr-35 bg-[#FFFFFF] border border-[1px] border-[#B0B0B0] text-black text-base font-['Pretendard'] focus:outline-none focus:ring-2 focus:ring-[#1A1A1A]"
           />
           <button
             type="button"
