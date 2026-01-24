@@ -1,17 +1,12 @@
 // @ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
+import PageTitle from '@/components/common/PageTitle';
 
 export default function TitleSection({ title, pageExplanation, onSearch = true, children }) {
   //children으로 dom구조 받아서 넣으므로 내용으로 옵션박스 넣기
   return (
     <div className="flex flex-col gap-5.5 px-7 border-b">
-      <div className="relative w-39 h-15 border-[1.5px] text-[2.25rem] font-bold text-center">
-        {title}
-        <span className="absolute -top-1 -left-1 w-2 Small h-2 bg-black border border-white"></span>
-        <span className="absolute -top-1 -right-1 w-2 h-2 bg-black border border-white"></span>
-        <span className="absolute -bottom-1 -left-1 w-2 h-2 bg-black border border-white"></span>
-        <span className="absolute -bottom-1 -right-1 w-2 h-2 bg-black border border-white"></span>
-      </div>
+      <PageTitle title={title} />
       <p className="text-[1.1rem]">{pageExplanation}</p>
       <div className="flex justify-between h-30 items-center">
         <div>{children}</div>
