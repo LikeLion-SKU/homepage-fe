@@ -17,7 +17,7 @@
 - 🚀 **Deploy:** Deploying stuff [:rocket:]
 - 🚚 **Rename:** 파일 혹은 폴더명을 수정하거나 옮기는 작업만인 경우 [:truck:]
 - 🔥 **Remove:** 파일을 삭제하는 작업만 수행한 경우 [:fire:]
-- ⏪️ **Revert:** 전 버전으로 롤백 [:rewind:]ㄴ
+- ⏪️ **Revert:** 전 버전으로 롤백 [:rewind:]
 
 ## 🌲 Branch Convention
 
