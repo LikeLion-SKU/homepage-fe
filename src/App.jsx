@@ -20,9 +20,12 @@ import Main from '@/pages/Main/Main';
 import Member from '@/pages/Member/Member';
 import MyPage from '@/pages/MyPage/MyPage';
 import PasswordFind from '@/pages/PasswordFind/PasswordFind';
+import PasswordResult from '@/pages/PasswordFind/PasswordResult';
 import ProjectList from '@/pages/Project/ProjectList';
 import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
 import Recruitment from '@/pages/Recruitment/Recruitment';
+import Result from '@/pages/Result/Result';
+import ResultNotice from '@/pages/Result/ResultNotice';
 import AdminRoute from '@/router/AdminRoute';
 import ProtectedRoute from '@/router/ProtectedRoute';
 
@@ -40,6 +43,8 @@ const router = createBrowserRouter([
           { path: '/mypage', Component: MyPage },
           { path: '/apply/complete', Component: ApplyComplete },
           { path: '/apply/info', Component: ApplyBasicInfo },
+          { path: '/result', Component: Result },
+          { path: '/result/notice', Component: ResultNotice },
         ],
       },
       {
@@ -52,6 +57,7 @@ const router = createBrowserRouter([
           { path: '/login', Component: Login },
           { path: '/signup', Component: SignUp },
           { path: '/password/find', Component: PasswordFind },
+          { path: '/password/result', Component: PasswordResult },
         ],
       },
       {

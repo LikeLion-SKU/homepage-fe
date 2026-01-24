@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import EmailInput from '../login/EmailInput';
 import LoginButton from '../login/LoginButton';
@@ -7,6 +8,7 @@ import PasswordInput from '../login/PasswordInput';
 import VerificationButton from '../login/VerificationButton';
 
 export default function PasswordFindForm({ onSubmit }) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isVerificationSent, setIsVerificationSent] = useState(false);
@@ -14,10 +16,27 @@ export default function PasswordFindForm({ onSubmit }) {
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
   const [correctCode, setCorrectCode] = useState(''); // 실제 인증번호 (임시로 저장)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (onSubmit) {
-      onSubmit({ email, password });
+    // 인증이 성공한 경우에만 결과 페이지로 이동
+    if (verificationStatus === 'success') {
+      try {
+        // TODO: 실제 임시 비밀번호 발급 API 호출
+        // 엔드포인트 api/v1/auth/password/reissue
+        // const response = await APIService.public.post('api/v1/auth/password/reissue', { email, code: password });
+        // const tempPassword = response.data.tempPassword;
+
+        // 임시로 하드코딩된 임시 비밀번호
+        const tempPassword = 'temp1234';
+
+        if (onSubmit) {
+          onSubmit({ email, password });
+        }
+        navigate('/password/result', { state: { email, tempPassword } });
+      } catch (error) {
+        console.error('임시 비밀번호 발급 실패:', error);
+        // TODO: 에러 처리 (토스트 메시지 등)
+      }
     }
   };
 
@@ -105,6 +124,7 @@ export default function PasswordFindForm({ onSubmit }) {
         />
         <div>
           <PasswordInput
+            label="인증번호"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
@@ -168,7 +188,10 @@ export default function PasswordFindForm({ onSubmit }) {
         </div>
       </div>
       <div className="w-full mt-20">
-        <LoginButton onClick={handleSubmit} disabled={!email || !password}>
+        <LoginButton
+          onClick={handleSubmit}
+          disabled={!email || !password || verificationStatus !== 'success'}
+        >
           비밀번호 찾기
         </LoginButton>
       </div>

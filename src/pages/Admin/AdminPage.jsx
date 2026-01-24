@@ -61,7 +61,7 @@ export default function AdminPage() {
         </div>
         <div className="self-stretch">
           <Button onClick={() => navigate('/admin/option')} className={buttonStyle}>
-            기수 / 트랙명 / 대회명 관리
+            기수 / 대회명 관리
           </Button>
         </div>
         <div className="self-stretch">

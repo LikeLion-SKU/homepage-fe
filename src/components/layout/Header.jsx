@@ -9,6 +9,8 @@ export default function Header() {
   const clickMenu = (menu) => {
     navigate(menu);
   };
+  const date = new Date().getTime();
+  const resultDate = [new Date(2026, 0, 22, 0, 0).getTime(), new Date(2026, 1, 25, 0, 0).getTime()];
 
   return (
     <header className="w-full h-20 flex justify-between border-b">
@@ -23,10 +25,18 @@ export default function Header() {
         <div className="w-min-100 flex justify-center items-center gap-15 border-x px-10">
           {!!token && (
             <button
-              onClick={() => clickMenu('/join')}
+              onClick={() => clickMenu('/admin')}
               className="text-[1.1rem] font-semibold cursor-pointer"
             >
               관리자
+            </button>
+          )}
+          {date > resultDate[0] && date < resultDate[1] && (
+            <button
+              onClick={() => clickMenu('/result/notice')}
+              className="text-[1.1rem] font-semibold cursor-pointer"
+            >
+              결과
             </button>
           )}
           <button
