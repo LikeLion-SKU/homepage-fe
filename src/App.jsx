@@ -12,6 +12,7 @@ import AdminPage from '@/pages/Admin/AdminPage';
 import AdminProject from '@/pages/Admin/AdminProject';
 import AdminProjectEdit from '@/pages/Admin/AdminProjectEdit';
 import AdminUser from '@/pages/Admin/AdminUser';
+import ApplyBasicInfo from '@/pages/Apply/ApplyBasicInfo';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
 import Login from '@/pages/Login/Login';
 import SignUp from '@/pages/Login/SignUp';
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
         children: [
           { path: '/mypage', Component: MyPage },
           { path: '/apply/complete', Component: ApplyComplete },
+          { path: '/apply/info', Component: ApplyBasicInfo },
           { path: '/result', Component: Result },
           { path: '/result/notice', Component: ResultNotice },
         ],
