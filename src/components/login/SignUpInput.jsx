@@ -11,8 +11,13 @@ export default function SignUpInput({
   maxWidth = null,
   required = false,
   maxLength = null,
+  bgColor = null,
+  textAlign = 'left',
 }) {
-  const inputClasses = `w-full ${maxWidth || ''} h-14 px-4 py-3 bg-[#FFFFFF] border border-[1px] border-[#B0B0B0] ${textColor} text-base text-left font-['Pretendard'] focus:outline-none focus:ring-2 focus:ring-[#1A1A1A] disabled:bg-[#F5F5F5] disabled:cursor-not-allowed`;
+  const bgColorClass = bgColor ? `bg-[${bgColor}]` : disabled ? 'bg-[#F5F5F5]' : 'bg-[#FFFFFF]';
+  const textAlignClass =
+    textAlign === 'center' ? 'text-center' : textAlign === 'right' ? 'text-right' : 'text-left';
+  const inputClasses = `w-full ${maxWidth || ''} h-14 px-4 py-3 ${bgColorClass} border border-[1px] border-[#B0B0B0] ${textColor} text-base ${textAlignClass} font-['Pretendard'] focus:outline-none focus:ring-2 focus:ring-[#1A1A1A] disabled:cursor-not-allowed`;
 
   return (
     <div className={`flex flex-col gap-2 ${mb}`}>
@@ -33,6 +38,7 @@ export default function SignUpInput({
             required={required}
             maxLength={maxLength}
             className={inputClasses}
+            style={bgColor ? { backgroundColor: bgColor } : {}}
           />
         </div>
         {rightButton && <div className="w-full sm:w-auto">{rightButton}</div>}
