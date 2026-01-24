@@ -19,6 +19,7 @@ import Main from '@/pages/Main/Main';
 import Member from '@/pages/Member/Member';
 import MyPage from '@/pages/MyPage/MyPage';
 import PasswordFind from '@/pages/PasswordFind/PasswordFind';
+import PasswordResult from '@/pages/PasswordFind/PasswordResult';
 import ProjectList from '@/pages/Project/ProjectList';
 import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
 import Recruitment from '@/pages/Recruitment/Recruitment';
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
           { path: '/login', Component: Login },
           { path: '/signup', Component: SignUp },
           { path: '/password/find', Component: PasswordFind },
+          { path: '/password/result', Component: PasswordResult },
         ],
       },
       {

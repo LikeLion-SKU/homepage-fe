@@ -4,7 +4,7 @@ export default function PasswordInput({
   value,
   onChange,
   placeholder = '비밀번호를 입력하세요',
-  label,
+  label = '비밀번호',
   hideLabel = false,
   mb = 'mb-4',
   maxWidth = null,
