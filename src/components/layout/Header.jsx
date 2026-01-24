@@ -1,5 +1,8 @@
 import { useNavigate } from 'react-router';
 
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
+
 import Logo from '@/assets/icons/Logo_icon.png';
 
 export default function Header() {
@@ -32,11 +35,25 @@ export default function Header() {
             </button>
           )}
           {date > resultDate[0] && date < resultDate[1] && (
-            <button
-              onClick={() => clickMenu('/result/notice')}
-              className="text-[1.1rem] font-semibold cursor-pointer"
-            >
-              결과
+            <button>
+              <motion.span
+                className="text-[1.1rem] font-bold bg-clip-text text-transparent block"
+                style={{
+                  //bg-clip-text부터 순서대로 배경 글자대로 자르기,글자 색 비우기,span상자로 만들기
+                  backgroundImage: 'linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%)',
+                  backgroundSize: '200% 100%',
+                }}
+                animate={{
+                  backgroundPosition: ['100% 0%', '-100% 0%'],
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+              >
+                지원결과
+              </motion.span>
             </button>
           )}
           <button

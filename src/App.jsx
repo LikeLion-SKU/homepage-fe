@@ -16,6 +16,7 @@ import ApplyBasicInfo from '@/pages/Apply/ApplyBasicInfo';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
 import Login from '@/pages/Login/Login';
 import SignUp from '@/pages/Login/SignUp';
+import Welcome from '@/pages/Login/Welcome';
 import Main from '@/pages/Main/Main';
 import Member from '@/pages/Member/Member';
 import MyPage from '@/pages/MyPage/MyPage';
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
         Component: ProtectedRoute,
         children: [
           { path: '/mypage', Component: MyPage },
+          { path: '/welcome', Component: Welcome },
           { path: '/apply/complete', Component: ApplyComplete },
           { path: '/apply/info', Component: ApplyBasicInfo },
           { path: '/result', Component: Result },
