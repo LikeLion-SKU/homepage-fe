@@ -1,16 +1,72 @@
+import { useState } from 'react';
+
 import Button from '@/components/common/Button/Button';
 import ApplyStep from '@/components/common/apply/ApplyStep';
 import ApplyTitleSection from '@/components/common/apply/ApplyTitleSection';
 import Input from '@/components/common/apply/Input';
+import useTrackSelect from '@/hooks/useTrackSelect';
+import { formatPhoneNumber } from '@/utils/Formatter';
 
 export default function ApplyBasicInfo() {
   const inputStyle = `bg-white border border-black h-12 px-4 py-4 placeholder:font-medium placeholder:font-['Pretendard'] `;
-  const buttonStyle = `h-12 flex-1 outline py-3 bg-white text-lg font-semibold font-['Pretendard']`;
+  //const buttonStyle = `h-12 flex-1 outline py-2 bg-white text-lg font-semibold`;
   const parts = [
     { id: 'po', name: 'PO' },
     { id: 'fe', name: '프론트엔드' },
     { id: 'be', name: '백엔드' },
   ];
+  const { selectedTrack, handleSelect } = useTrackSelect(); // selectedTrack 추후 요청할 값
+
+  const getButtonStyle = (isSelected) => {
+    const baseStyle = 'h-12 flex-1 outline py-2 text-lg font-semibold transition-all';
+
+    // 선택 여부에 따른 버튼 색상
+    const stateStyle = isSelected
+      ? 'bg-button-green text-black'
+      : 'bg-white text-black hover:bg-button-hover';
+
+    return `${baseStyle} ${stateStyle}`;
+  };
+
+  // 객체 정보 저장
+  const [formData, setFormData] = useState({
+    name: '',
+    major: '',
+    studentId: '',
+    phone: '',
+    email: '',
+    track: '', // 지원 트랙 추가 (초기값은 빈 문자열)
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === 'studentId') {
+      if (name === 'studentId') {
+        // 숫자가 아닌 문자가 들어오면 즉시 빈 문자열로 대체
+        const onlyNums = value.replace(/[^\d]/g, '').slice(0, 10);
+
+        // 만약 value와 onlyNums가 다르다면(즉, 숫자가 아닌 게 입력되었다면)
+        // 리액트가 onlyNums로 상태를 덮어씌우면서 화면에서 문자가 사라집니다.
+        setFormData((prev) => ({ ...prev, [name]: onlyNums }));
+        return;
+      }
+    }
+
+    // 전화번호의 경우 가공 로직을 거친 후 저장
+    if (name === 'phone') {
+      setFormData({
+        ...formData,
+        [name]: formatPhoneNumber(value),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+
   return (
     <div className="pb-35">
       <div className="w-full flex flex-col pt-18 px-45.5 gap-23">
@@ -54,41 +110,56 @@ export default function ApplyBasicInfo() {
                   {/* 왼쪽 이름, 학과, 학번 */}
                   <div className="flex-1 flex flex-col gap-6">
                     <Input
+                      name="name"
                       label="이름"
                       placeholder="김멋사"
                       type="text"
                       className={inputStyle}
+                      value={formData.name}
+                      onChange={handleChange}
                     ></Input>
                     <Input
+                      name="major"
                       label="학과"
                       placeholder="소프트웨어학과"
                       type="text"
                       className={inputStyle}
+                      value={formData.major}
+                      onChange={handleChange}
                     ></Input>
                     <Input
+                      name="studentId"
                       label="학번"
                       placeholder="2020202020"
                       type="text"
                       className={inputStyle}
+                      value={formData.studentId}
+                      onChange={handleChange}
                     ></Input>
                   </div>
                   {/* 오른쪽 전화번호, 이메일, 지원파트 */}
                   <div className="flex-1 flex flex-col gap-6">
                     <Input
+                      name="phone"
                       label="전화번호"
-                      placeholder="김멋사"
+                      placeholder="010-1234-5678"
                       type="text"
                       className={inputStyle}
+                      value={formData.phone} // 상태값 연결
+                      onChange={handleChange} // 변경 함수 연결
                     ></Input>
                     <div className="self-stretch flex flex-col">
                       <label className="font-['Pretendard']">이메일</label>
                       <div className="flex items-center justify-between">
                         <div className="w-2/3">
                           <Input
+                            name="email"
                             label=""
-                            placeholder="김멋사"
+                            placeholder="likelion"
                             type="text"
                             className={inputStyle}
+                            value={formData.email}
+                            onChange={handleChange}
                           ></Input>
                         </div>
                         <div className="opacity-70 text-text-gray font-medium font-['Pretendard'] pt-3 pr-4">
@@ -103,10 +174,10 @@ export default function ApplyBasicInfo() {
                         {parts.map((part) => (
                           <Button
                             key={part.id}
-                            onClick={() => {}}
+                            onClick={() => handleSelect(part.id)}
                             data-variant=""
                             data-size=""
-                            className={buttonStyle}
+                            className={getButtonStyle(selectedTrack === part.id)}
                           >
                             {part.name}
                           </Button>
