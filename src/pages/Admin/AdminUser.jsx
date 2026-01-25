@@ -22,36 +22,39 @@ export default function AdminUser() {
   };
   const buttonData = ['14기', '13기', '12기', '11기'];
 
-  const [isSelected, setIsSelected] = useState(true);
+  const [isUser, setIsUser] = useState(true);
+  const [isNumber, setIsNumber] = useState(true);
+  const [isTrack, setIsTrack] = useState(true);
+  const [isRole, setIsRole] = useState(true);
 
   return (
     <div className="relative flex flex-col p-21 gap-14">
       <div className="absolute left-70 top-23 flex gap-3">
         <div
-          onClick={() => setIsSelected(true)}
-          className={`flex w-30 h-10 justify-center items-center text-[1rem] border ${isSelected ? 'bg-[#CBCBCB]' : 'bg-white'}`}
+          onClick={() => setIsUser(true)}
+          className={`flex w-30 h-10 justify-center items-center text-[1rem] border ${isUser ? 'bg-[#CBCBCB]' : 'bg-white'}`}
         >
           게스트 관리
         </div>
         <div
-          onClick={() => setIsSelected(false)}
-          className={`flex w-30 h-10 justify-center items-center text-[1rem] border ${isSelected ? 'bg-white' : 'bg-[#CBCBCB]'}`}
+          onClick={() => setIsUser(false)}
+          className={`flex w-30 h-10 justify-center items-center text-[1rem] border ${isUser ? 'bg-white' : 'bg-[#CBCBCB]'}`}
         >
           구성원 관리
         </div>
       </div>
-      <AdminTitleSection props={isSelected ? propsData : propsData2}>
+      <AdminTitleSection props={isUser ? propsData : propsData2}>
         <div className="flex flex-col gap-5">
-          {!isSelected && (
+          {!isUser && (
             <>
-              <ButtonGroup buttonData={buttonData} />
-              <ButtonGroup buttonData={buttonData} />
-              <ButtonGroup buttonData={buttonData} />
+              <ButtonGroup buttonData={buttonData} isCheck={isNumber} setIsCheck={setIsNumber} />
+              <ButtonGroup buttonData={buttonData} isCheck={isTrack} setIsCheck={setIsTrack} />
+              <ButtonGroup buttonData={buttonData} isCheck={isRole} setIsCheck={setIsRole} />
             </>
           )}
         </div>
       </AdminTitleSection>
-      <div className="flex border-t">{isSelected ? <AdminUserMember /> : <AdminMember />}</div>
+      <div className="flex border-t">{isUser ? <AdminUserMember /> : <AdminMember />}</div>
     </div>
   );
 }
