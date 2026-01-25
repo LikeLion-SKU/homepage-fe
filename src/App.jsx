@@ -12,12 +12,15 @@ import AdminPage from '@/pages/Admin/AdminPage';
 import AdminProject from '@/pages/Admin/AdminProject';
 import AdminProjectEdit from '@/pages/Admin/AdminProjectEdit';
 import AdminUser from '@/pages/Admin/AdminUser';
+import ApplyBasicInfo from '@/pages/Apply/ApplyBasicInfo';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
 import Login from '@/pages/Login/Login';
 import SignUp from '@/pages/Login/SignUp';
+import Welcome from '@/pages/Login/Welcome';
 import Main from '@/pages/Main/Main';
 import Member from '@/pages/Member/Member';
 import MyPage from '@/pages/MyPage/MyPage';
+import PasswordChange from '@/pages/MyPage/PasswordChange';
 import PasswordFind from '@/pages/PasswordFind/PasswordFind';
 import PasswordResult from '@/pages/PasswordFind/PasswordResult';
 import ProjectList from '@/pages/Project/ProjectList';
@@ -40,7 +43,10 @@ const router = createBrowserRouter([
         Component: ProtectedRoute,
         children: [
           { path: '/mypage', Component: MyPage },
+          { path: '/mypage/password/change', Component: PasswordChange },
+          { path: '/welcome', Component: Welcome },
           { path: '/apply/complete', Component: ApplyComplete },
+          { path: '/apply/info', Component: ApplyBasicInfo },
           { path: '/result', Component: Result },
           { path: '/result/notice', Component: ResultNotice },
         ],

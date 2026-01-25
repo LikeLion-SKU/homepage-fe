@@ -16,6 +16,7 @@ body {
   --color-button-hover: #afd200;
   --color-modal-white: #ffffff;
   --color-button-gray: #f9f9f9;
+  --color-text-gray: #b0b0b0;
 }
 /* 프리텐다드 정의 */
 @font-face {
@@ -100,7 +101,6 @@ body {
   font-style: normal;
   font-display: swap;
 }
-
 
 /* pixel 폰트*/
 @font-face {
