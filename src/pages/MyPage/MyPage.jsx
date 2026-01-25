@@ -72,7 +72,14 @@ export default function MyPage() {
           </Button>
         </div>
         <div className="self-stretch">
-          <Button onClick={() => {}} data-variant="" data-size="" className={buttonStyle}>
+          <Button
+            onClick={() => {
+              navigate('/mypage/password/change');
+            }}
+            data-variant=""
+            data-size=""
+            className={buttonStyle}
+          >
             비밀번호 변경
           </Button>
         </div>
