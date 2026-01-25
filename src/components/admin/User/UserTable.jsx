@@ -6,7 +6,7 @@ import UserTableCard from '@/components/admin/User/UserTableCard';
 import Modal from '@/components/common/Modal/ConfirmModal';
 import Toast from '@/components/common/Toast/Toast';
 
-export default function Table({ option, cardData }) {
+export default function Table({ option, cardData, onDelete = true }) {
   const [moveToast, setMoveToast] = useState(false);
   const [deleteToast, setDeleteToast] = useState(false);
   const [isModal, setIsModal] = useState(false);
@@ -56,7 +56,7 @@ export default function Table({ option, cardData }) {
               구성원 이동
             </button>
           )}
-          {checkedList.length > 0 && (
+          {onDelete && checkedList.length > 0 && (
             <button
               onClick={() => setIsModal(true)}
               className="w-20 h-10 border text-center items-center bg-white"
@@ -66,7 +66,7 @@ export default function Table({ option, cardData }) {
           )}
         </div>
         <div className="flex w-66 h-10 border items-center px-5 gap-7">
-          <Search />
+          <Search className="shrink-0 w-5 h-5" />
           <input placeholder="검색하기" className="focus:outline-none placeholder:text-[1rem]" />
         </div>
       </div>
