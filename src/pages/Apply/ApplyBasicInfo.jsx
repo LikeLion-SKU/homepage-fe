@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 import Button from '@/components/common/Button/Button';
 import ApplyStep from '@/components/common/apply/ApplyStep';
 import ApplyTitleSection from '@/components/common/apply/ApplyTitleSection';
 import Input from '@/components/common/apply/Input';
-import useTrackSelect from '@/hooks/useTrackSelect';
 import { formatPhoneNumber } from '@/utils/Formatter';
 
 export default function ApplyBasicInfo() {
+  /** @type {any} */
+  const { formData, setFormData } = useOutletContext();
+  const navigate = useNavigate();
+
   const inputStyle = `bg-white border border-black h-12 px-4 py-4 placeholder:font-medium placeholder:font-['Pretendard'] `;
   //const buttonStyle = `h-12 flex-1 outline py-2 bg-white text-lg font-semibold`;
   const parts = [
@@ -15,7 +18,6 @@ export default function ApplyBasicInfo() {
     { id: 'fe', name: '프론트엔드' },
     { id: 'be', name: '백엔드' },
   ];
-  const { selectedTrack, handleSelect } = useTrackSelect(); // selectedTrack 추후 요청할 값
 
   const getButtonStyle = (isSelected) => {
     const baseStyle = 'h-12 flex-1 outline py-2 text-lg font-semibold transition-all';
@@ -27,16 +29,6 @@ export default function ApplyBasicInfo() {
 
     return `${baseStyle} ${stateStyle}`;
   };
-
-  // 객체 정보 저장
-  const [formData, setFormData] = useState({
-    name: '',
-    major: '',
-    studentId: '',
-    phone: '',
-    email: '',
-    track: '', // 지원 트랙 추가 (초기값은 빈 문자열)
-  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,6 +57,24 @@ export default function ApplyBasicInfo() {
         [name]: value,
       });
     }
+  };
+
+  // 3. 지원 트랙 선택 시 formData 업데이트 로직
+  const handleTrackSelect = (trackId) => {
+    setFormData((prev) => ({
+      ...prev,
+      track: trackId,
+    }));
+  };
+
+  // 4. 다음 단계 버튼 클릭 시 페이지 이동
+  const handleNext = () => {
+    // 간단한 유효성 검사 (선택 사항)
+    if (!formData.name || !formData.track) {
+      alert('모든 입력칸을 채워주세요');
+      return;
+    }
+    navigate('/apply/common'); // URL 이동
   };
 
   return (
@@ -115,7 +125,7 @@ export default function ApplyBasicInfo() {
                       placeholder="김멋사"
                       type="text"
                       className={inputStyle}
-                      value={formData.name}
+                      value={formData?.name || ''}
                       onChange={handleChange}
                     ></Input>
                     <Input
@@ -124,7 +134,7 @@ export default function ApplyBasicInfo() {
                       placeholder="소프트웨어학과"
                       type="text"
                       className={inputStyle}
-                      value={formData.major}
+                      value={formData?.major || ''}
                       onChange={handleChange}
                     ></Input>
                     <Input
@@ -133,7 +143,7 @@ export default function ApplyBasicInfo() {
                       placeholder="2020202020"
                       type="text"
                       className={inputStyle}
-                      value={formData.studentId}
+                      value={formData?.studentId || ''}
                       onChange={handleChange}
                     ></Input>
                   </div>
@@ -145,7 +155,7 @@ export default function ApplyBasicInfo() {
                       placeholder="010-1234-5678"
                       type="text"
                       className={inputStyle}
-                      value={formData.phone} // 상태값 연결
+                      value={formData?.phone || ''} // 상태값 연결
                       onChange={handleChange} // 변경 함수 연결
                     ></Input>
                     <div className="self-stretch flex flex-col">
@@ -158,7 +168,7 @@ export default function ApplyBasicInfo() {
                             placeholder="likelion"
                             type="text"
                             className={inputStyle}
-                            value={formData.email}
+                            value={formData?.email || ''}
                             onChange={handleChange}
                           ></Input>
                         </div>
@@ -174,10 +184,10 @@ export default function ApplyBasicInfo() {
                         {parts.map((part) => (
                           <Button
                             key={part.id}
-                            onClick={() => handleSelect(part.id)}
+                            onClick={() => handleTrackSelect(part.id)}
                             data-variant=""
                             data-size=""
-                            className={getButtonStyle(selectedTrack === part.id)}
+                            className={getButtonStyle(formData.track === part.id)}
                           >
                             {part.name}
                           </Button>
@@ -203,7 +213,7 @@ export default function ApplyBasicInfo() {
             </Button>
 
             <Button
-              onClick={() => {}}
+              onClick={handleNext}
               className="flex-1 h-14 bg-button-green outline -outline-offset-1 outline-black flex justify-center items-center transition-all hover:bg-button-hover"
             >
               <span className="opacity-70 text-black text-lg font-medium font-['Pretendard']">
