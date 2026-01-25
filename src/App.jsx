@@ -12,7 +12,9 @@ import AdminPage from '@/pages/Admin/AdminPage';
 import AdminProject from '@/pages/Admin/AdminProject';
 import AdminProjectEdit from '@/pages/Admin/AdminProjectEdit';
 import AdminUser from '@/pages/Admin/AdminUser';
+import Apply from '@/pages/Apply/Apply';
 import ApplyBasicInfo from '@/pages/Apply/ApplyBasicInfo';
+import ApplyCommon from '@/pages/Apply/ApplyCommon';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
 import Login from '@/pages/Login/Login';
 import SignUp from '@/pages/Login/SignUp';
@@ -44,8 +46,15 @@ const router = createBrowserRouter([
           { path: '/mypage', Component: MyPage },
           { path: '/welcome', Component: Welcome },
           { path: '/apply/complete', Component: ApplyComplete },
-          { path: '/apply/info', Component: ApplyBasicInfo },
-          { path: '/result', Component: Result },
+          {
+            path: '/apply',
+            Component: Apply, // 부모가 중심을 잡습니다.
+            children: [
+              { index: true, Component: ApplyBasicInfo },
+              { path: 'info', Component: ApplyBasicInfo },
+              { path: 'common', Component: ApplyCommon },
+            ],
+          },
           { path: '/result/notice', Component: ResultNotice },
         ],
       },
