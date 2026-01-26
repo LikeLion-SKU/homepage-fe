@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import NoticeButton from '@/components/admin/Notice/NoticeButton';
+import { formatDateForSave, formatDateInput } from '@/components/admin/Notice/NoticeFormat';
 
 export default function NoticeTableRow({
   index,
@@ -27,10 +28,18 @@ export default function NoticeTableRow({
     finalDate: rowData.finalDate,
     finalTime: rowData.finalTime || '',
   });
+
   const handleEdit = () => {
     if (isEditing && isConfirmMode) {
-      // 수정완료 버튼 클릭 - 저장
-      onSave(index, editData);
+      // 수정완료 버튼 클릭 - 저장 (날짜 포맷팅 적용)
+      const formattedData = {
+        ...editData,
+        publicDate: formatDateForSave(editData.publicDate),
+        deadline: formatDateForSave(editData.deadline),
+        documentDate: formatDateForSave(editData.documentDate),
+        finalDate: formatDateForSave(editData.finalDate),
+      };
+      onSave(index, formattedData);
       if (setConfirmMode) {
         setConfirmMode(index, false);
       }
@@ -82,7 +91,9 @@ export default function NoticeTableRow({
               <input
                 type="text"
                 value={editData.publicDate}
-                onChange={(e) => setEditData({ ...editData, publicDate: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, publicDate: formatDateInput(e.target.value) })
+                }
                 className="w-24 h-10 border text-center focus:outline-none"
                 placeholder="공개일"
               />
@@ -98,7 +109,9 @@ export default function NoticeTableRow({
               <input
                 type="text"
                 value={editData.deadline}
-                onChange={(e) => setEditData({ ...editData, deadline: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, deadline: formatDateInput(e.target.value) })
+                }
                 className="w-24 h-10 border text-center focus:outline-none"
                 placeholder="마감일"
               />
@@ -114,7 +127,9 @@ export default function NoticeTableRow({
               <input
                 type="text"
                 value={editData.documentDate}
-                onChange={(e) => setEditData({ ...editData, documentDate: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, documentDate: formatDateInput(e.target.value) })
+                }
                 className="w-24 h-10 border text-center focus:outline-none"
                 placeholder="서류 발표일"
               />
@@ -130,7 +145,9 @@ export default function NoticeTableRow({
               <input
                 type="text"
                 value={editData.finalDate}
-                onChange={(e) => setEditData({ ...editData, finalDate: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, finalDate: formatDateInput(e.target.value) })
+                }
                 className="w-24 h-10 border text-center focus:outline-none"
                 placeholder="최종 발표일"
               />

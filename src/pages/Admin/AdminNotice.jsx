@@ -22,9 +22,6 @@ export default function AdminNotice() {
         setIsDeleteSelectedModalOpen,
         isEditModalOpen,
         setIsEditModalOpen,
-        isWarningModalOpen,
-        setIsWarningModalOpen,
-        warningMessage,
         toastMessage,
         showToast,
         handleAddRow,
@@ -97,9 +94,6 @@ export default function AdminNotice() {
             setIsDeleteSelectedModalOpen={setIsDeleteSelectedModalOpen}
             isEditModalOpen={isEditModalOpen}
             setIsEditModalOpen={setIsEditModalOpen}
-            isWarningModalOpen={isWarningModalOpen}
-            setIsWarningModalOpen={setIsWarningModalOpen}
-            warningMessage={warningMessage}
             toastMessage={toastMessage}
             showToast={showToast}
             handleDeleteSelected={handleDeleteSelected}

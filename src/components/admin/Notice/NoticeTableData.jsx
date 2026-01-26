@@ -31,9 +31,6 @@ export default function NoticeTableData({ children }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleteSelectedModalOpen, setIsDeleteSelectedModalOpen] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
-  // 수정 완료 모달은 제거하고, 수정 완료 시 토스트만 띄웁니다.
-  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
-  const [warningMessage, setWarningMessage] = useState('');
   const [deleteTargetIndex, setDeleteTargetIndex] = useState(-1);
   const [editTargetIndex, setEditTargetIndex] = useState(-1);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -59,11 +56,6 @@ export default function NoticeTableData({ children }) {
   };
 
   const handleEdit = (index) => {
-    if (editingIndex !== -1 && editingIndex !== index) {
-      setWarningMessage('한 번에 한 개의 행만 수정할 수 있습니다. 수정 완료를 눌러주세요.');
-      setIsWarningModalOpen(true);
-      return;
-    }
     setEditingIndex(index);
   };
 
@@ -176,9 +168,6 @@ export default function NoticeTableData({ children }) {
     setIsSaveModalOpen,
     isEditModalOpen,
     setIsEditModalOpen: handleOpenEditModal,
-    isWarningModalOpen,
-    setIsWarningModalOpen,
-    warningMessage,
     deleteTargetIndex,
     toastMessage,
     showToast,
