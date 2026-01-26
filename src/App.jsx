@@ -60,6 +60,7 @@ const router = createBrowserRouter([
             ],
           },
           { path: '/result/notice', Component: ResultNotice },
+          { path: '/result', Component: Result },
         ],
       },
       {
