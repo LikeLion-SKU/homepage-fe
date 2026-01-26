@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useOutletContext } from 'react-router';
 
 //@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
@@ -7,9 +8,6 @@ import Modal from '@/components/common/Modal/ConfirmModal';
 import Toast from '@/components/common/Toast/Toast';
 
 export default function Table({ option, cardData, onDelete = true }) {
-  const [moveToast, setMoveToast] = useState(false);
-  const [deleteToast, setDeleteToast] = useState(false);
-  const [isModal, setIsModal] = useState(false);
   const [checkedList, setCheckedList] = useState([]);
   const handleCheck = () => {
     if (checkedList.length > 0) {
@@ -22,21 +20,8 @@ export default function Table({ option, cardData, onDelete = true }) {
       setCheckedList(allIndexes);
     }
   };
-  const onToastMessage = (t) => {
-    if (t == 'move') {
-      if (moveToast) return;
-      setMoveToast(true);
-      setTimeout(() => {
-        setMoveToast(false);
-      }, 1500);
-    } else {
-      if (deleteToast) return;
-      setDeleteToast(true);
-      setTimeout(() => {
-        setDeleteToast(false);
-      }, 1500);
-    }
-  };
+  //@ts-ignore
+  const { openModal, showToast } = useOutletContext();
 
   return (
     <div className="flex flex-col gap-5.5">
@@ -50,7 +35,7 @@ export default function Table({ option, cardData, onDelete = true }) {
           </button>
           {checkedList.length > 0 && (
             <button
-              onClick={() => onToastMessage('move')}
+              onClick={() => showToast('이동되었습니다.')}
               className="w-25 h-10 border text-center items-center bg-white"
             >
               구성원 이동
@@ -58,7 +43,11 @@ export default function Table({ option, cardData, onDelete = true }) {
           )}
           {onDelete && checkedList.length > 0 && (
             <button
-              onClick={() => setIsModal(true)}
+              onClick={() =>
+                openModal('구성원 정보를 삭제하시겠습니까?', () => {
+                  showToast('삭제되었습니다!');
+                })
+              }
               className="w-20 h-10 border text-center items-center bg-white"
             >
               삭제
@@ -87,18 +76,6 @@ export default function Table({ option, cardData, onDelete = true }) {
           ))}
         </div>
       </div>
-      <Toast isToast={moveToast} message="이동되었습니다." />
-      <Toast isToast={deleteToast} message="삭제되었습니다!" />
-      <Modal
-        isOpen={isModal}
-        cancel={() => setIsModal(false)}
-        confirm={() => {
-          setIsModal(false);
-          onToastMessage('delete');
-        }}
-      >
-        구성원 정보를 삭제하시겠습니까?
-      </Modal>
     </div>
   );
 }

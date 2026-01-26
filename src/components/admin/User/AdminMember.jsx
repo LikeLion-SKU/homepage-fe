@@ -1,10 +1,9 @@
 import { useState } from 'react';
+import { useOutletContext } from 'react-router';
 
 //@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 import MemberTableCard from '@/components/admin/User/MemberTableCard';
-import Modal from '@/components/common/Modal/ConfirmModal';
-import Toast from '@/components/common/Toast/Toast';
 
 export default function AdminMember() {
   const optionData = ['기수', '역할', '이름', '트랙', '학과', '학번', '수정', '복사'];
@@ -44,13 +43,8 @@ export default function AdminMember() {
   ]);
   const [checkedList, setCheckedList] = useState([]);
   const [isEdit, setIsEdit] = useState(-1);
-  const [onToast, setOnToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [modalData, setModalData] = useState({
-    isOpen: false,
-    content: '',
-    onConfirm: () => {},
-  });
+  //@ts-ignore
+  const { openModal, showToast } = useOutletContext();
   const handleCheck = () => {
     if (checkedList.length > 0) {
       // 하나라도 체크되어 있다면 -> '선택 취소' 동작 (리스트 비우기)
@@ -62,35 +56,13 @@ export default function AdminMember() {
       setCheckedList(allIndexes);
     }
   };
-  const onToastMessage = (message) => {
-    if (onToast) return;
-    setToastMessage(message);
-    setOnToast(true);
-    setTimeout(() => {
-      setOnToast(false);
-    }, 1500);
-  };
-  const openModal = (content, onConfirm) => {
-    setModalData({
-      isOpen: true,
-      content,
-      onConfirm,
+  const deleteData = () => {
+    showToast('삭제되었습니다.');
+    setAllCardData((prev) => {
+      // 현재 인덱스(i)가 checkedList에 포함되지 않은 것만 필터링
+      return prev.filter((_, i) => !checkedList.includes(i));
     });
-  };
-  const closeModal = () => {
-    setModalData((prev) => ({ ...prev, isOpen: false }));
-  };
-  const handleDeleteClick = () => {
-    openModal(`구성원 정보를 삭제하시겠습니까?`, () => {
-      // 실제 삭제 로직...
-      setAllCardData((prev) => {
-        // 현재 인덱스(i)가 checkedList에 포함되지 않은 것만 필터링
-        return prev.filter((_, i) => !checkedList.includes(i));
-      });
-      setCheckedList([]);
-      onToastMessage('삭제가 완료되었습니다.');
-      closeModal();
-    });
+    setCheckedList([]);
   };
 
   const cardCheckData = {
@@ -98,9 +70,6 @@ export default function AdminMember() {
     setCheckedList,
     isEdit,
     setIsEdit,
-    onToastMessage,
-    openModal,
-    closeModal,
     setAllCardData,
   };
 
@@ -116,7 +85,7 @@ export default function AdminMember() {
           </button>
           {checkedList.length > 0 && (
             <button
-              onClick={() => handleDeleteClick()}
+              onClick={() => openModal(`구성원 정보를 삭제하시겠습니까?`, () => deleteData())}
               className="w-20 h-10 border text-center items-center bg-white"
             >
               삭제({checkedList.length})
@@ -140,14 +109,6 @@ export default function AdminMember() {
           ))}
         </div>
       </div>
-      <Toast isToast={onToast} message={toastMessage} />
-      <Modal
-        isOpen={modalData.isOpen}
-        cancel={() => closeModal()}
-        confirm={() => modalData.onConfirm()}
-      >
-        {modalData.content}
-      </Modal>
     </div>
   );
 }
