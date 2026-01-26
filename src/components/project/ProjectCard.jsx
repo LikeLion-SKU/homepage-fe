@@ -17,7 +17,7 @@ export default function ProjectCard({ props, isAdmin }) {
       <div className="flex flex-col w-101 h-86">
         <img src={props.imgUrl} className="h-55 w-101 bg-[#D9D9D9]" />
         <div className="flex flex-col gap-3 w-101 h-29 p-5 ">
-          <div className="flex justify-between items-center   ">
+          <div className="flex justify-between items-center">
             <p className="text-[1.1rem] font-bold">{props.projectName}</p>
             <ProjectCategory
               isPrize={props.isPrize}

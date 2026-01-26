@@ -6,16 +6,13 @@ import ApplyTitleSection from '@/components/common/apply/ApplyTitleSection';
 import Question from '@/components/common/apply/Question';
 import { QUESTION_LIST } from '@/constants/QuestionData';
 
-export default function ApplyCommon() {
+export default function ApplyTrack() {
   /** @type {any} */
   const { formData, handleAnswerChange } = useOutletContext();
   const navigate = useNavigate();
 
   const handlePrevious = () => {
-    navigate('/apply/info'); // URL 이동
-  };
-  const handleNext = () => {
-    navigate('/apply/track');
+    navigate('/apply/common'); // URL 이동
   };
 
   const questionStyle = `self-stretch px-8 py-7 bg-white border justify-center items-center min-h-62 resize-none overflow-y-auto`;
@@ -39,40 +36,39 @@ export default function ApplyCommon() {
               <ApplyStep
                 step="STEP 2"
                 stepName="공통 질문"
-                lineStyle="self-stretch h-1 bg-button-green mb-5"
-                stepStyle="self-stretch text-center text-button-green text-1xl font-medium font-['Pretendard'] mb-1.5"
-                stepNameStyle="self-stretch text-center text-button-green text-2xl font-bold font-['Pretendard']"
-              ></ApplyStep>
-              <ApplyStep
-                step="STEP 3"
-                stepName="트랙별 질문"
                 lineStyle="self-stretch h-1 bg-navy-blue mb-5"
                 stepStyle="self-stretch text-center text-navy-blue text-1xl font-medium font-['Pretendard'] mb-1.5"
                 stepNameStyle="self-stretch text-center text-navy-blue text-2xl font-bold font-['Pretendard']"
               ></ApplyStep>
+              <ApplyStep
+                step="STEP 3"
+                stepName="트랙별 질문"
+                lineStyle="self-stretch h-1 bg-button-green mb-5"
+                stepStyle="self-stretch text-center text-button-green text-1xl font-medium font-['Pretendard'] mb-1.5"
+                stepNameStyle="self-stretch text-center text-button-green text-2xl font-bold font-['Pretendard']"
+              ></ApplyStep>
             </div>
           </div>
-          {/* 공통질문 부분 */}
+          {/* 트랙별 질문 부분 */}
           <div className="flex flex-col gap-10">
-            <div className="self-stretch h-8 text-2xl font-bold font-['Pretendard']">공통 질문</div>
-            {/* 공통질문 상자 */}
+            <div className="self-stretch h-8 text-2xl font-bold font-['Pretendard']">
+              트랙별 질문
+            </div>
+            {/* 트랙별 질문 상자 */}
             <div className="flex flex-col px-20 py-18 border bg-button-gray gap-15">
-              {/* 공통질문 내용 */}
-              {QUESTION_LIST.filter((item) => item.track === 'COMMON').map(
-                (
-                  item // 공통질문만 map 돌면서 보여주기
-                ) => (
-                  <Question
-                    key={item.id}
-                    question={`${item.order_number}. ${item.question}`}
-                    className={questionStyle}
-                    // 2. 입력된 값: 해당 질문 ID에 맞는 답변 전달
-                    value={formData?.answers?.[item.id] || ''}
-                    // 3. 값 변경 시: 부모가 준 handleAnswerChange 실행
-                    onChange={(e) => handleAnswerChange(item.id, e.target.value)}
-                  ></Question>
-                )
-              )}
+              {/* 트랙별 질문 내용 */}
+              {/* formData의 track에 따라 질문 보여주기*/}
+              {QUESTION_LIST.filter((item) => item.track === formData.track).map((item) => (
+                <Question
+                  key={item.id}
+                  question={`${item.order_number}. ${item.question}`}
+                  className={questionStyle}
+                  // 2. 입력된 값: 해당 질문 ID에 맞는 답변 전달
+                  value={formData?.answers?.[item.id] || ''}
+                  // 3. 값 변경 시: 부모가 준 handleAnswerChange 실행
+                  onChange={(e) => handleAnswerChange(item.id, e.target.value)}
+                ></Question>
+              ))}
             </div>
           </div>
           {/* 하단 버튼 부분 */}
@@ -82,7 +78,7 @@ export default function ApplyCommon() {
                 onClick={() => {}}
                 className="flex-1 h-14 outline -outline-offset-1 outline-text-gray flex justify-center items-center bg-white transition-all hover:bg-stone-100"
               >
-                <span className=" text-text-gray text-lg font-medium">임시저장</span>
+                <span className=" text-text-gray text-lg font-medium ">임시저장</span>
               </Button>
 
               <Button
@@ -93,7 +89,7 @@ export default function ApplyCommon() {
               </Button>
 
               <Button
-                onClick={handleNext} // 추후 다음 페이지 추가 필요
+                onClick={() => {}} // 추후 다음 페이지 추가 필요
                 className="flex-1 h-14 bg-button-green outline -outline-offset-1 outline-black flex justify-center items-center transition-all hover:bg-button-hover"
               >
                 <span className="opacity-70 text-black text-lg font-medium">다음단계</span>
