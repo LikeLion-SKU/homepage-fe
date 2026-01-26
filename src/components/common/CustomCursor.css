@@ -2,9 +2,26 @@
   position: fixed;
   pointer-events: none;
   z-index: 9999;
-  transform: translate(-50%, -50%);
+  /* 포인터 끝이 마우스 위치에 오도록 오프셋 조정 */
+  /* 기본 크기 (w-8 h-8 = 32px) 기준 */
+  transform: translate(-3px, -3px);
   opacity: 0;
   transition: opacity 0.1s ease;
+}
+
+/* 반응형 크기에 맞춰 오프셋 조정 */
+@media (min-width: 640px) {
+  .custom-cursor {
+    /* sm:w-10 sm:h-10 = 40px 기준 */
+    transform: translate(-4px, -4px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .custom-cursor {
+    /* lg:w-12 lg:h-12 = 48px 기준 */
+    transform: translate(-5px, -5px);
+  }
 }
 
 .custom-cursor.visible {
