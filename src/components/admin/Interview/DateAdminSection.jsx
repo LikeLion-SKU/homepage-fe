@@ -1,6 +1,6 @@
-//@ts-ignore
 import { useState } from 'react';
 
+//@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 import TrackDateBox from '@/components/admin/Interview/TrackDateBox';
 import Modal from '@/components/common/Modal/ConfirmModal';
