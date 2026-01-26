@@ -44,7 +44,7 @@ const router = createBrowserRouter([
 
       {
         // 보호가 필요한 페이지들,ProtectedRoute에서 토큰 검사
-        Component: ProtectedRoute,
+        /*Component: ProtectedRoute,*/
         children: [
           { path: '/mypage', Component: MyPage },
           { path: '/mypage/password/change', Component: PasswordChange },
