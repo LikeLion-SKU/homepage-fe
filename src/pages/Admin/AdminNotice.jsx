@@ -29,6 +29,7 @@ export default function AdminNotice() {
         handleCheck,
         handleDeleteSelected,
         handleConfirmEdit,
+        handleCancelEdit,
         confirmModeIndex,
         setConfirmMode,
       }) => (
@@ -93,11 +94,11 @@ export default function AdminNotice() {
             isDeleteSelectedModalOpen={isDeleteSelectedModalOpen}
             setIsDeleteSelectedModalOpen={setIsDeleteSelectedModalOpen}
             isEditModalOpen={isEditModalOpen}
-            setIsEditModalOpen={setIsEditModalOpen}
             toastMessage={toastMessage}
             showToast={showToast}
             handleDeleteSelected={handleDeleteSelected}
             handleConfirmEdit={handleConfirmEdit}
+            handleCancelEdit={handleCancelEdit}
           />
         </div>
       )}

@@ -137,6 +137,11 @@ export default function NoticeTableData({ children }) {
     setIsEditModalOpen(true);
   };
 
+  const handleCancelEdit = () => {
+    setIsEditModalOpen(false);
+    setEditTargetIndex(-1);
+  };
+
   const handleConfirmEdit = () => {
     if (editTargetIndex !== -1) {
       handleEdit(editTargetIndex);
@@ -182,6 +187,7 @@ export default function NoticeTableData({ children }) {
     handleDeleteSelected,
     handleSaveAll,
     handleConfirmEdit,
+    handleCancelEdit,
     confirmModeIndex,
     setConfirmMode,
   });

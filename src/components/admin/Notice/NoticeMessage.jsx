@@ -5,11 +5,11 @@ export default function NoticeMessage({
   isDeleteSelectedModalOpen,
   setIsDeleteSelectedModalOpen,
   isEditModalOpen,
-  setIsEditModalOpen,
   toastMessage,
   showToast,
   handleDeleteSelected,
   handleConfirmEdit,
+  handleCancelEdit,
 }) {
   return (
     <>
@@ -22,11 +22,7 @@ export default function NoticeMessage({
         선택한 모든 공고를 삭제하시겠습니까?
       </Modal>
       {/* 수정 확인 모달 */}
-      <Modal
-        isOpen={isEditModalOpen}
-        cancel={() => setIsEditModalOpen(false)}
-        confirm={handleConfirmEdit}
-      >
+      <Modal isOpen={isEditModalOpen} cancel={handleCancelEdit} confirm={handleConfirmEdit}>
         선택한 공고를 수정하시겠습니까?
       </Modal>
       <Toast isToast={showToast} message={toastMessage} />
