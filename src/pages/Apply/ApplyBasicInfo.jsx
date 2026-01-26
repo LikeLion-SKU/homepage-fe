@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 
 import Button from '@/components/common/Button/Button';
+import Modal from '@/components/common/Modal/ConfirmModal';
 import ApplyStep from '@/components/common/apply/ApplyStep';
 import ApplyTitleSection from '@/components/common/apply/ApplyTitleSection';
 import Input from '@/components/common/apply/Input';
@@ -52,10 +54,28 @@ export default function ApplyBasicInfo() {
 
   // 지원 트랙 선택 시 formData 업데이트 로직
   const handleTrackSelect = (trackId) => {
+    const currentTrack = formData.track;
+
+    // 이미 선택한 트랙이 있고, 그 트랙이 새로 누른 트랙이 아닐때 -> 모달이 열려야 함
+    if (currentTrack && currentTrack !== trackId && trackId !== '') {
+      setPendingTrack(trackId); // 바꿀 트랙을 임시 저장
+      setIsModalOpen(true); // 모달 열기
+      return;
+    }
+
     updateFormData((prev) => ({
       ...prev,
-      track: trackId,
+      track: prev.track === trackId ? '' : trackId,
     }));
+  };
+
+  // 모달에서 확인 눌렀을때 트랙 바꾸는 함수
+  const confirmTrackChange = () => {
+    updateFormData((prev) => ({
+      ...prev,
+      track: pendingTrack,
+    }));
+    setIsModalOpen(false);
   };
 
   // 다음 단계 버튼 클릭 시 페이지 이동
@@ -69,6 +89,11 @@ export default function ApplyBasicInfo() {
     }
     navigate('/apply/common'); // URL 이동
   };
+
+  // 모달 상태 관리
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // 모달에서 확인/취소 버튼 눌렀을때 선택할 트랙 임시 상태 저장
+  const [pendingTrack, setPendingTrack] = useState('');
 
   return (
     <div className="pb-35">
@@ -210,6 +235,10 @@ export default function ApplyBasicInfo() {
           </div>
         </div>
       </div>
+      <Modal isOpen={isModalOpen} cancel={() => setIsModalOpen(false)} confirm={confirmTrackChange}>
+        지원서를 이미 작성한 경우, 트랙 변경 시 작성했던 ‘트랙별 질문'에 대한 답은 사라집니다. 정말
+        변경하시겠습니까?
+      </Modal>
     </div>
   );
 }
