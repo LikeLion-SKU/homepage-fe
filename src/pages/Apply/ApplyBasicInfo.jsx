@@ -175,7 +175,7 @@ export default function ApplyBasicInfo() {
                       onChange={handleChange} // 변경 함수 연결
                     ></Input>
                     <div className="self-stretch flex flex-col">
-                      <label>이메일</label>
+                      <label className="text-lg font-semi-bold">이메일</label>
                       <div className="flex items-center justify-between">
                         <div className="w-2/3">
                           <Input
@@ -195,7 +195,7 @@ export default function ApplyBasicInfo() {
                     </div>
                     {/* 지원파트 부분 */}
                     <div className="self-stretch flex flex-col gap-3">
-                      <label>지원트랙</label>
+                      <label className="text-lg font-semi-bold">지원트랙</label>
                       <div className="flex gap-2.5">
                         {parts.map((part) => (
                           <Button
