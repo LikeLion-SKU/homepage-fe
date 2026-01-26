@@ -1,4 +1,4 @@
-export default function AdminTitleSection({ props, children }) {
+export default function AdminTitleSection({ props, children = null }) {
   return (
     <div className="flex justify-between">
       <div className="flex flex-col gap-5">
