@@ -3,10 +3,15 @@ import { Outlet, ScrollRestoration } from 'react-router';
 
 import CustomCursor from '@/components/common/CustomCursor';
 import Modal from '@/components/common/Modal/ConfirmModal';
+import Toast from '@/components/common/Toast/Toast';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 
 export default function RootLayout() {
+  const [toastData, setToastData] = useState({
+    onToast: false,
+    toastMessage: '',
+  });
   const [modalData, setModalData] = useState({
     isOpen: false,
     message: '',
@@ -26,6 +31,13 @@ export default function RootLayout() {
     //모달 닫기
     setModalData((prev) => ({ ...prev, isOpen: false }));
   };
+  const showToast = (toastMessage) => {
+    setToastData({ onToast: true, toastMessage: toastMessage });
+
+    setTimeout(() => {
+      setToastData({ onToast: false, toastMessage: toastMessage });
+    }, 1500);
+  };
 
   return (
     <main className="flex flex-col w-full min-h-screen overflow-x-hidden">
@@ -34,6 +46,7 @@ export default function RootLayout() {
       <Outlet
         context={{
           openModal,
+          showToast,
         }} /* 하위에서 const { openModal } = useOutletContext();방식으로 사용가능 */
       />
       <ScrollRestoration />
@@ -42,6 +55,7 @@ export default function RootLayout() {
       <Modal isOpen={modalData.isOpen} cancel={closeModal} confirm={modalData.onConfirm}>
         {modalData.message}
       </Modal>
+      <Toast isToast={toastData.onToast} message={toastData.toastMessage} />
     </main>
   );
 }
