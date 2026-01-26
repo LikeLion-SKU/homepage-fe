@@ -1,10 +1,15 @@
+import { useOutletContext } from 'react-router-dom';
+
 import AdminTitleSection from '@/components/admin/AdminTitleSection';
 import NoticeButton from '@/components/admin/Notice/NoticeButton';
-import NoticeMessage from '@/components/admin/Notice/NoticeMessage';
 import NoticeTableData from '@/components/admin/Notice/NoticeTableData';
 import NoticeTableRow from '@/components/admin/Notice/NoticeTableRow';
 
 export default function AdminNotice() {
+  // RootLayout의 openModal 사용
+  const context = useOutletContext();
+  // @ts-ignore
+  const openModal = context?.openModal || (() => {});
   const propsData = {
     title: '공고 일정 관리',
     explain: '공고 일정 관리 페이지입니다.',
@@ -18,18 +23,11 @@ export default function AdminNotice() {
         editingIndex,
         checkedList,
         setCheckedList,
-        isDeleteSelectedModalOpen,
-        setIsDeleteSelectedModalOpen,
-        isEditModalOpen,
-        setIsEditModalOpen,
-        toastMessage,
-        showToast,
         handleAddRow,
         handleSave,
         handleCheck,
         handleDeleteSelected,
-        handleConfirmEdit,
-        handleCancelEdit,
+        handleOpenEditModal,
         confirmModeIndex,
         setConfirmMode,
       }) => (
@@ -47,7 +45,9 @@ export default function AdminNotice() {
                 {checkedList.length > 0 && (
                   <NoticeButton
                     type="delete"
-                    onClick={() => setIsDeleteSelectedModalOpen(true)}
+                    onClick={() => {
+                      openModal('선택한 모든 공고를 삭제하시겠습니까?', handleDeleteSelected);
+                    }}
                     checkedCount={checkedList.length}
                   />
                 )}
@@ -77,7 +77,7 @@ export default function AdminNotice() {
                     onSave={handleSave}
                     checkedList={checkedList}
                     setCheckedList={setCheckedList}
-                    setIsEditModalOpen={setIsEditModalOpen}
+                    setIsEditModalOpen={handleOpenEditModal}
                     isConfirmMode={confirmModeIndex === index}
                     setConfirmMode={setConfirmMode}
                   />
@@ -89,17 +89,6 @@ export default function AdminNotice() {
               <NoticeButton type="plus" onClick={handleAddRow} />
             </div>
           </div>
-          {/* 모달 및 토스트 메시지 */}
-          <NoticeMessage
-            isDeleteSelectedModalOpen={isDeleteSelectedModalOpen}
-            setIsDeleteSelectedModalOpen={setIsDeleteSelectedModalOpen}
-            isEditModalOpen={isEditModalOpen}
-            toastMessage={toastMessage}
-            showToast={showToast}
-            handleDeleteSelected={handleDeleteSelected}
-            handleConfirmEdit={handleConfirmEdit}
-            handleCancelEdit={handleCancelEdit}
-          />
         </div>
       )}
     </NoticeTableData>

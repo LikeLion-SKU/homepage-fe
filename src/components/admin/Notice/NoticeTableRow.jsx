@@ -1,7 +1,14 @@
 import { useState } from 'react';
 
 import NoticeButton from '@/components/admin/Notice/NoticeButton';
-import { formatDateForSave, formatDateInput } from '@/components/admin/Notice/NoticeFormat';
+import {
+  formatDateForSave,
+  formatDateInput,
+  formatTimeForSave,
+  validateDate,
+  validateTime,
+} from '@/components/admin/Notice/NoticeFormat';
+import CheckModal from '@/components/common/Modal/CheckModal';
 
 export default function NoticeTableRow({
   index,
@@ -17,8 +24,15 @@ export default function NoticeTableRow({
   // rowData를 기반으로 초기 editData 생성
   // key prop을 사용하여 isEditing이 변경될 때 컴포넌트가 리마운트되므로
   // editData가 자동으로 초기화됩니다
+  // ordinalNum에서 "기" 제거하고 숫자만 저장
+  const getOrdinalNumOnly = (value) => {
+    if (!value) return '';
+    // "14기" -> "14", "14" -> "14"
+    return value.replace(/[^0-9]/g, '');
+  };
+
   const [editData, setEditData] = useState({
-    ordinalNum: rowData.ordinalNum,
+    ordinalNum: getOrdinalNumOnly(rowData.ordinalNum),
     publicDate: rowData.publicDate,
     publicTime: rowData.publicTime || '',
     deadline: rowData.deadline,
@@ -29,15 +43,58 @@ export default function NoticeTableRow({
     finalTime: rowData.finalTime || '',
   });
 
+  // 유효성 검사 모달 상태
+  const [isValidationModalOpen, setIsValidationModalOpen] = useState(false);
+
   const handleEdit = () => {
     if (isEditing && isConfirmMode) {
-      // 수정완료 버튼 클릭 - 저장 (날짜 포맷팅 적용)
+      // 수정완료 버튼 클릭 - 유효성 검사 후 저장
+      // 날짜 유효성 검사 (날짜가 입력되어 있으면 유효한 형식이어야 함)
+      const dates = [
+        { value: editData.publicDate, name: '공개일' },
+        { value: editData.deadline, name: '마감일' },
+        { value: editData.documentDate, name: '서류 발표일' },
+        { value: editData.finalDate, name: '최종 발표일' },
+      ];
+
+      for (const date of dates) {
+        // 날짜가 입력되어 있으면 유효성 검사
+        if (date.value && date.value.trim() !== '') {
+          const formattedDate = formatDateForSave(date.value);
+          if (!validateDate(formattedDate)) {
+            setIsValidationModalOpen(true);
+            return;
+          }
+        }
+      }
+
+      // 시간 유효성 검사
+      const times = [
+        { value: editData.publicTime, name: '공개일 시간' },
+        { value: editData.deadlineTime, name: '마감일 시간' },
+        { value: editData.documentTime, name: '서류 발표일 시간' },
+        { value: editData.finalTime, name: '최종 발표일 시간' },
+      ];
+
+      for (const time of times) {
+        if (time.value && !validateTime(time.value)) {
+          setIsValidationModalOpen(true);
+          return;
+        }
+      }
+
+      // 모든 유효성 검사 통과 - 저장 (날짜/시간 포맷팅 적용, 기수에 "기" 추가)
       const formattedData = {
         ...editData,
+        ordinalNum: editData.ordinalNum ? `${editData.ordinalNum}기` : '',
         publicDate: formatDateForSave(editData.publicDate),
+        publicTime: formatTimeForSave(editData.publicTime),
         deadline: formatDateForSave(editData.deadline),
+        deadlineTime: formatTimeForSave(editData.deadlineTime),
         documentDate: formatDateForSave(editData.documentDate),
+        documentTime: formatTimeForSave(editData.documentTime),
         finalDate: formatDateForSave(editData.finalDate),
+        finalTime: formatTimeForSave(editData.finalTime),
       };
       onSave(index, formattedData);
       if (setConfirmMode) {
@@ -83,7 +140,11 @@ export default function NoticeTableRow({
             <input
               type="text"
               value={editData.ordinalNum}
-              onChange={(e) => setEditData({ ...editData, ordinalNum: e.target.value })}
+              onChange={(e) => {
+                // 숫자만 입력 가능
+                const numbersOnly = e.target.value.replace(/[^0-9]/g, '');
+                setEditData({ ...editData, ordinalNum: numbersOnly });
+              }}
               className="w-24 h-10 border text-center focus:outline-none"
               placeholder="모집 기수"
             />
@@ -189,6 +250,10 @@ export default function NoticeTableRow({
           </>
         )}
       </div>
+      {/* 유효성 검사 모달 */}
+      <CheckModal isOpen={isValidationModalOpen} cancel={() => setIsValidationModalOpen(false)}>
+        수정이 완료되지 않았습니다.
+      </CheckModal>
     </div>
   );
 }
