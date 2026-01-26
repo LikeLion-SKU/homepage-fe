@@ -16,6 +16,7 @@ import Apply from '@/pages/Apply/Apply';
 import ApplyBasicInfo from '@/pages/Apply/ApplyBasicInfo';
 import ApplyCommon from '@/pages/Apply/ApplyCommon';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
+import ApplyTrack from '@/pages/Apply/ApplyTrack';
 import Login from '@/pages/Login/Login';
 import SignUp from '@/pages/Login/SignUp';
 import Welcome from '@/pages/Login/Welcome';
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
               { index: true, Component: ApplyBasicInfo },
               { path: 'info', Component: ApplyBasicInfo },
               { path: 'common', Component: ApplyCommon },
+              { path: 'track', Component: ApplyTrack },
             ],
           },
           { path: '/result/notice', Component: ResultNotice },
