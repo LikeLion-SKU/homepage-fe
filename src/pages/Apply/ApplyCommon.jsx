@@ -4,6 +4,7 @@ import Button from '@/components/common/Button/Button';
 import ApplyStep from '@/components/common/apply/ApplyStep';
 import ApplyTitleSection from '@/components/common/apply/ApplyTitleSection';
 import Question from '@/components/common/apply/Question';
+import { QUESTION_LIST } from '@/constants/QuestionData';
 
 export default function ApplyCommon() {
   /** @type {any} */
@@ -13,33 +14,9 @@ export default function ApplyCommon() {
   const handlePrevious = () => {
     navigate('/apply/info'); // URL 이동
   };
-
-  const QUESTION_LIST = [
-    {
-      id: 1,
-      question:
-        '다양한 IT 동아리 중에서 멋쟁이사자처럼 대학 14기를 선택하고 지원하시게 된 이유를 작성해주세요. (자기소개 / 장단점 / 지원 동기) (500자 이내)',
-      type: 'common', // 공통 질문인지 트랙별 질문인지 구분
-    },
-    {
-      id: 2,
-      question:
-        '멋쟁이사자처럼을 통해 이루고 싶은 최종 목표와 멋쟁이사자처럼을 1년간 진행 후 자신이 어떻게 발전할 것 같은지 작성해주세요 (500자 이내)',
-      type: 'common',
-    },
-    {
-      id: 3,
-      question:
-        '협업 경험이 있다면 힘들었던 점과 극복 과정을 적어주세요. 만약 협업 경험이 없을 경우, 팀원 간에 의견 마찰이 있을 때 어떻게 할 것인지 적어주세요. (500자 이내)',
-      type: 'common',
-    },
-    {
-      id: 4,
-      question:
-        '멋쟁이사자처럼은 주 1회 매주 월요일 18시 30분 교육 세션 필참 및 개인적으로 주 6시간 이상의 시간 투자를 권장합니다. 활동 기간 동안 매주 얼마만큼 시간을 할애할 수 있는지 작성해주세요. (500자 이내)',
-      type: 'common',
-    },
-  ];
+  const handleNext = () => {
+    navigate('/apply/track');
+  };
 
   const questionStyle = `self-stretch px-8 py-7 bg-white border justify-center items-center min-h-62 resize-none overflow-y-auto`;
 
@@ -81,17 +58,21 @@ export default function ApplyCommon() {
             {/* 공통질문 상자 */}
             <div className="flex flex-col px-20 py-18 border bg-button-gray gap-15">
               {/* 공통질문 내용 */}
-              {QUESTION_LIST.map((item) => (
-                <Question
-                  key={item.id}
-                  question={`${item.id}. ${item.question}`}
-                  className={questionStyle}
-                  // 2. 입력된 값: 해당 질문 ID에 맞는 답변 전달
-                  value={formData?.answers?.[item.id] || ''}
-                  // 3. 값 변경 시: 부모가 준 handleAnswerChange 실행
-                  onChange={(e) => handleAnswerChange(item.id, e.target.value)}
-                ></Question>
-              ))}
+              {QUESTION_LIST.filter((item) => item.track === 'COMMON').map(
+                (
+                  item // 공통질문만 map 돌면서 보여주기
+                ) => (
+                  <Question
+                    key={item.id}
+                    question={`${item.order_number}. ${item.question}`}
+                    className={questionStyle}
+                    // 2. 입력된 값: 해당 질문 ID에 맞는 답변 전달
+                    value={formData?.answers?.[item.id] || ''}
+                    // 3. 값 변경 시: 부모가 준 handleAnswerChange 실행
+                    onChange={(e) => handleAnswerChange(item.id, e.target.value)}
+                  ></Question>
+                )
+              )}
             </div>
           </div>
           {/* 하단 버튼 부분 */}
@@ -99,29 +80,23 @@ export default function ApplyCommon() {
             <div className="flex justify-center items-center gap-5 w-9/17">
               <Button
                 onClick={() => {}}
-                className="flex-1 h-14 outline -outline-offset-1 outline-neutral-400 flex justify-center items-center bg-white transition-all hover:bg-stone-100"
+                className="flex-1 h-14 outline -outline-offset-1 outline-text-gray flex justify-center items-center bg-white transition-all hover:bg-stone-100"
               >
-                <span className="opacity-70 text-neutral-400 text-lg font-medium font-['Pretendard']">
-                  임시저장
-                </span>
+                <span className=" text-text-gray text-lg font-medium">임시저장</span>
               </Button>
 
               <Button
                 onClick={handlePrevious}
-                className="flex-1 h-14 outline -outline-offset-1 outline-neutral-400 flex justify-center items-center bg-white transition-all hover:bg-stone-100"
+                className="flex-1 h-14 outline -outline-offset-1 outline-text-gray flex justify-center items-center bg-white transition-all hover:bg-stone-100"
               >
-                <span className="opacity-70 text-neutral-400 text-lg font-medium font-['Pretendard']">
-                  이전단계
-                </span>
+                <span className=" text-text-gray text-lg font-medium">이전단계</span>
               </Button>
 
               <Button
-                onClick={() => {}} // 추후 다음 페이지 추가 필요
+                onClick={handleNext} // 추후 다음 페이지 추가 필요
                 className="flex-1 h-14 bg-button-green outline -outline-offset-1 outline-black flex justify-center items-center transition-all hover:bg-button-hover"
               >
-                <span className="opacity-70 text-black text-lg font-medium font-['Pretendard']">
-                  다음단계
-                </span>
+                <span className="opacity-70 text-black text-lg font-medium">다음단계</span>
               </Button>
             </div>
           </div>
