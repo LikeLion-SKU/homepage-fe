@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 
 import Button from '@/components/common/Button/Button';
+import CheckModal from '@/components/common/Modal/CheckModal';
 import ApplyStep from '@/components/common/apply/ApplyStep';
 import ApplyTitleSection from '@/components/common/apply/ApplyTitleSection';
 import Question from '@/components/common/apply/Question';
@@ -10,12 +12,32 @@ export default function ApplyCommon() {
   /** @type {any} */
   const { formData, handleAnswerChange } = useOutletContext();
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlePrevious = () => {
     navigate('/apply/info'); // URL 이동
   };
   const handleNext = () => {
+    const commonQuestions = QUESTION_LIST.filter((item) => item.track === 'COMMON'); // 공통 질문만 가져오기
+    const isAllAnswered = validateAnswers(commonQuestions, formData.answers);
+
+    if (!isAllAnswered) {
+      setIsModalOpen(true);
+      return;
+    }
     navigate('/apply/track');
+  };
+
+  // 공통 질문 유효성 검사
+  const validateAnswers = (questions, currentAnswers) => {
+    // 질문마다 currentAnswers에 답변들이 다 존재하고, 내용이 비어있지 않은지 확인
+    const answers = currentAnswers || {};
+
+    return questions.every((q) => {
+      const answer = answers[q.id];
+      // 값이 존재하고, 공백을 제외한 길이가 0보다 큰지 확인
+      return typeof answer === 'string' && answer.trim().length > 0;
+    });
   };
 
   const questionStyle = `self-stretch px-8 py-7 bg-white border justify-center items-center min-h-62 resize-none overflow-y-auto`;
@@ -102,6 +124,9 @@ export default function ApplyCommon() {
           </div>
         </div>
       </div>
+      <CheckModal isOpen={isModalOpen} cancel={() => setIsModalOpen(false)}>
+        모든 답변을 작성해 주세요!
+      </CheckModal>
     </div>
   );
 }
