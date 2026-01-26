@@ -20,22 +20,20 @@ export default function AdminNotice() {
         setCheckedList,
         isDeleteSelectedModalOpen,
         setIsDeleteSelectedModalOpen,
-        isSaveModalOpen,
-        setIsSaveModalOpen,
-        isEditCompleteModalOpen,
-        setIsEditCompleteModalOpen,
+        isEditModalOpen,
+        setIsEditModalOpen,
         isWarningModalOpen,
         setIsWarningModalOpen,
         warningMessage,
         toastMessage,
         showToast,
         handleAddRow,
-        handleEdit,
         handleSave,
-        handleCancel,
-        showToastMessage,
         handleCheck,
         handleDeleteSelected,
+        handleConfirmEdit,
+        confirmModeIndex,
+        setConfirmMode,
       }) => (
         <div className="flex flex-col gap-8 px-21 py-30">
           <AdminTitleSection props={propsData}>{null}</AdminTitleSection>
@@ -78,11 +76,12 @@ export default function AdminNotice() {
                     index={index}
                     rowData={row}
                     isEditing={editingIndex === index}
-                    onEdit={handleEdit}
                     onSave={handleSave}
-                    onCancel={handleCancel}
                     checkedList={checkedList}
                     setCheckedList={setCheckedList}
+                    setIsEditModalOpen={setIsEditModalOpen}
+                    isConfirmMode={confirmModeIndex === index}
+                    setConfirmMode={setConfirmMode}
                   />
                 </div>
               ))}
@@ -96,17 +95,15 @@ export default function AdminNotice() {
           <NoticeMessage
             isDeleteSelectedModalOpen={isDeleteSelectedModalOpen}
             setIsDeleteSelectedModalOpen={setIsDeleteSelectedModalOpen}
-            isSaveModalOpen={isSaveModalOpen}
-            setIsSaveModalOpen={setIsSaveModalOpen}
-            isEditCompleteModalOpen={isEditCompleteModalOpen}
-            setIsEditCompleteModalOpen={setIsEditCompleteModalOpen}
+            isEditModalOpen={isEditModalOpen}
+            setIsEditModalOpen={setIsEditModalOpen}
             isWarningModalOpen={isWarningModalOpen}
             setIsWarningModalOpen={setIsWarningModalOpen}
             warningMessage={warningMessage}
             toastMessage={toastMessage}
             showToast={showToast}
             handleDeleteSelected={handleDeleteSelected}
-            showToastMessage={showToastMessage}
+            handleConfirmEdit={handleConfirmEdit}
           />
         </div>
       )}

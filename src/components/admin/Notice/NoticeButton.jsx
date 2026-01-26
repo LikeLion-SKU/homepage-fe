@@ -2,8 +2,6 @@
 import Check from '@/assets/icons/checkBox_icon.svg?react';
 //@ts-ignore
 import Plus from '@/assets/icons/plus_icon.svg?react';
-//@ts-ignore
-import Trashcan from '@/assets/icons/trashcan_icon.svg?react';
 
 export default function NoticeButton({
   type,
@@ -11,6 +9,7 @@ export default function NoticeButton({
   isChecked = false,
   checkedCount = 0,
   className = '',
+  isConfirmMode = false,
 }) {
   // 전체 선택 버튼
   if (type === 'selectAll') {
@@ -35,13 +34,22 @@ export default function NoticeButton({
 
   // 수정하기 버튼
   if (type === 'edit') {
-    const bgColor = className.includes('bg-[#E7E7E7]') ? 'bg-[#E7E7E7]' : 'bg-white';
+    let bgColor = 'bg-white';
+    if (isConfirmMode) {
+      bgColor = 'bg-[#C6E400]';
+    } else if (className.includes('bg-[#E7E7E7]')) {
+      bgColor = 'bg-[#E7E7E7]';
+    }
+
+    // 수정완료 모드일 때는 버튼 너비를 더 넓게
+    const buttonWidth = isConfirmMode ? 'w-24' : 'w-15';
+
     return (
       <button
         onClick={onClick}
-        className={`w-15 h-10 border text-center items-center ${bgColor} text-[1.1rem] font-semibold text-black ${className}`}
+        className={`${buttonWidth} h-10 border text-center items-center ${bgColor} text-[1.1rem] font-semibold text-black ${className}`}
       >
-        수정
+        {isConfirmMode ? '수정완료' : '수정'}
       </button>
     );
   }
@@ -66,18 +74,6 @@ export default function NoticeButton({
         className={`w-20 h-10 border text-center items-center bg-white ${className}`}
       >
         삭제{checkedCount > 0 ? `(${checkedCount})` : ''}
-      </button>
-    );
-  }
-
-  // 저장하기 버튼
-  if (type === 'save') {
-    return (
-      <button
-        onClick={onClick}
-        className={`w-43 h-12 border text-center items-center bg-[#D9D9D9] mx-auto hover:bg-[#CBCBCB] transition-colors ${className}`}
-      >
-        저장하기
       </button>
     );
   }

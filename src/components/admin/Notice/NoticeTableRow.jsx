@@ -6,11 +6,12 @@ export default function NoticeTableRow({
   index,
   rowData,
   isEditing,
-  onEdit,
   onSave,
-  onCancel,
   checkedList,
   setCheckedList,
+  setIsEditModalOpen,
+  isConfirmMode = false,
+  setConfirmMode,
 }) {
   // rowData를 기반으로 초기 editData 생성
   // key prop을 사용하여 isEditing이 변경될 때 컴포넌트가 리마운트되므로
@@ -26,31 +27,19 @@ export default function NoticeTableRow({
     finalDate: rowData.finalDate,
     finalTime: rowData.finalTime || '',
   });
-
   const handleEdit = () => {
-    if (isEditing) {
-      // 수정 완료
+    if (isEditing && isConfirmMode) {
+      // 수정완료 버튼 클릭 - 저장
       onSave(index, editData);
+      if (setConfirmMode) {
+        setConfirmMode(index, false);
+      }
     } else {
-      // 수정 시작
-      onEdit(index);
+      // 수정 시작 - 확인 모달 표시
+      if (setIsEditModalOpen) {
+        setIsEditModalOpen(index);
+      }
     }
-  };
-
-  const handleCancel = () => {
-    // 원래 데이터로 복원
-    setEditData({
-      ordinalNum: rowData.ordinalNum,
-      publicDate: rowData.publicDate,
-      publicTime: rowData.publicTime || '',
-      deadline: rowData.deadline,
-      deadlineTime: rowData.deadlineTime || '',
-      documentDate: rowData.documentDate,
-      documentTime: rowData.documentTime || '',
-      finalDate: rowData.finalDate,
-      finalTime: rowData.finalTime || '',
-    });
-    onCancel();
   };
 
   // 날짜와 시간을 합쳐서 표시하는 헬퍼 함수
@@ -153,20 +142,12 @@ export default function NoticeTableRow({
                 placeholder="오전/오후"
               />
             </div>
-            <div className="flex gap-2">
-              <button
-                onClick={handleEdit}
-                className="text-[1.1rem] font-semibold text-[#F80000] px-2"
-              >
-                수정완료
-              </button>
-              <button
-                onClick={handleCancel}
-                className="text-[1.1rem] font-semibold text-black px-2"
-              >
-                취소
-              </button>
-            </div>
+            <NoticeButton
+              type="edit"
+              onClick={handleEdit}
+              isConfirmMode={isConfirmMode}
+              className={isChecked ? 'bg-[#E7E7E7]' : ''}
+            />
           </>
         ) : (
           <>

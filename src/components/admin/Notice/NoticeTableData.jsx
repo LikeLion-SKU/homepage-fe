@@ -31,10 +31,13 @@ export default function NoticeTableData({ children }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleteSelectedModalOpen, setIsDeleteSelectedModalOpen] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
-  const [isEditCompleteModalOpen, setIsEditCompleteModalOpen] = useState(false);
+  // 수정 완료 모달은 제거하고, 수정 완료 시 토스트만 띄웁니다.
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
   const [deleteTargetIndex, setDeleteTargetIndex] = useState(-1);
+  const [editTargetIndex, setEditTargetIndex] = useState(-1);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [confirmModeIndex, setConfirmModeIndex] = useState(-1);
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
 
@@ -71,7 +74,7 @@ export default function NoticeTableData({ children }) {
       return newData;
     });
     setEditingIndex(-1);
-    setIsEditCompleteModalOpen(true);
+    showToastMessage('수정이 완료되었습니다.');
   };
 
   const handleCancel = () => {
@@ -137,6 +140,29 @@ export default function NoticeTableData({ children }) {
     setIsSaveModalOpen(true);
   };
 
+  const handleOpenEditModal = (index) => {
+    setEditTargetIndex(index);
+    setIsEditModalOpen(true);
+  };
+
+  const handleConfirmEdit = () => {
+    if (editTargetIndex !== -1) {
+      handleEdit(editTargetIndex);
+      // 수정 모드로 전환하면서 바로 수정완료 모드로 설정
+      setConfirmModeIndex(editTargetIndex);
+      setEditTargetIndex(-1);
+    }
+    setIsEditModalOpen(false);
+  };
+
+  const setConfirmMode = (index, value) => {
+    if (value) {
+      setConfirmModeIndex(index);
+    } else {
+      setConfirmModeIndex(-1);
+    }
+  };
+
   return children({
     noticeData,
     editingIndex,
@@ -148,8 +174,8 @@ export default function NoticeTableData({ children }) {
     setIsDeleteSelectedModalOpen,
     isSaveModalOpen,
     setIsSaveModalOpen,
-    isEditCompleteModalOpen,
-    setIsEditCompleteModalOpen,
+    isEditModalOpen,
+    setIsEditModalOpen: handleOpenEditModal,
     isWarningModalOpen,
     setIsWarningModalOpen,
     warningMessage,
@@ -166,5 +192,8 @@ export default function NoticeTableData({ children }) {
     handleCheck,
     handleDeleteSelected,
     handleSaveAll,
+    handleConfirmEdit,
+    confirmModeIndex,
+    setConfirmMode,
   });
 }
