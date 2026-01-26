@@ -17,6 +17,7 @@ import ApplyBasicInfo from '@/pages/Apply/ApplyBasicInfo';
 import ApplyCommon from '@/pages/Apply/ApplyCommon';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
 import ApplyTrack from '@/pages/Apply/ApplyTrack';
+import FinalConfirm from '@/pages/Apply/FinalConfirm';
 import Login from '@/pages/Login/Login';
 import SignUp from '@/pages/Login/SignUp';
 import Welcome from '@/pages/Login/Welcome';
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
               { path: 'info', Component: ApplyBasicInfo },
               { path: 'common', Component: ApplyCommon },
               { path: 'track', Component: ApplyTrack },
+              { path: 'confirm', Component: FinalConfirm },
             ],
           },
           { path: '/result/notice', Component: ResultNotice },
