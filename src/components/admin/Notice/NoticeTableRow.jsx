@@ -1,16 +1,18 @@
 import { useState } from 'react';
 
 import NoticeButton from '@/components/admin/Notice/NoticeButton';
+import { formatDateForSave, formatDateInput } from '@/components/admin/Notice/NoticeFormat';
 
 export default function NoticeTableRow({
   index,
   rowData,
   isEditing,
-  onEdit,
   onSave,
-  onCancel,
   checkedList,
   setCheckedList,
+  setIsEditModalOpen,
+  isConfirmMode = false,
+  setConfirmMode,
 }) {
   // rowData를 기반으로 초기 editData 생성
   // key prop을 사용하여 isEditing이 변경될 때 컴포넌트가 리마운트되므로
@@ -28,29 +30,25 @@ export default function NoticeTableRow({
   });
 
   const handleEdit = () => {
-    if (isEditing) {
-      // 수정 완료
-      onSave(index, editData);
+    if (isEditing && isConfirmMode) {
+      // 수정완료 버튼 클릭 - 저장 (날짜 포맷팅 적용)
+      const formattedData = {
+        ...editData,
+        publicDate: formatDateForSave(editData.publicDate),
+        deadline: formatDateForSave(editData.deadline),
+        documentDate: formatDateForSave(editData.documentDate),
+        finalDate: formatDateForSave(editData.finalDate),
+      };
+      onSave(index, formattedData);
+      if (setConfirmMode) {
+        setConfirmMode(index, false);
+      }
     } else {
-      // 수정 시작
-      onEdit(index);
+      // 수정 시작 - 확인 모달 표시
+      if (setIsEditModalOpen) {
+        setIsEditModalOpen(index);
+      }
     }
-  };
-
-  const handleCancel = () => {
-    // 원래 데이터로 복원
-    setEditData({
-      ordinalNum: rowData.ordinalNum,
-      publicDate: rowData.publicDate,
-      publicTime: rowData.publicTime || '',
-      deadline: rowData.deadline,
-      deadlineTime: rowData.deadlineTime || '',
-      documentDate: rowData.documentDate,
-      documentTime: rowData.documentTime || '',
-      finalDate: rowData.finalDate,
-      finalTime: rowData.finalTime || '',
-    });
-    onCancel();
   };
 
   // 날짜와 시간을 합쳐서 표시하는 헬퍼 함수
@@ -93,7 +91,9 @@ export default function NoticeTableRow({
               <input
                 type="text"
                 value={editData.publicDate}
-                onChange={(e) => setEditData({ ...editData, publicDate: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, publicDate: formatDateInput(e.target.value) })
+                }
                 className="w-24 h-10 border text-center focus:outline-none"
                 placeholder="공개일"
               />
@@ -109,7 +109,9 @@ export default function NoticeTableRow({
               <input
                 type="text"
                 value={editData.deadline}
-                onChange={(e) => setEditData({ ...editData, deadline: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, deadline: formatDateInput(e.target.value) })
+                }
                 className="w-24 h-10 border text-center focus:outline-none"
                 placeholder="마감일"
               />
@@ -125,7 +127,9 @@ export default function NoticeTableRow({
               <input
                 type="text"
                 value={editData.documentDate}
-                onChange={(e) => setEditData({ ...editData, documentDate: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, documentDate: formatDateInput(e.target.value) })
+                }
                 className="w-24 h-10 border text-center focus:outline-none"
                 placeholder="서류 발표일"
               />
@@ -141,7 +145,9 @@ export default function NoticeTableRow({
               <input
                 type="text"
                 value={editData.finalDate}
-                onChange={(e) => setEditData({ ...editData, finalDate: e.target.value })}
+                onChange={(e) =>
+                  setEditData({ ...editData, finalDate: formatDateInput(e.target.value) })
+                }
                 className="w-24 h-10 border text-center focus:outline-none"
                 placeholder="최종 발표일"
               />
@@ -153,20 +159,12 @@ export default function NoticeTableRow({
                 placeholder="오전/오후"
               />
             </div>
-            <div className="flex gap-2">
-              <button
-                onClick={handleEdit}
-                className="text-[1.1rem] font-semibold text-[#F80000] px-2"
-              >
-                수정완료
-              </button>
-              <button
-                onClick={handleCancel}
-                className="text-[1.1rem] font-semibold text-black px-2"
-              >
-                취소
-              </button>
-            </div>
+            <NoticeButton
+              type="edit"
+              onClick={handleEdit}
+              isConfirmMode={isConfirmMode}
+              className={isChecked ? 'bg-[#E7E7E7]' : ''}
+            />
           </>
         ) : (
           <>
