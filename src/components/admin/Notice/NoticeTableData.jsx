@@ -1,6 +1,13 @@
 import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 
 export default function NoticeTableData({ children }) {
+  // RootLayout의 모달/토스트 기능 사용
+  const context = useOutletContext();
+  // @ts-ignore
+  const openModal = context?.openModal || (() => {});
+  // @ts-ignore
+  const showToast = context?.showToast || (() => {});
   const [noticeData, setNoticeData] = useState([
     {
       ordinalNum: '14기',
@@ -28,15 +35,8 @@ export default function NoticeTableData({ children }) {
 
   const [editingIndex, setEditingIndex] = useState(-1);
   const [checkedList, setCheckedList] = useState([]);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isDeleteSelectedModalOpen, setIsDeleteSelectedModalOpen] = useState(false);
-  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [deleteTargetIndex, setDeleteTargetIndex] = useState(-1);
-  const [editTargetIndex, setEditTargetIndex] = useState(-1);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [confirmModeIndex, setConfirmModeIndex] = useState(-1);
-  const [toastMessage, setToastMessage] = useState('');
-  const [showToast, setShowToast] = useState(false);
 
   const handleAddRow = () => {
     const newRow = {
@@ -66,7 +66,7 @@ export default function NoticeTableData({ children }) {
       return newData;
     });
     setEditingIndex(-1);
-    showToastMessage('수정이 완료되었습니다.');
+    showToast('수정이 완료되었습니다.');
   };
 
   const handleCancel = () => {
@@ -75,29 +75,18 @@ export default function NoticeTableData({ children }) {
 
   const handleDelete = (index) => {
     setDeleteTargetIndex(index);
-    setIsDeleteModalOpen(true);
-  };
-
-  const showToastMessage = (message) => {
-    setToastMessage(message);
-    setShowToast(true);
-    setTimeout(() => {
-      setShowToast(false);
-    }, 1500);
-  };
-
-  const handleConfirmDelete = () => {
-    if (deleteTargetIndex !== -1) {
-      setNoticeData((prev) => prev.filter((_, idx) => idx !== deleteTargetIndex));
-      if (editingIndex === deleteTargetIndex) {
-        setEditingIndex(-1);
-      } else if (editingIndex > deleteTargetIndex) {
-        setEditingIndex(editingIndex - 1);
+    openModal('해당 공고를 삭제하시겠습니까?', () => {
+      if (deleteTargetIndex !== -1) {
+        setNoticeData((prev) => prev.filter((_, idx) => idx !== deleteTargetIndex));
+        if (editingIndex === deleteTargetIndex) {
+          setEditingIndex(-1);
+        } else if (editingIndex > deleteTargetIndex) {
+          setEditingIndex(editingIndex - 1);
+        }
+        setDeleteTargetIndex(-1);
       }
-      setDeleteTargetIndex(-1);
-    }
-    setIsDeleteModalOpen(false);
-    showToastMessage('삭제되었습니다.');
+      showToast('삭제되었습니다.');
+    });
   };
 
   const handleCheck = () => {
@@ -123,33 +112,19 @@ export default function NoticeTableData({ children }) {
     });
     setNoticeData((prev) => prev.filter((_, idx) => !checkedList.includes(idx)));
     setCheckedList([]);
-    setIsDeleteSelectedModalOpen(false);
-    showToastMessage('삭제되었습니다.');
+    showToast('삭제되었습니다.');
   };
 
   const handleSaveAll = () => {
     // TODO: API 호출로 전체 데이터 저장
-    setIsSaveModalOpen(true);
   };
 
   const handleOpenEditModal = (index) => {
-    setEditTargetIndex(index);
-    setIsEditModalOpen(true);
-  };
-
-  const handleCancelEdit = () => {
-    setIsEditModalOpen(false);
-    setEditTargetIndex(-1);
-  };
-
-  const handleConfirmEdit = () => {
-    if (editTargetIndex !== -1) {
-      handleEdit(editTargetIndex);
+    openModal('선택한 공고를 수정하시겠습니까?', () => {
+      handleEdit(index);
       // 수정 모드로 전환하면서 바로 수정완료 모드로 설정
-      setConfirmModeIndex(editTargetIndex);
-      setEditTargetIndex(-1);
-    }
-    setIsEditModalOpen(false);
+      setConfirmModeIndex(index);
+    });
   };
 
   const setConfirmMode = (index, value) => {
@@ -165,29 +140,15 @@ export default function NoticeTableData({ children }) {
     editingIndex,
     checkedList,
     setCheckedList,
-    isDeleteModalOpen,
-    setIsDeleteModalOpen,
-    isDeleteSelectedModalOpen,
-    setIsDeleteSelectedModalOpen,
-    isSaveModalOpen,
-    setIsSaveModalOpen,
-    isEditModalOpen,
-    setIsEditModalOpen: handleOpenEditModal,
-    deleteTargetIndex,
-    toastMessage,
-    showToast,
     handleAddRow,
     handleEdit,
     handleSave,
     handleCancel,
     handleDelete,
-    showToastMessage,
-    handleConfirmDelete,
     handleCheck,
     handleDeleteSelected,
     handleSaveAll,
-    handleConfirmEdit,
-    handleCancelEdit,
+    handleOpenEditModal,
     confirmModeIndex,
     setConfirmMode,
   });
