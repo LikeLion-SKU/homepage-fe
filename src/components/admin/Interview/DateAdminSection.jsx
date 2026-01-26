@@ -3,7 +3,6 @@ import { useState } from 'react';
 //@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 import TrackDateBox from '@/components/admin/Interview/TrackDateBox';
-import Modal from '@/components/common/Modal/ConfirmModal';
 
 export default function DateAdminSection() {
   const interviewData = [
@@ -12,21 +11,7 @@ export default function DateAdminSection() {
     { track: 'Backend' },
   ];
   const [isDateAdd, setIsDateAdd] = useState(true);
-  const [modalData, setModalData] = useState({
-    isOpen: false,
-    message: '',
-    confirm: () => {},
-  });
-  const showModal = (message, confirm) => {
-    setModalData({
-      isOpen: true,
-      message,
-      confirm,
-    });
-  };
-  const closeModal = () => {
-    setModalData((prev) => ({ ...prev, isOpen: false }));
-  };
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex justify-between items-center">
@@ -51,11 +36,7 @@ export default function DateAdminSection() {
             <button className="w-56 h-9 border bg-[#F9F9F9]">면접일</button>
             <div className="flex border w-83 h-10 items-center justify-center gap-7">
               <Search />
-              <input
-                onClick={showModal}
-                placeholder="검색하기"
-                className="w-60 placeholder:text-black"
-              />
+              <input placeholder="검색하기" className="w-60 placeholder:text-black" />
             </div>
           </div>
         )}
@@ -66,10 +47,6 @@ export default function DateAdminSection() {
           <TrackDateBox data={data} isDataAdd={isDateAdd} />
         ))}
       </div>
-
-      <Modal isOpen={modalData.isOpen} cancel={() => closeModal()} confirm={modalData.confirm()}>
-        {modalData.message}
-      </Modal>
     </div>
   );
 }
