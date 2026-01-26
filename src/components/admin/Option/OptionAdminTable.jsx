@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useOutletContext } from 'react-router';
 
 //@ts-ignore
 import Trashcan from '@/assets/icons/trashcan_icon.svg?react';
@@ -9,6 +10,8 @@ export default function OptionAdminTable({ title, optionData, setOptionData }) {
     setOptionData((prev) => [plusName, ...prev]);
     setPlusName('');
   };
+  //@ts-ignore
+  const { openModal } = useOutletContext();
   return (
     <div className="flex flex-col border pt-10 pl-33.5 gap-12 w-156 h-190">
       <p className="text-[1.6rem] font-semibold ml-30">{title} 관리</p>
@@ -38,7 +41,11 @@ export default function OptionAdminTable({ title, optionData, setOptionData }) {
           <div key={index} className="flex h-6 justify-between w-50 ml-5">
             • {name}
             <Trashcan
-              onClick={() => setOptionData((prev) => prev.filter((_, idx) => idx !== index))}
+              onClick={() =>
+                openModal(`삭제하시겠습니까?`, () =>
+                  setOptionData((prev) => prev.filter((_, idx) => idx !== index))
+                )
+              }
             />
           </div>
         ))}
