@@ -14,7 +14,10 @@ export default function ApplyComplete() {
     <GridSection>
       <div className="flex flex-col min-h-screen justify-center items-center gap-16">
         <StatusMessage title={title} content={content}></StatusMessage>
-        <RedirectButton buttonName={buttonName} onClick={navigate('/application')}></RedirectButton>
+        <RedirectButton
+          buttonName={buttonName}
+          onClick={() => navigate('/application')}
+        ></RedirectButton>
       </div>
     </GridSection>
   );
