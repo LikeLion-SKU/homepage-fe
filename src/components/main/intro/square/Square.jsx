@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import GridSection from '@/components/layout/background/GridSection';
 
@@ -57,8 +57,8 @@ function lerpColor(a, b, t) {
 }
 
 export default function Square({ onScaleChange, onSquareSizeRemChange }) {
-  const [squareSize, setSquareSize] = useState(baseSquareSize);
-  const [scale, setScale] = useState(1);
+  const [layout, setLayout] = useState({ squareSize: baseSquareSize, scale: 1, squareSizeRem: 0 });
+  const { squareSize, scale, squareSizeRem } = layout;
 
   const gridRef = useRef(null);
 
@@ -87,34 +87,43 @@ export default function Square({ onScaleChange, onSquareSizeRemChange }) {
   // per-cell intensity (현재값)
   const intensityRef = useRef(new Float32Array(rows * columns)); // current intensity 0..1
 
-  // “최근에 손댄 칸”만 업데이트하기 위한 active set
+  // "최근에 손댄 칸"만 업데이트하기 위한 active set
   const activeRef = useRef(new Set());
-
-  // responsive: squareSize/scale
-  useEffect(() => {
-    const calculateSquareSize = () => {
-      const windowWidth = window.innerWidth;
-      const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-
-      const calculatedScale = windowWidth / (baseGridWidth * (rootFontSize / 16));
-      setScale(calculatedScale);
-      setSquareSize(baseSquareSize * (windowWidth / baseGridWidth));
-    };
-
-    calculateSquareSize();
-    window.addEventListener('resize', calculateSquareSize);
-    return () => window.removeEventListener('resize', calculateSquareSize);
-  }, []);
 
   // px -> rem
   const pxToRem = (px) => {
     const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
     return px / rootFontSize;
   };
-  const squareSizeRem = useMemo(() => pxToRem(squareSize), [squareSize]);
 
-  useEffect(() => onScaleChange?.(scale), [scale, onScaleChange]);
-  useEffect(() => onSquareSizeRemChange?.(squareSizeRem), [squareSizeRem, onSquareSizeRemChange]);
+  // responsive: squareSize/scale - useLayoutEffect로 첫 페인트 전에 계산
+  useLayoutEffect(() => {
+    const calculateLayout = () => {
+      const windowWidth = window.innerWidth;
+      const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+
+      const calculatedScale = windowWidth / (baseGridWidth * (rootFontSize / 16));
+      const calculatedSquareSize = baseSquareSize * (windowWidth / baseGridWidth);
+      const calculatedSquareSizeRem = pxToRem(calculatedSquareSize);
+
+      // 한 번에 업데이트
+      setLayout({
+        squareSize: calculatedSquareSize,
+        scale: calculatedScale,
+        squareSizeRem: calculatedSquareSizeRem,
+      });
+    };
+
+    calculateLayout();
+    window.addEventListener('resize', calculateLayout);
+    return () => window.removeEventListener('resize', calculateLayout);
+  }, []);
+
+  // 부모에 한 번에 전달
+  useLayoutEffect(() => {
+    onScaleChange?.(scale);
+    onSquareSizeRemChange?.(squareSizeRem);
+  }, [scale, squareSizeRem, onScaleChange, onSquareSizeRemChange]);
 
   // pointermove: 좌표 저장 + 커서 목표만 갱신 + trail 보간
   useEffect(() => {
