@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router';
 
-import GridSection from '@/components/background/GridSection';
 import RedirectButton from '@/components/common/Button/RedirectButton';
 import StatusMessage from '@/components/common/StatusMessage';
+import GridSection from '@/components/layout/background/GridSection';
 
 export default function ApplyComplete() {
   const title = '지원서를 제출하셨습니다!';

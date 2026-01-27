@@ -28,16 +28,16 @@ export default function PasswordInput({
   return (
     <div className={`flex flex-col gap-2 ${mb}`}>
       {!hideLabel && (
-        <label className="text-black text-base font-medium font-['Pretendard']">
+        <label className="text-black text-sm sm:text-base font-medium font-['Pretendard']">
           {label || '비밀번호'}
           {required && <span className="text-black-500 ml-1">*</span>}
         </label>
       )}
       <div
-        className={`flex flex-col sm:flex-row items-stretch sm:items-center ${rightButton ? 'sm:justify-between' : ''} gap-3 sm:gap-4`}
+        className={`flex flex-row items-center ${rightButton ? 'sm:justify-between' : ''} gap-2 sm:gap-4`}
       >
         <div
-          className={`relative ${rightButton ? 'w-full sm:w-auto' : 'w-full'} ${maxWidthClass}`}
+          className={`relative flex-1 min-w-0 ${rightButton ? 'sm:w-auto' : 'w-full'} ${maxWidthClass}`}
           style={maxWidthStyle}
         >
           <input
@@ -45,13 +45,14 @@ export default function PasswordInput({
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className={`w-full h-14 px-4 py-3 bg-[#FFFFFF] border border-[1px] border-[#B0B0B0] text-black text-base font-['Pretendard'] focus:outline-none focus:ring-2 focus:ring-[#1A1A1A] ${hideToggle ? 'pr-4' : 'pr-35'}`}
+            className={`w-full h-12 sm:h-14 px-3 sm:px-4 py-2.5 sm:py-3 bg-[#FFFFFF] border border-[1px] border-[#B0B0B0] text-black text-sm sm:text-base font-['Pretendard'] focus:outline-none focus:ring-2 focus:ring-[#1A1A1A] ${hideToggle ? 'pr-3 sm:pr-4' : 'pr-35'}`}
+            style={{ minWidth: 0 }}
           />
           {!hideToggle && (
             <button
               type="button"
               onClick={togglePasswordVisibility}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#B0B0B0] hover:text-black transition-colors focus:outline-none cursor-pointer z-20 w-8 h-8 flex items-center justify-center"
+              className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 text-[#B0B0B0] hover:text-black transition-colors focus:outline-none cursor-pointer z-20 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center"
               aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
             >
               {showPassword ? (
@@ -88,7 +89,7 @@ export default function PasswordInput({
             </button>
           )}
         </div>
-        {rightButton && <div className="w-full sm:w-auto">{rightButton}</div>}
+        {rightButton && <div className="flex-shrink-0">{rightButton}</div>}
       </div>
     </div>
   );

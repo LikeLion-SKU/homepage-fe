@@ -15,7 +15,7 @@ export default function VerificationButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="h-14 px-2 py-3 text-sm sm:text-base font-['Pretendard'] font-medium hover:opacity-80 transition-all focus:outline-none whitespace-nowrap w-full sm:w-[160px] min-w-full sm:min-w-[160px] max-w-full sm:max-w-[160px] flex items-center justify-center flex-shrink-0 flex-grow-0"
+      className="h-12 sm:h-14 px-2 sm:px-2 py-2.5 sm:py-3 text-sm sm:text-base font-['Pretendard'] font-medium hover:opacity-80 transition-all focus:outline-none whitespace-nowrap w-[120px] sm:w-[160px] min-w-[120px] sm:min-w-[160px] max-w-[120px] sm:max-w-[160px] flex items-center justify-center flex-shrink-0"
       style={{
         backgroundColor: bgColor,
         color: textColor,
