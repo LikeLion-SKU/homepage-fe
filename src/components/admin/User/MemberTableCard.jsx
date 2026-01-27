@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useOutletContext } from 'react-router';
 
 //@ts-ignore
 import Check from '@/assets/icons/checkBox_icon.svg?react';
@@ -9,6 +10,8 @@ import OptionBox from '@/components/common/Option/optionBox';
 export default function MemberTableCard({ index, cardData, cardCheckData }) {
   const roleOption = ['회장', '부회장', '운영진', '아기사자', '게스트'];
   const trackOption = ['PO', '프론트엔드', '백엔드', 'PM', 'Design', 'PM&Design'];
+  //@ts-ignore
+  const { openModal, showToast } = useOutletContext();
   const isChecked = cardCheckData.checkedList.includes(index);
   const [onEdit, setOnEdit] = useState(false);
   const handleToggle = () => {
@@ -28,11 +31,11 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
       setOnEdit(true);
       cardCheckData.setIsEdit(index);
     } else {
-      cardCheckData.onToastMessage('한 번에 한 명의 수정만 가능합니다. 수정 완료를 눌러주세요.');
+      showToast('한 번에 한 명의 수정만 가능합니다. 수정 완료를 눌러주세요.');
     }
   };
   const handleCopyClick = () => {
-    cardCheckData.openModal(`선택한 구성원을 복사하시겠습니까?`, () => {
+    openModal(`선택한 구성원을 복사하시겠습니까?`, () => {
       // 실제 복사 로직 (예: navigator.clipboard.writeText...)
       cardCheckData.setAllCardData((prev) => {
         const targetCard = prev[index];
@@ -43,8 +46,7 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
           ...prev.slice(index + 1), // 나머지 데이터 붙이기
         ];
       });
-      cardCheckData.onToastMessage('복사가 완료되었습니다.');
-      cardCheckData.closeModal();
+      showToast('복사가 완료되었습니다.');
     });
   };
 

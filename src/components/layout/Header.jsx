@@ -35,7 +35,7 @@ export default function Header() {
             </button>
           )}
           {date > resultDate[0] && date < resultDate[1] && (
-            <button>
+            <button onClick={() => clickMenu('/result/notice')}>
               <motion.span
                 className="text-[1.1rem] font-bold bg-clip-text text-transparent block"
                 style={{

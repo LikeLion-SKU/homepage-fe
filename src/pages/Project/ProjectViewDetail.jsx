@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useOutletContext } from 'react-router';
 
 //@ts-ignore
 import Left from '@/assets/icons/left_anglebraket_icon.svg?react';
 //@ts-ignore
 import Right from '@/assets/icons/right_anglebraket_icon.svg?react';
-import Toast from '@/components/common/Toast/Toast';
 import GridSection from '@/components/layout/background/GridSection';
 import ProjectDetailCard from '@/components/project/ProjectDetailCard';
 
@@ -23,14 +22,8 @@ export default function ProjectViewDetail() {
       Backend: ['정목진', '심서현', '최운조'],
     },
   };
-  const [isToast, setIsToast] = useState(false);
-  const onToastMessage = () => {
-    if (isToast) return;
-    setIsToast(true);
-    setTimeout(() => {
-      setIsToast(false);
-    }, 1500);
-  };
+  //@ts-ignore
+  const { showToast } = useOutletContext();
 
   return (
     <GridSection rows={23}>
@@ -46,7 +39,7 @@ export default function ProjectViewDetail() {
         <ProjectDetailCard data={data} />
         <div className="flex flex-col ">
           <button
-            onClick={() => onToastMessage()}
+            onClick={() => showToast('마지막 프로젝트 입니다.')}
             className="flex items-center justify-center rounded-r-2xl mt-85 w-20 h-32 bg-[#F9F9F9] mr-auto relative z-1"
           >
             <Right />
@@ -55,7 +48,6 @@ export default function ProjectViewDetail() {
             다음 프로젝트 보기
           </p>
         </div>
-        <Toast isToast={isToast} message="마지막 프로젝트 입니다." />
       </div>
     </GridSection>
   );
