@@ -13,7 +13,13 @@ export default function TimeBar({ startTime, endTime }) {
       <p>
         {startTime} - {endTime}
       </p>
-      <Trash onClick={() => openModal('등록된 일정을 삭제하시겠습니까?', () => {})} />
+      <Trash
+        onClick={() =>
+          openModal('등록된 일정을 삭제하시겠습니까?', () => {
+            /*실제 삭제 로직*/
+          })
+        }
+      />
     </div>
   );
 }
