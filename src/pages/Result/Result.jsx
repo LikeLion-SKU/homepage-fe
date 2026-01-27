@@ -25,7 +25,7 @@ export default function Result() {
   };
   return (
     <GridSection>
-      <div className="flex flex-col items-center gap-19">
+      <div className="flex flex-col items-center gap-19 mb-60">
         <ResultSection pass={pass} />
         {pass && <InterviewTime setAllChecked={setAllChecked} />}
         <CheckButton
