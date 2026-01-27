@@ -24,7 +24,7 @@ export default function Result() {
     }
   };
   return (
-    <GridSection rows={pass ? 39 : 15}>
+    <GridSection>
       <div className="flex flex-col items-center gap-19">
         <ResultSection pass={pass} />
         <InterviewTime setAllChecked={setAllChecked} />

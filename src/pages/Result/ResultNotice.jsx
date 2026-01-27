@@ -10,7 +10,7 @@ export default function ResultNotice() {
   const navigate = useNavigate();
   return (
     <div>
-      <GridSection rows={15}>
+      <GridSection>
         <div className="flex flex-col justify-center items-center gap-9 pt-50">
           <PageTitle title="지원 결과 확인하기" width="350px" color="Navy" />
           <Heart />

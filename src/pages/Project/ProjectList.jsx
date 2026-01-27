@@ -31,7 +31,7 @@ export default function Project() {
   };
 
   return (
-    <GridSection rows={21}>
+    <GridSection>
       <div className=" flex flex-col px-14.5 py-12 ">
         <TitleSection
           title="프로젝트"
