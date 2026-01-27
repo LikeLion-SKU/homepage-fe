@@ -30,6 +30,7 @@ export default function SignUpForm({ onSubmit }) {
   const [isAgreed, setIsAgreed] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalMessage, setConfirmModalMessage] = useState('필수항목에 모두 입력하세요.');
+  const [passwordTouched, setPasswordTouched] = useState(false);
 
   // 전화번호 포맷팅 함수 (하이픈 자동 추가)
   const formatPhoneNumber = (value) => {
@@ -56,6 +57,18 @@ export default function SignUpForm({ onSubmit }) {
     return phoneWithHyphen.test(phoneNumber) || phoneOnlyNumbers.test(phoneNumber);
   };
 
+  // 비밀번호 유효성 검사 함수: 영문, 숫자 및 특수 문자 포함 8자 이상 20자 이하
+  const isValidPassword = (password) => {
+    if (!password) return false;
+    if (password.length < 8 || password.length > 20) return false;
+
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    return hasLetter && hasNumber && hasSpecialChar;
+  };
+
   const handleNextStep = () => {
     // 인증번호 확인이 성공했을 때만 다음 단계로 이동
     if (verificationStatus === 'success') {
@@ -70,6 +83,14 @@ export default function SignUpForm({ onSubmit }) {
       if (!isAgreed) {
         setConfirmModalMessage('필수 동의 항목에 동의해주세요.');
         setShowConfirmModal(true);
+        return;
+      }
+
+      // 비밀번호 유효성 검사
+      if (!isValidPassword(signupPassword)) {
+        setConfirmModalMessage('영문, 숫자 및 특수 문자 포함 8자 이상 20자 이하로 입력해주세요.');
+        setShowConfirmModal(true);
+        setPasswordTouched(true);
         return;
       }
 
@@ -284,14 +305,28 @@ export default function SignUpForm({ onSubmit }) {
           <PasswordInput
             label="비밀번호"
             value={signupPassword}
-            onChange={(e) => setSignupPassword(e.target.value)}
+            onChange={(e) => {
+              setSignupPassword(e.target.value);
+              if (passwordTouched) {
+                // 입력 중에는 검증 상태 유지
+              }
+            }}
+            onBlur={() => setPasswordTouched(true)}
             placeholder="abcd1234"
             mb="mb-0"
             required
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
-            <p className="text-[#1A1A1A] text-base font-['Pretendard'] font-medium">
-              8자리 이상 문자로 입력해주세요.
+            <p
+              className={`text-base font-['Pretendard'] font-medium ${
+                passwordTouched && signupPassword
+                  ? isValidPassword(signupPassword)
+                    ? 'text-green-500'
+                    : 'text-red-500'
+                  : 'text-[#1A1A1A]'
+              }`}
+            >
+              영문, 숫자 및 특수 문자 포함 8자 이상 20자 이하로 입력해주세요.
             </p>
           </div>
         </div>
@@ -306,12 +341,12 @@ export default function SignUpForm({ onSubmit }) {
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
             {confirmPassword && signupPassword === confirmPassword && (
-              <p className="text-[#1A1A1A] text-base font-['Pretendard'] font-medium">
+              <p className="text-green-500 text-base font-['Pretendard'] font-medium">
                 비밀번호가 일치합니다.
               </p>
             )}
             {confirmPassword && signupPassword !== confirmPassword && (
-              <p className="text-[#1A1A1A] text-base font-['Pretendard'] font-medium">
+              <p className="text-red-500 text-base font-['Pretendard'] font-medium">
                 비밀번호가 일치하지 않습니다.
               </p>
             )}

@@ -69,7 +69,7 @@ export default function PasswordChangeForm({ onSubmit }) {
             hideToggle={true}
           />
           <div className="text-[#000000] text-sm text-left font-['Pretendard'] mb-4 mt-1">
-            8자리 이상 문자로 입력해주세요.
+            영문, 숫자 및 특수 문자 포함 8자 이상 20자 이하로 입력해주세요.
           </div>
         </div>
         <div>

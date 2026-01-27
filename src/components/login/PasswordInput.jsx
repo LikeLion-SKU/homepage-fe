@@ -3,6 +3,7 @@ import { useState } from 'react';
 export default function PasswordInput({
   value,
   onChange,
+  onBlur = undefined,
   placeholder = '비밀번호를 입력하세요',
   label = '비밀번호',
   hideLabel = false,
@@ -30,7 +31,7 @@ export default function PasswordInput({
       {!hideLabel && (
         <label className="text-black text-sm sm:text-base font-medium font-['Pretendard']">
           {label || '비밀번호'}
-          {required && <span className="text-black-500 ml-1">*</span>}
+          {required && <span className="text-red-500 ml-1">*</span>}
         </label>
       )}
       <div
@@ -44,6 +45,7 @@ export default function PasswordInput({
             type={hideToggle ? 'text' : showPassword ? 'text' : 'password'}
             value={value}
             onChange={onChange}
+            onBlur={onBlur}
             placeholder={placeholder}
             className={`w-full h-12 sm:h-14 px-3 sm:px-4 py-2.5 sm:py-3 bg-[#FFFFFF] border border-[1px] border-[#B0B0B0] text-black text-sm sm:text-base font-['Pretendard'] focus:outline-none focus:ring-2 focus:ring-[#1A1A1A] ${hideToggle ? 'pr-3 sm:pr-4' : 'pr-35'}`}
             style={{ minWidth: 0 }}
