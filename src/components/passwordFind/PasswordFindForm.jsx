@@ -132,6 +132,7 @@ export default function PasswordFindForm({ onSubmit }) {
             }}
             placeholder="인증번호를 입력해주세요"
             hideLabel
+            hideToggle
             mb="mb-0"
             maxWidth="max-w-full sm:max-w-[600px]"
             rightButton={
