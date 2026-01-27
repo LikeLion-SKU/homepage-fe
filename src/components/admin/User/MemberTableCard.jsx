@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useOutletContext } from 'react-router';
 
 //@ts-ignore
@@ -8,12 +7,13 @@ import Copy from '@/assets/icons/copy_icon.svg?react';
 import OptionBox from '@/components/common/Option/optionBox';
 
 export default function MemberTableCard({ index, cardData, cardCheckData }) {
+  const semesterOption = ['14기', '13기', '12기', '11기'];
   const roleOption = ['회장', '부회장', '운영진', '아기사자', '게스트'];
   const trackOption = ['PO', '프론트엔드', '백엔드', 'PM', 'Design', 'PM&Design'];
   //@ts-ignore
   const { openModal, showToast } = useOutletContext();
   const isChecked = cardCheckData.checkedList.includes(index);
-  const [onEdit, setOnEdit] = useState(false);
+  const isEditingThisCard = cardCheckData.isEdit === index;
   const handleToggle = () => {
     if (isChecked) {
       // 이미 있으면 제외 (하나 빼기)
@@ -24,11 +24,11 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
     }
   };
   const handleEdit = () => {
-    if (cardCheckData.isEdit == index) {
-      setOnEdit(false);
+    if (isEditingThisCard) {
+      // 수정 완료 시
       cardCheckData.setIsEdit(-1);
-    } else if (cardCheckData.isEdit == -1) {
-      setOnEdit(true);
+    } else if (cardCheckData.isEdit === -1) {
+      // 수정 시작 시
       cardCheckData.setIsEdit(index);
     } else {
       showToast('한 번에 한 명의 수정만 가능합니다. 수정 완료를 눌러주세요.');
@@ -46,26 +46,31 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
           ...prev.slice(index + 1), // 나머지 데이터 붙이기
         ];
       });
+      cardCheckData.setIsEdit(index + 1);
       showToast('복사가 완료되었습니다.');
     });
   };
 
   return (
-    <div className="w-314 h-21 flex items-center pl-11 pr-10 text-[1.1rem] font-semibold gap-22">
+    <div className="w-314 h-21 flex items-center pl-11 pr-10 text-[1.1rem] font-semibold gap-10">
       {isChecked ? (
         <Check onClick={() => handleToggle()} />
       ) : (
         <button onClick={() => handleToggle()} className="w-7 h-6.25 border-2" />
       )}
       <div className="flex w-300 gap-10 items-center">
-        <p className="mr-7">{cardData.ordinalNum}</p>
-        {onEdit ? (
+        {isEditingThisCard ? (
+          <OptionBox initValue={cardData.ordinalNum} optionData={semesterOption} />
+        ) : (
+          <p className="w-28 text-center">{cardData.ordinalNum}</p>
+        )}
+        {isEditingThisCard ? (
           <OptionBox initValue={cardData.role} optionData={roleOption} />
         ) : (
           <p className="w-28 text-center">{cardData.role}</p>
         )}
         <p className="mx-6.5">{cardData.name}</p>
-        {onEdit ? (
+        {isEditingThisCard ? (
           <OptionBox initValue={cardData.track} optionData={trackOption} />
         ) : (
           <p className="w-28 text-center">{cardData.track}</p>
@@ -74,11 +79,13 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
         <p className="mx-5">{cardData.stdNum}</p>
         <button
           onClick={() => handleEdit()}
-          className={`text-[1.1rem] font-semibold ${onEdit ? 'text-[#F80000]' : 'text-black'}`}
+          className={`text-[1.1rem] font-semibold ${isEditingThisCard ? 'text-[#F80000]' : 'text-black'}`}
         >
-          <p className="ml-1">{onEdit ? '수정완료' : '수정하기'}</p>
+          <p className="ml-1">{isEditingThisCard ? '수정완료' : '수정하기'}</p>
         </button>
-        <div className="w-6 h-6 ml-16">{onEdit && <Copy onClick={() => handleCopyClick()} />}</div>
+        <div className="w-6 h-6 ml-16">
+          {isEditingThisCard && <Copy onClick={() => handleCopyClick()} />}
+        </div>
       </div>
     </div>
   );
