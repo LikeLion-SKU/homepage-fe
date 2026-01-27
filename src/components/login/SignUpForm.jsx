@@ -31,42 +31,71 @@ export default function SignUpForm({ onSubmit }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalMessage, setConfirmModalMessage] = useState('필수항목에 모두 입력하세요.');
   const [passwordTouched, setPasswordTouched] = useState(false);
+  const [_emailTouched, setEmailTouched] = useState(false);
+  const [_nameTouched, setNameTouched] = useState(false);
+  const [_studentNumberTouched, setStudentNumberTouched] = useState(false);
+  const [_phoneTouched, setPhoneTouched] = useState(false);
 
   // 전화번호 포맷팅 함수 (하이픈 자동 추가)
+  // 01[016789]-XXX-XXXX 또는 01[016789]-XXXX-XXXX 형식
   const formatPhoneNumber = (value) => {
     // 숫자만 추출
     const numbers = value.replace(/[^\d]/g, '');
 
-    // 길이에 따라 하이픈 추가
-    if (numbers.length <= 3) {
+    // 01[016789]로 시작하는지 확인
+    if (numbers.length === 0) return '';
+    if (numbers.length <= 2) {
       return numbers;
-    } else if (numbers.length <= 7) {
-      return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
-    } else {
-      return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
     }
+    if (numbers.length <= 3) {
+      return `${numbers.slice(0, 3)}-`;
+    }
+    // 010, 011, 016, 017, 018, 019로 시작
+    if (
+      numbers[0] === '0' &&
+      numbers[1] === '1' &&
+      ['0', '1', '6', '7', '8', '9'].includes(numbers[2])
+    ) {
+      if (numbers.length <= 6) {
+        return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+      } else if (numbers.length <= 10) {
+        // 010-1234-5678 또는 010-123-4567 형식
+        return `${numbers.slice(0, 3)}-${numbers.slice(3, numbers.length === 10 ? 7 : 6)}-${numbers.slice(numbers.length === 10 ? 7 : 6)}`;
+      } else {
+        return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+      }
+    }
+    return numbers;
   };
 
-  // 전화번호 형식 검증 함수
-  const isValidPhoneNumber = (phoneNumber) => {
-    // 하이픈 포함 형식: 010-XXXX-XXXX
-    const phoneWithHyphen = /^010-\d{4}-\d{4}$/;
-    // 숫자만 형식: 010XXXXXXXX
-    const phoneOnlyNumbers = /^010\d{8}$/;
-
-    return phoneWithHyphen.test(phoneNumber) || phoneOnlyNumbers.test(phoneNumber);
+  // 이메일 유효성 검사: 서경대학교 메일만 가능
+  const isValidEmail = (email) => {
+    const emailRegex = /^[A-Za-z0-9._%+-]+@skuniv\.ac\.kr$/;
+    return emailRegex.test(email);
   };
 
-  // 비밀번호 유효성 검사 함수: 영문, 숫자 및 특수 문자 포함 8자 이상 20자 이하
+  // 비밀번호 유효성 검사: 최소 영문자 1자, 숫자 1자, 특수문자 1자를 포함한 8~20자리
   const isValidPassword = (password) => {
-    if (!password) return false;
-    if (password.length < 8 || password.length > 20) return false;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
+    return passwordRegex.test(password);
+  };
 
-    const hasLetter = /[a-zA-Z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  // 이름 유효성 검사: 2~17자리 문자열
+  const isValidName = (name) => {
+    if (!name) return false;
+    return name.length >= 2 && name.length <= 17;
+  };
 
-    return hasLetter && hasNumber && hasSpecialChar;
+  // 학번 유효성 검사: 10자리 숫자만 가능
+  const isValidStudentNumber = (studentNumber) => {
+    const studentNumberRegex = /^[0-9]{10}$/;
+    return studentNumberRegex.test(studentNumber);
+  };
+
+  // 전화번호 형식 검증 함수: 01[016789]-XXX-XXXX 또는 01[016789]-XXXX-XXXX
+  const isValidPhoneNumber = (phoneNumber) => {
+    const phoneRegex = /^01[016789]-\d{3,4}-\d{4}$/;
+    return phoneRegex.test(phoneNumber);
   };
 
   const handleNextStep = () => {
@@ -86,21 +115,6 @@ export default function SignUpForm({ onSubmit }) {
         return;
       }
 
-      // 비밀번호 유효성 검사
-      if (!isValidPassword(signupPassword)) {
-        setConfirmModalMessage('영문, 숫자 및 특수 문자 포함 8자 이상 20자 이하로 입력해주세요.');
-        setShowConfirmModal(true);
-        setPasswordTouched(true);
-        return;
-      }
-
-      // 비밀번호 일치 여부 확인
-      if (signupPassword !== confirmPassword) {
-        setConfirmModalMessage('비밀번호가 일치하지 않습니다.');
-        setShowConfirmModal(true);
-        return;
-      }
-
       // 필수 항목 검증
       if (
         !userId ||
@@ -116,10 +130,52 @@ export default function SignUpForm({ onSubmit }) {
         return;
       }
 
+      // 이메일 유효성 검사
+      if (!isValidEmail(userId)) {
+        setConfirmModalMessage('서경대학교 이메일(@skuniv.ac.kr)만 사용 가능합니다.');
+        setShowConfirmModal(true);
+        setEmailTouched(true);
+        return;
+      }
+
+      // 비밀번호 유효성 검사
+      if (!isValidPassword(signupPassword)) {
+        setConfirmModalMessage(
+          '영문, 숫자 및 특수 문자(!@#$%^&*) 포함 8자 이상 20자 이하로 입력해주세요.'
+        );
+        setShowConfirmModal(true);
+        setPasswordTouched(true);
+        return;
+      }
+
+      // 비밀번호 일치 여부 확인
+      if (signupPassword !== confirmPassword) {
+        setConfirmModalMessage('비밀번호가 일치하지 않습니다.');
+        setShowConfirmModal(true);
+        return;
+      }
+
+      // 이름 유효성 검사
+      if (!isValidName(name)) {
+        setConfirmModalMessage('이름은 2자 이상 17자 이하로 입력해주세요.');
+        setShowConfirmModal(true);
+        setNameTouched(true);
+        return;
+      }
+
+      // 학번 유효성 검사
+      if (!isValidStudentNumber(studentNumber)) {
+        setConfirmModalMessage('학번은 10자리 숫자만 입력 가능합니다.');
+        setShowConfirmModal(true);
+        setStudentNumberTouched(true);
+        return;
+      }
+
       // 전화번호 형식 검증
       if (!isValidPhoneNumber(phone)) {
-        setConfirmModalMessage('전화번호를 입력해주세요.');
+        setConfirmModalMessage('올바른 전화번호 형식으로 입력해주세요. (예: 010-1234-5678)');
         setShowConfirmModal(true);
+        setPhoneTouched(true);
         return;
       }
 
@@ -297,6 +353,7 @@ export default function SignUpForm({ onSubmit }) {
           label="아이디"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
+          onBlur={() => setEmailTouched(true)}
           placeholder="abcd1234@skuniv.ac.kr"
           required
           mb="mb-6"
@@ -340,11 +397,13 @@ export default function SignUpForm({ onSubmit }) {
             required
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
-            {confirmPassword && signupPassword === confirmPassword && (
-              <p className="text-green-500 text-base font-['Pretendard'] font-medium">
-                비밀번호가 일치합니다.
-              </p>
-            )}
+            {confirmPassword &&
+              isValidPassword(signupPassword) &&
+              signupPassword === confirmPassword && (
+                <p className="text-green-500 text-base font-['Pretendard'] font-medium">
+                  비밀번호가 일치합니다.
+                </p>
+              )}
             {confirmPassword && signupPassword !== confirmPassword && (
               <p className="text-red-500 text-base font-['Pretendard'] font-medium">
                 비밀번호가 일치하지 않습니다.
@@ -357,6 +416,7 @@ export default function SignUpForm({ onSubmit }) {
           label="이름"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          onBlur={() => setNameTouched(true)}
           placeholder="홍길동"
           required
           mb="mb-6"
@@ -373,6 +433,7 @@ export default function SignUpForm({ onSubmit }) {
           label="학번"
           value={studentNumber}
           onChange={(e) => setStudentNumber(e.target.value)}
+          onBlur={() => setStudentNumberTouched(true)}
           placeholder="2000000000"
           required
           mb="mb-6"
@@ -383,6 +444,7 @@ export default function SignUpForm({ onSubmit }) {
           type="tel"
           value={phone}
           onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
+          onBlur={() => setPhoneTouched(true)}
           placeholder="010-1234-5678"
           required
           mb="mb-6"

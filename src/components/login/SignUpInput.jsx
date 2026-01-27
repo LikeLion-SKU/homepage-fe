@@ -2,6 +2,7 @@ export default function SignUpInput({
   label,
   value,
   onChange,
+  onBlur = undefined,
   type = 'text',
   placeholder = '',
   mb = 'mb-6',
@@ -33,6 +34,7 @@ export default function SignUpInput({
             type={type}
             value={value}
             onChange={onChange}
+            onBlur={onBlur}
             placeholder={placeholder}
             disabled={disabled}
             required={required}
