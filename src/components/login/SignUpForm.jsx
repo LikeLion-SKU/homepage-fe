@@ -20,7 +20,6 @@ export default function SignUpForm({ onSubmit }) {
   const [correctCode, setCorrectCode] = useState(''); // 실제 인증번호 (임시로 저장)
 
   // 두 번째 단계 입력 필드
-  const [userId, setUserId] = useState('');
   const [name, setName] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -31,7 +30,6 @@ export default function SignUpForm({ onSubmit }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalMessage, setConfirmModalMessage] = useState('필수항목에 모두 입력하세요.');
   const [passwordTouched, setPasswordTouched] = useState(false);
-  const [_emailTouched, setEmailTouched] = useState(false);
   const [_nameTouched, setNameTouched] = useState(false);
   const [_studentNumberTouched, setStudentNumberTouched] = useState(false);
   const [_phoneTouched, setPhoneTouched] = useState(false);
@@ -66,12 +64,6 @@ export default function SignUpForm({ onSubmit }) {
       }
     }
     return numbers;
-  };
-
-  // 이메일 유효성 검사: 서경대학교 메일만 가능
-  const isValidEmail = (email) => {
-    const emailRegex = /^[A-Za-z0-9._%+-]+@skuniv\.ac\.kr$/;
-    return emailRegex.test(email);
   };
 
   // 비밀번호 유효성 검사: 최소 영문자 1자, 숫자 1자, 특수문자 1자를 포함한 8~20자리
@@ -117,7 +109,7 @@ export default function SignUpForm({ onSubmit }) {
 
       // 필수 항목 검증
       if (
-        !userId ||
+        !email ||
         !name ||
         !signupPassword ||
         !confirmPassword ||
@@ -127,14 +119,6 @@ export default function SignUpForm({ onSubmit }) {
       ) {
         setConfirmModalMessage('필수 항목을 모두 입력해주세요.');
         setShowConfirmModal(true);
-        return;
-      }
-
-      // 이메일 유효성 검사
-      if (!isValidEmail(userId)) {
-        setConfirmModalMessage('서경대학교 이메일(@skuniv.ac.kr)만 사용 가능합니다.');
-        setShowConfirmModal(true);
-        setEmailTouched(true);
         return;
       }
 
@@ -180,9 +164,10 @@ export default function SignUpForm({ onSubmit }) {
       }
 
       if (onSubmit) {
+        // 이메일 값에 @skuniv.ac.kr이 없으면 추가
+        const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
         onSubmit({
-          email,
-          userId,
+          email: finalEmail,
           name,
           password: signupPassword,
           confirmPassword,
@@ -345,15 +330,18 @@ export default function SignUpForm({ onSubmit }) {
   }
 
   // 두 번째 단계: 회원정보 입력
+  // 이메일 값에 @skuniv.ac.kr이 없으면 추가
+  const displayEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
+
   return (
     <div className="w-full max-w-lg mx-auto px-4 sm:px-0">
       <form onSubmit={handleSubmit}>
         <LoginTitle title="회원가입" />
         <SignUpInput
           label="아이디"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-          onBlur={() => setEmailTouched(true)}
+          value={displayEmail}
+          onChange={() => {}}
+          disabled={true}
           placeholder="abcd1234@skuniv.ac.kr"
           required
           mb="mb-6"
