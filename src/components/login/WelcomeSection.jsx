@@ -13,6 +13,12 @@ export default function WelcomeSection() {
 
   const isAccessSuccess = usePreventDirectAccess();
 
+  // 디버깅: 모바일에서 확인용
+  if (typeof window !== 'undefined') {
+    console.log('WelcomeSection - isAccessSuccess:', isAccessSuccess);
+    console.log('WelcomeSection - signupCompleted:', sessionStorage.getItem('signupCompleted'));
+  }
+
   if (!isAccessSuccess) {
     return <Navigate to={'/'} replace />;
   }
@@ -25,20 +31,20 @@ export default function WelcomeSection() {
   }
 
   return (
-    <GridSection rows={15}>
-      <div className="relative text-center h-full mt-[5vh] mb-[3vh] pb-[5vh] flex flex-col items-center w-full">
-        <div className="absolute top-[15vh] left-1/2 -translate-x-1/2 flex flex-col items-center w-full">
-          <p className="text-[#000000] text-[3.2rem] font-bold mb-4 mt-[-1.6vh]">
+    <GridSection>
+      <div className="relative w-full h-full flex flex-col items-center justify-center px-4 text-center">
+        <div className="flex flex-col items-center w-full px-4 absolute top-[8vh] sm:top-[15vh] left-1/2 -translate-x-1/2 z-20">
+          <p className="text-[#000000] text-2xl sm:text-[3.2rem] font-bold mb-2 sm:mb-4">
             {name}님 안녕하세요!
           </p>
-          <p className="text-[#000000] text-[1.2rem] font-medium mt-[-1.3vh]">
+          <p className="text-[#000000] text-sm sm:text-[1.2rem] font-medium px-2">
             서경대학교 멋쟁이사자처럼 홈페이지 가입을 환영합니다!
           </p>
         </div>
-        <div className="mb-4 mt-[27vh]">
-          <img src={logo} className="max-w-[70vw] w-[22.4rem]" alt="Logo" />
+        <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+          <img src={logo} className="max-w-[70vw] w-[16rem] sm:w-[22.4rem]" alt="Logo" />
         </div>
-        <div className="ml-[8vh]">
+        <div className="absolute bottom-[10vh] sm:bottom-[5vh] left-1/2 -translate-x-1/2 sm:ml-[8vh] z-20">
           <RedirectButton buttonName="홈으로" onClick={toHomeClick} />
         </div>
       </div>
