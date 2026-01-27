@@ -26,7 +26,7 @@ export default function ProjectViewDetail() {
   const { showToast } = useOutletContext();
 
   return (
-    <GridSection rows={23}>
+    <GridSection>
       <div className="flex justify-center pt-15 pb-63 ">
         <div className="flex flex-col ">
           <div className="flex items-center justify-center rounded-l-2xl mt-85 w-20 h-32 bg-[#F9F9F9] ml-auto">

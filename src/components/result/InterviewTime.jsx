@@ -42,14 +42,34 @@ export default function InterviewTime({ setAllChecked }) {
       setAllChecked((prev) => prev.map((item, index) => (index === 1 ? false : item)));
     }
   };
+  const interviewTimeData = [
+    {
+      date: '3월 10일 [월요일]',
+      startTime: ['6:00', '6:30', '7:00', '7:30'],
+      endTime: ['6:30', '7:00', '7:30', '8:00'],
+      available: [0, 1, 1, 1],
+    },
+    {
+      date: '3월 11일 [화요일]',
+      startTime: ['6:00', '6:30', '7:00', '7:30'],
+      endTime: ['6:30', '7:00', '7:30', '8:00'],
+      available: [0, 1, 1, 0],
+    },
+  ];
+  const [selectedTime, setSelectedTime] = useState({ date: '', starTime: '' });
 
   return (
     <div className="flex flex-col gap-20 items-center mt-30">
       <PageTitle title="면접 날짜 선택" width="270px" color="Navy" />
       <div className="flex flex-col gap-13">
-        <TimeBar setAllChecked={setAllChecked} />
-        <TimeBar setAllChecked={setAllChecked} />
-        <TimeBar setAllChecked={setAllChecked} />
+        {interviewTimeData.map((data) => (
+          <TimeBar
+            setAllChecked={setAllChecked}
+            data={data}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+          />
+        ))}
       </div>
       <div className="flex gap-13 mt-25">
         <TextTile width="528px" height="468px">
