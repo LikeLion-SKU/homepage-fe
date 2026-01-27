@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router';
 
-import GridSection from '@/components/background/GridSection';
 import RedirectButton from '@/components/common/Button/RedirectButton';
 import StatusMessage from '@/components/common/StatusMessage';
+import GridSection from '@/components/layout/background/GridSection';
 
 export default function ServerError() {
   const title = '요청하신 작업을 수행하지 못했습니다.';
