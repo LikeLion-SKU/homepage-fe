@@ -182,8 +182,13 @@ export default function PasswordFindForm({ onSubmit }) {
           className="border border-gray-300 rounded px-4 py-5 bg-white"
           style={{ transform: 'translateY(45px)' }}
         >
-          <p className="text-black text-sm font-['Pretendard'] mb-1">아이디가 생각나지 않을 경우</p>
-          <p className="text-black text-sm font-['Pretendard']">
+          <p className="text-black text-sm font-['Pretendard'] mb-1">아이디는 학교 이메일이며,</p>
+          <p className="text-black text-sm font-['Pretendard'] mb-1">
+            학교 포탈 아이디와는 연동되지 않습니다.
+          </p>
+          <p className="text-black text-sm font-['Pretendard'] mb-1">아이디 확인이 어려운 경우</p>
+          <p className="text-black text-sm font-['Pretendard'] mb-1">
+            {' '}
             skuofficial@likelion.org로 문의바랍니다.
           </p>
         </div>
