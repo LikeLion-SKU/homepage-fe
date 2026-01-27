@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router';
 
-import GridSection from '@/components/background/GridSection';
 import RedirectButton from '@/components/common/Button/RedirectButton';
 import StatusMessage from '@/components/common/StatusMessage';
+import GridSection from '@/components/layout/background/GridSection';
 
 export default function LoginRequired() {
   const title = '로그인이 필요한 서비스입니다.';
@@ -13,7 +13,7 @@ export default function LoginRequired() {
     <GridSection>
       <div className="flex flex-col min-h-screen justify-center items-center gap-16">
         <StatusMessage title={title} content={content}></StatusMessage>
-        <RedirectButton buttonName={buttonName} onClick={navigate('/login')}></RedirectButton>
+        <RedirectButton buttonName={buttonName} onClick={() => navigate('/login')}></RedirectButton>
       </div>
     </GridSection>
   );
