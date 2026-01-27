@@ -13,6 +13,13 @@ export default function PasswordChangeForm({ onSubmit }) {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  // 비밀번호 유효성 검사: 최소 영문자 1자, 숫자 1자, 특수문자 1자를 포함한 8~20자리
+  const isValidPassword = (password) => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
+    return passwordRegex.test(password);
+  };
 
   // 비밀번호 일치 여부 확인 (derived state)
   const passwordMatchStatus = useMemo(() => {
@@ -28,6 +35,11 @@ export default function PasswordChangeForm({ onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // 비밀번호 유효성 검사
+    if (!isValidPassword(newPassword)) {
+      setPasswordTouched(true);
+      return;
+    }
     // 비밀번호가 일치하고 모든 필드가 입력되어 있을 때만 모달 표시
     if (passwordMatchStatus === 'match' && currentPassword && newPassword && confirmPassword) {
       setIsModalOpen(true);
@@ -64,11 +76,20 @@ export default function PasswordChangeForm({ onSubmit }) {
             label="새 비밀번호"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
+            onBlur={() => setPasswordTouched(true)}
             placeholder="abcd1234"
             mb="mb-0"
             hideToggle={true}
           />
-          <div className="text-[#000000] text-sm text-left font-['Pretendard'] mb-4 mt-1">
+          <div
+            className={`text-sm text-left font-['Pretendard'] mb-4 mt-1 ${
+              passwordTouched && newPassword
+                ? isValidPassword(newPassword)
+                  ? 'text-green-500'
+                  : 'text-red-500'
+                : 'text-[#000000]'
+            }`}
+          >
             영문, 숫자 및 특수 문자 포함 8자 이상 20자 이하로 입력해주세요.
           </div>
         </div>
@@ -82,15 +103,17 @@ export default function PasswordChangeForm({ onSubmit }) {
             hideToggle={true}
           />
           {passwordMatchStatus === 'mismatch' && (
-            <div className="text-[#B0B0B0] text-sm text-left font-['Pretendard'] mb-4 mt-1">
+            <div className="text-red-500 text-sm text-left font-['Pretendard'] mb-4 mt-1">
               비밀번호가 일치하지 않습니다.
             </div>
           )}
-          {passwordMatchStatus === 'match' && (
-            <div className="text-[#000000] text-sm text-left font-['Pretendard'] mb-4 mt-1">
-              비밀번호가 일치합니다.
-            </div>
-          )}
+          {passwordMatchStatus === 'match' &&
+            isValidPassword(newPassword) &&
+            newPassword === confirmPassword && (
+              <div className="text-green-500 text-sm text-left font-['Pretendard'] mb-4 mt-1">
+                비밀번호가 일치합니다.
+              </div>
+            )}
           {passwordMatchStatus === null && <div className="mb-4"></div>}
         </div>
       </form>
@@ -98,7 +121,11 @@ export default function PasswordChangeForm({ onSubmit }) {
         <LoginButton
           onClick={handleSubmit}
           disabled={
-            !currentPassword || !newPassword || !confirmPassword || passwordMatchStatus !== 'match'
+            !currentPassword ||
+            !newPassword ||
+            !confirmPassword ||
+            !isValidPassword(newPassword) ||
+            passwordMatchStatus !== 'match'
           }
         >
           비밀번호 변경
