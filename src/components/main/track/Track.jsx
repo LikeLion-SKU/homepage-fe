@@ -1,6 +1,6 @@
-// eslint-disable-next-line no-unused-vars
 import { useRef } from 'react';
 
+// eslint-disable-next-line no-unused-vars
 import { motion, useInView } from 'framer-motion';
 
 import tracksBlahIcon from '@/assets/icons/main/track/tracks-blah.svg';

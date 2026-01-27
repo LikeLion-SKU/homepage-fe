@@ -26,10 +26,8 @@ const iconPositions = [
 ];
 
 function IntroIcons({ squareSizeRem, scale }) {
-  if (!squareSizeRem || squareSizeRem === 0) return null;
-
   // SCROLL 텍스트 위치 계산 (Intro.jsx와 동일)
-  const scrollTop = 15.2 * squareSizeRem;
+  const scrollTop = 15.2 * (squareSizeRem || 0);
   const scrollMarginBottom = (20 / 16) * scale;
   const scrollFontSize = (16 / 16) * scale;
   const scrollLineHeight = (24 / 16) * scale;
@@ -44,8 +42,8 @@ function IntroIcons({ squareSizeRem, scale }) {
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none"
         style={{
-          width: `${squareSizeRem * columns}rem`,
-          height: `${squareSizeRem * rows}rem`,
+          width: `${(squareSizeRem || 0) * columns}rem`,
+          height: `${(squareSizeRem || 0) * rows}rem`,
           zIndex: 11, // 격자 오버레이(z-10) 위에 배치하여 보이도록
         }}
       >
@@ -61,8 +59,9 @@ function IntroIcons({ squareSizeRem, scale }) {
           } else if ('row' in iconData && 'col' in iconData) {
             // 격자 좌표 방식 (기본)
             const { row, col } = iconData;
-            const baseLeft = col * squareSizeRem + squareSizeRem / 2;
-            const baseTop = row * squareSizeRem + squareSizeRem / 2;
+            const sizeRem = squareSizeRem || 0;
+            const baseLeft = col * sizeRem + sizeRem / 2;
+            const baseTop = row * sizeRem + sizeRem / 2;
             left = `${baseLeft + (offsetX / 16) * scale}rem`;
             top = `${baseTop + (offsetY / 16) * scale}rem`;
           } else {
