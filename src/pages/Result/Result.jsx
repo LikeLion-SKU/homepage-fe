@@ -24,10 +24,10 @@ export default function Result() {
     }
   };
   return (
-    <GridSection rows={pass ? 39 : 15}>
-      <div className="flex flex-col items-center gap-19">
+    <GridSection>
+      <div className="flex flex-col items-center gap-19 mb-60">
         <ResultSection pass={pass} />
-        <InterviewTime setAllChecked={setAllChecked} />
+        {pass && <InterviewTime setAllChecked={setAllChecked} />}
         <CheckButton
           buttonName={pass ? '면접 날짜 제출하기' : '확인했어요.'}
           onClick={() => buttonClick()}
