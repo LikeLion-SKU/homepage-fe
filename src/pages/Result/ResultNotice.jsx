@@ -21,7 +21,7 @@ export default function ResultNotice() {
           <div className="w-104 h-13 bg-[#C6E400] flex justify-center items-center text-[1.1rem] font-['Pretendard'] drop-shadow-[3px_4px_0px_rgba(212,212,212,1)]">
             최종 제출 일자: 2024:01:01 00:00:00
           </div>
-          <CheckButton buttonName="확인했어요" onClick={() => navigate('/result')} />
+          <CheckButton buttonName="확인하러가기" onClick={() => navigate('/result')} />
         </div>
       </GridSection>
     </div>
