@@ -1,7 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import GridSection from '@/components/layout/background/GridSection';
-
 // grid
 const columns = 24;
 const rows = 18;
@@ -385,7 +383,30 @@ export default function Square({ onScaleChange, onSquareSizeRemChange }) {
 
   return (
     <>
-      <GridSection>{null}</GridSection>
+      {/* 인트로 섹션 전용 격자 배경 (24 x 18 고정) */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col z-0 box-border pointer-events-none"
+        style={{
+          width: `${squareSizeRem * columns}rem`,
+          height: `${squareSizeRem * rows}rem`,
+        }}
+      >
+        {Array.from({ length: rows }).map((_, row) => (
+          <div key={row} className="flex">
+            {Array.from({ length: columns }).map((_, col) => (
+              <div
+                key={`${row}-${col}`}
+                className="box-border"
+                style={{
+                  width: `${squareSizeRem}rem`,
+                  height: `${squareSizeRem}rem`,
+                  border: '0.8px solid rgba(0, 0, 0, 0.08)',
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
 
       {/* 커서 영향 오버레이 */}
       <div
