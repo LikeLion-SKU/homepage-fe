@@ -18,6 +18,8 @@ import ApplyCommon from '@/pages/Apply/ApplyCommon';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
 import ApplyTrack from '@/pages/Apply/ApplyTrack';
 import FinalConfirm from '@/pages/Apply/FinalConfirm';
+import LoginRequired from '@/pages/Error/LoginRequired';
+import ServerError from '@/pages/Error/ServerError';
 import Login from '@/pages/Login/Login';
 import SignUp from '@/pages/Login/SignUp';
 import Welcome from '@/pages/Login/Welcome';
@@ -76,6 +78,8 @@ const router = createBrowserRouter([
           { path: '/signup', Component: SignUp },
           { path: '/password/find', Component: PasswordFind },
           { path: '/password/result', Component: PasswordResult },
+          { path: '/require', Component: LoginRequired },
+          { path: '/error', Component: ServerError },
         ],
       },
       {
