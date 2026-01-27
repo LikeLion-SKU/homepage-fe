@@ -2,14 +2,13 @@ import { useState } from 'react';
 
 //@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
+import {
+  interviewAddData,
+  interviewCheckData,
+} from '@/components/admin/Interview/InterviewDummyData';
 import TrackDateBox from '@/components/admin/Interview/TrackDateBox';
 
 export default function DateAdminSection() {
-  const interviewData = [
-    { track: 'PO', date: { '26.03.27': ['6:00'] } },
-    { track: 'Frotend' },
-    { track: 'Backend' },
-  ];
   const [isDateAdd, setIsDateAdd] = useState(true);
 
   return (
@@ -43,9 +42,9 @@ export default function DateAdminSection() {
       </div>
 
       <div className="flex gap-4">
-        {interviewData.map((data) => (
-          <TrackDateBox data={data} isDataAdd={isDateAdd} />
-        ))}
+        {isDateAdd
+          ? interviewAddData.map((data) => <TrackDateBox data={data} isDataAdd={isDateAdd} />)
+          : interviewCheckData.map((data) => <TrackDateBox data={data} isDataAdd={isDateAdd} />)}
       </div>
     </div>
   );
