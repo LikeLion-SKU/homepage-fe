@@ -9,13 +9,18 @@ function GridSection({ children }) {
     let raf = 0;
 
     const measure = () => {
-      // 어떤 모바일/데스크톱에서도실제 표시 영역기준
+      // 어떤 모바일/데스크톱에서도 실제 표시 영역 기준
       const vw = document.documentElement.clientWidth;
       const vh = window.visualViewport?.height ?? window.innerHeight;
+      const docH = document.documentElement.scrollHeight;
 
-      // 화면을 덮기 위해 필요한 칸 수(모자라면 안 되니까)
+      // 세로 기준은 현재 페이지 전체 높이를 기준으로 계산해서
+      // 인트로/프로젝트 등 긴 섹션에서도 아래가 비지 않도록 함
+      const targetHeight = Math.max(vh, docH);
+
+      // 화면을 덮기 위해 필요한 칸 수
       const cols = Math.ceil(vw / CELL_PX);
-      const rows = Math.ceil(vh / CELL_PX);
+      const rows = Math.ceil(targetHeight / CELL_PX);
 
       setDims({ cols, rows });
     };
@@ -46,8 +51,8 @@ function GridSection({ children }) {
   const gridHRem = useMemo(() => pxToRem(dims.rows * CELL_PX), [dims.rows]);
 
   return (
-    // 페이지 높이는 뷰포트에 딱 맞게
-    <main className="relative overflow-hidden" style={{ height: '100dvh', width: '100vw' }}>
+    // 페이지는 최소 뷰포트 높이를 가지되, 내용이 더 길면 자연스럽게 스크롤 되도록 height 대신 minHeight 사용
+    <main className="relative overflow-hidden" style={{ minHeight: '100dvh', width: '100%' }}>
       {/* 배경 격자: 화면 좌상단에 딱 붙여서 그린다 (중앙정렬 금지) */}
       <div
         className="absolute top-0 left-0 flex flex-col z-0 pointer-events-none"
