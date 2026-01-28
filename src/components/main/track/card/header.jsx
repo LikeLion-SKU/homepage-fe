@@ -17,10 +17,11 @@ function CardHeader({ title }) {
       <div
         className="bg-[#FFFFFF] absolute"
         style={{
-          width: `calc(100% - ${(44 / 16) * scale}rem)`,
-          maxWidth: `${(360 / 16) * scale}rem`,
+          // 가로 길이를 더 늘려 헤더 안 텍스트 영역을 넉넉하게
+          width: `calc(100% - ${(32 / 16) * scale}rem)`,
+          maxWidth: `${(400 / 16) * scale}rem`,
           height: `${(40 / 16) * scale}rem`,
-          left: `${(22 / 16) * scale}rem`,
+          left: `${(23 / 16) * scale}rem`,
           top: `${(16 / 16) * scale}rem`,
           zIndex: 1,
         }}
