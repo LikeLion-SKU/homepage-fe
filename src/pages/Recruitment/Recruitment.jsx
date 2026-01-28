@@ -13,13 +13,32 @@ export default function Recruitment() {
   const [openToggle, setOpenToggle] = useState([]);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const navigate = useNavigate();
-  const deadline = '2025-03-30T23:59:59';
+  const deadline = '2026-03-30T23:59:59';
+  const [isLoggedIn, _setIsLoggedIn] = useState(true); // 임의로 로그인 여부
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleToggle = (index) => {
     if (openToggle.includes(index)) {
       setOpenToggle(openToggle.filter((i) => i !== index)); // 누른 토글이 이미 열려있다면 -> 배열에서 제거
     } else {
       setOpenToggle([...openToggle, index]); // 누른 토글이 닫혀있다면 -> 배열에 추가
+    }
+  };
+
+  // zustand 이용 시
+  // // 예시: Recoil이나 커스텀 Hook을 사용하는 경우
+  // const { isLoggedIn } = useAuth();
+
+  const handleButtonClick = () => {
+    if (!isLoggedIn) {
+      // 1. 로그인 안 되어 있으면 로그인 유도 모달 오픈
+      setIsLoginModalOpen(true);
+    } else if (isExpired) {
+      // 2. 마감되었으면 아무것도 안 함 (이미 disabled 처리됐겠지만)
+      return;
+    } else {
+      // 3. 로그인 되어 있고 기간 내라면 신청 모달 오픈
+      setIsApplyModalOpen(true);
     }
   };
 
@@ -182,7 +201,7 @@ export default function Recruitment() {
         {/* 추후 변경 필요 */}
         <ApplyStickyBox
           deadline={formatDeadline(deadline)}
-          onClickModal={() => setIsApplyModalOpen(true)}
+          onClickModal={handleButtonClick}
           isExpired={isExpired}
           buttonStyle={`${buttonStyle} ${isExpired ? disabledStyle : ''}`}
         />
@@ -203,6 +222,16 @@ export default function Recruitment() {
         }}
       >
         지원하러 가시겠습니까?
+      </Modal>
+      <Modal
+        isOpen={isLoginModalOpen}
+        cancel={() => setIsLoginModalOpen(false)}
+        confirm={() => {
+          setIsLoginModalOpen(false);
+          navigate('/login'); // 확인 누르면 로그인 페이지로 이동
+        }}
+      >
+        로그인 후 지원 가능합니다.
       </Modal>
     </div>
   );
