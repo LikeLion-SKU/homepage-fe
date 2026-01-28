@@ -19,6 +19,9 @@ body {
   --color-text-gray: #b0b0b0;
   --color-gray-800: #686868;
   --color-lime: #b0b0b0;
+  --color-yellow-shadow: #cfd6a9;
+  --color-expired-gray-button: #d3d3d3;
+  --color-yellow-shadow-rgb: 207, 214, 169;
 }
 /* 프리텐다드 정의 */
 @font-face {

@@ -26,7 +26,7 @@ export default function MyPage() {
     flex justify-center items-center 
     text-black text-lg font-semibold font-['Pretendard']
     relative z-[1] transition-all duration-200
-    hover:drop-shadow-[3px_4px_0px_rgba(212,212,212,1)]
+    hover:drop-shadow-[5px_5px_0px_var(--color-yellow-shadow)]
     active:translate-x-[0.5px] active:translate-y-[0.5px]
   `;
 
