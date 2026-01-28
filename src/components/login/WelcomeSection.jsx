@@ -7,47 +7,50 @@ import { usePreventDirectAccess } from '@/hooks/usePreventDirectAccess';
 
 export default function WelcomeSection() {
   const [searchParams] = useSearchParams();
-  // 파라미터에서 name 읽기
   const name = searchParams.get('name') || 'GUEST';
   const navigate = useNavigate();
-
   const isAccessSuccess = usePreventDirectAccess();
 
-  // 디버깅: 모바일에서 확인용
-  if (typeof window !== 'undefined') {
-    console.log('WelcomeSection - isAccessSuccess:', isAccessSuccess);
-    console.log('WelcomeSection - signupCompleted:', sessionStorage.getItem('signupCompleted'));
-  }
+  if (!isAccessSuccess) return <Navigate to="/" replace />;
 
-  if (!isAccessSuccess) {
-    return <Navigate to={'/'} replace />;
-  }
-
-  // 홈으로 버튼 클릭 //
   function toHomeClick(e) {
     e.preventDefault();
-
-    navigate('/'); // 2번째 페이지 보여줌.
+    navigate('/');
   }
 
   return (
-    <GridSection>
-      <div className="relative w-full h-full flex flex-col items-center justify-center px-4 text-center">
-        <div className="flex flex-col items-center w-full px-4 absolute top-[8vh] sm:top-[15vh] left-1/2 -translate-x-1/2 z-20">
-          <p className="text-[#000000] text-2xl sm:text-[3.2rem] font-bold mb-2 sm:mb-4">
-            {name}님 안녕하세요!
-          </p>
-          <p className="text-[#000000] text-sm sm:text-[1.2rem] font-medium px-2">
-            서경대학교 멋쟁이사자처럼 홈페이지 가입을 환영합니다!
-          </p>
+    // 이 컴포넌트는 main안에 들어간다는 전제
+    <section className="relative h-full w-full">
+      {/* 격자 배경: 섹션 범위 안에서만 */}
+      <GridSection>
+        {/* 격자 위 콘텐츠 */}
+        <div className="relative z-10 h-full w-full flex justify-center px-4 text-center">
+          {/* 타이틀 + 이미지 + 버튼을 레이아웃 기준으로 아래로 이동 */}
+          <div className="flex flex-col items-center w-full max-w-[28rem] pt-[18vh] sm:pt-[14vh]">
+            <div className="mb-4 sm:mb-6">
+              <p className="text-black text-2xl sm:text-[3.2rem] font-bold mb-2 sm:mb-3">
+                {name}님 안녕하세요!
+              </p>
+              <p className="text-black text-sm sm:text-[1.2rem] font-medium px-2">
+                서경대학교 멋쟁이사자처럼 홈페이지 가입을 환영합니다!
+              </p>
+            </div>
+
+            <img
+              src={logo}
+              className="max-w-[70vw] w-[14rem] sm:w-[20rem] mb-8 sm:mb-10"
+              alt="Logo"
+            />
+
+            {/* 버튼만 오른쪽 정렬 */}
+            <div className="w-full flex justify-center">
+              <div className="ml-22">
+                <RedirectButton buttonName="홈으로" onClick={toHomeClick} />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-          <img src={logo} className="max-w-[70vw] w-[16rem] sm:w-[22.4rem]" alt="Logo" />
-        </div>
-        <div className="absolute bottom-[10vh] sm:bottom-[5vh] left-1/2 -translate-x-1/2 sm:ml-[8vh] z-20">
-          <RedirectButton buttonName="홈으로" onClick={toHomeClick} />
-        </div>
-      </div>
-    </GridSection>
+      </GridSection>
+    </section>
   );
 }
