@@ -14,12 +14,23 @@ export default function Result() {
   const [allChecked, setAllChecked] = useState([false, false]);
   const buttonClick = () => {
     if (pass) {
-      if (!allChecked[0] || !allChecked[1]) {
-        setOnModal(true);
-      } else {
-        navigate('/');
-      }
+      setOnModal(true);
     } else {
+      navigate('/');
+    }
+  };
+  const getModalMessage = () => {
+    if (allChecked[0] && allChecked[1]) {
+      return '면접 일정이 확정되었습니다.';
+    } else if (!allChecked[0]) {
+      return '면접 날짜를 선택해주세요.';
+    } else if (!allChecked[1]) {
+      return '모든 동의 항목에 동의해주세요.';
+    }
+  };
+  const modalClick = () => {
+    setOnModal(false);
+    if (allChecked[0] && allChecked[1]) {
       navigate('/');
     }
   };
@@ -34,8 +45,8 @@ export default function Result() {
         />
       </div>
       {onModal && (
-        <CheckModal isOpen={onModal} cancel={() => setOnModal(false)}>
-          {allChecked[0] ? '모든 동의 항목에 동의해주세요.' : '면접 날짜를 선택해주세요.'}
+        <CheckModal isOpen={onModal} cancel={() => modalClick()}>
+          {getModalMessage()}
         </CheckModal>
       )}
     </GridSection>
