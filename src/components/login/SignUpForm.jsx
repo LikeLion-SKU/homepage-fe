@@ -20,7 +20,6 @@ export default function SignUpForm({ onSubmit }) {
   const [correctCode, setCorrectCode] = useState(''); // 실제 인증번호 (임시로 저장)
 
   // 두 번째 단계 입력 필드
-  const [userId, setUserId] = useState('');
   const [name, setName] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -30,30 +29,65 @@ export default function SignUpForm({ onSubmit }) {
   const [isAgreed, setIsAgreed] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalMessage, setConfirmModalMessage] = useState('필수항목에 모두 입력하세요.');
+  const [passwordTouched, setPasswordTouched] = useState(false);
+  const [_nameTouched, setNameTouched] = useState(false);
+  const [_studentNumberTouched, setStudentNumberTouched] = useState(false);
+  const [_phoneTouched, setPhoneTouched] = useState(false);
 
   // 전화번호 포맷팅 함수 (하이픈 자동 추가)
+  // 01[016789]-XXX-XXXX 또는 01[016789]-XXXX-XXXX 형식
   const formatPhoneNumber = (value) => {
     // 숫자만 추출
     const numbers = value.replace(/[^\d]/g, '');
 
-    // 길이에 따라 하이픈 추가
-    if (numbers.length <= 3) {
+    // 01[016789]로 시작하는지 확인
+    if (numbers.length === 0) return '';
+    if (numbers.length <= 2) {
       return numbers;
-    } else if (numbers.length <= 7) {
-      return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
-    } else {
-      return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
     }
+    if (numbers.length <= 3) {
+      return `${numbers.slice(0, 3)}-`;
+    }
+    // 010, 011, 016, 017, 018, 019로 시작
+    if (
+      numbers[0] === '0' &&
+      numbers[1] === '1' &&
+      ['0', '1', '6', '7', '8', '9'].includes(numbers[2])
+    ) {
+      if (numbers.length <= 6) {
+        return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+      } else if (numbers.length <= 10) {
+        // 010-1234-5678 또는 010-123-4567 형식
+        return `${numbers.slice(0, 3)}-${numbers.slice(3, numbers.length === 10 ? 7 : 6)}-${numbers.slice(numbers.length === 10 ? 7 : 6)}`;
+      } else {
+        return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+      }
+    }
+    return numbers;
   };
 
-  // 전화번호 형식 검증 함수
-  const isValidPhoneNumber = (phoneNumber) => {
-    // 하이픈 포함 형식: 010-XXXX-XXXX
-    const phoneWithHyphen = /^010-\d{4}-\d{4}$/;
-    // 숫자만 형식: 010XXXXXXXX
-    const phoneOnlyNumbers = /^010\d{8}$/;
+  // 비밀번호 유효성 검사: 최소 영문자 1자, 숫자 1자, 특수문자 1자를 포함한 8~20자리
+  const isValidPassword = (password) => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
+    return passwordRegex.test(password);
+  };
 
-    return phoneWithHyphen.test(phoneNumber) || phoneOnlyNumbers.test(phoneNumber);
+  // 이름 유효성 검사: 2~17자리 문자열
+  const isValidName = (name) => {
+    if (!name) return false;
+    return name.length >= 2 && name.length <= 17;
+  };
+
+  // 학번 유효성 검사: 10자리 숫자만 가능
+  const isValidStudentNumber = (studentNumber) => {
+    const studentNumberRegex = /^[0-9]{10}$/;
+    return studentNumberRegex.test(studentNumber);
+  };
+
+  // 전화번호 형식 검증 함수: 01[016789]-XXX-XXXX 또는 01[016789]-XXXX-XXXX
+  const isValidPhoneNumber = (phoneNumber) => {
+    const phoneRegex = /^01[016789]-\d{3,4}-\d{4}$/;
+    return phoneRegex.test(phoneNumber);
   };
 
   const handleNextStep = () => {
@@ -73,16 +107,9 @@ export default function SignUpForm({ onSubmit }) {
         return;
       }
 
-      // 비밀번호 일치 여부 확인
-      if (signupPassword !== confirmPassword) {
-        setConfirmModalMessage('비밀번호가 일치하지 않습니다.');
-        setShowConfirmModal(true);
-        return;
-      }
-
       // 필수 항목 검증
       if (
-        !userId ||
+        !email ||
         !name ||
         !signupPassword ||
         !confirmPassword ||
@@ -95,17 +122,52 @@ export default function SignUpForm({ onSubmit }) {
         return;
       }
 
-      // 전화번호 형식 검증
-      if (!isValidPhoneNumber(phone)) {
-        setConfirmModalMessage('전화번호를 입력해주세요.');
+      // 비밀번호 유효성 검사
+      if (!isValidPassword(signupPassword)) {
+        setConfirmModalMessage(
+          '영문, 숫자 및 특수 문자(!@#$%^&*) 포함 8자 이상 20자 이하로 입력해주세요.'
+        );
+        setShowConfirmModal(true);
+        setPasswordTouched(true);
+        return;
+      }
+
+      // 비밀번호 일치 여부 확인
+      if (signupPassword !== confirmPassword) {
+        setConfirmModalMessage('비밀번호가 일치하지 않습니다.');
         setShowConfirmModal(true);
         return;
       }
 
+      // 이름 유효성 검사
+      if (!isValidName(name)) {
+        setConfirmModalMessage('이름은 2자 이상 17자 이하로 입력해주세요.');
+        setShowConfirmModal(true);
+        setNameTouched(true);
+        return;
+      }
+
+      // 학번 유효성 검사
+      if (!isValidStudentNumber(studentNumber)) {
+        setConfirmModalMessage('학번은 10자리 숫자만 입력 가능합니다.');
+        setShowConfirmModal(true);
+        setStudentNumberTouched(true);
+        return;
+      }
+
+      // 전화번호 형식 검증
+      if (!isValidPhoneNumber(phone)) {
+        setConfirmModalMessage('올바른 전화번호 형식으로 입력해주세요. (예: 010-1234-5678)');
+        setShowConfirmModal(true);
+        setPhoneTouched(true);
+        return;
+      }
+
       if (onSubmit) {
+        // 이메일 값에 @skuniv.ac.kr이 없으면 추가
+        const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
         onSubmit({
-          email,
-          userId,
+          email: finalEmail,
           name,
           password: signupPassword,
           confirmPassword,
@@ -268,14 +330,18 @@ export default function SignUpForm({ onSubmit }) {
   }
 
   // 두 번째 단계: 회원정보 입력
+  // 이메일 값에 @skuniv.ac.kr이 없으면 추가
+  const displayEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
+
   return (
     <div className="w-full max-w-lg mx-auto px-4 sm:px-0">
       <form onSubmit={handleSubmit}>
         <LoginTitle title="회원가입" />
         <SignUpInput
           label="아이디"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
+          value={displayEmail}
+          onChange={() => {}}
+          disabled={true}
           placeholder="abcd1234@skuniv.ac.kr"
           required
           mb="mb-6"
@@ -284,14 +350,28 @@ export default function SignUpForm({ onSubmit }) {
           <PasswordInput
             label="비밀번호"
             value={signupPassword}
-            onChange={(e) => setSignupPassword(e.target.value)}
+            onChange={(e) => {
+              setSignupPassword(e.target.value);
+              if (passwordTouched) {
+                // 입력 중에는 검증 상태 유지
+              }
+            }}
+            onBlur={() => setPasswordTouched(true)}
             placeholder="abcd1234"
             mb="mb-0"
             required
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
-            <p className="text-[#1A1A1A] text-base font-['Pretendard'] font-medium">
-              8자리 이상 문자로 입력해주세요.
+            <p
+              className={`text-base font-['Pretendard'] font-medium ${
+                passwordTouched && signupPassword
+                  ? isValidPassword(signupPassword)
+                    ? 'text-green-500'
+                    : 'text-red-500'
+                  : 'text-[#1A1A1A]'
+              }`}
+            >
+              영문, 숫자 및 특수 문자 포함 8자 이상 20자 이하로 입력해주세요.
             </p>
           </div>
         </div>
@@ -305,13 +385,15 @@ export default function SignUpForm({ onSubmit }) {
             required
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
-            {confirmPassword && signupPassword === confirmPassword && (
-              <p className="text-[#1A1A1A] text-base font-['Pretendard'] font-medium">
-                비밀번호가 일치합니다.
-              </p>
-            )}
+            {confirmPassword &&
+              isValidPassword(signupPassword) &&
+              signupPassword === confirmPassword && (
+                <p className="text-green-500 text-base font-['Pretendard'] font-medium">
+                  비밀번호가 일치합니다.
+                </p>
+              )}
             {confirmPassword && signupPassword !== confirmPassword && (
-              <p className="text-[#1A1A1A] text-base font-['Pretendard'] font-medium">
+              <p className="text-red-500 text-base font-['Pretendard'] font-medium">
                 비밀번호가 일치하지 않습니다.
               </p>
             )}
@@ -322,6 +404,7 @@ export default function SignUpForm({ onSubmit }) {
           label="이름"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          onBlur={() => setNameTouched(true)}
           placeholder="홍길동"
           required
           mb="mb-6"
@@ -338,6 +421,7 @@ export default function SignUpForm({ onSubmit }) {
           label="학번"
           value={studentNumber}
           onChange={(e) => setStudentNumber(e.target.value)}
+          onBlur={() => setStudentNumberTouched(true)}
           placeholder="2000000000"
           required
           mb="mb-6"
@@ -348,6 +432,7 @@ export default function SignUpForm({ onSubmit }) {
           type="tel"
           value={phone}
           onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
+          onBlur={() => setPhoneTouched(true)}
           placeholder="010-1234-5678"
           required
           mb="mb-6"

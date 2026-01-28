@@ -2,6 +2,7 @@ export default function SignUpInput({
   label,
   value,
   onChange,
+  onBlur = undefined,
   type = 'text',
   placeholder = '',
   mb = 'mb-6',
@@ -23,7 +24,7 @@ export default function SignUpInput({
     <div className={`flex flex-col gap-2 ${mb}`}>
       <label className="text-black text-base font-medium font-['Pretendard']">
         {label}
-        {required && <span className="text-black-500 ml-1">*</span>}
+        {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
         <div
@@ -33,6 +34,7 @@ export default function SignUpInput({
             type={type}
             value={value}
             onChange={onChange}
+            onBlur={onBlur}
             placeholder={placeholder}
             disabled={disabled}
             required={required}
