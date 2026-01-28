@@ -102,21 +102,32 @@ export default function SignUpForm({ onSubmit }) {
     if (step === 2) {
       // 동의 항목 체크 여부 확인
       if (!isAgreed) {
-        setConfirmModalMessage('필수 동의 항목에 동의해주세요.');
+        setConfirmModalMessage('개인정보 수집에 동의해주세요.');
         setShowConfirmModal(true);
         return;
       }
 
-      // 필수 항목 검증
-      if (
-        !email ||
-        !name ||
-        !signupPassword ||
-        !confirmPassword ||
-        !major ||
-        !studentNumber ||
-        !phone
-      ) {
+      // 개별 필수 항목 검증
+      if (!signupPassword) {
+        setConfirmModalMessage('비밀번호를 입력해주세요.');
+        setShowConfirmModal(true);
+        return;
+      }
+
+      if (!major) {
+        setConfirmModalMessage('학과를 입력해주세요.');
+        setShowConfirmModal(true);
+        return;
+      }
+
+      if (!name) {
+        setConfirmModalMessage('이름을 입력해주세요.');
+        setShowConfirmModal(true);
+        return;
+      }
+
+      // 나머지 필수 항목 검증
+      if (!confirmPassword || !studentNumber || !phone) {
         setConfirmModalMessage('필수 항목을 모두 입력해주세요.');
         setShowConfirmModal(true);
         return;
@@ -149,7 +160,7 @@ export default function SignUpForm({ onSubmit }) {
 
       // 학번 유효성 검사
       if (!isValidStudentNumber(studentNumber)) {
-        setConfirmModalMessage('학번은 10자리 숫자만 입력 가능합니다.');
+        setConfirmModalMessage('학번 10자리를 입력해주세요.');
         setShowConfirmModal(true);
         setStudentNumberTouched(true);
         return;
@@ -157,7 +168,7 @@ export default function SignUpForm({ onSubmit }) {
 
       // 전화번호 형식 검증
       if (!isValidPhoneNumber(phone)) {
-        setConfirmModalMessage('올바른 전화번호 형식으로 입력해주세요. (예: 010-1234-5678)');
+        setConfirmModalMessage('전화번호를 입력해주세요.');
         setShowConfirmModal(true);
         setPhoneTouched(true);
         return;
