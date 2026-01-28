@@ -17,6 +17,8 @@ body {
   --color-modal-white: #ffffff;
   --color-button-gray: #f9f9f9;
   --color-text-gray: #b0b0b0;
+  --color-gray-800: #686868;
+  --color-lime: #b0b0b0;
 }
 /* 프리텐다드 정의 */
 @font-face {
@@ -49,7 +51,9 @@ body {
 }
 /* Tailwind v4 방식으로 기본 폰트 지정 */
 @theme {
-  --font-sans: "Pretendard", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans:
+    'Pretendard', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
 }
 /* 브라우저 렌더링 최적화 */
 @layer base {
