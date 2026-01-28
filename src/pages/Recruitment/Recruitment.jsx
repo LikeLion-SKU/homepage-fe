@@ -5,12 +5,15 @@ import Toggle from '@/assets/icons/under_toggle.svg';
 import ApplyStickyBox from '@/components/animation/ApplyStickyBox';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
+import { checkExpired } from '@/utils/Date';
+import { formatDeadline } from '@/utils/Date';
 
 export default function Recruitment() {
   // 열려있는 토글들의 인덱스 배열로 저장
   const [openToggle, setOpenToggle] = useState([]);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const navigate = useNavigate();
+  const deadline = '2025-03-30T23:59:59';
 
   const handleToggle = (index) => {
     if (openToggle.includes(index)) {
@@ -19,6 +22,11 @@ export default function Recruitment() {
       setOpenToggle([...openToggle, index]); // 누른 토글이 닫혀있다면 -> 배열에 추가
     }
   };
+
+  // 마감일 지났는지 확인
+  const isExpired = checkExpired(deadline);
+  // 기수
+  const generation = '14';
 
   const questionData = [
     {
@@ -57,7 +65,7 @@ export default function Recruitment() {
     flex items-center justify-between
     text-black text-base font-medium font-['Pretendard']
     relative z-[1] transition-all duration-200
-    hover:drop-shadow-[3px_4px_0px_rgba(212,212,212,1)]
+    hover:drop-shadow-[5px_5px_0px_rgba(var(--color-yellow-shadow-rgb),0.6)]
     active:translate-x-[0.5px] active:translate-y-[0.5px]
   `;
   const buttonStyle = `
@@ -65,8 +73,16 @@ export default function Recruitment() {
     flex justify-center items-center 
     text-black text-lg font-semibold font-['Pretendard']
     relative z-[1] transition-all duration-200
-    hover:drop-shadow-[3px_4px_0px_rgba(212,212,212,1)]
+    hover:drop-shadow-[5px_5px_0px_var(--color-yellow-shadow)]
     active:translate-x-[0.5px] active:translate-y-[0.5px]
+  `;
+
+  // 마감일 지났을때 지원하기 버튼 비활성화
+  const disabledStyle = `
+    w-full h-15 bg-expired-gray-button border border-black
+    flex justify-center items-center 
+    text-gray-800 text-lg font-semibold
+    !drop-shadow-none !shadow-none
   `;
 
   return (
@@ -76,10 +92,10 @@ export default function Recruitment() {
         {/* 제목 부분 */}
         <div className="flex flex-col gap-7">
           <h1 className="text-black text-4xl font-extrabold font-['Pretendard']">
-            14기 아기사자 모집안내
+            {generation}기 아기사자 모집안내
           </h1>
           <p className="text-stone-900 text-lg font-medium font-['Pretendard']">
-            서경대학교 멋쟁이사자처럼 14기 아기사자를 모집해요!
+            서경대학교 멋쟁이사자처럼 {generation}기 아기사자를 모집해요!
           </p>
         </div>
 
@@ -90,11 +106,12 @@ export default function Recruitment() {
         <div className="flex flex-col gap-24 pb-20">
           <section>
             <h2 className="text-2xl font-bold mb-7">모집 일정</h2>
-            <ul className="list-disc ml-5 font-medium">
-              <li>
-                1차 서류 모집 &gt; 1차 합격자 발표 &gt; 2차 면접 &gt; 2차 합격자 발표 &gt; 서경대
-                멋사 OT
-              </li>
+            <ul className="list-disc ml-5 flex flex-col gap-6 font-medium">
+              <li>1차 서류 모집 : ○월 ○일 ~ ○월 ○일</li>
+              <li>1차 합격자 발표 : ○월 ○일</li>
+              <li>2차 면접 : ○월 ○일 ~ ○월 ○일</li>
+              <li>2차 합격자 발표 : ○월 ○일</li>
+              <li>서경대 멋사 OT : ○월 ○일</li>
             </ul>
           </section>
 
@@ -104,8 +121,10 @@ export default function Recruitment() {
               <li>서경대학교 재학생 또는 휴학생</li>
               <li>멋사 활동에 적극적으로 참여할 학생</li>
               <li>개인 노트북 소유자</li>
-              <li>매주 월요일 18시 30분 세션 대면 참가 가능한 학생</li>
-              <li>지원 파트에 대한 기본적인 역량을 갖춘 학생</li>
+              <li>
+                주중 1일(트랙별 상이) 18시 30분부터 약 2시간 진행되는 대면 세션에 참여 가능한 학생
+              </li>
+              <li>지원 트랙에 대한 기본적인 역량을 갖춘 학생</li>
             </ul>
           </section>
 
@@ -115,8 +134,10 @@ export default function Recruitment() {
               <li>서경대학교 재학생 또는 휴학생</li>
               <li>멋사 활동에 적극적으로 참여할 학생</li>
               <li>중복 제출은 불가합니다.</li>
-              <li>매주 월요일 18시 30분 세션 대면 참가 가능한 학생</li>
-              <li>지원 파트에 대한 기본적인 역량을 갖춘 학생</li>
+              <li>
+                주중 1일(트랙별 상이) 18시 30분부터 약 2시간 진행되는 대면 세션에 참여 가능한 학생
+              </li>
+              <li>지원 트랙에 대한 기본적인 역량을 갖춘 학생</li>
             </ul>
           </section>
 
@@ -160,9 +181,10 @@ export default function Recruitment() {
       <div className="flex justify-end w-full pr-15">
         {/* 추후 변경 필요 */}
         <ApplyStickyBox
-          deadline="2026.03.30 오후 5:00"
+          deadline={formatDeadline(deadline)}
           onClickModal={() => setIsApplyModalOpen(true)}
-          buttonStyle={buttonStyle}
+          isExpired={isExpired}
+          buttonStyle={`${buttonStyle} ${isExpired ? disabledStyle : ''}`}
         />
       </div>
       <Modal
