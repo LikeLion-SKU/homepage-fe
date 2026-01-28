@@ -283,3 +283,8 @@ select {
   min-width: calc(150px * var(--scale, 1));
   height: calc(52px * var(--scale, 1));
 }
+
+@theme {
+  --breakpoint-pad: 375px;
+  --breakpoint-web: 760px;
+}
