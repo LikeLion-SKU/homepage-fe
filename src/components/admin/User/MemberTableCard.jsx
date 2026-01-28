@@ -47,12 +47,25 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
         ];
       });
       cardCheckData.setIsEdit(index + 1);
+      cardCheckData.setIsCopy(index + 1);
       showToast('복사가 완료되었습니다.');
     });
   };
+  const getBgColor = () => {
+    if (isEditingThisCard) {
+      if (cardCheckData.isCopy === index) {
+        return 'bg-[#DFEBB5]';
+      }
+      return 'bg-[#E7E7E7]';
+    } else {
+      return '';
+    }
+  };
 
   return (
-    <div className="w-314 h-21 flex items-center pl-11 pr-10 text-[1.1rem] font-semibold gap-10">
+    <div
+      className={`w-314 h-21 flex items-center pl-11 pr-10 text-[1.1rem] font-semibold gap-10 ${getBgColor()}`}
+    >
       {isChecked ? (
         <Check onClick={() => handleToggle()} />
       ) : (

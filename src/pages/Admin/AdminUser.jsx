@@ -20,7 +20,9 @@ export default function AdminUser() {
     explain: '게스트에게 구성원 권한을 부여하거나 구성원을 게스트 권한으로 변경하는 페이지입니다.',
     rule: [],
   };
-  const buttonData = ['14기', '13기', '12기', '11기'];
+  const semesterData = ['14기', '13기', '12기', '11기'];
+  const trackData = ['PO', 'PM', 'Design', 'Fronted', 'Backend'];
+  const roleData = ['대표', '부대표', '운영진', '아기사자'];
 
   const [isUser, setIsUser] = useState(true);
   const [isNumber, setIsNumber] = useState(true);
@@ -47,9 +49,9 @@ export default function AdminUser() {
         <div className="flex flex-col gap-5">
           {!isUser && (
             <>
-              <ButtonGroup buttonData={buttonData} isCheck={isNumber} setIsCheck={setIsNumber} />
-              <ButtonGroup buttonData={buttonData} isCheck={isTrack} setIsCheck={setIsTrack} />
-              <ButtonGroup buttonData={buttonData} isCheck={isRole} setIsCheck={setIsRole} />
+              <ButtonGroup buttonData={semesterData} isCheck={isNumber} setIsCheck={setIsNumber} />
+              <ButtonGroup buttonData={trackData} isCheck={isTrack} setIsCheck={setIsTrack} />
+              <ButtonGroup buttonData={roleData} isCheck={isRole} setIsCheck={setIsRole} />
             </>
           )}
         </div>
