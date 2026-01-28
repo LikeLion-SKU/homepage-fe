@@ -9,9 +9,8 @@ export default function TimeBar({ startTime, endTime }) {
 
   return (
     <div className="flex gap-5 items-center">
-      <p>오후</p>
       <p>
-        {startTime} - {endTime}
+        {startTime.slice(0, 5)} - {endTime.slice(0, 5)}
       </p>
       <Trash
         onClick={() =>

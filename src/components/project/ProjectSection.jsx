@@ -10,7 +10,7 @@ export default function ProjectSection({ data }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith('/admin');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const handleLoading = () => {
     setIsLoading(true);
   }; //esLint 제거를 위해 임시로 넣음
@@ -28,7 +28,9 @@ export default function ProjectSection({ data }) {
         <div className="flex flex-col mt-6 px-7">
           {isAdmin && (
             <div
-              onClick={() => navigate('/admin/project/edit')}
+              onClick={() =>
+                navigate('/admin/project/edit', { state: { id: null, isEdit: false } })
+              }
               className="flex h-15 border justify-center items-center "
             >
               <Plus />

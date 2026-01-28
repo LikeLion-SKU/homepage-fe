@@ -4,12 +4,16 @@ import { useOutletContext } from 'react-router';
 //@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 import UserTableCard from '@/components/admin/User/UserTableCard';
-import Modal from '@/components/common/Modal/ConfirmModal';
-import Toast from '@/components/common/Toast/Toast';
 
-export default function Table({ option, cardData, onDelete = true }) {
+export default function UserTable({
+  option,
+  cardData,
+  setCardData,
+  setOtherData,
+  onDelete = true,
+}) {
   const [checkedList, setCheckedList] = useState([]);
-  const handleCheck = () => {
+  const handleAllCheck = () => {
     if (checkedList.length > 0) {
       // 하나라도 체크되어 있다면 -> '선택 취소' 동작 (리스트 비우기)
       setCheckedList([]);
@@ -22,20 +26,33 @@ export default function Table({ option, cardData, onDelete = true }) {
   };
   //@ts-ignore
   const { openModal, showToast } = useOutletContext();
+  const handleMove = () => {
+    const movePerson = cardData.filter((_, index) => checkedList.includes(index));
 
+    setCardData((prev) => prev.filter((_, index) => !checkedList.includes(index)));
+    setOtherData((prev) => [...prev, ...movePerson]);
+    setCheckedList([]);
+  };
+  const handleDelete = () => {
+    setCardData((prev) => prev.filter((_, index) => !checkedList.includes(index)));
+    setCheckedList([]);
+  };
   return (
     <div className="flex flex-col gap-5.5">
       <div className="flex justify-between">
         <div className="flex gap-2">
           <button
-            onClick={() => handleCheck()}
+            onClick={() => handleAllCheck()}
             className="w-20 h-10 border text-center items-center bg-white"
           >
             {checkedList.length > 0 ? '선택취소' : '전체선택'}
           </button>
           {checkedList.length > 0 && (
             <button
-              onClick={() => showToast('이동되었습니다.')}
+              onClick={() => {
+                handleMove();
+                showToast('이동되었습니다.');
+              }}
               className="w-25 h-10 border text-center items-center bg-white"
             >
               구성원 이동
@@ -45,6 +62,7 @@ export default function Table({ option, cardData, onDelete = true }) {
             <button
               onClick={() =>
                 openModal('구성원 정보를 삭제하시겠습니까?', () => {
+                  handleDelete();
                   showToast('삭제되었습니다!');
                 })
               }
@@ -66,14 +84,15 @@ export default function Table({ option, cardData, onDelete = true }) {
           ))}
         </div>
         <div className="flex flex-col ">
-          {cardData.map((data, index) => (
-            <UserTableCard
-              index={index}
-              cardData={data}
-              checkedList={checkedList}
-              setCheckedList={setCheckedList}
-            />
-          ))}
+          {cardData.length > 0 &&
+            cardData.map((data, index) => (
+              <UserTableCard
+                index={index}
+                cardData={data}
+                checkedList={checkedList}
+                setCheckedList={setCheckedList}
+              />
+            ))}
         </div>
       </div>
     </div>
