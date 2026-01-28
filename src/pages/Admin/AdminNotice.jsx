@@ -11,8 +11,8 @@ export default function AdminNotice() {
   // @ts-ignore
   const openModal = context?.openModal || (() => {});
   const propsData = {
-    title: '공고 일정 관리',
-    explain: '공고 일정 관리 페이지입니다.',
+    title: '지원 일정 관리',
+    explain: '지원 일정 관리 페이지입니다.',
     rule: [],
   };
 
@@ -62,6 +62,7 @@ export default function AdminNotice() {
               <p className="w-40 text-center">공개일</p>
               <p className="w-40 text-center">마감일</p>
               <p className="w-40 text-center">서류 발표일</p>
+              <p className="w-40 text-center">면접 일정 확정일</p>
               <p className="w-40 text-center">최종 발표일</p>
               <div className="w-24"></div>
             </div>
