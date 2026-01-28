@@ -13,9 +13,18 @@ export default function ApplyTrack() {
   const { formData, handleAnswerChange } = useOutletContext();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [shouldNavigate, setShouldNavigate] = useState(false);
 
   const handlePrevious = () => {
     navigate('/apply/common'); // URL 이동
+  };
+
+  // 모든 답변을 한 후 최종확인 페이지로 이동하는 모달의 '확인'버튼을 누를 경우
+  const handleModalConfirm = () => {
+    setIsModalOpen(false);
+    if (shouldNavigate) {
+      navigate('/apply/confirm');
+    }
   };
 
   const handleNext = () => {
@@ -23,10 +32,13 @@ export default function ApplyTrack() {
     const isAllAnswered = validateAnswers(commonQuestions, formData.answers);
 
     if (!isAllAnswered) {
+      setShouldNavigate(false);
       setIsModalOpen(true);
-      return;
+    } else {
+      // 모든 답변이 완료되었을 때
+      setShouldNavigate(true); // 최종 확인 페이지로 이동해야 함
+      setIsModalOpen(true);
     }
-    navigate('/apply/confirm');
   };
 
   // 트랙별 질문 유효성 검사
@@ -124,8 +136,18 @@ export default function ApplyTrack() {
           </div>
         </div>
       </div>
-      <CheckModal isOpen={isModalOpen} cancel={() => setIsModalOpen(false)}>
-        모든 답변을 작성해 주세요!
+      <CheckModal isOpen={isModalOpen} cancel={handleModalConfirm}>
+        {shouldNavigate ? (
+          <>
+            최종 확인 페이지로 이동합니다.
+            <br />
+            최종 확인 후 제출하기 버튼을 통해
+            <br />
+            제출 완료를 해주세요.
+          </>
+        ) : (
+          '모든 답변을 작성해 주세요!'
+        )}
       </CheckModal>
     </div>
   );
