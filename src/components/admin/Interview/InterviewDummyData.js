@@ -3,14 +3,34 @@ export const interviewAddData = [
     track: 'PO',
     date: [
       {
-        date: '26.03.08',
-        startTime: ['6:00', '6:30', '7:00', '7:30'],
-        endTime: ['6:30', '7:00', '7:30', '8:00'],
+        date: '2026-02-20',
+        times: [
+          {
+            startTime: '18:00:00',
+            endTime: '18:30:00',
+            booked: false,
+          },
+          {
+            startTime: '18:30:00',
+            endTime: '19:00:00',
+            booked: true,
+          },
+        ],
       },
       {
-        date: '26.03.09',
-        startTime: ['6:00', '6:30', '7:00', '7:30'],
-        endTime: ['6:30', '7:00', '7:30', '8:00'],
+        date: '2026-02-20',
+        times: [
+          {
+            startTime: '18:00:00',
+            endTime: '18:30:00',
+            booked: false,
+          },
+          {
+            startTime: '18:30:00',
+            endTime: '19:00:00',
+            booked: true,
+          },
+        ],
       },
     ],
   },
@@ -18,14 +38,34 @@ export const interviewAddData = [
     track: 'Frotend',
     date: [
       {
-        date: '26.03.08',
-        startTime: ['6:00', '6:30', '7:00', '7:30'],
-        endTime: ['6:30', '7:00', '7:30', '8:00'],
+        date: '2026-02-20',
+        times: [
+          {
+            startTime: '18:00:00',
+            endTime: '18:30:00',
+            booked: false,
+          },
+          {
+            startTime: '18:30:00',
+            endTime: '19:00:00',
+            booked: true,
+          },
+        ],
       },
       {
-        date: '26.03.09',
-        startTime: ['6:00', '6:30', '7:00', '7:30'],
-        endTime: ['6:30', '7:00', '7:30', '8:00'],
+        date: '2026-02-20',
+        times: [
+          {
+            startTime: '18:00:00',
+            endTime: '18:30:00',
+            booked: false,
+          },
+          {
+            startTime: '18:30:00',
+            endTime: '19:00:00',
+            booked: true,
+          },
+        ],
       },
     ],
   },
@@ -33,14 +73,34 @@ export const interviewAddData = [
     track: 'Backend',
     date: [
       {
-        date: '26.03.08',
-        startTime: ['6:00', '6:30', '7:00', '7:30'],
-        endTime: ['6:30', '7:00', '7:30', '8:00'],
+        date: '2026-02-20',
+        times: [
+          {
+            startTime: '18:00:00',
+            endTime: '18:30:00',
+            booked: false,
+          },
+          {
+            startTime: '18:30:00',
+            endTime: '19:00:00',
+            booked: true,
+          },
+        ],
       },
       {
-        date: '26.03.09',
-        startTime: ['6:00', '6:30', '7:00', '7:30'],
-        endTime: ['6:30', '7:00', '7:30', '8:00'],
+        date: '2026-02-20',
+        times: [
+          {
+            startTime: '18:00:00',
+            endTime: '18:30:00',
+            booked: false,
+          },
+          {
+            startTime: '18:30:00',
+            endTime: '19:00:00',
+            booked: true,
+          },
+        ],
       },
     ],
   },
@@ -51,40 +111,52 @@ export const interviewCheckData = [
     track: 'PO',
     date: [
       {
-        date: '26.03.08',
-        startTime: ['6:00', '6:30'],
-        endTime: ['6:30', '7:00'],
-        personalData: [
+        date: '2026-03-09',
+        slots: [
           {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
+            startTime: '18:00:00',
+            endTime: '18:30:00',
+            person: {
+              name: '정목진',
+              major: '소프트웨어학과',
+              stdNum: '2022301072',
+              phoneNum: '01049546336',
+            },
           },
           {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
+            startTime: '18:30:00',
+            endTime: '19:00:00',
+            person: {
+              name: '신채린',
+              major: '소프트웨어학과',
+              stdNum: '2022301072',
+              phoneNum: '01012345678',
+            },
           },
         ],
       },
       {
-        date: '26.03.09',
-        startTime: ['6:00', '6:30'],
-        endTime: ['6:30', '7:00'],
-        personalData: [
+        date: '2026-03-10',
+        slots: [
           {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
+            startTime: '18:00:00',
+            endTime: '18:30:00',
+            person: {
+              name: '정목진',
+              major: '소프트웨어학과',
+              stdNum: '2022301072',
+              phoneNum: '01049546336',
+            },
           },
           {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
+            startTime: '18:30:00',
+            endTime: '19:00:00',
+            person: {
+              name: '신채린',
+              major: '소프트웨어학과',
+              stdNum: '2022301072',
+              phoneNum: '01012345678',
+            },
           },
         ],
       },
@@ -94,40 +166,52 @@ export const interviewCheckData = [
     track: 'Frontend',
     date: [
       {
-        date: '26.03.08',
-        startTime: ['6:00', '6:30'],
-        endTime: ['6:30', '7:00'],
-        personalData: [
+        date: '2026-03-09',
+        slots: [
           {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
+            startTime: '18:00:00',
+            endTime: '18:30:00',
+            person: {
+              name: '정목진',
+              major: '소프트웨어학과',
+              stdNum: '2022301072',
+              phoneNum: '01049546336',
+            },
           },
           {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
+            startTime: '18:30:00',
+            endTime: '19:00:00',
+            person: {
+              name: '신채린',
+              major: '소프트웨어학과',
+              stdNum: '2022301072',
+              phoneNum: '01012345678',
+            },
           },
         ],
       },
       {
-        date: '26.03.09',
-        startTime: ['6:00', '6:30'],
-        endTime: ['6:30', '7:00'],
-        personalData: [
+        date: '2026-03-09',
+        slots: [
           {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
+            startTime: '18:00:00',
+            endTime: '18:30:00',
+            person: {
+              name: '정목진',
+              major: '소프트웨어학과',
+              stdNum: '2022301072',
+              phoneNum: '01049546336',
+            },
           },
           {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
+            startTime: '18:30:00',
+            endTime: '19:00:00',
+            person: {
+              name: '신채린',
+              major: '소프트웨어학과',
+              stdNum: '2022301072',
+              phoneNum: '01012345678',
+            },
           },
         ],
       },
@@ -137,40 +221,27 @@ export const interviewCheckData = [
     track: 'Backend',
     date: [
       {
-        date: '26.03.08',
-        startTime: ['6:00', '6:30'],
-        endTime: ['6:30', '7:00'],
-        personalData: [
+        date: '2026-03-09',
+        slots: [
           {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
+            startTime: '18:00:00',
+            endTime: '18:30:00',
+            person: {
+              name: '정목진',
+              major: '소프트웨어학과',
+              stdNum: '2022301072',
+              phoneNum: '01049546336',
+            },
           },
           {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
-          },
-        ],
-      },
-      {
-        date: '26.03.09',
-        startTime: ['6:00', '6:30'],
-        endTime: ['6:30', '7:00'],
-        personalData: [
-          {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
-          },
-          {
-            name: '정목진',
-            major: '소프트웨어학과',
-            stdNum: '2022301072',
-            phoneNum: '01049546336',
+            startTime: '18:30:00',
+            endTime: '19:00:00',
+            person: {
+              name: '신채린',
+              major: '소프트웨어학과',
+              stdNum: '2022301072',
+              phoneNum: '01012345678',
+            },
           },
         ],
       },

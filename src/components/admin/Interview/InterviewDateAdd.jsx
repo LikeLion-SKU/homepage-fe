@@ -3,7 +3,6 @@ import { useState } from 'react';
 import DateAddCard from '@/components/admin/Interview/DateAddCard';
 
 export default function InterviewDataAdd({ dateData }) {
-  const [isAfternoon, setIsAfternoon] = useState(true);
   const [inputData, setInputData] = useState({ date: '', startTime: '', endTime: '' });
 
   const handleInput = (e) => {
@@ -34,21 +33,15 @@ export default function InterviewDataAdd({ dateData }) {
           value={inputData.date}
           onChange={(e) => handleInput(e)}
           placeholder="YY.MM.DD"
-          className="w-25 h-12 border focus:outline-none px-4"
+          className="w-25 h-12 border focus:outline-none pl-3"
         />
-        <button
-          onClick={() => setIsAfternoon(!isAfternoon)}
-          className="flex w-12 h-12 justify-center items-center border"
-        >
-          {isAfternoon ? '오후' : '오전'}
-        </button>
         <div className="flex gap-1 items-center">
           <input
             name="startTime"
             value={inputData.startTime}
             onChange={(e) => handleInput(e)}
-            placeholder="0:00"
-            className="w-21 h-12 border focus:outline-none px-6"
+            placeholder="00:00"
+            className="w-21 h-12 border focus:outline-none pl-5"
           />
           <p>-</p>
           <input
@@ -56,8 +49,8 @@ export default function InterviewDataAdd({ dateData }) {
             value={inputData.endTime}
             onChange={(e) => handleInput(e)}
             onKeyDown={(e) => addDate(e)}
-            placeholder="0:00"
-            className="w-21 h-12 border focus:outline-none px-6"
+            placeholder="00:00"
+            className="w-21 h-12 border focus:outline-none pl-5"
           />
         </div>
       </div>

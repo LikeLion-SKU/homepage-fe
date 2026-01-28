@@ -1,12 +1,13 @@
-import { useOutletContext } from 'react-router';
+import { useNavigate, useOutletContext } from 'react-router';
 
 export default function InterviewDateBox({ startTime, endTime, personalData }) {
   // @ts-ignore
   const { openModal, showToast } = useOutletContext();
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col w-65 h-49 border justify-center px-5 gap-5">
-      <p className="">
-        오후 {startTime} - {endTime}
+      <p>
+        {startTime.slice(0, 5)} - {endTime.slice(0, 5)}
       </p>
       <div className="flex gap-4">
         <p className="font-bold">{personalData.name}</p>
@@ -18,7 +19,10 @@ export default function InterviewDateBox({ startTime, endTime, personalData }) {
           <p>{personalData.phoneNum}</p>
         </div>
         <div className="flex flex-col gap-2">
-          <button className="w-20 h-7.25 text-center items-center bg-[#D8D8D8] border text-[0.9rem]">
+          <button
+            onClick={() => navigate('/apply/complete')} //추후 경로 확정시 변경 필요
+            className="w-20 h-7.25 text-center items-center bg-[#D8D8D8] border text-[0.9rem]"
+          >
             지원서
           </button>
           <button
