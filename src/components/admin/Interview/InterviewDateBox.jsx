@@ -20,7 +20,7 @@ export default function InterviewDateBox({ startTime, endTime, personalData }) {
         </div>
         <div className="flex flex-col gap-2">
           <button
-            onClick={() => navigate('/apply/complete')} //추후 경로 확정시 변경 필요
+            onClick={() => navigate('/application')} //추후 경로 확정시 변경 필요
             className="w-20 h-7.25 text-center items-center bg-[#D8D8D8] border text-[0.9rem]"
           >
             지원서
