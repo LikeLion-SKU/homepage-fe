@@ -66,6 +66,29 @@ export default function NoticeTableData({ children }) {
   };
 
   const handleSave = (index, editData) => {
+    // 동일한 지원 일정(모든 필드 값이 동일한 row)이 이미 존재하는지 검사
+    const isDuplicate = noticeData.some((row, idx) => {
+      if (idx === index) return false;
+      return (
+        row.ordinalNum === editData.ordinalNum &&
+        row.publicDate === editData.publicDate &&
+        row.publicTime === editData.publicTime &&
+        row.deadline === editData.deadline &&
+        row.deadlineTime === editData.deadlineTime &&
+        row.documentDate === editData.documentDate &&
+        row.documentTime === editData.documentTime &&
+        row.interviewDate === editData.interviewDate &&
+        row.interviewTime === editData.interviewTime &&
+        row.finalDate === editData.finalDate &&
+        row.finalTime === editData.finalTime
+      );
+    });
+
+    if (isDuplicate) {
+      showToast('지원 일정이 겹치지 않게 선택해주세요.');
+      return;
+    }
+
     setNoticeData((prev) => {
       const newData = [...prev];
       newData[index] = editData;
