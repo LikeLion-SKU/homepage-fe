@@ -43,6 +43,7 @@ export default function AdminMember() {
   ]);
   const [checkedList, setCheckedList] = useState([]);
   const [isEdit, setIsEdit] = useState(-1);
+  const [isCopy, setIsCopy] = useState(-1);
   //@ts-ignore
   const { openModal, showToast } = useOutletContext();
   const handleCheck = () => {
@@ -71,6 +72,8 @@ export default function AdminMember() {
     isEdit,
     setIsEdit,
     setAllCardData,
+    isCopy,
+    setIsCopy,
   };
 
   return (

@@ -35,25 +35,25 @@ export default function ProjectPagenation({ props }) {
   };
 
   return (
-    <div className="flex gap-7 text-[1.1rem] font-semibold justify-center mt-15">
-      <button onClick={() => pageChange(false)} className="w-5 h-7">
+    <div className="flex gap-5 text-[1.1rem] font-semibold justify-center mt-15">
+      <button onClick={() => pageChange(false)} className="w-7 h-7">
         &lt;&lt;
       </button>
-      <button onClick={() => handlePage(-1)} className="w-5 h-7">
+      <button onClick={() => handlePage(-1)} className="w-7 h-7">
         &lt;
       </button>
       {props.pageArray.map((num) => (
         <button
           onClick={() => handlePage(num)}
-          className={`${props.pageOn == num ? 'font-bold' : 'font-medium'} w-5 h-7`}
+          className={`${props.pageOn == num ? 'font-bold' : 'font-medium'} w-7 h-7`}
         >
           {num}
         </button>
       ))}
-      <button onClick={() => handlePage(0)} className="w-5 h-7">
+      <button onClick={() => handlePage(0)} className="w-7 h-7">
         &gt;
       </button>
-      <button onClick={() => pageChange(true)} className="w-5 h-7">
+      <button onClick={() => pageChange(true)} className="w-7 h-7">
         &gt;&gt;
       </button>
     </div>
