@@ -12,24 +12,28 @@ export default function NoticeTableData({ children }) {
     {
       ordinalNum: '14기',
       publicDate: '2026.03.30',
-      publicTime: '오후 5:00',
-      deadline: '2026.03.30',
-      deadlineTime: '오후 5:00',
-      documentDate: '2026.03.30',
-      documentTime: '오후 5:00',
-      finalDate: '2026.03.30',
-      finalTime: '오후 5:00',
+      publicTime: '17:00',
+      deadline: '2026.03.31',
+      deadlineTime: '17:00',
+      documentDate: '2026.04.01',
+      documentTime: '17:00',
+      interviewDate: '2026.04.02',
+      interviewTime: '17:00',
+      finalDate: '2026.04.03',
+      finalTime: '17:00',
     },
     {
       ordinalNum: '13기',
       publicDate: '2025.01.15',
-      publicTime: '오전 10:00',
-      deadline: '2025.02.20',
-      deadlineTime: '오후 6:00',
-      documentDate: '2025.02.25',
-      documentTime: '오전 9:00',
-      finalDate: '2025.03.01',
-      finalTime: '오후 3:00',
+      publicTime: '10:00',
+      deadline: '2025.01.16',
+      deadlineTime: '18:00',
+      documentDate: '2025.01.17',
+      documentTime: '09:00',
+      interviewDate: '2025.01.18',
+      interviewTime: '14:00',
+      finalDate: '2025.01.19',
+      finalTime: '15:00',
     },
   ]);
 
@@ -47,6 +51,8 @@ export default function NoticeTableData({ children }) {
       deadlineTime: '',
       documentDate: '',
       documentTime: '',
+      interviewDate: '',
+      interviewTime: '',
       finalDate: '',
       finalTime: '',
     };
@@ -60,6 +66,29 @@ export default function NoticeTableData({ children }) {
   };
 
   const handleSave = (index, editData) => {
+    // 동일한 지원 일정(모든 필드 값이 동일한 row)이 이미 존재하는지 검사
+    const isDuplicate = noticeData.some((row, idx) => {
+      if (idx === index) return false;
+      return (
+        row.ordinalNum === editData.ordinalNum &&
+        row.publicDate === editData.publicDate &&
+        row.publicTime === editData.publicTime &&
+        row.deadline === editData.deadline &&
+        row.deadlineTime === editData.deadlineTime &&
+        row.documentDate === editData.documentDate &&
+        row.documentTime === editData.documentTime &&
+        row.interviewDate === editData.interviewDate &&
+        row.interviewTime === editData.interviewTime &&
+        row.finalDate === editData.finalDate &&
+        row.finalTime === editData.finalTime
+      );
+    });
+
+    if (isDuplicate) {
+      showToast('지원 일정이 겹치지 않게 선택해주세요.');
+      return;
+    }
+
     setNoticeData((prev) => {
       const newData = [...prev];
       newData[index] = editData;
