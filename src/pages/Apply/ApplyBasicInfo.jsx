@@ -6,12 +6,14 @@ import Modal from '@/components/common/Modal/ConfirmModal';
 import ApplyStep from '@/components/common/apply/ApplyStep';
 import ApplyTitleSection from '@/components/common/apply/ApplyTitleSection';
 import Input from '@/components/common/apply/Input';
-import { formatPhoneNumber } from '@/utils/Formatter';
+
+//import { formatPhoneNumber } from '@/utils/Formatter';
 
 export default function ApplyBasicInfo() {
   /** @type {any} */
   const { formData, updateFormData } = useOutletContext();
   const navigate = useNavigate();
+  const isTrackSelected = !!formData.track; // 트랙 데이터 존재 여부
 
   const inputStyle = `bg-white border border-black h-12 px-4 py-4 placeholder:font-medium`;
   const parts = [
@@ -31,60 +33,81 @@ export default function ApplyBasicInfo() {
     return `${baseStyle} ${stateStyle}`;
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    let nextValue = value;
+  // 트랙 선택 안될 시 다음단계 비활성
+  const disabledStyle = `
+    w-full h-14 bg-expired-gray-button outline -outline-offset-1 outline-black 
+    flex justify-center items-center 
+    text-gray-800 text-lg font-semibold
+    !drop-shadow-none !shadow-none
+  `;
+  // 트랙 선택 시 활성
+  const buttonStyle = `
+    w-full h-14 bg-button-green outline -outline-offset-1 outline-black 
+    flex justify-center items-center transition-all hover:bg-button-hover"
+  `;
+  // 트랙 선택 여부에 따른 다음단계 버튼 스타일링
+  const nextButtonStyle = isTrackSelected ? buttonStyle : disabledStyle;
 
-    // 가공 로직
-    if (name === 'studentId') {
-      nextValue = value.replace(/[^\d]/g, '').slice(0, 10);
-    } else if (name === 'phone') {
-      nextValue = formatPhoneNumber(value);
-    }
+  // 트랙 정보 제외 나머지 정보를 받기 위한 함수 -> 일단 보류
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   let nextValue = value;
 
-    // 새로운 데이터를 먼저 변수로 만듦
-    const nextFormData = {
-      ...formData,
-      [name]: nextValue,
-    };
+  //   // 가공 로직
+  //   if (name === 'studentId') {
+  //     nextValue = value.replace(/[^\d]/g, '').slice(0, 10);
+  //   } else if (name === 'phone') {
+  //     nextValue = formatPhoneNumber(value);
+  //   }
 
-    // Apply가 준 통합 함수로 상태 업데이트 + 로컬스토리지 저장 동시 진행
-    updateFormData(nextFormData);
-  };
+  //   // 새로운 데이터를 먼저 변수로 만듦
+  //   const nextFormData = {
+  //     ...formData,
+  //     [name]: nextValue,
+  //   };
+
+  //   // Apply가 준 통합 함수로 상태 업데이트 + 로컬스토리지 저장 동시 진행
+  //   updateFormData(nextFormData);
+  // };
 
   // 지원 트랙 선택 시 formData 업데이트 로직
   const handleTrackSelect = (trackId) => {
     const currentTrack = formData.track;
 
+    if (currentTrack === trackId) return; // 누른 버튼이 이미 눌린 버튼이면 취소하지 말아야 함
+
     // 이미 선택한 트랙이 있고, 그 트랙이 새로 누른 트랙이 아닐때 -> 모달이 열려야 함
-    if (currentTrack && currentTrack !== trackId && trackId !== '') {
+    if (currentTrack && currentTrack !== trackId) {
       setPendingTrack(trackId); // 바꿀 트랙을 임시 저장
       setIsModalOpen(true); // 모달 열기
       return;
     }
+    // 새 객체로 해야 localStorage 저장 가능 -> 추후 빼도 됨
+    const nextFormData = {
+      ...formData,
+      track: trackId,
+    };
 
-    updateFormData((prev) => ({
-      ...prev,
-      track: prev.track === trackId ? '' : trackId,
-    }));
+    updateFormData(nextFormData);
   };
 
   // 모달에서 확인 눌렀을때 트랙 바꾸는 함수
   const confirmTrackChange = () => {
-    updateFormData((prev) => ({
-      ...prev,
+    // 새 객체로 해야 localStorage 저장 가능 -> 추후 빼도 됨
+    const nextFormData = {
+      ...formData,
       track: pendingTrack,
-    }));
+    };
+    updateFormData(nextFormData);
     setIsModalOpen(false);
   };
 
   // 다음 단계 버튼 클릭 시 페이지 이동
   const handleNext = () => {
-    // 간단한 유효성 검사 (선택 사항)
+    // 간단한 유효성 검사
     const { name, major, studentId, phone, email, track } = formData;
 
     if (!name || !major || !studentId || !phone || !email || !track) {
-      alert('모든 입력칸을 채워주세요!');
       return;
     }
     navigate('/apply/common'); // URL 이동
@@ -131,36 +154,39 @@ export default function ApplyBasicInfo() {
           <div>
             <div className="flex flex-col gap-10">
               <div className="self-stretch h-8 opacity-70 text-2xl font-bold ">인적사항</div>
-              <div className="self-stretch h-103 px-27 pt-11 border bg-button-gray">
+              <div className="self-stretch min-h-103 pt-11 pb-13 px-27 border bg-button-gray">
                 <div className="flex justify-between gap-48">
                   {/* 왼쪽 이름, 학과, 학번 */}
                   <div className="flex-1 flex flex-col gap-6">
                     <Input
                       name="name"
                       label="이름"
-                      placeholder="김멋사"
-                      type="text"
+                      placeholder=""
+                      type=""
                       className={inputStyle}
                       value={formData?.name || ''}
-                      onChange={handleChange}
+                      onChange={() => {}}
+                      readOnly
                     ></Input>
                     <Input
                       name="major"
                       label="학과"
-                      placeholder="소프트웨어학과"
-                      type="text"
+                      placeholder=""
+                      type=""
                       className={inputStyle}
                       value={formData?.major || ''}
-                      onChange={handleChange}
+                      onChange={() => {}}
+                      readOnly
                     ></Input>
                     <Input
                       name="studentId"
                       label="학번"
-                      placeholder="2020202020"
-                      type="text"
+                      placeholder=""
+                      type=""
                       className={inputStyle}
                       value={formData?.studentId || ''}
-                      onChange={handleChange}
+                      onChange={() => {}}
+                      readOnly
                     ></Input>
                   </div>
                   {/* 오른쪽 전화번호, 이메일, 지원파트 */}
@@ -168,11 +194,12 @@ export default function ApplyBasicInfo() {
                     <Input
                       name="phone"
                       label="전화번호"
-                      placeholder="010-1234-5678"
-                      type="text"
+                      placeholder=""
+                      type=""
                       className={inputStyle}
                       value={formData?.phone || ''} // 상태값 연결
-                      onChange={handleChange} // 변경 함수 연결
+                      onChange={() => {}} // 변경 함수 연결
+                      readOnly
                     ></Input>
                     <div className="self-stretch flex flex-col">
                       <label className="text-lg font-semi-bold">이메일</label>
@@ -181,11 +208,12 @@ export default function ApplyBasicInfo() {
                           <Input
                             name="email"
                             label=""
-                            placeholder="likelion"
-                            type="text"
+                            placeholder=""
+                            type=""
                             className={inputStyle}
                             value={formData?.email || ''}
-                            onChange={handleChange}
+                            onChange={() => {}}
+                            readOnly
                           ></Input>
                         </div>
                         <div className="opacity-70 text-text-gray font-medium pt-3 pr-4">
@@ -196,19 +224,25 @@ export default function ApplyBasicInfo() {
                     {/* 지원파트 부분 */}
                     <div className="self-stretch flex flex-col gap-3">
                       <label className="text-lg font-semi-bold">지원트랙</label>
-                      <div className="flex gap-2.5">
-                        {parts.map((part) => (
-                          <Button
-                            key={part.id}
-                            onClick={() => handleTrackSelect(part.id)}
-                            data-variant=""
-                            data-size=""
-                            className={getButtonStyle(formData.track === part.id)}
-                          >
-                            {part.name}
-                          </Button>
-                        ))}
+                      <div>
+                        <div className="flex gap-2.5">
+                          {parts.map((part) => (
+                            <Button
+                              key={part.id}
+                              onClick={() => handleTrackSelect(part.id)}
+                              data-variant=""
+                              data-size=""
+                              className={getButtonStyle(formData.track === part.id)}
+                            >
+                              {part.name}
+                            </Button>
+                          ))}
+                        </div>
                       </div>
+                    </div>
+                    <div className="flex justify-start text-[0.71rem] font-semibold">
+                      지원서를 이미 작성한 경우, 트랙 변경 시 작성했던 ‘트랙별 질문'의 답은
+                      사라집니다.
                     </div>
                   </div>
                 </div>
@@ -218,18 +252,8 @@ export default function ApplyBasicInfo() {
         </div>
         {/* 하단 버튼 부분 */}
         <div className="flex justify-center">
-          <div className="flex justify-center items-center gap-5 w-1/3">
-            <Button
-              onClick={() => {}}
-              className="flex-1 h-14 outline -outline-offset-1 text-text-gray flex justify-center items-center bg-white transition-all hover:bg-stone-100"
-            >
-              <span className="text-text-gray text-lg font-medium">임시저장</span>
-            </Button>
-
-            <Button
-              onClick={handleNext}
-              className="flex-1 h-14 bg-button-green outline -outline-offset-1 outline-black flex justify-center items-center transition-all hover:bg-button-hover"
-            >
+          <div className="flex justify-center items-center gap-5 w-1/6">
+            <Button onClick={handleNext} className={nextButtonStyle}>
               <span className="opacity-70 text-black text-lg font-medium">다음단계</span>
             </Button>
           </div>
