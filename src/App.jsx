@@ -25,6 +25,7 @@ import SignUp from '@/pages/Login/SignUp';
 import Welcome from '@/pages/Login/Welcome';
 import Main from '@/pages/Main/Main';
 import Member from '@/pages/Member/Member';
+import Application from '@/pages/MyPage/Application';
 import MyPage from '@/pages/MyPage/MyPage';
 import PasswordChange from '@/pages/MyPage/PasswordChange';
 import PasswordFind from '@/pages/PasswordFind/PasswordFind';
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
           },
           { path: '/result/notice', Component: ResultNotice },
           { path: '/result', Component: Result },
+          { path: '/application', Component: Application },
         ],
       },
       {
