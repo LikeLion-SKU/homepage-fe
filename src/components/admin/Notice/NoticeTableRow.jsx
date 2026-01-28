@@ -41,10 +41,30 @@ export default function NoticeTableRow({
     documentTime: rowData.documentTime || '',
     finalDate: rowData.finalDate,
     finalTime: rowData.finalTime || '',
+    interviewDate: rowData.interviewDate || '',
+    interviewTime: rowData.interviewTime || '',
   });
+
+  // 각 일정 입력칸의 raw 문자열 상태 (포맷팅 전에 사용자가 입력한 그대로)
+  const [publicInput, setPublicInput] = useState(
+    `${rowData.publicDate || ''}${rowData.publicTime ? ` ${rowData.publicTime}` : ''}`
+  );
+  const [deadlineInput, setDeadlineInput] = useState(
+    `${rowData.deadline || ''}${rowData.deadlineTime ? ` ${rowData.deadlineTime}` : ''}`
+  );
+  const [documentInput, setDocumentInput] = useState(
+    `${rowData.documentDate || ''}${rowData.documentTime ? ` ${rowData.documentTime}` : ''}`
+  );
+  const [finalInput, setFinalInput] = useState(
+    `${rowData.finalDate || ''}${rowData.finalTime ? ` ${rowData.finalTime}` : ''}`
+  );
+  const [interviewInput, setInterviewInput] = useState(
+    `${rowData.interviewDate || ''}${rowData.interviewTime ? ` ${rowData.interviewTime}` : ''}`
+  );
 
   // 유효성 검사 모달 상태
   const [isValidationModalOpen, setIsValidationModalOpen] = useState(false);
+  const [isTimeOrderError, setIsTimeOrderError] = useState(false);
 
   const handleEdit = () => {
     if (isEditing && isConfirmMode) {
@@ -55,6 +75,7 @@ export default function NoticeTableRow({
         { value: editData.deadline, name: '마감일' },
         { value: editData.documentDate, name: '서류 발표일' },
         { value: editData.finalDate, name: '최종 발표일' },
+        { value: editData.interviewDate, name: '면접 일정 확정일' },
       ];
 
       for (const date of dates) {
@@ -62,6 +83,7 @@ export default function NoticeTableRow({
         if (date.value && date.value.trim() !== '') {
           const formattedDate = formatDateForSave(date.value);
           if (!validateDate(formattedDate)) {
+            setIsTimeOrderError(false);
             setIsValidationModalOpen(true);
             return;
           }
@@ -74,10 +96,49 @@ export default function NoticeTableRow({
         { value: editData.deadlineTime, name: '마감일 시간' },
         { value: editData.documentTime, name: '서류 발표일 시간' },
         { value: editData.finalTime, name: '최종 발표일 시간' },
+        { value: editData.interviewTime, name: '면접 일정 확정일 시간' },
       ];
 
       for (const time of times) {
         if (time.value && !validateTime(time.value)) {
+          setIsTimeOrderError(false);
+          setIsValidationModalOpen(true);
+          return;
+        }
+      }
+
+      // 시간 순서 유효성 검사
+      const toTimestamp = (date, time) => {
+        const d = formatDateForSave(date);
+        const t = formatTimeForSave(time);
+        if (!d || !t) return null;
+        const [year, month, day] = d.split('.').map((v) => parseInt(v, 10));
+        const [hour, minute] = t.split(':').map((v) => parseInt(v, 10));
+        if (
+          Number.isNaN(year) ||
+          Number.isNaN(month) ||
+          Number.isNaN(day) ||
+          Number.isNaN(hour) ||
+          Number.isNaN(minute)
+        ) {
+          return null;
+        }
+        return new Date(year, month - 1, day, hour, minute).getTime();
+      };
+
+      const publicTs = toTimestamp(editData.publicDate, editData.publicTime);
+      const deadlineTs = toTimestamp(editData.deadline, editData.deadlineTime);
+      const documentTs = toTimestamp(editData.documentDate, editData.documentTime);
+      const interviewTs = toTimestamp(editData.interviewDate, editData.interviewTime);
+      const finalTs = toTimestamp(editData.finalDate, editData.finalTime);
+
+      const ordered = [publicTs, deadlineTs, documentTs, interviewTs, finalTs];
+
+      for (let i = 1; i < ordered.length; i += 1) {
+        const prev = ordered[i - 1];
+        const curr = ordered[i];
+        if (prev !== null && curr !== null && curr < prev) {
+          setIsTimeOrderError(true);
           setIsValidationModalOpen(true);
           return;
         }
@@ -95,6 +156,8 @@ export default function NoticeTableRow({
         documentTime: formatTimeForSave(editData.documentTime),
         finalDate: formatDateForSave(editData.finalDate),
         finalTime: formatTimeForSave(editData.finalTime),
+        interviewDate: formatDateForSave(editData.interviewDate),
+        interviewTime: formatTimeForSave(editData.interviewTime),
       };
       onSave(index, formattedData);
       if (setConfirmMode) {
@@ -113,6 +176,42 @@ export default function NoticeTableRow({
     if (!date) return '-';
     if (!time) return date;
     return `${date} ${time}`;
+  };
+
+  // 단일 입력값을 날짜/시간으로 분리하는 헬퍼 (raw 문자열 기준)
+  const parseDateTimeInput = (value) => {
+    if (value == null) {
+      return { date: '', time: '' };
+    }
+
+    // 숫자만 연달아 입력한 패턴 처리 (예: 202504031800 → 2025.04.03 18:00)
+    const digitsOnly = value.replace(/\D/g, '');
+    // YYYYMMDDHH 또는 YYYYMMDDHHMM 형태일 때만 자동 분리
+    if (digitsOnly.length >= 10) {
+      const rawDateDigits = digitsOnly.slice(0, 8); // YYYYMMDD
+      const rawTimeDigits = digitsOnly.slice(8); // HH 또는 HHMM
+
+      const date = formatDateInput(rawDateDigits);
+      const time = rawTimeDigits ? formatTimeForSave(rawTimeDigits) : '';
+
+      return { date, time };
+    }
+
+    // 공백 존재 여부로 date/time 분리 시점만 판단
+    const hasSpace = /\s/.test(value);
+    if (!hasSpace) {
+      // 공백이 없으면 전부 날짜로 간주하고 자동 포맷팅
+      return { date: formatDateInput(value), time: '' };
+    }
+
+    const firstSpaceIndex = value.search(/\s/);
+    const rawDate = value.slice(0, firstSpaceIndex);
+    const rawTime = value.slice(firstSpaceIndex + 1);
+
+    return {
+      date: formatDateInput(rawDate),
+      time: rawTime,
+    };
   };
 
   const isChecked = checkedList.includes(index);
@@ -151,73 +250,71 @@ export default function NoticeTableRow({
             <div className="flex gap-2 items-center w-40">
               <input
                 type="text"
-                value={editData.publicDate}
-                onChange={(e) =>
-                  setEditData({ ...editData, publicDate: formatDateInput(e.target.value) })
-                }
-                className="w-24 h-10 border text-center focus:outline-none"
-                placeholder="공개일"
-              />
-              <input
-                type="text"
-                value={editData.publicTime}
-                onChange={(e) => setEditData({ ...editData, publicTime: e.target.value })}
-                className="w-14 h-10 border text-center focus:outline-none"
-                placeholder="오전/오후"
+                value={publicInput}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setPublicInput(v);
+                  const { date, time } = parseDateTimeInput(v);
+                  setEditData({ ...editData, publicDate: date, publicTime: time });
+                }}
+                className="w-40 h-10 border text-center focus:outline-none"
+                placeholder="공개일 YYYY.MM.DD HH:MM"
               />
             </div>
             <div className="flex gap-2 items-center w-40">
               <input
                 type="text"
-                value={editData.deadline}
-                onChange={(e) =>
-                  setEditData({ ...editData, deadline: formatDateInput(e.target.value) })
-                }
-                className="w-24 h-10 border text-center focus:outline-none"
-                placeholder="마감일"
-              />
-              <input
-                type="text"
-                value={editData.deadlineTime}
-                onChange={(e) => setEditData({ ...editData, deadlineTime: e.target.value })}
-                className="w-14 h-10 border text-center focus:outline-none"
-                placeholder="오전/오후"
+                value={deadlineInput}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setDeadlineInput(v);
+                  const { date, time } = parseDateTimeInput(v);
+                  setEditData({ ...editData, deadline: date, deadlineTime: time });
+                }}
+                className="w-40 h-10 border text-center focus:outline-none"
+                placeholder="마감일 YYYY.MM.DD HH:MM"
               />
             </div>
             <div className="flex gap-2 items-center w-40">
               <input
                 type="text"
-                value={editData.documentDate}
-                onChange={(e) =>
-                  setEditData({ ...editData, documentDate: formatDateInput(e.target.value) })
-                }
-                className="w-24 h-10 border text-center focus:outline-none"
-                placeholder="서류 발표일"
-              />
-              <input
-                type="text"
-                value={editData.documentTime}
-                onChange={(e) => setEditData({ ...editData, documentTime: e.target.value })}
-                className="w-14 h-10 border text-center focus:outline-none"
-                placeholder="오전/오후"
+                value={documentInput}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setDocumentInput(v);
+                  const { date, time } = parseDateTimeInput(v);
+                  setEditData({ ...editData, documentDate: date, documentTime: time });
+                }}
+                className="w-40 h-10 border text-center focus:outline-none"
+                placeholder="서류 발표일 YYYY.MM.DD HH:MM"
               />
             </div>
             <div className="flex gap-2 items-center w-40">
               <input
                 type="text"
-                value={editData.finalDate}
-                onChange={(e) =>
-                  setEditData({ ...editData, finalDate: formatDateInput(e.target.value) })
-                }
-                className="w-24 h-10 border text-center focus:outline-none"
-                placeholder="최종 발표일"
+                value={interviewInput}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setInterviewInput(v);
+                  const { date, time } = parseDateTimeInput(v);
+                  setEditData({ ...editData, interviewDate: date, interviewTime: time });
+                }}
+                className="w-40 h-10 border text-center focus:outline-none"
+                placeholder="면접 일정 확정일 YYYY.MM.DD HH:MM"
               />
+            </div>
+            <div className="flex gap-2 items-center w-40">
               <input
                 type="text"
-                value={editData.finalTime}
-                onChange={(e) => setEditData({ ...editData, finalTime: e.target.value })}
-                className="w-14 h-10 border text-center focus:outline-none"
-                placeholder="오전/오후"
+                value={finalInput}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setFinalInput(v);
+                  const { date, time } = parseDateTimeInput(v);
+                  setEditData({ ...editData, finalDate: date, finalTime: time });
+                }}
+                className="w-40 h-10 border text-center focus:outline-none"
+                placeholder="최종 발표일 YYYY.MM.DD HH:MM"
               />
             </div>
             <NoticeButton
@@ -240,6 +337,9 @@ export default function NoticeTableRow({
               {formatDateTime(rowData.documentDate, rowData.documentTime)}
             </p>
             <p className="w-40 text-center whitespace-nowrap">
+              {formatDateTime(rowData.interviewDate, rowData.interviewTime)}
+            </p>
+            <p className="w-40 text-center whitespace-nowrap">
               {formatDateTime(rowData.finalDate, rowData.finalTime)}
             </p>
             <NoticeButton
@@ -251,8 +351,14 @@ export default function NoticeTableRow({
         )}
       </div>
       {/* 유효성 검사 모달 */}
-      <CheckModal isOpen={isValidationModalOpen} cancel={() => setIsValidationModalOpen(false)}>
-        수정이 완료되지 않았습니다.
+      <CheckModal
+        isOpen={isValidationModalOpen}
+        cancel={() => {
+          setIsValidationModalOpen(false);
+          setIsTimeOrderError(false);
+        }}
+      >
+        {isTimeOrderError ? '올바른 날짜와 시간대로 수정해주세요.' : '수정이 완료되지 않았습니다.'}
       </CheckModal>
     </div>
   );
