@@ -1,63 +1,86 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-// Grid configuration: 24 columns x 18 rows
-const columns = 24;
-const rows = 18;
-const baseSquareSize = 60; // 기본 크기 (1440px 기준)
-const baseGridWidth = columns * baseSquareSize; // 1440px
+const CELL_PX = 60; // 격자 셀 크기 고정
 
-function GridSection() {
-  const [squareSize, setSquareSize] = useState(baseSquareSize);
+function GridSection({ children }) {
+  const [dims, setDims] = useState({ cols: 24, rows: 18 });
 
-  // 화면 크기에 따라 squareSize 계산
   useEffect(() => {
-    const calculateSquareSize = () => {
-      const windowWidth = window.innerWidth;
-      // 화면 너비에 맞춰 비율로 조정 (작으면 축소, 크면 확대) - 헤더/푸터와 동일
-      const scale = windowWidth / baseGridWidth;
-      setSquareSize(baseSquareSize * scale);
+    let raf = 0;
+
+    const measure = () => {
+      // 어떤 모바일/데스크톱에서도 실제 표시 영역 기준
+      const vw = document.documentElement.clientWidth;
+      const vh = window.visualViewport?.height ?? window.innerHeight;
+      const docH = document.documentElement.scrollHeight;
+
+      // 세로 기준은 현재 페이지 전체 높이를 기준으로 계산해서
+      // 인트로/프로젝트 등 긴 섹션에서도 아래가 비지 않도록 함
+      const targetHeight = Math.max(vh, docH);
+
+      // 화면을 덮기 위해 필요한 칸 수
+      const cols = Math.ceil(vw / CELL_PX);
+      const rows = Math.ceil(targetHeight / CELL_PX);
+
+      setDims({ cols, rows });
     };
 
-    calculateSquareSize();
-    window.addEventListener('resize', calculateSquareSize);
-    return () => window.removeEventListener('resize', calculateSquareSize);
+    const onResize = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(measure);
+    };
+
+    measure();
+    window.addEventListener('resize', onResize, { passive: true });
+    window.visualViewport?.addEventListener('resize', onResize, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+      window.visualViewport?.removeEventListener('resize', onResize);
+    };
   }, []);
 
-  // squareSize를 rem으로 변환하는 헬퍼 함수
   const pxToRem = (px) => {
-    const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    return px / rootFontSize;
+    const root = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    return px / root;
   };
 
-  const gridWidthRem = pxToRem(columns * squareSize);
-  const gridHeightRem = pxToRem(rows * squareSize);
-  const squareSizeRem = pxToRem(squareSize);
+  const cellRem = useMemo(() => pxToRem(CELL_PX), []);
+  const gridWRem = useMemo(() => pxToRem(dims.cols * CELL_PX), [dims.cols]);
+  const gridHRem = useMemo(() => pxToRem(dims.rows * CELL_PX), [dims.rows]);
 
   return (
-    <div
-      className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col z-0 box-border"
-      style={{
-        width: `${gridWidthRem}rem`,
-        height: `${gridHeightRem}rem`,
-        maxWidth: '100vw',
-      }}
-    >
-      {Array.from({ length: rows }).map((_, row) => (
-        <div key={row} className="flex">
-          {Array.from({ length: columns }).map((_, col) => (
-            <div
-              key={`${row}-${col}`}
-              className="box-border pointer-events-auto"
-              style={{
-                width: `${squareSizeRem}rem`,
-                height: `${squareSizeRem}rem`,
-                border: '0.8px solid rgba(0, 0, 0, 0.08)',
-              }}
-            />
-          ))}
-        </div>
-      ))}
-    </div>
+    // 페이지는 최소 뷰포트 높이를 가지되, 내용이 더 길면 자연스럽게 스크롤 되도록 height 대신 minHeight 사용
+    <main className="relative overflow-hidden" style={{ minHeight: '100dvh', width: '100%' }}>
+      {/* 배경 격자: 화면 좌상단에 딱 붙여서 그린다 (중앙정렬 금지) */}
+      <div
+        className="absolute top-0 left-0 flex flex-col z-0 pointer-events-none"
+        style={{
+          width: `${gridWRem}rem`,
+          height: `${gridHRem}rem`,
+        }}
+      >
+        {Array.from({ length: dims.rows }).map((_, r) => (
+          <div key={r} className="flex">
+            {Array.from({ length: dims.cols }).map((_, c) => (
+              <div
+                key={`${r}-${c}`}
+                className="box-border"
+                style={{
+                  width: `${cellRem}rem`,
+                  height: `${cellRem}rem`,
+                  border: '0.8px solid rgba(0, 0, 0, 0.08)',
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* 콘텐츠는 배경 위 */}
+      {children && <div className="relative z-10 w-full h-full">{children}</div>}
+    </main>
   );
 }
 

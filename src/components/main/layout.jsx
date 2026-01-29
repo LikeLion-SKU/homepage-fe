@@ -6,6 +6,8 @@ function MainSectionLayout({
   title,
   children = null,
   showTopBorder = true,
+  backgroundClassName = '',
+  backgroundStyle = undefined,
   maxWidthScale = 1,
   minHeightScale = 1,
   paddingScale = 1,
@@ -27,14 +29,15 @@ function MainSectionLayout({
 
   return (
     <section
-      className="relative w-full bg-white overflow-hidden"
+      className={`relative w-full bg-white overflow-hidden ${backgroundClassName}`}
       style={{
         minHeight: `${minHeightRem}rem`,
         paddingTop: `${paddingRem}rem`,
         paddingBottom: `${paddingBottomRem}rem`,
         borderTopWidth: showTopBorder ? `${borderWidthRem}rem` : '0',
-        borderTopColor: showTopBorder ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
+        borderTopColor: showTopBorder ? 'var(--color-navy-blue)' : 'transparent',
         borderTopStyle: showTopBorder ? 'solid' : 'none',
+        ...(backgroundStyle || {}),
       }}
     >
       {/* 컨테이너 */}
@@ -54,10 +57,16 @@ function MainSectionLayout({
             top: `${(-60 / 16) * scale}rem`,
           }}
         >
-          <Frame className="" cornerScale={0.9} borderWidth={2} letterSpacing={-0.88}>
+          <Frame
+            className=""
+            cornerScale={0.9}
+            borderWidth={2}
+            letterSpacing={-0.88}
+            color="var(--color-navy-blue)"
+          >
             <div className="flex flex-col items-start justify-center w-full">
               <h2
-                className="font-bold text-[#1a1a1a] m-0"
+                className="font-bold text-[var(--color-navy-blue)] m-0"
                 style={{
                   fontSize: `${(36 / 16) * scale}rem`,
                   fontFamily:

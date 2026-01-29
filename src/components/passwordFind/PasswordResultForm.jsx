@@ -1,0 +1,113 @@
+import { useState } from 'react';
+import { useNavigate, useOutletContext } from 'react-router';
+
+//@ts-ignore
+import CopyIcon from '@/assets/icons/copy_icon.svg?react';
+import Navy from '@/assets/icons/right_navy_icon.svg';
+import Button from '@/components/common/Button/Button';
+
+import LoginTitle from '../login/LoginTitle';
+import SignUpInput from '../login/SignUpInput';
+
+export default function PasswordResultForm({ email = '', tempPassword = '' }) {
+  const navigate = useNavigate();
+  //@ts-ignore
+  const { showToast } = useOutletContext();
+  const [newPassword] = useState(tempPassword);
+
+  // 이메일 값에 @skuniv.ac.kr이 포함되어 있지 않으면 추가
+  const fullEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
+
+  const handleLoginClick = () => {
+    // 로그인 페이지로 이동
+    navigate('/login');
+  };
+
+  const handleCopyPassword = async () => {
+    try {
+      await navigator.clipboard.writeText(newPassword);
+      if (showToast) {
+        showToast('복사되었습니다.');
+      }
+    } catch (error) {
+      console.error('복사 실패:', error);
+    }
+  };
+
+  return (
+    <div className="w-full max-w-lg mx-auto px-4 sm:px-0">
+      <form onSubmit={(e) => e.preventDefault()}>
+        <LoginTitle title="비밀번호 찾기 결과" />
+        <SignUpInput
+          label="이메일"
+          value={fullEmail}
+          onChange={() => {}} // 수정 불가
+          mb="mb-6"
+          disabled={true}
+          textColor="text-[#1A1A1A]"
+          bgColor="#FFFFFF"
+          textAlign="center"
+        />
+        <div className="flex flex-col gap-2 mb-6">
+          <label className="text-black text-base max-[380px]:text-sm font-medium font-['Pretendard']">
+            비밀번호
+          </label>
+          <div className="relative w-full">
+            <input
+              type="text"
+              value={newPassword}
+              onChange={() => {}} // 수정 불가
+              disabled={true}
+              className="w-full h-14 max-[380px]:h-10 px-4 max-[380px]:px-2.5 py-3 max-[380px]:py-2 pr-12 max-[380px]:pr-10 bg-[#FFFFFF] border border-[1px] border-[#B0B0B0] text-[#1A1A1A] text-base max-[380px]:text-xs text-center font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed"
+            />
+            <button
+              type="button"
+              onClick={handleCopyPassword}
+              className="absolute right-3 max-[380px]:right-2.5 top-1/2 -translate-y-1/2 flex items-center justify-center w-8 h-8 max-[380px]:w-7 max-[380px]:h-7 hover:bg-[#F5F5F5] rounded transition-colors cursor-pointer"
+              aria-label="비밀번호 복사"
+            >
+              <CopyIcon className="w-5 h-5 max-[380px]:w-4 max-[380px]:h-4" />
+            </button>
+          </div>
+        </div>
+        <div>
+          <div className="w-full mb-6 text-center">
+            <div
+              className="border border-gray-300 rounded px-4 max-[380px]:px-3 py-6 max-[380px]:py-4 bg-white"
+              style={{ transform: 'translateY(30px)' }}
+            >
+              <p className="text-black text-sm max-[380px]:text-xs font-['Pretendard'] mb-1">
+                위 비밀번호는 임시 비밀번호입니다.
+              </p>
+              <p className="text-black text-sm max-[380px]:text-xs font-['Pretendard'] mb-1">
+                로그인 후 "마이페이지"-&gt;"비밀번호 변경"에서
+              </p>
+              <p className="text-black text-sm max-[380px]:text-xs font-['Pretendard'] mb-1">
+                반드시 비밀번호를 변경해주세요.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="w-full mt-20 flex justify-start">
+          <div className="w-full max-w-2xl">
+            <div className="flex justify-start items-center z-10">
+              <Button
+                onClick={handleLoginClick}
+                data-variant=""
+                data-size=""
+                className="w-12 h-12 bg-button-green hover:bg-button-hover px-3 py-3.5 outline flex-col justify-center items-center gap-2.5 flex-shrink-0"
+              >
+                <img src={Navy} className="w-6 h-5" alt="navy icon" />
+              </Button>
+              <div className="flex-1 self-stretch h-12 px-4 py-3 outline bg-button-gray relative z-10">
+                <div className="flex justify-center items-center h-full mr-14 text-zinc-900 text-lg font-medium font-['Pretendard']">
+                  로그인
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+}

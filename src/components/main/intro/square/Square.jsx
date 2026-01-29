@@ -1,243 +1,391 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import cursorIcon from '@/assets/icons/cursor-pointer.svg';
-import GridSection from '@/components/layout/background/GridSection';
-
-// 격자무늬 배경 : 24 columns x 18 rows
+// grid
 const columns = 24;
 const rows = 18;
-const baseSquareSize = 60; // 기본 크기 (1440px 기준)
-const baseGridWidth = columns * baseSquareSize; // 1440px
+const baseSquareSize = 60;
+const baseGridWidth = columns * baseSquareSize;
 
-// 디자인에 따라 정의된 사각형 위치 수정 완(색상은 추후 변경)
-const predefinedSquares = {
-  '3-4': '#636363',
-  '2-13': '#d9d9d9',
-  '1-14': '#d9d9d9',
-  '0-20': '#636363',
-  '3-17': '#636363',
-  '5-16': '#636363',
-  '6-23': '#d9d9d9',
-  '8-0': '#636363',
-  '12-3': '#636363',
-  '13-16': '#636363',
-  '14-18': '#636363',
-  '14-19': '#636363',
-  '14-20': '#636363',
-  '11-3': '#d9d9d9',
-  '10-2': '#d9d9d9',
-};
+const OFFSCREEN = -1000;
 
-function Square({ onScaleChange, onSquareSizeRemChange }) {
-  const [cursorPosition, setCursorPosition] = useState({ x: -1000, y: -1000 }); // 절대 좌표 (clientX, clientY)
-  const [cursorRelativePos, setCursorRelativePos] = useState({ x: -1000, y: -1000 }); // 그리드 내 상대 좌표
-  const [affectedSquares, setAffectedSquares] = useState(new Set()); // 영향받는 사각형들
-  const [squareSize, setSquareSize] = useState(baseSquareSize);
-  const [scale, setScale] = useState(1);
+// ====== TUNING ======
+
+// “커서 크기만큼” 강한 영역 반경 = (커서 반지름) * 이 배수
+const CORE_RADIUS_MULT = 1.05;
+
+// 강한 영역 밖 퍼짐(페이드) = core * 이 배수
+const FALLOFF_MULT = 1.8;
+
+// 꼬리 길이(최근 경로 샘플 유지 시간)
+const TRAIL_MS = 140;
+
+// 꼬리 샘플 최대 개수(고속 보간 때문에 늘림)
+const TRAIL_MAX_POINTS = 24;
+
+// 고속 이동 시 경로를 촘촘히 채우는 스텝(px) (작을수록 더 부드럽고 계산량 증가)
+const TRAIL_STEP_PX = 8; // 6~12 추천
+
+// 움직임이 거의 없을 때(정지) 꼬리 영향 줄이기
+const MOVE_EPS_PX = 0.8;
+
+// 꼬리 샘플의 가중치 감소(나이)
+const TRAIL_DECAY = 0.85; // 0~1 (낮을수록 빨리 사라짐)
+
+// 현재 값이 목표 값으로 따라가는 속도(프레임 독립)
+const FOLLOW_TAU_MS = 55; // 작을수록 더 “쫀쫀하게” 따라감
+
+// 거의 0이면 투명으로 컷
+const EPS = 0.015;
+
+function clamp01(v) {
+  return Math.max(0, Math.min(1, v));
+}
+function smoothstep(t) {
+  return t * t * (3 - 2 * t);
+}
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+function lerpColor(a, b, t) {
+  return {
+    r: Math.round(lerp(a.r, b.r, t)),
+    g: Math.round(lerp(a.g, b.g, t)),
+    b: Math.round(lerp(a.b, b.b, t)),
+  };
+}
+
+export default function Square({ onScaleChange, onSquareSizeRemChange }) {
+  const [layout, setLayout] = useState({ squareSize: baseSquareSize, scale: 1, squareSizeRem: 0 });
+  const { squareSize, scale, squareSizeRem } = layout;
+
   const gridRef = useRef(null);
 
-  // 화면 크기에 따라 squareSize 계산
-  useEffect(() => {
-    const calculateSquareSize = () => {
-      const windowWidth = window.innerWidth;
-      const baseGridWidthPx = baseGridWidth;
-      const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+  // 432칸 DOM refs
+  const cellRefs = useRef([]);
 
-      // 화면 너비에 맞춰 비율로 조정 (작으면 축소, 크면 확대) - 헤더/푸터와 동일
-      const calculatedScale = windowWidth / (baseGridWidthPx * (rootFontSize / 16));
-      setScale(calculatedScale);
-      setSquareSize(baseSquareSize * (windowWidth / baseGridWidthPx));
-    };
+  // 현재 포인터 상태(ref)
+  const pointerRef = useRef({
+    inside: false,
+    x: OFFSCREEN, // grid-relative
+    y: OFFSCREEN,
+    clientX: OFFSCREEN,
+    clientY: OFFSCREEN,
+  });
 
-    calculateSquareSize();
-    window.addEventListener('resize', calculateSquareSize);
-    return () => window.removeEventListener('resize', calculateSquareSize);
-  }, []);
+  // 이동/속도/방향 + trail
+  const motionRef = useRef({
+    prevX: OFFSCREEN,
+    prevY: OFFSCREEN,
+    vx: 0,
+    vy: 0,
+    speed: 0,
+    points: [], // [{x,y,t}]
+  });
 
-  // 마우스 이동 이벤트 처리
-  useEffect(() => {
-    const handleMove = (e) => {
-      if (!gridRef.current) return;
+  // per-cell intensity (현재값)
+  const intensityRef = useRef(new Float32Array(rows * columns)); // current intensity 0..1
 
-      const rect = gridRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+  // "최근에 손댄 칸"만 업데이트하기 위한 active set
+  const activeRef = useRef(new Set());
 
-      // 그리드 영역 밖이면 off-screen 처리
-      if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
-        setCursorPosition({ x: -1000, y: -1000 });
-        setCursorRelativePos({ x: -1000, y: -1000 });
-        setAffectedSquares(new Set());
-        return;
-      }
-
-      setCursorPosition({ x: e.clientX, y: e.clientY }); // 절대 좌표
-      setCursorRelativePos({ x, y }); // 그리드 내 상대 좌표
-
-      // 커서가 직접 가리키는 사각형 찾기
-      const cursorCol = Math.floor(x / squareSize);
-      const cursorRow = Math.floor(y / squareSize);
-      const cursorSquareKey = `${cursorRow}-${cursorCol}`;
-
-      // 커서가 가리키는 방향의 근처 사각형 3개 찾기
-      // 커서 아이콘 방향: 아래쪽으로 약간 오른쪽 기울어짐 (약 30도)
-      const cursorAngle = Math.PI / 6; // 30도
-      const cursorDirX = Math.sin(cursorAngle);
-      const cursorDirY = Math.cos(cursorAngle);
-
-      // 모든 사각형과의 거리 계산
-      const squareDistances = [];
-      const d9d9d9Squares = []; // #d9d9d9 사각형들 (커서 근처에 있으면 무조건 포함)
-
-      for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < columns; col++) {
-          const key = `${row}-${col}`;
-          // 이미 색이 지정된 사각형은 제외 (#d9d9d9 제외)
-          if (predefinedSquares[key] && predefinedSquares[key] !== '#d9d9d9') {
-            continue;
-          }
-
-          // 커서가 직접 가리키는 사각형은 제외 (나중에 별도로 추가)
-          if (key === cursorSquareKey) {
-            continue;
-          }
-
-          const squareX = col * squareSize + squareSize / 2;
-          const squareY = row * squareSize + squareSize / 2;
-          const dx = squareX - x;
-          const dy = squareY - y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          // #d9d9d9 사각형은 커서 근처에 있으면 무조건 포함
-          if (predefinedSquares[key] === '#d9d9d9' && distance < squareSize * 2) {
-            d9d9d9Squares.push({ key, distance, row, col });
-            continue;
-          }
-
-          // 커서 방향으로의 거리 (커서가 가리키는 방향)
-          const projDistance = dx * cursorDirX + dy * cursorDirY;
-          // 커서에 수직인 거리
-          const perpDistance = Math.abs(dx * cursorDirY - dy * cursorDirX);
-
-          // 커서가 가리키는 방향에 있는 사각형만 고려 (projDistance > 0)
-          if (
-            projDistance > 0 &&
-            projDistance < squareSize * 2 &&
-            perpDistance < squareSize * 1.5
-          ) {
-            squareDistances.push({ key, distance, row, col });
-          }
-        }
-      }
-
-      // 거리순으로 정렬하고 가장 가까운 3개 선택
-      squareDistances.sort((a, b) => a.distance - b.distance);
-      const closestSquares = new Set(squareDistances.slice(0, 3).map((s) => s.key));
-
-      // #d9d9d9 사각형들 추가 (커서 근처에 있는 것들)
-      d9d9d9Squares.forEach((s) => closestSquares.add(s.key));
-
-      // 커서가 직접 가리키는 사각형도 포함 (유효한 범위 내에 있고 이미 색이 지정되지 않은 경우)
-      if (
-        cursorRow >= 0 &&
-        cursorRow < rows &&
-        cursorCol >= 0 &&
-        cursorCol < columns &&
-        (!predefinedSquares[cursorSquareKey] || predefinedSquares[cursorSquareKey] === '#d9d9d9')
-      ) {
-        closestSquares.add(cursorSquareKey);
-      }
-
-      setAffectedSquares(closestSquares);
-    };
-
-    window.addEventListener('mousemove', handleMove);
-    return () => window.removeEventListener('mousemove', handleMove);
-  }, [squareSize]);
-
-  const getSquareColor = (row, col) => {
-    const key = `${row}-${col}`;
-
-    // Check if it's a predefined colored square (not #d9d9d9)
-    if (predefinedSquares[key] && predefinedSquares[key] !== '#d9d9d9') {
-      return predefinedSquares[key];
-    }
-
-    // 영향받는 사각형에만 그라데이션 효과 적용
-    if (!affectedSquares.has(key)) {
-      return predefinedSquares[key] || 'transparent';
-    }
-
-    // 영향받는 사각형에 그라데이션 효과
-    const squareX = col * squareSize + squareSize / 2;
-    const squareY = row * squareSize + squareSize / 2;
-    const dx = cursorRelativePos.x - squareX;
-    const dy = cursorRelativePos.y - squareY;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    // 가장 가까운 사각형일수록 더 진한 색상
-    const maxDistance = squareSize * 1.5; // 약 90px
-    const ratio = Math.max(0, Math.min(1, 1 - distance / maxDistance));
-
-    // If it's a predefined #d9d9d9 square, start from #d9d9d9
-    // Otherwise start from transparent
-    const startColor = predefinedSquares[key] === '#d9d9d9' ? '#d9d9d9' : 'transparent';
-
-    if (ratio === 0) {
-      return startColor;
-    }
-
-    // Interpolate between start color and #636363
-    let r1, g1, b1;
-    if (startColor === 'transparent') {
-      r1 = 255; // white background
-      g1 = 255;
-      b1 = 255;
-    } else {
-      r1 = parseInt('#d9d9d9'.substring(1, 3), 16);
-      g1 = parseInt('#d9d9d9'.substring(3, 5), 16);
-      b1 = parseInt('#d9d9d9'.substring(5, 7), 16);
-    }
-
-    const r2 = parseInt('#636363'.substring(1, 3), 16);
-    const g2 = parseInt('#636363'.substring(3, 5), 16);
-    const b2 = parseInt('#636363'.substring(5, 7), 16);
-
-    const r = Math.round(r1 + (r2 - r1) * ratio);
-    const g = Math.round(g1 + (g2 - g1) * ratio);
-    const b = Math.round(b1 + (b2 - b1) * ratio);
-
-    return `rgb(${r}, ${g}, ${b})`;
-  };
-
-  // squareSize를 rem으로 변환하는 헬퍼 함수
+  // px -> rem
   const pxToRem = (px) => {
     const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
     return px / rootFontSize;
   };
 
-  const squareSizeRem = pxToRem(squareSize);
+  // responsive: squareSize/scale - useLayoutEffect로 첫 페인트 전에 계산
+  useLayoutEffect(() => {
+    const calculateLayout = () => {
+      const windowWidth = window.innerWidth;
+      const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 
-  // scale과 squareSizeRem을 부모 컴포넌트에 전달
-  useEffect(() => {
-    if (onScaleChange) {
-      onScaleChange(scale);
-    }
-  }, [scale, onScaleChange]);
+      const calculatedScale = windowWidth / (baseGridWidth * (rootFontSize / 16));
+      const calculatedSquareSize = baseSquareSize * (windowWidth / baseGridWidth);
+      const calculatedSquareSizeRem = pxToRem(calculatedSquareSize);
 
+      // 한 번에 업데이트
+      setLayout({
+        squareSize: calculatedSquareSize,
+        scale: calculatedScale,
+        squareSizeRem: calculatedSquareSizeRem,
+      });
+    };
+
+    calculateLayout();
+    window.addEventListener('resize', calculateLayout);
+    return () => window.removeEventListener('resize', calculateLayout);
+  }, []);
+
+  // 부모에 한 번에 전달
+  useLayoutEffect(() => {
+    onScaleChange?.(scale);
+    onSquareSizeRemChange?.(squareSizeRem);
+  }, [scale, squareSizeRem, onScaleChange, onSquareSizeRemChange]);
+
+  // pointermove: 좌표 저장 + 커서 목표만 갱신 + trail 보간
   useEffect(() => {
-    if (onSquareSizeRemChange) {
-      onSquareSizeRemChange(squareSizeRem);
-    }
-  }, [squareSizeRem, onSquareSizeRemChange]);
+    const handleMove = (e) => {
+      const gridEl = gridRef.current;
+      if (!gridEl) return;
+
+      const rect = gridEl.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const inside = x >= 0 && y >= 0 && x <= rect.width && y <= rect.height;
+
+      pointerRef.current.inside = inside;
+      pointerRef.current.x = x;
+      pointerRef.current.y = y;
+      pointerRef.current.clientX = e.clientX;
+      pointerRef.current.clientY = e.clientY;
+
+      // motion + trail 갱신
+      const m = motionRef.current;
+      const now = performance.now();
+
+      if (inside && m.prevX >= 0 && m.prevY >= 0) {
+        const dx = x - m.prevX;
+        const dy = y - m.prevY;
+        const d = Math.hypot(dx, dy);
+        m.vx = dx;
+        m.vy = dy;
+        m.speed = d;
+      } else {
+        m.vx = 0;
+        m.vy = 0;
+        m.speed = 0;
+      }
+
+      // trail: 고속 이동이면 중간 포인트 삽입해서 "선"으로 만들기
+      if (inside) {
+        const pts = m.points;
+        const last = pts[pts.length - 1];
+
+        if (!last) {
+          pts.push({ x, y, t: now });
+        } else {
+          const dxp = x - last.x;
+          const dyp = y - last.y;
+          const dist = Math.hypot(dxp, dyp);
+
+          // 너무 미세한 떨림은 무시 (계산량 감소)
+          if (dist >= 1.2) {
+            const steps = Math.max(1, Math.floor(dist / TRAIL_STEP_PX));
+            for (let s = 1; s <= steps; s++) {
+              const tt = s / steps;
+              pts.push({
+                x: last.x + dxp * tt,
+                y: last.y + dyp * tt,
+                t: now - (1 - tt) * 6, // 살짝 시간 분산(자연스러움)
+              });
+            }
+          }
+        }
+
+        while (m.points.length > TRAIL_MAX_POINTS) m.points.shift();
+      } else {
+        m.points.length = 0;
+      }
+
+      m.prevX = inside ? x : OFFSCREEN;
+      m.prevY = inside ? y : OFFSCREEN;
+    };
+
+    window.addEventListener('pointermove', handleMove, { passive: true });
+    return () => window.removeEventListener('pointermove', handleMove);
+  }, []);
+
+  // rAF: per-cell intensity 보간 + trail 반영
+  useEffect(() => {
+    let rafId;
+    let lastTs = performance.now();
+
+    // 3-step gradient
+    const c1 = { r: 0xed, g: 0xf6, b: 0xad };
+    const c2 = { r: 0xde, g: 0xef, b: 0x6e };
+    const c3 = { r: 0xc6, g: 0xe4, b: 0x00 };
+
+    // LUT 캐시
+    const colorLUT = Array.from({ length: 256 }, (_, i) => {
+      const t = smoothstep(i / 255);
+      const col = t < 0.5 ? lerpColor(c1, c2, t / 0.5) : lerpColor(c2, c3, (t - 0.5) / 0.5);
+      return `rgb(${col.r}, ${col.g}, ${col.b})`;
+    });
+
+    const getColor = (t01) => colorLUT[Math.max(0, Math.min(255, (t01 * 255) | 0))];
+
+    const clearAllDOM = () => {
+      const active = activeRef.current;
+      const curArr = intensityRef.current;
+
+      for (const idx of active) {
+        const el = cellRefs.current[idx];
+        if (el) el.style.backgroundColor = 'transparent';
+        curArr[idx] = 0;
+      }
+      active.clear();
+    };
+
+    const tick = () => {
+      const now = performance.now();
+      const dt = Math.min(40, Math.max(1, now - lastTs)); // ms
+      lastTs = now;
+
+      const { inside, x, y } = pointerRef.current;
+
+      if (!inside || x < 0 || y < 0) {
+        clearAllDOM();
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
+
+      // 커서 크기 기반 core 반경 (전역 커서 크기 기준)
+      const cursorRadiusPx = 16;
+
+      // trail 포인트 정리(시간 기준)
+      const m = motionRef.current;
+      const pts = m.points;
+      while (pts.length && now - pts[0].t > TRAIL_MS) pts.shift();
+
+      const moving = m.speed > MOVE_EPS_PX;
+
+      // 속도 기반 반경 부스트 (고속에서 끊김 완화)
+      const speedBoost = clamp01(m.speed / 30); // 0..1
+      const coreR = cursorRadiusPx * CORE_RADIUS_MULT * (1 + 0.25 * speedBoost);
+      const maxR = coreR * FALLOFF_MULT * (1 + 0.15 * speedBoost);
+
+      // 전체 영향 범위 bounding box (현재 + trail)
+      let minX = x - maxR,
+        maxX = x + maxR,
+        minY = y - maxR,
+        maxY = y + maxR;
+
+      for (const p of pts) {
+        const extra = maxR * 0.85;
+        minX = Math.min(minX, p.x - extra);
+        maxX = Math.max(maxX, p.x + extra);
+        minY = Math.min(minY, p.y - extra);
+        maxY = Math.max(maxY, p.y + extra);
+      }
+
+      const minCol = Math.max(0, Math.floor(minX / squareSize));
+      const maxCol = Math.min(columns - 1, Math.floor(maxX / squareSize));
+      const minRow = Math.max(0, Math.floor(minY / squareSize));
+      const maxRow = Math.min(rows - 1, Math.floor(maxY / squareSize));
+
+      const touched = new Set();
+
+      const targetAtCell = (cx, cy) => {
+        // 현재 커서 영향
+        const d0 = Math.hypot(cx - x, cy - y);
+        let best = 0;
+
+        if (d0 <= maxR) {
+          const t = d0 <= coreR ? 1 : 1 - (d0 - coreR) / Math.max(1, maxR - coreR);
+          best = Math.max(best, smoothstep(clamp01(t)));
+        }
+
+        if (pts.length) {
+          for (let i = pts.length - 1; i >= 0; i--) {
+            const p = pts[i];
+            const age = (now - p.t) / TRAIL_MS; // 0..1
+            const ageW = Math.pow(TRAIL_DECAY, age * 10);
+
+            const moveW = moving ? 1 : 0.18;
+
+            // trail은 현재보다 약간 약하고 살짝 좁게
+            const trCore = coreR * 0.9;
+            const trMax = maxR * 0.95;
+
+            const d = Math.hypot(cx - p.x, cy - p.y);
+            if (d > trMax) continue;
+
+            const t = d <= trCore ? 1 : 1 - (d - trCore) / Math.max(1, trMax - trCore);
+
+            const v = smoothstep(clamp01(t)) * 0.65 * ageW * moveW;
+            if (v > best) best = v;
+            if (best > 0.98) break;
+          }
+        }
+
+        return best;
+      };
+
+      const current = intensityRef.current;
+      const active = activeRef.current;
+
+      // dt 독립 보간
+      const alpha = 1 - Math.exp(-dt / FOLLOW_TAU_MS);
+
+      // 1) 후보 칸 업데이트
+      for (let row = minRow; row <= maxRow; row++) {
+        for (let col = minCol; col <= maxCol; col++) {
+          const centerX = col * squareSize + squareSize / 2;
+          const centerY = row * squareSize + squareSize / 2;
+
+          const target = targetAtCell(centerX, centerY);
+          const idx = row * columns + col;
+
+          if (target <= EPS && current[idx] <= EPS) continue;
+
+          touched.add(idx);
+
+          const cur = current[idx];
+          const next = cur + (target - cur) * alpha;
+          current[idx] = next;
+
+          const el = cellRefs.current[idx];
+          if (!el) continue;
+
+          if (next <= EPS) {
+            el.style.backgroundColor = 'transparent';
+            active.delete(idx);
+            current[idx] = 0;
+          } else {
+            el.style.backgroundColor = getColor(next);
+            active.add(idx);
+          }
+        }
+      }
+
+      // 2) active인데 이번 touched에 없는 칸은 서서히 꺼짐
+      if (active.size) {
+        const toCheck = [];
+        for (const idx of active) {
+          if (!touched.has(idx)) toCheck.push(idx);
+        }
+
+        for (const idx of toCheck) {
+          const cur = current[idx];
+          const next = cur + (0 - cur) * alpha;
+          current[idx] = next;
+
+          const el = cellRefs.current[idx];
+          if (!el) continue;
+
+          if (next <= EPS) {
+            el.style.backgroundColor = 'transparent';
+            active.delete(idx);
+            current[idx] = 0;
+          } else {
+            el.style.backgroundColor = getColor(next);
+          }
+        }
+      }
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [squareSize]);
 
   return (
     <>
-      <GridSection />
-      {/* predefinedSquares와 커서 효과를 위한 오버레이 */}
+      {/* 인트로 섹션 전용 격자 배경 (24 x 18 고정) */}
       <div
-        ref={gridRef}
-        className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col z-10 max-w-screen box-border pointer-events-none"
+        className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col z-0 box-border pointer-events-none"
         style={{
           width: `${squareSizeRem * columns}rem`,
           height: `${squareSizeRem * rows}rem`,
@@ -248,31 +396,50 @@ function Square({ onScaleChange, onSquareSizeRemChange }) {
             {Array.from({ length: columns }).map((_, col) => (
               <div
                 key={`${row}-${col}`}
-                className="box-border transition-colors duration-150 ease-in-out"
+                className="box-border"
                 style={{
                   width: `${squareSizeRem}rem`,
                   height: `${squareSizeRem}rem`,
-                  backgroundColor: getSquareColor(row, col),
+                  border: '0.8px solid rgba(0, 0, 0, 0.08)',
                 }}
               />
             ))}
           </div>
         ))}
       </div>
-      {/* 커서 이미지 */}
-      <img
-        src={cursorIcon}
-        alt="cursor"
-        className="pointer-events-none fixed z-50 transition-transform duration-100 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12"
+
+      {/* 커서 영향 오버레이 */}
+      <div
+        ref={gridRef}
+        className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col z-10 max-w-screen box-border pointer-events-none"
         style={{
-          left: `${cursorPosition.x}px`,
-          top: `${cursorPosition.y}px`,
-          transform: 'translate(-50%, -50%)',
-          display: cursorPosition.x < 0 ? 'none' : 'block',
+          width: `${squareSizeRem * columns}rem`,
+          height: `${squareSizeRem * rows}rem`,
         }}
-      />
+      >
+        {Array.from({ length: rows }).map((_, row) => (
+          <div key={row} className="flex">
+            {Array.from({ length: columns }).map((_, col) => {
+              const idx = row * columns + col;
+              return (
+                <div
+                  key={`${row}-${col}`}
+                  ref={(el) => {
+                    cellRefs.current[idx] = el;
+                  }}
+                  className="box-border"
+                  style={{
+                    width: `${squareSizeRem}rem`,
+                    height: `${squareSizeRem}rem`,
+                    backgroundColor: 'transparent',
+                    willChange: 'background-color',
+                  }}
+                />
+              );
+            })}
+          </div>
+        ))}
+      </div>
     </>
   );
 }
-
-export default Square;
