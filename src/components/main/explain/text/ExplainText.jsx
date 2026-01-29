@@ -45,6 +45,7 @@ function ExplainText() {
       <span
         style={{
           fontWeight: '700',
+          color: '#00A424',
           fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
         }}
       >

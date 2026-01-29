@@ -27,9 +27,10 @@ function Frame({
   }, []);
 
   // px를 rem으로 변환하는 헬퍼 함수
-  const pxToRem = (px, useScale = true) => {
+  const pxToRem = (px, useScale = true, useFullScale = false) => {
     const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    const scaledPx = useScale ? px * scale * 0.6 : px; // 0.6 scale 적용
+    // useFullScale이 true면 0.6 팩터 없이 전체 scale 적용 (콘텐츠와 같은 비율)
+    const scaledPx = useScale ? (useFullScale ? px * scale : px * scale * 0.6) : px;
     return scaledPx / rootFontSize;
   };
 
@@ -37,8 +38,8 @@ function Frame({
   const cornerSize = pxToRem(17 * cornerScale);
   const cornerOffset = pxToRem(9 * cornerScale);
 
-  // borderWidth를 rem으로 변환
-  const borderWidthRem = pxToRem(borderWidth, false); // scale 적용 안 함
+  // borderWidth를 rem으로 변환 (전체 scale 적용하여 콘텐츠와 같은 비율로 축소)
+  const borderWidthRem = pxToRem(borderWidth, true, true); // 전체 scale 적용하여 반응형으로
 
   // padding 계산
   const paddingTopBottom = paddingY !== null ? paddingY : pxToRem(12);
