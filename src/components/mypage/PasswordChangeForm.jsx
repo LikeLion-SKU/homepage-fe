@@ -60,7 +60,7 @@ export default function PasswordChangeForm({ onSubmit }) {
   };
 
   return (
-    <div className="w-full max-w-lg mx-auto px-4 sm:px-0">
+    <div className="w-full max-w-lg mx-auto px-2 sm:px-0">
       <form onSubmit={handleSubmit}>
         <LoginTitle title="비밀번호 변경" />
         <PasswordInput
@@ -82,7 +82,7 @@ export default function PasswordChangeForm({ onSubmit }) {
             hideToggle={true}
           />
           <div
-            className={`text-sm max-[380px]:text-xs text-left font-['Pretendard'] mb-4 mt-1 ${
+            className={`text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1 break-words max-[375px]:whitespace-normal ${
               passwordTouched && newPassword
                 ? isValidPassword(newPassword)
                   ? 'text-green-500'
@@ -103,14 +103,14 @@ export default function PasswordChangeForm({ onSubmit }) {
             hideToggle={true}
           />
           {passwordMatchStatus === 'mismatch' && (
-            <div className="text-red-500 text-sm max-[380px]:text-xs text-left font-['Pretendard'] mb-4 mt-1">
+            <div className="text-red-500 text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
               비밀번호가 일치하지 않습니다.
             </div>
           )}
           {passwordMatchStatus === 'match' &&
             isValidPassword(newPassword) &&
             newPassword === confirmPassword && (
-              <div className="text-green-500 text-sm max-[380px]:text-xs text-left font-['Pretendard'] mb-4 mt-1">
+              <div className="text-green-500 text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
                 비밀번호가 일치합니다.
               </div>
             )}

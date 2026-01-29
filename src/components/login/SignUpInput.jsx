@@ -14,6 +14,7 @@ export default function SignUpInput({
   maxLength = null,
   bgColor = null,
   textAlign = 'left',
+  inputRef = null,
 }) {
   const bgColorClass = bgColor ? `bg-[${bgColor}]` : disabled ? 'bg-[#F5F5F5]' : 'bg-[#FFFFFF]';
   const textAlignClass =
@@ -31,6 +32,7 @@ export default function SignUpInput({
           className={`relative ${rightButton ? 'w-full sm:w-auto' : 'w-full'} ${maxWidth || ''}`}
         >
           <input
+            ref={inputRef}
             type={type}
             value={value}
             onChange={onChange}
