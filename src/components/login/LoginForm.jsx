@@ -22,19 +22,20 @@ export default function LoginForm({ onSubmit }) {
     <div className="w-full max-w-lg mx-auto px-4 sm:px-0">
       <form onSubmit={handleSubmit}>
         <LoginTitle />
-        <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} />
+        <EmailInput value={email} onChange={(e) => setEmail(e.target.value)} placeholder="" />
         <PasswordInput
           label="비밀번호"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          hideLabel
+          placeholder=""
+          mb="mb-2"
         />
         <ForgotPasswordLink />
       </form>
       <div className="w-full">
-        <LoginButton onClick={handleSubmit} disabled={!email || !password} />
+        <LoginButton onClick={handleSubmit} />
       </div>
-      <SignUpLink />
+      <SignUpLink showNotice={!email && !password} />
     </div>
   );
 }

@@ -12,7 +12,7 @@ export default function Member() {
   const optionData = ['14기', '13기', '12기', '11기'];
   const [selectedOption, setSelectedOption] = useState('14기');
   return (
-    <div className="flex flex-col p-14 relative mb-70">
+    <div className="flex flex-col py-14 px-5 pad:px-7  web:px-14 relative mb-70">
       <TitleSection
         title="구성원"
         pageExplanation="서경대학교 멋쟁이사자처럼의 구성원들을 살펴보세요."
@@ -24,7 +24,7 @@ export default function Member() {
           setSelectedOption={setSelectedOption}
         />
       </TitleSection>
-      <div className="flex flex-col gap-32 pl-7 pt-20">
+      <div className="flex flex-col gap-32 pad:pl-3.25 web:pl-7 pt-20">
         <MemberSection title="운영진" data={memberData1} />
         <MemberSection title="아기사자" data={memberData2} />
       </div>

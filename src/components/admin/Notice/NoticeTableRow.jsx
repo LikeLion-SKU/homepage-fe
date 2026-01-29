@@ -65,10 +65,37 @@ export default function NoticeTableRow({
   // 유효성 검사 모달 상태
   const [isValidationModalOpen, setIsValidationModalOpen] = useState(false);
   const [isTimeOrderError, setIsTimeOrderError] = useState(false);
+  const [isEmptyFieldError, setIsEmptyFieldError] = useState(false);
 
   const handleEdit = () => {
     if (isEditing && isConfirmMode) {
       // 수정완료 버튼 클릭 - 유효성 검사 후 저장
+      // 공란 체크 - 모든 필수 필드가 채워져 있는지 확인
+      const requiredFields = [
+        { value: editData.ordinalNum, name: '모집 기수' },
+        { value: editData.publicDate, name: '공개일' },
+        { value: editData.publicTime, name: '공개일 시간' },
+        { value: editData.deadline, name: '마감일' },
+        { value: editData.deadlineTime, name: '마감일 시간' },
+        { value: editData.documentDate, name: '서류 발표일' },
+        { value: editData.documentTime, name: '서류 발표일 시간' },
+        { value: editData.interviewDate, name: '면접 일정 확정일' },
+        { value: editData.interviewTime, name: '면접 일정 확정일 시간' },
+        { value: editData.finalDate, name: '최종 발표일' },
+        { value: editData.finalTime, name: '최종 발표일 시간' },
+      ];
+
+      const hasEmptyField = requiredFields.some(
+        (field) => !field.value || field.value.trim() === ''
+      );
+
+      if (hasEmptyField) {
+        setIsTimeOrderError(false);
+        setIsEmptyFieldError(true);
+        setIsValidationModalOpen(true);
+        return;
+      }
+
       // 날짜 유효성 검사 (날짜가 입력되어 있으면 유효한 형식이어야 함)
       const dates = [
         { value: editData.publicDate, name: '공개일' },
@@ -84,6 +111,7 @@ export default function NoticeTableRow({
           const formattedDate = formatDateForSave(date.value);
           if (!validateDate(formattedDate)) {
             setIsTimeOrderError(false);
+            setIsEmptyFieldError(false);
             setIsValidationModalOpen(true);
             return;
           }
@@ -102,6 +130,7 @@ export default function NoticeTableRow({
       for (const time of times) {
         if (time.value && !validateTime(time.value)) {
           setIsTimeOrderError(false);
+          setIsEmptyFieldError(false);
           setIsValidationModalOpen(true);
           return;
         }
@@ -139,6 +168,7 @@ export default function NoticeTableRow({
         const curr = ordered[i];
         if (prev !== null && curr !== null && curr < prev) {
           setIsTimeOrderError(true);
+          setIsEmptyFieldError(false);
           setIsValidationModalOpen(true);
           return;
         }
@@ -356,9 +386,14 @@ export default function NoticeTableRow({
         cancel={() => {
           setIsValidationModalOpen(false);
           setIsTimeOrderError(false);
+          setIsEmptyFieldError(false);
         }}
       >
-        {isTimeOrderError ? '올바른 날짜와 시간대로 수정해주세요.' : '수정이 완료되지 않았습니다.'}
+        {isEmptyFieldError
+          ? '일정을 모두 채워주세요.'
+          : isTimeOrderError
+            ? '올바른 날짜와 시간대로 수정해주세요.'
+            : '수정이 완료되지 않았습니다.'}
       </CheckModal>
     </div>
   );

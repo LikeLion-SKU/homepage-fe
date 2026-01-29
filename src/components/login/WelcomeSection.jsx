@@ -1,6 +1,6 @@
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 
-import logo from '@/assets/images/skulogo.png';
+import logo from '@/assets/images/lion-green.png';
 import RedirectButton from '@/components/common/Button/RedirectButton';
 import GridSection from '@/components/layout/background/GridSection';
 import { usePreventDirectAccess } from '@/hooks/usePreventDirectAccess';

@@ -4,7 +4,7 @@ import MemberCard from '@/components/Member/MemberCard';
 import MemberSkeleton from '@/components/Member/MemberSkeleton';
 
 export default function MemberSection({ title, data }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const skeletonData = [
     {
       name: '대표',
@@ -26,13 +26,13 @@ export default function MemberSection({ title, data }) {
   return (
     <>
       {isLoading ? (
-        <div className="flex h-500 flex-col gap-12">
-          <p className="text-[1.9rem] font-bold">운영진</p>
+        <div className="flex flex-col gap-12">
+          <p className="text-[1.2rem] pad:text-[1.9rem] font-bold">운영진</p>
           <div className="flex flex-col gap-20">
             {skeletonData.map((track) => (
               <div className="flex flex-col gap-5">
-                <p className="text-[1.25rem] font-semibold">{track.name}</p>
-                <div className="flex w-317 flex-wrap gap-5.5">
+                <p className="text-[1rem] pad:text-[1.25rem] font-semibold">{track.name}</p>
+                <div className="flex flex-wrap gap-3 pad:gap-4 web:gap-5.5">
                   {track.member.map(() => (
                     <MemberSkeleton />
                   ))}
@@ -43,12 +43,12 @@ export default function MemberSection({ title, data }) {
         </div>
       ) : (
         <div className="flex flex-col gap-12">
-          <p className="text-[1.9rem] font-bold">{title}</p>
+          <p className="text-[1.2rem] pad:text-[1.9rem] font-bold">{title}</p>
           <div className="flex flex-col gap-20">
             {data.map((track) => (
               <div className="flex flex-col gap-5">
-                <p className="text-[1.25rem] font-semibold">{track.name}</p>
-                <div className="flex w-317 flex-wrap gap-5.5">
+                <p className="text-[1rem] pad:text-[1.25rem] font-semibold">{track.name}</p>
+                <div className="flex flex-wrap gap-2 pad:gap-4 web:gap-5.5">
                   {track.member.map((data) => (
                     <MemberCard data={data} />
                   ))}
