@@ -12,6 +12,7 @@ export default function PasswordInput({
   rightButton = null,
   required = false,
   hideToggle = false,
+  disabled = false,
 }) {
   const [showPassword, setShowPassword] = useState(true);
 
@@ -47,7 +48,8 @@ export default function PasswordInput({
             onChange={onChange}
             onBlur={onBlur}
             placeholder={placeholder}
-            className={`w-full h-12 sm:h-14 px-3 sm:px-4 py-2.5 sm:py-3 bg-[#FFFFFF] border border-[1px] border-[#B0B0B0] text-black text-sm sm:text-base font-['Pretendard'] focus:outline-none focus:ring-2 focus:ring-[#1A1A1A] ${hideToggle ? 'pr-3 sm:pr-4' : 'pr-35'}`}
+            disabled={disabled}
+            className={`w-full h-12 sm:h-14 max-[380px]:h-10 px-3 sm:px-4 max-[380px]:px-2.5 py-2.5 sm:py-3 max-[380px]:py-2 ${disabled ? 'bg-[#F5F5F5]' : 'bg-[#FFFFFF]'} border border-[1px] border-[#B0B0B0] ${disabled ? 'text-[#D3D3D3]' : 'text-black'} text-sm sm:text-base max-[380px]:text-xs font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed ${hideToggle ? 'pr-3 sm:pr-4 max-[380px]:pr-2.5' : 'pr-35'}`}
             style={{ minWidth: 0 }}
           />
           {!hideToggle && (
