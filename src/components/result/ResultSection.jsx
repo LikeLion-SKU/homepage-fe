@@ -11,7 +11,7 @@ export default function ResultSection({ pass }) {
         다시 한번 소중한 시간을 내어 면접에 응해 주셔서
         진심으로 감사드립니다.
         지원자님의 정보는 한 달 이내로 일괄 삭제하겠습니다.`;
-  const passText = `합격 축하요`;
+  //const passText = `합격 축하요`;
   const date = new Date().getTime();
   const applyResultDate = [
     new Date(2026, 0, 22, 0, 0).getTime(),
@@ -22,11 +22,11 @@ export default function ResultSection({ pass }) {
     new Date(2026, 2, 25, 0, 0).getTime(),
   ];
   return (
-    <div className="flex flex-col justify-center items-center gap-9 pt-40">
-      <PageTitle title="면접 결과 안내" width="290px" color="Navy" />
+    <div className="flex flex-col px-6 justify-center items-center gap-9 pt-40">
+      <PageTitle title="면접 결과 안내" color="Navy" />
       <TextTile>
         {date > applyResultDate[0] && date < applyResultDate[1] && !pass && notPassText}
-        {date > applyResultDate[0] && date < applyResultDate[1] && pass && passText}
+        {date > applyResultDate[0] && date < applyResultDate[1] && pass && notPassText}
         {date > interviewResultDate[0] && date < interviewResultDate[1] && '면접 기간'}
       </TextTile>
     </div>

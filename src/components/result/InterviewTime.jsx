@@ -60,7 +60,7 @@ export default function InterviewTime({ setAllChecked }) {
 
   return (
     <div className="flex flex-col gap-20 items-center mt-30">
-      <PageTitle title="면접 날짜 선택" width="270px" color="Navy" />
+      <PageTitle title="면접 날짜 선택" color="Navy" />
       <div className="flex flex-col gap-13">
         {interviewTimeData.map((data) => (
           <TimeBar
@@ -72,8 +72,8 @@ export default function InterviewTime({ setAllChecked }) {
         ))}
       </div>
       <div className="flex gap-13 mt-25">
-        <TextTile width="528px" height="468px">
-          <div className="flex flex-col gap-10 ml-10 mr-auto">
+        <TextTile>
+          <div className="flex flex-col gap-10">
             <p className="text-[1.5rem] font-bold ">회비 및 보증금 제도 동의 여부</p>
             <div>{money}</div>
             <button onClick={() => isAllCheck(1)} className="flex items-center gap-3 h-10">
@@ -84,8 +84,8 @@ export default function InterviewTime({ setAllChecked }) {
             </button>
           </div>
         </TextTile>
-        <TextTile width="528px" height="468px">
-          <div className="flex flex-col gap-10 ml-10 mr-auto">
+        <TextTile>
+          <div className="flex flex-col gap-10">
             <p className="text-[1.5rem] font-bold">회비 및 보증금 제도 동의 여부</p>
             <div>{contents}</div>
             <button onClick={() => isAllCheck(2)} className="flex items-center gap-3 h-10">
