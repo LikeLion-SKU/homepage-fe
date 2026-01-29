@@ -67,7 +67,7 @@ export default function PasswordChangeForm({ onSubmit }) {
           label="현재 비밀번호"
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
-          placeholder="abc1234"
+          placeholder="abc@1234"
           mb="mb-4"
           hideToggle={true}
         />
@@ -77,7 +77,7 @@ export default function PasswordChangeForm({ onSubmit }) {
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             onBlur={() => setPasswordTouched(true)}
-            placeholder="abcd1234"
+            placeholder="abcd@1234"
             mb="mb-0"
             hideToggle={true}
           />
