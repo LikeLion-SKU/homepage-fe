@@ -65,7 +65,7 @@ export default function Header() {
                 </motion.span>
               </button>
             )}
-            <button onClick={() => clickMenu('/join')} className="font-semibold cursor-pointer">
+            <button onClick={() => clickMenu('/recruit')} className="font-semibold cursor-pointer">
               지원하기
             </button>
             <button onClick={() => clickMenu('/project')} className="font-semibold cursor-pointer">
@@ -82,11 +82,14 @@ export default function Header() {
             className="px-10 font-semibold items-center justify-center 
           border-x web:border-l web:border-r-0"
           >
-            로그인/회원가입
+            {token ? '마이페이지' : '로그인/회원가입'}
           </button>
         )}
         {!isDesktop && (
-          <button className="flex w-14 h-13 pad:w-22 pad:h-17 justify-center items-center">
+          <button
+            onClick={() => navigate('/sideBar')}
+            className="flex w-14 h-13 border-l pad:border-none pad:w-22 pad:h-17 justify-center items-center"
+          >
             <Hamberger />
           </button>
         )}
