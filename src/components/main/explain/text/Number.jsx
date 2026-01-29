@@ -10,8 +10,8 @@ import useScale from '@/components/main/hooks/useScale';
  * 숫자 + 플러스 컴포넌트 (카운팅 애니메이션)
  * @param {Object} props
  * @param {number} props.value - 표시할 숫자 값
- * @param {number} props.initialX - 초기 X 위치 (기본값: 200, 오른쪽으로 이동)
- * @param {number} props.initialY - 초기 Y 위치 (기본값: 100, 아래로 이동)
+ * @param {number|string} props.initialX - 초기 X 위치 (기본값: 200, 오른쪽으로 이동) - 숫자(px) 또는 string(vw/vh 등)
+ * @param {number|string} props.initialY - 초기 Y 위치 (기본값: 100, 아래로 이동) - 숫자(px) 또는 string(vw/vh 등)
  */
 export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
   const scale = useScale();
@@ -29,44 +29,80 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // initialX와 initialY가 string인지 확인 (vw, vh 등)
+  const isXString = typeof initialX === 'string';
+  const isYString = typeof initialY === 'string';
+
   // 화면 크기에 따라 위치 조정
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
+  const isWide = windowWidth > 1440;
 
   // 반응형 위치 계산
-  const responsiveX = isMobile
-    ? Math.max(
-        -windowWidth / 2 + 20,
-        Math.min(windowWidth / 2 - 100, initialX * (windowWidth / 1440))
-      )
-    : isTablet
-      ? initialX * (windowWidth / 1440)
-      : initialX;
+  // string인 경우 그대로 사용, 숫자인 경우 기존 로직 적용
+  const mobileRightPadding = Math.min(100, windowWidth * 0.1); // 375px면 37.5
+  const maxXMobile = windowWidth / 2 - mobileRightPadding;
+  const maxXWide = 720; // 대충 안전상한 (원하면 조절)
 
-  const responsiveY = isMobile ? initialY * 0.5 : isTablet ? initialY * 0.8 : initialY;
+  const responsiveX = isXString
+    ? initialX
+    : (() => {
+        const base = initialX * (windowWidth / 1440); // ✅ 1440 기준으로 계속 스케일링
+        if (isMobile) {
+          return Math.max(-windowWidth / 2 + 20, Math.min(maxXMobile, base));
+        }
+        if (isWide) {
+          return Math.min(maxXWide, base);
+        }
+        return base; //  640~1440까지도 base 사용
+      })();
+
+  const responsiveY = isYString
+    ? initialY
+    : isMobile
+      ? initialY * 0.5
+      : isTablet
+        ? initialY * 0.8
+        : initialY;
 
   // 숫자를 문자열로 변환 (2자리로 패딩)
   const numberString = String(count).padStart(2, '0');
+
+  // x, y 값을 계산 (string인 경우와 숫자인 경우 처리)
+  const xValue = isXString ? responsiveX : `${responsiveX}px`;
+  const yValue = isYString ? responsiveY : `${responsiveY}px`;
+  const initialYValue = isYString
+    ? responsiveY
+    : typeof responsiveY === 'number'
+      ? `${responsiveY + 20}px`
+      : responsiveY;
+
+  // 모든 화면 크기에서 left: 50% 기준 유지
+  const style = {
+    left: '46%',
+    top: '52%',
+    x: `calc(-30% + ${xValue})`,
+    y: `calc(-50% + ${yValue})`,
+  };
+
+  const initialStyle = isMobile
+    ? { y: `calc(-50% + ${initialYValue})`, opacity: 0 }
+    : { y: `calc(-50% + ${initialYValue})`, opacity: 0 };
+
+  const whileInViewStyle = isMobile
+    ? { y: `calc(-50% + ${yValue})`, opacity: 1 }
+    : { y: `calc(-50% + ${yValue})`, opacity: 1 };
 
   return (
     <motion.div
       className="absolute"
       style={{
-        top: '50%',
-        left: '50%',
-        x: `calc(-50% + ${responsiveX}px)`,
-        y: `calc(-50% + ${responsiveY}px)`,
+        ...style,
         zIndex: 100,
         maxWidth: '90vw',
       }}
-      initial={{
-        y: `calc(-50% + ${responsiveY + 20}px)`,
-        opacity: 0,
-      }}
-      whileInView={{
-        y: `calc(-50% + ${responsiveY}px)`,
-        opacity: 1,
-      }}
+      initial={initialStyle}
+      whileInView={whileInViewStyle}
       viewport={{ once: true, amount: 0.2 }}
       transition={{
         duration: 1.5,
