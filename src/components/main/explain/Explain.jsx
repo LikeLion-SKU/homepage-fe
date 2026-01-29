@@ -9,12 +9,20 @@ import LabelAnimation from '@/components/animation/LabelAnimation';
 import SmallFrameBox from '@/components/layout/frame/Frame';
 import ExplainBackground from '@/components/main/explain/background/ExplainBackground';
 import useScale from '@/components/main/hooks/useScale';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 import ExplainText from './text/ExplainText';
 import Number from './text/Number';
 
 function Explain() {
   const scale = useScale();
+  const isMobile760 = useMediaQuery('(max-width: 760px)');
+
+  // 모바일에서 blah 이미지 위치 조정
+  const leftBlahLift = isMobile760 ? 40 : 0; // 좌측은 아래로 (양수)
+  const rightBlahLift = isMobile760 ? -50 : 0; // 우측은 위로 (음수)
+  const leftBlahShift = isMobile760 ? -10 : 0; // 좌측은 왼쪽으로 (음수)
+  const rightBlahShift = isMobile760 ? 10 : 0; // 우측은 오른쪽으로 (양수)
 
   return (
     <ExplainBackground>
@@ -68,17 +76,20 @@ function Explain() {
             ease: 'easeOut',
           }}
         >
-          <img
+          <motion.img
             src={leftBlahIcon}
             alt="BLAH"
             className="object-contain"
             style={{
               width: `${(180 / 16) * scale}rem`,
               height: `${(61 / 16) * scale}rem`,
-              marginRight: `${(50 / 16) * scale}rem`,
+              marginRight: `${(-10 / 16) * scale}rem`,
               imageRendering: 'crisp-edges',
               transform: 'translateY(150%)',
             }}
+            initial={false}
+            animate={{ y: leftBlahLift, x: leftBlahShift }}
+            transition={{ type: 'tween', duration: 0.01 }}
           />
         </motion.div>
 
@@ -96,7 +107,7 @@ function Explain() {
             ease: 'easeOut',
           }}
         >
-          <img
+          <motion.img
             src={rightBlahIcon}
             alt="BLAH"
             className="object-contain"
@@ -107,6 +118,9 @@ function Explain() {
               imageRendering: 'crisp-edges',
               transform: 'translateY(140%)',
             }}
+            initial={false}
+            animate={{ y: rightBlahLift, x: rightBlahShift }}
+            transition={{ type: 'tween', duration: 0.01 }}
           />
         </motion.div>
 

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 
 import Home from '@/assets/icons/4.svg';
 import Camera from '@/assets/icons/mdi-light_camera.svg';
-import defaultProfileImage from '@/assets/images/lion.png';
+//import defaultProfileImage from '@/assets/images/lion.png';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
 
@@ -14,6 +14,8 @@ export default function MyPage() {
     profileImage: '',
   };
 
+  const defaultProfileImage = '';
+
   // TODO: 지원서 존재여부로 지정
   const [hasApplication, _setHasApplication] = useState(false);
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ export default function MyPage() {
   const [isInterviewReserved, _setIsInterviewReserved] = useState(false);
 
   const buttonStyle = `
-    w-full h-12 bg-white border border-black
+    w-full h-10 pad:h-12 bg-white border border-black
     flex justify-center items-center 
     text-black text-lg font-semibold font-['Pretendard']
     relative z-[1] transition-all duration-200
@@ -49,12 +51,16 @@ export default function MyPage() {
   };
 
   return (
-    <div className="w-360 h-229 relative bg-white overflow-hidden">
-      <div className="relative w-142 h-44 left-46.25 top-55.5 inline-flex justify-start items-center gap-9">
-        <div className="w-44 h-44 relative">
-          <div className="relative w-44 h-44 bg-zinc-300 border border-black group">
+    <div className="w-full flex flex-col web:flex-row web:justify-between min-h-screen relative bg-white">
+      {/* 왼쪽 부분 */}
+      <div className="relative px-46.25 flex justify-start items-center gap-9">
+        <div className="w-40 h-40 pad:w-44 pad:h-44 relative">
+          <div className="relative w-44 h-44 pad:w-44 pad:h-44 bg-zinc-300 border border-black group">
             {/* 이 label을 누르면 input으로 입력받을 수 있게 */}
-            <label htmlFor="profile-upload" className="cursor-pointer block w-full h-full">
+            <label
+              htmlFor="profile-upload"
+              className="cursor-pointer w-full h-full flex items-center justify-center"
+            >
               <img
                 src={
                   isError
@@ -66,7 +72,7 @@ export default function MyPage() {
                 alt="프로필"
               ></img>{' '}
               {/* 프로필 사진 */}
-              <div className="w-8 h-8 left-[137.10px] top-[138.42px] absolute overflow-hidden">
+              <div className="w-8 h-8 absolute overflow-hidden">
                 <img src={Camera}></img> {/* 카메라 아이콘 */}
               </div>
             </label>
@@ -80,24 +86,23 @@ export default function MyPage() {
             />
           </div>
         </div>
-
-        <div className="w-80 inline-flex flex-col justify-start items-start gap-3">
+        <div className="min-w-64 pad:min-w-72 web:min-w-80 inline-flex flex-col justify-start items-start gap-3">
           <div className="self-stretch justify-center">
-            <span className="text-black text-2xl font-bold font-['Pretendard']">
+            <span className="text-black text-xl pad:text-2xl font-bold font-['Pretendard']">
               {userData.name}
             </span>
             <span className="text-black text-4xl font-bold font-['Pretendard']"> </span>
-            <span className="text-zinc-600 text-xl font-semibold font-['Pretendard']">
+            <span className="text-zinc-600 text-lg pad:text-xl  font-semibold font-['Pretendard']">
               님, 안녕하세요
             </span>
           </div>
-          <div className="self-stretch justify-start text-stone-500 text-lg font-medium font-['Pretendard']">
+          <div className="self-stretch justify-start text-stone-500 text-sm pad:text-lg font-semibold pad:font-medium font-['Pretendard']">
             {userData.email}
           </div>
         </div>
       </div>
-
-      <div className="w-96 left-222.5 top-55.25 absolute inline-flex flex-col justify-start items-start gap-4">
+      {/* 오른쪽 부분 */}
+      <div className="w-60 pad:max-w-142 pad:min-w-48 web:min-w-96 left-222.5 top-55.25 absolute inline-flex flex-col justify-start items-start gap-4">
         <div className="self-stretch">
           <Button
             onClick={() => {
