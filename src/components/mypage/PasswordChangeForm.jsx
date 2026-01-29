@@ -90,7 +90,7 @@ export default function PasswordChangeForm({ onSubmit }) {
                 : 'text-[#000000]'
             }`}
           >
-            영문, 숫자 및 특수 문자 포함 8자 이상 20자 이하로 입력해주세요.
+            비밀번호는 영문자, 숫자, 특수문자를 각각 최소 1자 이상 포함한 8~20자리여야 합니다.
           </div>
         </div>
         <div>
