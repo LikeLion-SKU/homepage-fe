@@ -28,7 +28,7 @@ export default function AgreeForm({
               checked={isAgreed}
               onChange={handleCheckboxChange}
               required={required}
-              className="w-5 h-5 max-[380px]:w-4 max-[380px]:h-4 border border-[#1C1B1A] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1A1A1A] appearance-none"
+              className="w-5 h-5 max-[380px]:w-4 max-[380px]:h-4 border border-[#1C1B1A] cursor-pointer focus:outline-none focus:border-[#1A1A1A] focus:ring-0 appearance-none"
             />
             {isAgreed && (
               <div

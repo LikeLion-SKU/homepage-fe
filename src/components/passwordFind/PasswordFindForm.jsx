@@ -135,12 +135,13 @@ export default function PasswordFindForm({ onSubmit }) {
             hideToggle
             mb="mb-0"
             maxWidth="max-w-full sm:max-w-[600px]"
+            disabled={!isVerificationSent}
             rightButton={
               <VerificationButton
                 onClick={handleVerificationCheck}
-                disabled={!password}
+                disabled={!password || !isVerificationSent}
                 text="인증번호 확인"
-                isActive={!!email}
+                isActive={!!email && isVerificationSent}
               />
             }
           />

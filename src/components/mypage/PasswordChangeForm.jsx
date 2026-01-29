@@ -82,7 +82,7 @@ export default function PasswordChangeForm({ onSubmit }) {
             hideToggle={true}
           />
           <div
-            className={`text-sm text-left font-['Pretendard'] mb-4 mt-1 ${
+            className={`text-sm max-[380px]:text-xs text-left font-['Pretendard'] mb-4 mt-1 ${
               passwordTouched && newPassword
                 ? isValidPassword(newPassword)
                   ? 'text-green-500'
@@ -90,7 +90,7 @@ export default function PasswordChangeForm({ onSubmit }) {
                 : 'text-[#000000]'
             }`}
           >
-            영문자, 숫자, 특수문자를 각각 최소 1자 이상 포함한 8~20자리로 입력해주세요.
+            영문, 숫자 및 특수 문자 포함 8자 이상 20자 이하로 입력해주세요.
           </div>
         </div>
         <div>
@@ -103,14 +103,14 @@ export default function PasswordChangeForm({ onSubmit }) {
             hideToggle={true}
           />
           {passwordMatchStatus === 'mismatch' && (
-            <div className="text-red-500 text-sm text-left font-['Pretendard'] mb-4 mt-1">
+            <div className="text-red-500 text-sm max-[380px]:text-xs text-left font-['Pretendard'] mb-4 mt-1">
               비밀번호가 일치하지 않습니다.
             </div>
           )}
           {passwordMatchStatus === 'match' &&
             isValidPassword(newPassword) &&
             newPassword === confirmPassword && (
-              <div className="text-green-500 text-sm text-left font-['Pretendard'] mb-4 mt-1">
+              <div className="text-green-500 text-sm max-[380px]:text-xs text-left font-['Pretendard'] mb-4 mt-1">
                 비밀번호가 일치합니다.
               </div>
             )}

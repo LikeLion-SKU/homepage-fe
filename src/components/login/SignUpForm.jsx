@@ -330,8 +330,8 @@ export default function SignUpForm({ onSubmit }) {
             </div>
           </div>
         </form>
-        <div className="w-full mt-26">
-          <LoginButton onClick={handleNextStep} disabled={verificationStatus !== 'success'}>
+        <div className="w-full mt-24">
+          <LoginButton onClick={handleNextStep} disabled={!password}>
             다음
           </LoginButton>
         </div>
@@ -368,7 +368,7 @@ export default function SignUpForm({ onSubmit }) {
               }
             }}
             onBlur={() => setPasswordTouched(true)}
-            placeholder="abcd1234"
+            placeholder="abcd@1234"
             mb="mb-0"
             required
           />
@@ -444,12 +444,12 @@ export default function SignUpForm({ onSubmit }) {
           value={phone}
           onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
           onBlur={() => setPhoneTouched(true)}
-          placeholder="010-1234-5678"
+          placeholder="010-1111-1111"
           required
           mb="mb-6"
         />
         <AgreeForm onAgreeChange={setIsAgreed} required />
-        <div className="w-full mt-26">
+        <div className="w-full mt-8">
           <LoginButton onClick={handleSubmit}>다음</LoginButton>
         </div>
         <SignupLink questionText="이미 계정이 있으신가요?" linkText="로그인" linkPath="/login" />
