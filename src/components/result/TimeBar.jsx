@@ -3,10 +3,11 @@ import TimeBox from '@/components/result/TimeBox';
 export default function TimeBar({ setAllChecked, data, selectedTime, setSelectedTime }) {
   return (
     <div className="flex flex-col gap-5 items-center pad:items-start">
-      <p className="text-[1.25rem] ">{data.date}</p>
+      <p className="text-[0.9rem] pad:text-[1.25rem] font-semibold pad:font-medium">{data.date}</p>
       <div className="flex gap-4 flex-wrap justify-center pad:justify-start">
         {data.startTime.map((time, index) => (
           <TimeBox
+            key={index}
             setAllChecked={setAllChecked}
             selectedTime={selectedTime}
             setSelectedTime={setSelectedTime}

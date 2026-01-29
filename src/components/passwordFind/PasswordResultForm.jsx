@@ -3,8 +3,9 @@ import { useNavigate, useOutletContext } from 'react-router';
 
 //@ts-ignore
 import CopyIcon from '@/assets/icons/copy_icon.svg?react';
+import Navy from '@/assets/icons/right_navy_icon.svg';
+import Button from '@/components/common/Button/Button';
 
-import LoginButton from '../login/LoginButton';
 import LoginTitle from '../login/LoginTitle';
 import SignUpInput from '../login/SignUpInput';
 
@@ -79,7 +80,7 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
                 위 비밀번호는 임시 비밀번호입니다.
               </p>
               <p className="text-black text-sm max-[380px]:text-xs font-['Pretendard'] mb-1">
-                로그인 후 "마이페이지"-&gt;"비밀번호 변경"에서 비밀번호를 변경해주세요.
+                로그인 후 "마이페이지"-&gt;"비밀번호 변경"에서
               </p>
               <p className="text-black text-sm max-[380px]:text-xs font-['Pretendard'] mb-1">
                 반드시 비밀번호를 변경해주세요.
@@ -87,8 +88,24 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
             </div>
           </div>
         </div>
-        <div className="w-full mt-20">
-          <LoginButton onClick={handleLoginClick}>로그인</LoginButton>
+        <div className="w-full mt-20 flex justify-start">
+          <div className="w-full max-w-2xl">
+            <div className="flex justify-start items-center z-10">
+              <Button
+                onClick={handleLoginClick}
+                data-variant=""
+                data-size=""
+                className="w-12 h-12 bg-button-green hover:bg-button-hover px-3 py-3.5 outline flex-col justify-center items-center gap-2.5 flex-shrink-0"
+              >
+                <img src={Navy} className="w-6 h-5" alt="navy icon" />
+              </Button>
+              <div className="flex-1 self-stretch h-12 px-4 py-3 outline bg-button-gray relative z-10">
+                <div className="flex justify-center items-center h-full mr-14 text-zinc-900 text-lg font-medium font-['Pretendard']">
+                  로그인
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </div>

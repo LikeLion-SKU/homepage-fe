@@ -35,6 +35,7 @@ import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
 import Recruitment from '@/pages/Recruitment/Recruitment';
 import Result from '@/pages/Result/Result';
 import ResultNotice from '@/pages/Result/ResultNotice';
+import SideBar from '@/pages/SideBar/SideBar';
 import AdminRoute from '@/router/AdminRoute';
 import ProtectedRoute from '@/router/ProtectedRoute';
 
@@ -82,6 +83,7 @@ const router = createBrowserRouter([
           { path: '/password/result', Component: PasswordResult },
           { path: '/require', Component: LoginRequired },
           { path: '/error', Component: ServerError },
+          { path: '/sideBar', Component: SideBar },
         ],
       },
       {

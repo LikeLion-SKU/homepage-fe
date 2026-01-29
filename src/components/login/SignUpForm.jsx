@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 
+import CheckModal from '@/components/common/Modal/CheckModal';
+
 import AgreeForm from './AgreeForm';
 import EmailInput from './EmailInput';
 import LoginButton from './LoginButton';
 import LoginTitle from './LoginTitle';
 import PasswordInput from './PasswordInput';
-import SignUpConfirm from './SignUpConfim';
 import SignUpInput from './SignUpInput';
 import SignupLink from './SignUpLink';
 import VerificationButton from './VerificationButton';
@@ -24,6 +25,7 @@ export default function SignUpForm({ onSubmit }) {
   const [signupPassword, setSignupPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
+  const [previousPhone, setPreviousPhone] = useState('');
   const [major, setMajor] = useState('');
   const [studentNumber, setStudentNumber] = useState('');
   const [isAgreed, setIsAgreed] = useState(false);
@@ -36,17 +38,31 @@ export default function SignUpForm({ onSubmit }) {
 
   // 전화번호 포맷팅 함수 (하이픈 자동 추가)
   // 01[016789]-XXX-XXXX 또는 01[016789]-XXXX-XXXX 형식
-  const formatPhoneNumber = (value) => {
+  const formatPhoneNumber = (value, prevValue = '') => {
     // 숫자만 추출
     const numbers = value.replace(/[^\d]/g, '');
+    const prevNumbers = prevValue.replace(/[^\d]/g, '');
+
+    // 삭제 중인 경우 (숫자 개수가 줄어든 경우 또는 전체 길이가 줄어든 경우)
+    const isDeleting = numbers.length < prevNumbers.length || value.length < prevValue.length;
 
     // 01[016789]로 시작하는지 확인
     if (numbers.length === 0) return '';
     if (numbers.length <= 2) {
       return numbers;
     }
-    if (numbers.length <= 3) {
-      return `${numbers.slice(0, 3)}-`;
+    if (numbers.length === 3) {
+      // 삭제 중이 아니고, 유효한 번호(010, 011, 016, 017, 018, 019)면 하이픈 추가
+      if (
+        !isDeleting &&
+        numbers[0] === '0' &&
+        numbers[1] === '1' &&
+        ['0', '1', '6', '7', '8', '9'].includes(numbers[2])
+      ) {
+        return `${numbers.slice(0, 3)}-`;
+      }
+      // 삭제 중이거나 유효하지 않은 번호면 숫자만 반환
+      return numbers;
     }
     // 010, 011, 016, 017, 018, 019로 시작
     if (
@@ -63,6 +79,11 @@ export default function SignUpForm({ onSubmit }) {
         return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
       }
     }
+    // 잘못된 형식이지만 삭제 중이면 원본 값 반환 (삭제 가능하도록)
+    if (isDeleting) {
+      return value;
+    }
+    // 잘못된 형식이고 입력 중이면 숫자만 반환
     return numbers;
   };
 
@@ -347,11 +368,15 @@ export default function SignUpForm({ onSubmit }) {
             showNotice={false}
           />
         </div>
-        <SignUpConfirm
+        <CheckModal
           isOpen={showConfirmModal}
-          onClose={() => setShowConfirmModal(false)}
-          message={confirmModalMessage}
-        />
+          cancel={() => setShowConfirmModal(false)}
+          buttonColor={
+            confirmModalMessage === '잘못된 인증번호입니다.' ? 'bg-[#FF7D56]' : 'bg-button-green'
+          }
+        >
+          {confirmModalMessage}
+        </CheckModal>
       </>
     );
   }
@@ -361,7 +386,7 @@ export default function SignUpForm({ onSubmit }) {
   const displayEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
   return (
-    <div className="w-full max-w-lg mx-auto px-4 sm:px-0">
+    <div className="w-full max-w-xl mx-auto px-4 sm:px-0">
       <form onSubmit={handleSubmit}>
         <LoginTitle title="회원가입" />
         <SignUpInput
@@ -390,7 +415,7 @@ export default function SignUpForm({ onSubmit }) {
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
             <p
-              className={`text-base max-[380px]:text-xs font-['Pretendard'] font-medium ${
+              className={`text-xs min-[761px]:text-base font-['Pretendard'] font-medium ${
                 passwordTouched && signupPassword
                   ? isValidPassword(signupPassword)
                     ? 'text-green-500'
@@ -415,12 +440,12 @@ export default function SignUpForm({ onSubmit }) {
             {confirmPassword &&
               isValidPassword(signupPassword) &&
               signupPassword === confirmPassword && (
-                <p className="text-green-500 text-base max-[380px]:text-xs font-['Pretendard'] font-medium">
+                <p className="text-green-500 text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
                   비밀번호가 일치합니다.
                 </p>
               )}
             {confirmPassword && signupPassword !== confirmPassword && (
-              <p className="text-red-500 text-base max-[380px]:text-xs font-['Pretendard'] font-medium">
+              <p className="text-red-500 text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
                 비밀번호가 일치하지 않습니다.
               </p>
             )}
@@ -458,7 +483,12 @@ export default function SignUpForm({ onSubmit }) {
           label="전화번호"
           type="tel"
           value={phone}
-          onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
+          onChange={(e) => {
+            const newValue = e.target.value;
+            const formatted = formatPhoneNumber(newValue, previousPhone);
+            setPreviousPhone(phone);
+            setPhone(formatted);
+          }}
           onBlur={() => setPhoneTouched(true)}
           placeholder="010-1111-1111"
           required
@@ -475,11 +505,15 @@ export default function SignUpForm({ onSubmit }) {
           showNotice={false}
         />
       </form>
-      <SignUpConfirm
+      <CheckModal
         isOpen={showConfirmModal}
-        onClose={() => setShowConfirmModal(false)}
-        message={confirmModalMessage}
-      />
+        cancel={() => setShowConfirmModal(false)}
+        buttonColor={
+          confirmModalMessage === '잘못된 인증번호입니다.' ? 'bg-[#FF7D56]' : 'bg-button-green'
+        }
+      >
+        {confirmModalMessage}
+      </CheckModal>
     </div>
   );
 }

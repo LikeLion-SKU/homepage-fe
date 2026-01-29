@@ -64,8 +64,9 @@ export default function InterviewTime({ setAllChecked }) {
         <PageTitle title="면접 날짜 선택" color="Navy" />
       </div>
       <div className="flex flex-col gap-13 ">
-        {interviewTimeData.map((data) => (
+        {interviewTimeData.map((data, index) => (
           <TimeBar
+            key={index}
             setAllChecked={setAllChecked}
             data={data}
             selectedTime={selectedTime}
