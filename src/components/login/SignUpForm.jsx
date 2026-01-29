@@ -94,6 +94,10 @@ export default function SignUpForm({ onSubmit }) {
     // 인증번호 확인이 성공했을 때만 다음 단계로 이동
     if (verificationStatus === 'success') {
       setStep(2);
+    } else if (password && verificationStatus !== 'success') {
+      // 인증번호가 입력되었지만 성공하지 않은 경우 모달 표시
+      setConfirmModalMessage('잘못된 인증번호입니다.');
+      setShowConfirmModal(true);
     }
   };
 
@@ -256,87 +260,99 @@ export default function SignUpForm({ onSubmit }) {
   // 첫 번째 단계: 인증번호 확인
   if (step === 1) {
     return (
-      <div className="w-full max-w-lg mx-auto px-4 sm:px-0">
-        <form onSubmit={(e) => e.preventDefault()}>
-          <LoginTitle title="회원가입" />
-          <EmailInput
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            mb="mb-3"
-            disabled={password.length > 0}
-            textColor={password.length > 0 ? 'text-[#D3D3D3]' : 'text-black'}
-            rightButton={
-              <VerificationButton
-                onClick={handleVerificationSend}
-                disabled={!email}
-                isActive={!!email}
-                isResend={isVerificationSent}
-                text={isVerificationSent ? '인증번호 재전송' : '인증번호 전송'}
-              />
-            }
-          />
-          <div>
-            <PasswordInput
-              label="인증번호"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setVerificationStatus(null); // 입력 시 상태 초기화
-              }}
-              placeholder="인증번호를 입력해주세요"
-              hideLabel
-              hideToggle
-              mb="mb-0"
-              maxWidth="max-w-full sm:max-w-[600px]"
+      <>
+        <div className="w-full max-w-lg mx-auto px-4 sm:px-0">
+          <form onSubmit={(e) => e.preventDefault()}>
+            <LoginTitle title="회원가입" />
+            <EmailInput
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              mb="mb-3"
+              disabled={password.length > 0}
+              textColor={password.length > 0 ? 'text-[#D3D3D3]' : 'text-black'}
               rightButton={
                 <VerificationButton
-                  onClick={handleVerificationCheck}
-                  disabled={!password}
-                  text="인증번호 확인"
+                  onClick={handleVerificationSend}
+                  disabled={!email}
                   isActive={!!email}
+                  isResend={isVerificationSent}
+                  text={isVerificationSent ? '인증번호 재전송' : '인증번호 전송'}
                 />
               }
             />
-            <div className="h-0 mb-6">
-              {isVerificationSent && (
-                <div
-                  className="flex justify-between items-center"
-                  style={{ transform: 'translateY(4px)' }}
-                >
-                  <div className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0">
-                    {countdown === 0 && '입력 시간이 만료되었습니다.'}
+            <div>
+              <PasswordInput
+                label="인증번호"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setVerificationStatus(null); // 입력 시 상태 초기화
+                }}
+                placeholder="인증번호를 입력해주세요"
+                hideLabel
+                hideToggle
+                mb="mb-0"
+                maxWidth="max-w-full sm:max-w-[600px]"
+                rightButton={
+                  <VerificationButton
+                    onClick={handleVerificationCheck}
+                    disabled={!password}
+                    text="인증번호 확인"
+                    isActive={!!email}
+                  />
+                }
+              />
+              <div className="h-0 mb-6">
+                {isVerificationSent && (
+                  <div
+                    className="flex justify-between items-center"
+                    style={{ transform: 'translateY(4px)' }}
+                  >
+                    <div className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0">
+                      {countdown === 0 && '입력 시간이 만료되었습니다.'}
+                    </div>
+                    <div className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-right font-['Pretendard'] ml-3">
+                      입력대기시간: {formatTime(countdown)}
+                    </div>
                   </div>
-                  <div className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-right font-['Pretendard'] ml-3">
-                    입력대기시간: {formatTime(countdown)}
+                )}
+                {verificationStatus === 'success' && (
+                  <div
+                    className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0"
+                    style={{ transform: 'translateY(-12px) translateX(4px)' }}
+                  >
+                    인증번호가 일치합니다.
                   </div>
-                </div>
-              )}
-              {verificationStatus === 'success' && (
-                <div
-                  className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0"
-                  style={{ transform: 'translateY(-12px) translateX(4px)' }}
-                >
-                  인증번호가 일치합니다.
-                </div>
-              )}
-              {verificationStatus === 'error' && countdown > 0 && (
-                <div
-                  className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0"
-                  style={{ transform: 'translateY(-12px) translateX(4px)' }}
-                >
-                  잘못된 인증번호입니다. 다시 입력해주세요.
-                </div>
-              )}
+                )}
+                {verificationStatus === 'error' && countdown > 0 && (
+                  <div
+                    className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0"
+                    style={{ transform: 'translateY(-12px) translateX(4px)' }}
+                  >
+                    잘못된 인증번호입니다. 다시 입력해주세요.
+                  </div>
+                )}
+              </div>
             </div>
+          </form>
+          <div className="w-full mt-24">
+            <LoginButton onClick={handleNextStep} disabled={!password}>
+              다음
+            </LoginButton>
           </div>
-        </form>
-        <div className="w-full mt-24">
-          <LoginButton onClick={handleNextStep} disabled={!password}>
-            다음
-          </LoginButton>
+          <SignupLink
+            questionText="이미 계정이 있으신가요?"
+            linkText="로그인"
+            linkPath="/login"
+            showNotice={false}
+          />
         </div>
-        <SignupLink questionText="이미 계정이 있으신가요?" linkText="로그인" linkPath="/login" />
-      </div>
+        <SignUpConfirm
+          isOpen={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          message={confirmModalMessage}
+        />
+      </>
     );
   }
 
@@ -452,7 +468,12 @@ export default function SignUpForm({ onSubmit }) {
         <div className="w-full mt-8">
           <LoginButton onClick={handleSubmit}>다음</LoginButton>
         </div>
-        <SignupLink questionText="이미 계정이 있으신가요?" linkText="로그인" linkPath="/login" />
+        <SignupLink
+          questionText="이미 계정이 있으신가요?"
+          linkText="로그인"
+          linkPath="/login"
+          showNotice={false}
+        />
       </form>
       <SignUpConfirm
         isOpen={showConfirmModal}

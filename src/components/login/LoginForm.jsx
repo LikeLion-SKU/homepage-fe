@@ -35,7 +35,7 @@ export default function LoginForm({ onSubmit }) {
       <div className="w-full">
         <LoginButton onClick={handleSubmit} />
       </div>
-      <SignUpLink />
+      <SignUpLink showNotice={!email && !password} />
     </div>
   );
 }
