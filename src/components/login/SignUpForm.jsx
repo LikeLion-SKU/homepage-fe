@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 
+import CheckModal from '@/components/common/Modal/CheckModal';
+
 import AgreeForm from './AgreeForm';
 import EmailInput from './EmailInput';
 import LoginButton from './LoginButton';
 import LoginTitle from './LoginTitle';
 import PasswordInput from './PasswordInput';
-import SignUpConfirm from './SignUpConfim';
 import SignUpInput from './SignUpInput';
 import SignupLink from './SignUpLink';
 import VerificationButton from './VerificationButton';
@@ -347,11 +348,15 @@ export default function SignUpForm({ onSubmit }) {
             showNotice={false}
           />
         </div>
-        <SignUpConfirm
+        <CheckModal
           isOpen={showConfirmModal}
-          onClose={() => setShowConfirmModal(false)}
-          message={confirmModalMessage}
-        />
+          cancel={() => setShowConfirmModal(false)}
+          buttonColor={
+            confirmModalMessage === '잘못된 인증번호입니다.' ? 'bg-[#FF7D56]' : 'bg-button-green'
+          }
+        >
+          {confirmModalMessage}
+        </CheckModal>
       </>
     );
   }
@@ -475,11 +480,15 @@ export default function SignUpForm({ onSubmit }) {
           showNotice={false}
         />
       </form>
-      <SignUpConfirm
+      <CheckModal
         isOpen={showConfirmModal}
-        onClose={() => setShowConfirmModal(false)}
-        message={confirmModalMessage}
-      />
+        cancel={() => setShowConfirmModal(false)}
+        buttonColor={
+          confirmModalMessage === '잘못된 인증번호입니다.' ? 'bg-[#FF7D56]' : 'bg-button-green'
+        }
+      >
+        {confirmModalMessage}
+      </CheckModal>
     </div>
   );
 }
