@@ -1,24 +1,135 @@
 @import 'tailwindcss';
 
-/* Pixel 폰트 정의 (피그마의 pixel 폰트) */
-/* 폰트 파일이 있다면 아래 주석을 해제하고 경로를 수정하세요 */
-/*
+/* 좌측 스크롤 제거 */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* 색상 추가 */
+@theme {
+  --color-button-green: #c6e400;
+  --color-toggle-green: #f8fbe7;
+  --color-bright-blue: #1928b0;
+  --color-navy-blue: #00156a;
+  --color-button-hover: #afd200;
+  --color-modal-white: #ffffff;
+  --color-button-gray: #f9f9f9;
+  --color-text-gray: #b0b0b0;
+  --color-gray-800: #686868;
+  --color-lime: #b0b0b0;
+  --color-yellow-shadow: #cfd6a9;
+  --color-expired-gray-button: #d3d3d3;
+  --color-yellow-shadow-rgb: 207, 214, 169;
+}
+/* 프리텐다드 정의 */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Regular.subset.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Medium.subset.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-SemiBold.subset.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Bold.subset.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+/* Tailwind v4 방식으로 기본 폰트 지정 */
+@theme {
+  --font-sans:
+    'Pretendard', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+}
+/* 브라우저 렌더링 최적화 */
+@layer base {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
 @font-face {
   font-family: 'pixel';
-  src: url('/fonts/pixel.woff2') format('woff2'),
-       url('/fonts/pixel.woff') format('woff'),
-       url('/fonts/pixel.ttf') format('truetype');
+  src: url('https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2')
+    format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
-*/
 
-/* 임시로 Press Start 2P를 pixel 폰트로 사용 */
-/* 피그마에서 폰트 파일을 내보내면 위의 @font-face를 사용하세요 */
+/* HOTSPOT 폰트 정의 */
+@font-face {
+  font-family: 'HOTSPOT';
+  src: url('/fonts/HOTSPOT-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* HOTSPOT 폰트 Bold (font-weight: 800용) */
+@font-face {
+  font-family: 'HOTSPOT';
+  src: url('/fonts/HOTSPOT-Regular.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* pixel 폰트*/
 @font-face {
   font-family: 'pixel';
-  src: url('https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2') format('woff2');
+  src: url('/fonts/pixel.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* SKU 폰트*/
+@font-face {
+  font-family: 'sku';
+  src: url('/fonts/SKU-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+/* 1. 나뭇잎 아이콘으로 쓰고 싶을 때 */
+.font-sku-icon {
+  font-family: 'sku';
+}
+
+/* 2. 'SKU'라는 글자로 쓰고 싶을 때 (합자 기능 강제 비활성화) */
+.font-sku-text {
+  font-family: 'sku';
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "clig" 0;
+}
+@theme {
+/* --font-이름: 폰트패밀리명; */
+--font-sku: "sku", sans-serif;
+}
+
+/* Nerko 폰트*/
+@font-face {
+  font-family: 'nerko';
+  src: url('/fonts/NerkoOne-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -56,10 +167,26 @@ select {
   cursor: none !important;
 }
 
+/* Award 섹션 드래그 컨테이너는 커서 표시 */
+.award-drag-container,
+.award-drag-container * {
+  cursor: grab !important;
+}
+
+.award-drag-container.dragging,
+.award-drag-container.dragging * {
+  cursor: grabbing !important;
+}
+
 /* 타이핑 커서 깜빡임 애니메이션 */
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .animate-blink {
@@ -68,7 +195,8 @@ select {
 
 /* 스크롤 바운스 애니메이션 */
 @keyframes scrollBounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(-50%, 4px);
     opacity: 0.65;
   }
@@ -80,12 +208,17 @@ select {
 
 .hero-scroll {
   font-family: 'pixel', monospace;
-  color: #1928B0;
+  color: var(--color-bright-blue);
   position: relative;
   left: 50%;
   transform: translateX(-50%);
   animation: scrollBounce 2.3s ease-in-out infinite;
   white-space: nowrap;
+}
+
+/* hero-scroll 클래스가 absolute 위치 요소에도 적용되도록 */
+.hero-scroll.absolute {
+  position: absolute;
 }
 
 @layer utilities {
@@ -97,4 +230,82 @@ select {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+}
+
+/* 드래그 커서 네모 박스 */
+.awards-drag-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  min-width: calc(140px * var(--scale, 1));
+  height: calc(48px * var(--scale, 1));
+  background-color: #f9f9f9;
+  border: calc(9px * var(--scale, 1)) solid #1928b0;
+  border-radius: 0;
+  transform: translate3d(-9999px, -9999px, 0);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+
+  transition:
+    opacity 120ms ease,
+    min-width 200ms ease,
+    height 200ms ease;
+  /* transform은 JS로 부드럽게 처리 */
+}
+
+.awards-drag-cursor-label {
+  font-size: calc(20px * var(--scale, 1));
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #1928b0;
+  font-family:
+    'Pretendard',
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif;
+  font-weight: 500;
+  line-height: 1;
+  position: relative;
+}
+
+.awards-drag-cursor-arrow {
+  font-size: calc(32px * var(--scale, 1));
+  color: #1928b0;
+  font-family:
+    'Pretendard',
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif;
+  font-weight: 400;
+  line-height: 1;
+  position: relative;
+}
+
+.awards-drag-cursor-arrow-left {
+  margin-right: calc(8px * var(--scale, 1));
+}
+
+.awards-drag-cursor-arrow-right {
+  margin-left: calc(8px * var(--scale, 1));
+}
+
+/* 드래그 상태 시각 피드백 */
+.awards-drag-cursor[data-state='down'] {
+  /* "잡는" 느낌 */
+  min-width: calc(150px * var(--scale, 1));
+  height: calc(52px * var(--scale, 1));
+}
+
+@theme {
+  --breakpoint-pad: 375px;
+  --breakpoint-web: 760px;
 }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 
 import Home from '@/assets/icons/4.svg';
 import Camera from '@/assets/icons/mdi-light_camera.svg';
+//import defaultProfileImage from '@/assets/images/lion.png';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
 
@@ -12,49 +13,96 @@ export default function MyPage() {
     email: 'likelion@example.com',
     profileImage: '',
   };
+
+  const defaultProfileImage = '';
+
   // TODO: 지원서 존재여부로 지정
   const [hasApplication, _setHasApplication] = useState(false);
   const navigate = useNavigate();
-  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // TODO: 추후 면접 예약 여부로 지정
+  const [isInterviewReserved, _setIsInterviewReserved] = useState(false);
 
   const buttonStyle = `
-    w-full h-12 bg-white border border-black
+    w-full h-10 pad:h-12 bg-white border border-black
     flex justify-center items-center 
     text-black text-lg font-semibold font-['Pretendard']
     relative z-[1] transition-all duration-200
-    hover:drop-shadow-[3px_4px_0px_rgba(212,212,212,1)]
+    hover:drop-shadow-[5px_5px_0px_var(--color-yellow-shadow)]
     active:translate-x-[0.5px] active:translate-y-[0.5px]
   `;
 
+  const [isError, setIsError] = useState(false);
+  const [preview, setPreview] = useState(null);
+
+  // 프로필 이미지 변경하는 함수 -> 추후 이미지 백엔드에게 전달 필요!
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader(); // 선택한 사진의 url
+
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
-    <div className="w-360 h-229 relative bg-white overflow-hidden">
-      <div className="relative w-142 h-44 left-46.25 top-55.5 inline-flex justify-start items-center gap-9">
-        <div className="w-44 h-44 relative">
-          <div className="relative w-44 h-44 bg-zinc-300 border border-black">
-            <img src={userData.profileImage}></img> {/* 프로필 사진 */}
-            <div className="w-8 h-8 left-[137.10px] top-[138.42px] absolute overflow-hidden">
-              <img src={Camera}></img> {/* 카메라 아이콘 */}
-            </div>
+    <div className="w-full flex flex-col web:flex-row web:justify-between min-h-screen relative bg-white">
+      {/* 왼쪽 부분 */}
+      <div className="relative px-46.25 flex justify-start items-center gap-9">
+        <div className="w-40 h-40 pad:w-44 pad:h-44 relative">
+          <div className="relative w-44 h-44 pad:w-44 pad:h-44 bg-zinc-300 border border-black group">
+            {/* 이 label을 누르면 input으로 입력받을 수 있게 */}
+            <label
+              htmlFor="profile-upload"
+              className="cursor-pointer w-full h-full flex items-center justify-center"
+            >
+              <img
+                src={
+                  isError
+                    ? defaultProfileImage
+                    : preview || userData.profileImage || defaultProfileImage
+                }
+                onError={() => setIsError(true)}
+                className="w-full h-full object-cover group-hover:brightness-75"
+                alt="프로필"
+              ></img>{' '}
+              {/* 프로필 사진 */}
+              <div className="w-8 h-8 absolute overflow-hidden">
+                <img src={Camera}></img> {/* 카메라 아이콘 */}
+              </div>
+            </label>
+            {/* 실제 프로필 사진 입력받는 부분 -> 가림 */}
+            <input
+              id="profile-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange} // 파일 선택 시 실행될 함수
+            />
           </div>
         </div>
-
-        <div className="w-80 inline-flex flex-col justify-start items-start gap-3">
+        <div className="min-w-64 pad:min-w-72 web:min-w-80 inline-flex flex-col justify-start items-start gap-3">
           <div className="self-stretch justify-center">
-            <span className="text-black text-2xl font-bold font-['Pretendard']">
+            <span className="text-black text-xl pad:text-2xl font-bold font-['Pretendard']">
               {userData.name}
             </span>
             <span className="text-black text-4xl font-bold font-['Pretendard']"> </span>
-            <span className="text-zinc-600 text-xl font-semibold font-['Pretendard']">
+            <span className="text-zinc-600 text-lg pad:text-xl  font-semibold font-['Pretendard']">
               님, 안녕하세요
             </span>
           </div>
-          <div className="self-stretch justify-start text-stone-500 text-lg font-medium font-['Pretendard']">
+          <div className="self-stretch justify-start text-stone-500 text-sm pad:text-lg font-semibold pad:font-medium font-['Pretendard']">
             {userData.email}
           </div>
         </div>
       </div>
-
-      <div className="w-96 left-222.5 top-55.25 absolute inline-flex flex-col justify-start items-start gap-4">
+      {/* 오른쪽 부분 */}
+      <div className="w-60 pad:max-w-142 pad:min-w-48 web:min-w-96 left-222.5 top-55.25 absolute inline-flex flex-col justify-start items-start gap-4">
         <div className="self-stretch">
           <Button
             onClick={() => {
@@ -71,15 +119,37 @@ export default function MyPage() {
             {hasApplication ? '내 지원서 보러가기' : '지원서 작성하기'}
           </Button>
         </div>
+        {/* 면접 예약 여부로 생겼다가 없어져야 하는 면접 일정 수정하기 버튼 -> 추후 어색하면 스켈레톤 넣자 */}
+        {isInterviewReserved && (
+          <div className="self-stretch">
+            <Button
+              onClick={() => {
+                navigate('/result');
+              }}
+              data-variant=""
+              data-size=""
+              className={buttonStyle}
+            >
+              면접 일정 수정하기
+            </Button>
+          </div>
+        )}
         <div className="self-stretch">
-          <Button onClick={() => {}} data-variant="" data-size="" className={buttonStyle}>
+          <Button
+            onClick={() => {
+              navigate('/mypage/password/change');
+            }}
+            data-variant=""
+            data-size=""
+            className={buttonStyle}
+          >
             비밀번호 변경
           </Button>
         </div>
         <div className="self-stretch">
           <Button
             onClick={() => {
-              setIsPasswordModalOpen(true);
+              setIsModalOpen(true);
             }}
             data-variant=""
             data-size=""
@@ -90,9 +160,9 @@ export default function MyPage() {
         </div>
       </div>
       <Modal
-        isOpen={isPasswordModalOpen}
-        cancel={() => setIsPasswordModalOpen(false)}
-        confirm={() => setIsPasswordModalOpen(false) /* TODO: 추후 이동할 페이지 추가 필요 */}
+        isOpen={isModalOpen}
+        cancel={() => setIsModalOpen(false)}
+        confirm={() => setIsModalOpen(false) /* TODO: 추후 이동할 페이지 추가 필요 */}
       >
         로그아웃 하시겠습니까?
       </Modal>
