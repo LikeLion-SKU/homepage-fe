@@ -28,19 +28,19 @@ export default function AgreeForm({
               checked={isAgreed}
               onChange={handleCheckboxChange}
               required={required}
-              className="w-5 h-5 border border-[#1C1B1A] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1A1A1A] appearance-none"
+              className="w-5 h-5 max-[380px]:w-4 max-[380px]:h-4 border border-[#1C1B1A] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1A1A1A] appearance-none"
             />
             {isAgreed && (
               <div
                 className="absolute inset-0 flex items-center justify-center pointer-events-none"
                 style={{ transform: 'translateY(-5px)' }}
               >
-                <span className="text-[#1C1B1A] text-xl font-bold">v</span>
+                <span className="text-[#1C1B1A] text-xl max-[380px]:text-lg font-bold">v</span>
               </div>
             )}
           </div>
           <p
-            className="text-[#1C1B1A] text-lg font-['Pretendard'] font-medium"
+            className="text-[#1C1B1A] text-lg max-[380px]:text-base font-['Pretendard'] font-medium"
             style={{ transform: 'translateY(-3px)' }}
           >
             {title}
@@ -49,12 +49,12 @@ export default function AgreeForm({
         <div className="flex flex-col gap-2">
           <div className="flex flex-col">
             <div className="flex gap-3 items-center">
-              <div className="bg-[#F5F5F7] flex h-[44px] items-center justify-center px-8 w-[120px]">
-                <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px]">
+              <div className="bg-[#F5F5F7] flex h-[44px] max-[380px]:h-[40px] items-center justify-center px-8 max-[380px]:px-4 w-[120px] max-[380px]:w-[92px]">
+                <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] max-[380px]:text-[9px]">
                   수집 목적
                 </p>
               </div>
-              <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] flex-1">
+              <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] max-[380px]:text-[9px] flex-1">
                 {collectionPurpose}
               </p>
             </div>
@@ -62,40 +62,40 @@ export default function AgreeForm({
           </div>
           <div className="flex flex-col" style={{ transform: 'translateY(-8px)' }}>
             <div className="flex gap-3 items-center">
-              <div className="bg-[#F5F5F7] flex h-[44px] items-center justify-center px-8 w-[120px]">
-                <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px]">
+              <div className="bg-[#F5F5F7] flex h-[44px] max-[380px]:h-[40px] items-center justify-center px-8 max-[380px]:px-4 w-[120px] max-[380px]:w-[92px]">
+                <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] max-[380px]:text-[9px]">
                   필수 항목
                 </p>
               </div>
-              <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] flex-1">
+              <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] max-[380px]:text-[9px] flex-1">
                 {requiredItems}
               </p>
             </div>
             <div className="h-px bg-[#E0E0E0] w-full"></div>
           </div>
           <div
-            className="flex gap-3 h-[72px] items-center"
+            className="flex gap-3 h-[72px] max-[380px]:h-[64px] items-center"
             style={{ transform: 'translateY(-16px)' }}
           >
-            <div className="bg-[#F5F5F7] flex h-full items-center justify-center px-8 w-[120px]">
-              <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px]">
+            <div className="bg-[#F5F5F7] flex h-full items-center justify-center px-8 max-[380px]:px-4 w-[120px] max-[380px]:w-[92px]">
+              <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] max-[380px]:text-[9px]">
                 보유 기간
               </p>
             </div>
             <div className="flex-1">
-              <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] leading-[1.25] whitespace-pre-line">
+              <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] max-[380px]:text-[9px] leading-[1.25] whitespace-pre-line">
                 {retentionPeriod}
               </p>
             </div>
           </div>
           <div className="flex flex-col gap-0.3 mt-0" style={{ marginTop: '-16px' }}>
-            <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px]">
+            <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] max-[380px]:text-[9px]">
               귀하는 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다.
             </p>
-            <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px]">
+            <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] max-[380px]:text-[9px]">
               다만, 동의를 거부할 경우 지원 및 입부 절차가 진행되지 않을 수 있음을 알려드립니다.
             </p>
-            <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px]">
+            <p className="font-['Pretendard'] font-medium text-[#1C1B1A] text-[10px] max-[380px]:text-[9px]">
               위의 내용을 충분히 숙지하였으며, 이에 동의합니다.
             </p>
           </div>

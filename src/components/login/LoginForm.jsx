@@ -27,7 +27,7 @@ export default function LoginForm({ onSubmit }) {
           label="비밀번호"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          hideLabel
+          mb="mb-2"
         />
         <ForgotPasswordLink />
       </form>

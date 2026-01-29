@@ -136,7 +136,7 @@ export default function SignUpForm({ onSubmit }) {
       // 비밀번호 유효성 검사
       if (!isValidPassword(signupPassword)) {
         setConfirmModalMessage(
-          '영문, 숫자 및 특수 문자(!@#$%^&*) 포함 8자 이상 20자 이하로 입력해주세요.'
+          '비밀번호는 영문자, 숫자, 특수문자를 각각 최소 1자 이상 포함한 8~20자리여야 합니다.'
         );
         setShowConfirmModal(true);
         setPasswordTouched(true);
@@ -303,26 +303,26 @@ export default function SignUpForm({ onSubmit }) {
                   className="flex justify-between items-center"
                   style={{ transform: 'translateY(4px)' }}
                 >
-                  <div className="text-[#B0B0B0] text-sm text-left font-['Pretendard'] ml-0">
+                  <div className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0">
                     {countdown === 0 && '입력 시간이 만료되었습니다.'}
                   </div>
-                  <div className="text-[#B0B0B0] text-sm text-right font-['Pretendard'] ml-3">
+                  <div className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-right font-['Pretendard'] ml-3">
                     입력대기시간: {formatTime(countdown)}
                   </div>
                 </div>
               )}
               {verificationStatus === 'success' && (
                 <div
-                  className="text-[#B0B0B0] text-sm text-left font-['Pretendard'] ml-0"
-                  style={{ transform: 'translateY(-15px) translateX(4px)' }}
+                  className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0"
+                  style={{ transform: 'translateY(-12px) translateX(4px)' }}
                 >
                   인증번호가 일치합니다.
                 </div>
               )}
               {verificationStatus === 'error' && countdown > 0 && (
                 <div
-                  className="text-[#B0B0B0] text-sm text-left font-['Pretendard'] ml-0"
-                  style={{ transform: 'translateY(-15px) translateX(4px)' }}
+                  className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0"
+                  style={{ transform: 'translateY(-12px) translateX(4px)' }}
                 >
                   잘못된 인증번호입니다. 다시 입력해주세요.
                 </div>
@@ -374,7 +374,7 @@ export default function SignUpForm({ onSubmit }) {
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
             <p
-              className={`text-base font-['Pretendard'] font-medium ${
+              className={`text-base max-[380px]:text-xs font-['Pretendard'] font-medium ${
                 passwordTouched && signupPassword
                   ? isValidPassword(signupPassword)
                     ? 'text-green-500'
@@ -399,12 +399,12 @@ export default function SignUpForm({ onSubmit }) {
             {confirmPassword &&
               isValidPassword(signupPassword) &&
               signupPassword === confirmPassword && (
-                <p className="text-green-500 text-base font-['Pretendard'] font-medium">
+                <p className="text-green-500 text-base max-[380px]:text-xs font-['Pretendard'] font-medium">
                   비밀번호가 일치합니다.
                 </p>
               )}
             {confirmPassword && signupPassword !== confirmPassword && (
-              <p className="text-red-500 text-base font-['Pretendard'] font-medium">
+              <p className="text-red-500 text-base max-[380px]:text-xs font-['Pretendard'] font-medium">
                 비밀번호가 일치하지 않습니다.
               </p>
             )}

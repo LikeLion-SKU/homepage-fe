@@ -12,7 +12,7 @@ export default function ForgotPasswordLink({ text = '비밀번호 찾기' }) {
       <button
         type="button"
         onClick={handleClick}
-        className="text-black text-sm font-medium font-['Pretendard'] underline hover:opacity-80 transition-opacity focus:outline-none"
+        className="text-black text-sm max-[380px]:text-xs font-medium font-['Pretendard'] underline hover:opacity-80 transition-opacity focus:outline-none"
         style={{ textDecoration: 'underline', textDecorationThickness: '1px' }}
       >
         {text}
