@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import SignUpForm from '@/components/login/SignUpForm';
+import { markSignupCompleted } from '@/hooks/usePreventDirectAccess';
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -9,8 +10,8 @@ export default function SignUp() {
     console.log('Sign up attempt:', credentials);
     // TODO: 실제 회원가입 로직 구현
     // 회원가입 성공 후 Welcome 페이지로 이동
-    // sessionStorage에 플래그 설정 (직접 접근 방지용)
-    sessionStorage.setItem('signupCompleted', 'true');
+    // TTL 방식으로 5분 동안 재접속 허용
+    markSignupCompleted();
     navigate(`/welcome?name=${encodeURIComponent(credentials.name)}`);
   };
 
