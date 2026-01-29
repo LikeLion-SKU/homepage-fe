@@ -5,6 +5,10 @@ import Button from '@/components/common/Button/Button';
 const CheckModal = ({ isOpen, cancel, children, buttonColor = 'bg-button-green' }) => {
   if (!isOpen) return null;
 
+  // 버튼 색상이 #FF7D56일 때 hover 색상 설정
+  const isErrorButton = buttonColor === 'bg-[#FF7D56]';
+  const hoverColor = isErrorButton ? 'hover:bg-[#FF6B3D]' : 'hover:bg-button-hover';
+
   return ReactDom.createPortal(
     <div className="fixed inset-0 z-1000 flex items-center justify-center">
       {/* 블러 배경 */}
@@ -22,7 +26,7 @@ const CheckModal = ({ isOpen, cancel, children, buttonColor = 'bg-button-green' 
           <div className="flex justify-center items-center gap-5 w-full">
             <Button
               onClick={cancel}
-              className={`w-40 h-14 ${buttonColor} outline -outline-offset-1 outline-black flex justify-center items-center transition-all hover:bg-button-hover`}
+              className={`w-40 h-14 ${buttonColor} outline -outline-offset-1 outline-black flex justify-center items-center transition-all ${hoverColor}`}
             >
               <span className="opacity-70 text-black text-lg font-medium font-['Pretendard']">
                 확인
