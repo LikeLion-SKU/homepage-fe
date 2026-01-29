@@ -59,9 +59,11 @@ export default function InterviewTime({ setAllChecked }) {
   const [selectedTime, setSelectedTime] = useState({ date: '', starTime: '' });
 
   return (
-    <div className="flex flex-col gap-20 items-center mt-30">
-      <PageTitle title="면접 날짜 선택" color="Navy" />
-      <div className="flex flex-col gap-13">
+    <div className="flex flex-col gap-20 items-center mt-30 px-8">
+      <div className="flex">
+        <PageTitle title="면접 날짜 선택" color="Navy" />
+      </div>
+      <div className="flex flex-col gap-13 ">
         {interviewTimeData.map((data) => (
           <TimeBar
             setAllChecked={setAllChecked}
@@ -71,28 +73,34 @@ export default function InterviewTime({ setAllChecked }) {
           />
         ))}
       </div>
-      <div className="flex gap-13 mt-25">
+      <div className="flex gap-13 mt-25 flex-wrap justify-center">
         <TextTile>
           <div className="flex flex-col gap-10">
-            <p className="text-[1.5rem] font-bold ">회비 및 보증금 제도 동의 여부</p>
-            <div>{money}</div>
+            <p className="text-[1rem] pad:text-[1.5rem] font-bold text-start">
+              회비 및 보증금 제도 동의 여부
+            </p>
+            <div className="flex text-start text-[0.7rem] pad:text-[1rem] pad:mr-20">{money}</div>
             <button onClick={() => isAllCheck(1)} className="flex items-center gap-3 h-10">
-              <div className="flex w-5 h-5 border items-center justify-center">
-                {isCheck[0] && <Check />}
+              <div className="flex w-4 h-4 pad:w-5 pad:h-5 border items-center justify-center">
+                {isCheck[0] && <Check className="w-2 h-2 pad:w-3 pad:h-3" />}
               </div>
-              <p className="text-[1.1rem]">회비 및 보증금 제도에 동의합니다.</p>
+              <p className="text-[0.8rem] pad:text-[1.1rem]">회비 및 보증금 제도에 동의합니다.</p>
             </button>
           </div>
         </TextTile>
         <TextTile>
           <div className="flex flex-col gap-10">
-            <p className="text-[1.5rem] font-bold">회비 및 보증금 제도 동의 여부</p>
-            <div>{contents}</div>
+            <p className="text-[1rem] pad:text-[1.5rem] font-bold text-start">
+              회비 및 보증금 제도 동의 여부
+            </p>
+            <div className="flex text-start text-[0.7rem] pad:text-[1rem] pad:mr-20">
+              {contents}
+            </div>
             <button onClick={() => isAllCheck(2)} className="flex items-center gap-3 h-10">
-              <div className="flex w-5 h-5 border items-center justify-center">
-                {isCheck[1] && <Check />}
+              <div className="flex w-4 h-4 pad:w-5 pad:h-5 border items-center justify-center">
+                {isCheck[1] && <Check className="w-2 h-2 pad:w-3 pad:h-3" />}
               </div>
-              <p className="text-[1.1rem]">회비 및 보증금 제도에 동의합니다.</p>
+              <p className="text-[0.8rem] pad:text-[1.1rem]">회비 및 보증금 제도에 동의합니다.</p>
             </button>
           </div>
         </TextTile>
