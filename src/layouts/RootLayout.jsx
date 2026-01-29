@@ -6,6 +6,7 @@ import Modal from '@/components/common/Modal/ConfirmModal';
 import Toast from '@/components/common/Toast/Toast';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import SideBar from '@/pages/SideBar/SideBar';
 
 export default function RootLayout() {
   const [toastData, setToastData] = useState({
@@ -17,6 +18,8 @@ export default function RootLayout() {
     message: '',
     onConfirm: () => {},
   });
+  const [onSideBar, setOnSideBar] = useState(false);
+
   const openModal = (message, onConfirm) => {
     setModalData({
       isOpen: true,
@@ -38,17 +41,29 @@ export default function RootLayout() {
       setToastData({ onToast: false, toastMessage: toastMessage });
     }, 1500);
   };
+  const handleSideBar = () => {
+    setOnSideBar(!onSideBar);
+  };
 
   return (
     <main className="flex flex-col w-full min-h-screen overflow-x-hidden">
       <CustomCursor />
-      <Header />
-      <Outlet
-        context={{
-          openModal,
-          showToast,
-        }} /* 하위에서 const { openModal } = useOutletContext();방식으로 사용가능 */
-      />
+      <Header handleSideBar={() => handleSideBar()} />
+      <div className="relative bg-[#FAFBF8] isolate">
+        <Outlet
+          context={{
+            openModal,
+            showToast,
+          }} /* 하위에서 const { openModal } = useOutletContext();방식으로 사용가능 */
+        />
+        <div
+          className={`absolute top-0 w-full h-full shadow-lg transform transition-transform duration-500 ease-out ${
+            onSideBar ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          <SideBar />
+        </div>
+      </div>
       <ScrollRestoration />
       <Footer />
       {/* 공통 모달 하나만 배치 */}

@@ -25,7 +25,7 @@ export default function SideBar() {
     { name: 'github', imgUrl: github, link: 'https://github.com/LikeLion-SKU' },
   ];
   return (
-    <div className="flex flex-col pt-15 gap-16.5 mb-34 pad:mb-72">
+    <div className="flex flex-col h-full pt-15 gap-16.5 mb-34 pad:mb-72 bg-[#FAFBF8]">
       <div className="border-y divide-y divide-black">
         {menuName.map((data) => (
           <MenuButton key={data.name} name={data.name} path={data.path} />
