@@ -20,7 +20,7 @@ export default function SideBar() {
     getLastMenu(),
   ];
   const outLinkName = [
-    { name: 'kakao talk', imgUrl: kakao, link: 'https://www.kakaocorp.com/page/' },
+    { name: 'kakao talk', imgUrl: kakao, link: 'http://pf.kakao.com/_SpMTn' },
     { name: 'instaram', imgUrl: instagram, link: 'https://www.instagram.com/likelion_skuniv/' },
     { name: 'github', imgUrl: github, link: 'https://github.com/LikeLion-SKU' },
   ];
