@@ -9,7 +9,7 @@ import Hamberger from '@/assets/icons/hambergerBar_icon.svg?react';
 import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { useIsPhone } from '@/hooks/useIsPhone';
 
-export default function Header() {
+export default function Header({ handleSideBar }) {
   const navigate = useNavigate();
   const token = localStorage.getItem('accessToken');
   const isDesktop = useIsDesktop();
@@ -87,7 +87,7 @@ export default function Header() {
         )}
         {!isDesktop && (
           <button
-            onClick={() => navigate('/sideBar')}
+            onClick={() => handleSideBar()}
             className="flex w-14 h-13 border-l pad:border-none pad:w-22 pad:h-17 justify-center items-center"
           >
             <Hamberger />
