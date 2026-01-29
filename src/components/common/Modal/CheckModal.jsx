@@ -2,7 +2,7 @@ import ReactDom from 'react-dom';
 
 import Button from '@/components/common/Button/Button';
 
-const CheckModal = ({ isOpen, cancel, children }) => {
+const CheckModal = ({ isOpen, cancel, children, buttonColor = 'bg-button-green' }) => {
   if (!isOpen) return null;
 
   return ReactDom.createPortal(
@@ -22,7 +22,7 @@ const CheckModal = ({ isOpen, cancel, children }) => {
           <div className="flex justify-center items-center gap-5 w-full">
             <Button
               onClick={cancel}
-              className="w-40 h-14 bg-button-green outline -outline-offset-1 outline-black flex justify-center items-center transition-all hover:bg-button-hover"
+              className={`w-40 h-14 ${buttonColor} outline -outline-offset-1 outline-black flex justify-center items-center transition-all hover:bg-button-hover`}
             >
               <span className="opacity-70 text-black text-lg font-medium font-['Pretendard']">
                 확인
