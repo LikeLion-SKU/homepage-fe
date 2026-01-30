@@ -8,6 +8,7 @@ import mayIcon from '@/assets/icons/main/schedule/may.svg';
 import novemberIcon from '@/assets/icons/main/schedule/november.svg';
 import octoberIcon from '@/assets/icons/main/schedule/october.svg';
 import sebtemberIcon from '@/assets/icons/main/schedule/sebtember.svg';
+import umbrellaIcon from '@/assets/icons/main/schedule/umbrella.svg';
 
 function ScheduleMobile({ onMonthClick }) {
   // 월별 아이콘 매핑
@@ -89,7 +90,7 @@ function ScheduleMobile({ onMonthClick }) {
           </div>
         </div>
         {/* 중간 중앙2 dot 그룹 */}
-        <div className="absolute" style={{ left: '75%', top: '80px' }}>
+        <div className="absolute" style={{ left: '77%', top: '80px' }}>
           <div className="flex gap-2.5">
             {[...Array(1)].map((_, i) => (
               <div
@@ -269,15 +270,28 @@ function ScheduleMobile({ onMonthClick }) {
           <img src={monthIconMap['7월']} alt="7월" className="w-full h-full object-contain" />
         </button>
 
+        {/* umbrella 아이콘 - 7월 옆 */}
+        <img
+          src={umbrellaIcon}
+          alt="umbrella"
+          className="absolute"
+          style={{
+            left: '65%',
+            top: '97px',
+            width: '22px',
+            height: '24px',
+          }}
+        />
+
         {/* 8월 - 하단 왼쪽 */}
         <button
           type="button"
           onClick={() => onMonthClick('8월')}
           className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
           style={{
-            left: '13%',
-            top: '185px',
-            width: '37px',
+            left: '10%',
+            top: '186px',
+            width: '40px',
             height: '45px',
           }}
           aria-label="8월 일정 보기"
@@ -293,8 +307,8 @@ function ScheduleMobile({ onMonthClick }) {
           style={{
             left: '69%',
             top: '189px',
-            width: '40px',
-            height: '35px',
+            width: '42px',
+            height: '38px',
           }}
           aria-label="9월 일정 보기"
         >
