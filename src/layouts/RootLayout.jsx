@@ -46,22 +46,28 @@ export default function RootLayout() {
   };
 
   return (
-    <main className="flex flex-col w-full min-h-screen overflow-x-hidden">
+    <main className="flex flex-col w-full min-h-screen overflow-y-hidden overflow-x-hidden no-scrollbar">
       <CustomCursor />
       <Header handleSideBar={() => handleSideBar()} />
-      <div className="relative bg-[#FAFBF8] isolate">
-        <Outlet
-          context={{
-            openModal,
-            showToast,
-          }} /* 하위에서 const { openModal } = useOutletContext();방식으로 사용가능 */
-        />
+      <div className="relative flex-1 min-h-fit bg-[#FAFBF8] isolate">
         <div
-          className={`absolute top-0 w-full h-full shadow-lg transform transition-transform duration-500 ease-out ${
-            onSideBar ? 'translate-x-0' : 'translate-x-full'
+          className={`transition-opacity duration-500 ease-out ${
+            onSideBar ? 'opacity-0 h-0 pointer-events-none' : 'opacity-100'
           }`}
         >
-          <SideBar />
+          <Outlet
+            context={{
+              openModal,
+              showToast,
+            }} /* 하위에서 const { openModal } = useOutletContext();방식으로 사용가능 */
+          />
+        </div>
+
+        <div
+          className={`w-full h-fit transform transition-transform 
+            duration-500 ease-out ${onSideBar ? 'relative translate-x-0' : 'absolute top-0 translate-x-full overflow-hidden'}`}
+        >
+          <SideBar handleSideBar={handleSideBar} />
         </div>
       </div>
       <ScrollRestoration />
