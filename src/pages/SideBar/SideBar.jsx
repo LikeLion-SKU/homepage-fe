@@ -4,7 +4,7 @@ import kakao from '@/assets/icons/kakaotalk_logo_icon.svg';
 import MenuButton from '@/components/sideBar/MenuButton';
 import OutLinkButton from '@/components/sideBar/OutLinkButton';
 
-export default function SideBar() {
+export default function SideBar({ handleSideBar }) {
   const token = true;
   const getLastMenu = () => {
     if (token) {
@@ -25,10 +25,15 @@ export default function SideBar() {
     { name: 'github', imgUrl: github, link: 'https://github.com/LikeLion-SKU' },
   ];
   return (
-    <div className="flex flex-col h-full pt-15 gap-16.5 mb-34 pad:mb-72 bg-[#FAFBF8]">
+    <div className="flex flex-col h-full pt-15 gap-16.5 pb-34 pad:pb-72 bg-[#FAFBF8]">
       <div className="border-y divide-y divide-black">
         {menuName.map((data) => (
-          <MenuButton key={data.name} name={data.name} path={data.path} />
+          <MenuButton
+            key={data.name}
+            name={data.name}
+            path={data.path}
+            handleSideBar={handleSideBar}
+          />
         ))}
       </div>
       <div className="border-y divide-y divide-black">
