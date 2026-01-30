@@ -53,7 +53,7 @@ export default function ApplyTrack() {
     });
   };
 
-  const textareaStyle = `self-stretch px-8 py-7 bg-white border justify-center items-center min-h-109 pad:min-h-80 web:min-h-56 resize-none overflow-y-auto`;
+  const textareaStyle = `self-stretch px-8 py-7 text-xs pad:text-base font-medium bg-white border justify-center items-center min-h-109 pad:min-h-80 web:min-h-56 resize-none overflow-y-auto`;
 
   return (
     <div className="pb-35">
@@ -63,7 +63,7 @@ export default function ApplyTrack() {
             {/* 지원서 작성 페이지의 기본 정보 섹션 */}
             <ApplyTitleSection></ApplyTitleSection>
             {/* 지원서 작성 단계 부분 */}
-            <div className="self-stretch inline-flex items-center gap-7">
+            <div className="self-stretch inline-flex items-start gap-7">
               <ApplyStep
                 step="STEP 1"
                 stepName="기본 인적사항"
