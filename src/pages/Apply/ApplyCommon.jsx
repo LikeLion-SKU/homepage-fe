@@ -99,24 +99,24 @@ export default function ApplyCommon() {
           </div>
           {/* 하단 버튼 부분 */}
           <div className="flex justify-center">
-            <div className="flex justify-center items-center gap-5 w-9/17">
+            <div className="flex flex-col pad:flex-row justify-center items-center gap-5">
               <Button
                 onClick={() => {}}
-                className="flex-1 h-14 outline -outline-offset-1 outline-text-gray flex justify-center items-center bg-white transition-all hover:bg-stone-100"
+                className="w-45 pad:w-47 web:w-53 h-14 outline -outline-offset-1 outline-text-gray flex justify-center items-center bg-white transition-all hover:bg-stone-100"
               >
                 <span className=" text-text-gray text-lg font-medium">임시저장</span>
               </Button>
 
               <Button
                 onClick={handlePrevious}
-                className="flex-1 h-14 outline -outline-offset-1 outline-text-gray flex justify-center items-center bg-white transition-all hover:bg-stone-100"
+                className="w-45 pad:w-47 web:w-53 h-14 outline -outline-offset-1 outline-text-gray flex justify-center items-center bg-white transition-all hover:bg-stone-100"
               >
                 <span className=" text-text-gray text-lg font-medium">이전단계</span>
               </Button>
 
               <Button
                 onClick={handleNext} // 추후 다음 페이지 추가 필요
-                className="flex-1 h-14 bg-button-green outline -outline-offset-1 outline-black flex justify-center items-center transition-all hover:bg-button-hover"
+                className="w-45 pad:w-47 web:w-53 h-14 bg-button-green outline -outline-offset-1 outline-black flex justify-center items-center transition-all hover:bg-button-hover"
               >
                 <span className="opacity-70 text-black text-lg font-medium">다음단계</span>
               </Button>
