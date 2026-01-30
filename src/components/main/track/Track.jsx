@@ -54,7 +54,6 @@ function Track() {
       showTopBorder={false}
       overflowVisible={true}
       backgroundStyle={{
-        backgroundImage: 'linear-gradient(180deg, #F4F4F4 0%, rgba(217, 217, 217, 0) 100%)', // 그라데이션 배경
         backgroundBorderColor: '1px solid var(--color-navy-blue)',
       }}
     >
