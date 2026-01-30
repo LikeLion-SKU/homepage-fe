@@ -19,13 +19,13 @@ export default function ProjectSection({ data }) {
   return (
     <>
       {isLoading ? (
-        <div className="grid grid-cols-3 gap-x-7 gap-y-15 mt-12 px-7">
+        <div className="flex flex-wrap gap-7 mt-12 justify-center">
           {Array.from({ length: 6 }).map(() => (
             <ProjectSkeleton />
           ))}
         </div>
       ) : (
-        <div className="flex flex-col mt-6 px-7">
+        <div className="flex flex-col mt-6">
           {isAdmin && (
             <div
               onClick={() =>

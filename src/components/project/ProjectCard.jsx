@@ -38,14 +38,14 @@ export default function ProjectCard({ props, isAdmin }) {
         {isAdmin ? (
           <AdminCardHover />
         ) : (
-          <div className="flex w-41 h-12 bg-[#F8F8F8] border">
-            <div className="flex justify-center items-center bg-[#C6E400] w-12 border-r ">
-              <Right />
+          <button className="flex bg-[#F8F8F8] border">
+            <div className="flex justify-center items-center bg-[#C6E400] px-1 pad:p-2 web:p-3 border-r ">
+              <Right className="w-3 pad:w-4 web:w-5" />
             </div>
-            <div className="flex w-29 h-12 text-[1.1rem] justify-center items-center font-semibold">
+            <div className="flex px-3 pad:px-5 text-[0.7rem] pad:text-[0.9rem] web:text-[1.1rem] text-center justify-center items-center font-semibold">
               자세히 보기
             </div>
-          </div>
+          </button>
         )}
       </div>
     </div>
