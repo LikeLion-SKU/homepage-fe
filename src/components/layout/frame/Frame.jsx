@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import useMediaQuery from '@/hooks/useMediaQuery';
+
 function Frame({
   children,
   className = '',
@@ -9,8 +11,10 @@ function Frame({
   color = 'black',
   paddingX = null, // 가로 padding 커스텀 (null이면 기본값 사용)
   paddingY = null, // 세로 padding 커스텀 (null이면 기본값 사용)
+  disableMobileScale = false, // 모바일 크기 조정 비활성화
 }) {
   const [scale, setScale] = useState(1);
+  const isMobile = useMediaQuery('(max-width: 460px)');
 
   useEffect(() => {
     const calculateScale = () => {
@@ -29,8 +33,14 @@ function Frame({
   // px를 rem으로 변환하는 헬퍼 함수
   const pxToRem = (px, useScale = true, useFullScale = false) => {
     const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    // 모바일일 때 scale 팩터를 1.7배로 증가시켜 더 크게 보이게 함 (disableMobileScale이 false일 때만)
+    const mobileScaleFactor = isMobile && !disableMobileScale ? 1.7 : 1;
     // useFullScale이 true면 0.6 팩터 없이 전체 scale 적용 (콘텐츠와 같은 비율)
-    const scaledPx = useScale ? (useFullScale ? px * scale : px * scale * 0.6) : px;
+    const scaledPx = useScale
+      ? useFullScale
+        ? px * scale * mobileScaleFactor
+        : px * scale * 0.6 * mobileScaleFactor
+      : px * mobileScaleFactor;
     return scaledPx / rootFontSize;
   };
 
@@ -100,7 +110,13 @@ function Frame({
           borderColor: color,
         }}
       />
-      {children}
+      <div
+        style={{
+          fontSize: isMobile && !disableMobileScale ? '1.5em' : '1em',
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

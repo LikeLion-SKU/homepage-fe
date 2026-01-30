@@ -5,8 +5,6 @@ html,
 body {
   overflow-x: hidden;
   width: 100%;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
 }
 
 /* 색상 추가 */
@@ -121,11 +119,13 @@ body {
 .font-sku-text {
   font-family: 'sku';
   font-variant-ligatures: none;
-  font-feature-settings: "liga" 0, "clig" 0;
+  font-feature-settings:
+    'liga' 0,
+    'clig' 0;
 }
 @theme {
-/* --font-이름: 폰트패밀리명; */
---font-sku: "sku", sans-serif;
+  /* --font-이름: 폰트패밀리명; */
+  --font-sku: 'sku', sans-serif;
 }
 
 /* Nerko 폰트*/
