@@ -308,6 +308,6 @@ select {
 }
 
 @theme {
-  --breakpoint-pad: 375px;
-  --breakpoint-web: 760px;
+  --breakpoint-pad: 768px;
+  --breakpoint-web: 1024px;
 }
