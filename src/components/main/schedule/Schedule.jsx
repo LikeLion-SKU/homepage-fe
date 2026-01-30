@@ -10,7 +10,6 @@ import mayIcon from '@/assets/icons/main/schedule/may.svg';
 import novemberIcon from '@/assets/icons/main/schedule/november.svg';
 import octoberIcon from '@/assets/icons/main/schedule/october.svg';
 import sebtemberIcon from '@/assets/icons/main/schedule/sebtember.svg';
-import useScale from '@/components/main/hooks/useScale';
 import MainSectionLayout from '@/components/main/layout';
 import ScheduleModal from '@/components/main/schedule/modal/ScheduleModal';
 import { scheduleMonthData } from '@/components/main/schedule/scheduleModalData';
@@ -20,7 +19,6 @@ import ScheduleDesktop from './ScheduleDesktop';
 import ScheduleMobile from './ScheduleMobile';
 
 function Schedule() {
-  const scale = useScale();
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 460px)');
@@ -77,17 +75,15 @@ function Schedule() {
         titleBarIconBoxColor="#00156A"
         titleBarTitleBoxColor="#B3B3B3"
         titleBarBoxSize={1}
-        placeholderBgColor="#636363"
-        placeholderHeight="280px"
-        placeholderPaddingHorizontal="29.3px"
-        placeholderPaddingTop="20px"
+        placeholderBgColor="#B0B0B0"
+        placeholderPaddingHorizontal="25px"
+        placeholderPaddingTop="15px"
         textTitleColor="#1a1a1a"
         textDescriptionColor="#1a1a1a"
         textBgColor="#FFFFFF"
         windowBgColor="#FFFFFF"
         windowBorderColor="#A8A8A8"
         windowBorderWidth={2.5}
-        scale={scale}
       />
     </MainSectionLayout>
   );

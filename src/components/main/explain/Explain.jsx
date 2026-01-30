@@ -37,7 +37,7 @@ function Explain() {
         }}
       >
         <SmallFrameBox
-          className="mb-12"
+          className="mb-2"
           cornerScale={0.9}
           borderWidth={2}
           letterSpacing={-0.88}
@@ -61,7 +61,9 @@ function Explain() {
         </SmallFrameBox>
 
         {/* 본문 텍스트 */}
-        <ExplainText />
+        <div style={{ marginTop: '0.5rem' }}>
+          <ExplainText />
+        </div>
 
         {/* BLAH 이미지 좌측 */}
         <motion.div
@@ -128,7 +130,7 @@ function Explain() {
         {/* Label BLAH 1 + 2 (같이 이동) */}
         <motion.div
           style={{
-            marginTop: `${(330 / 16) * scale}rem`, // ← 여기 값만 조절
+            marginTop: `${(370 / 16) * scale}rem`, // ← 여기 값만 조절
           }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}

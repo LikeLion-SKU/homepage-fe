@@ -1,4 +1,6 @@
 function ModalTextContent({
+  className = '',
+  style = {},
   title,
   description,
   titleColor = '#1a1a1a',
@@ -8,13 +10,18 @@ function ModalTextContent({
 }) {
   return (
     <div
+      className={className}
       style={{
+        ...style, // flex 비율 받기
         backgroundColor,
         padding: `${(16 / 16) * scale}rem ${(20 / 16) * scale}rem`,
         paddingLeft: `${(45 / 16) * scale}rem`,
         paddingTop: `${(5 / 16) * scale}rem`,
         position: 'relative',
         zIndex: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: 0,
       }}
     >
       {title && (
@@ -30,6 +37,7 @@ function ModalTextContent({
           {title}
         </h3>
       )}
+
       {description && (
         <p
           style={{
@@ -37,6 +45,7 @@ function ModalTextContent({
             color: descriptionColor,
             lineHeight: 1.6,
             fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+            margin: 0,
           }}
         >
           {description}
