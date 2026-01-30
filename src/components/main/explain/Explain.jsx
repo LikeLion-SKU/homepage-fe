@@ -17,6 +17,7 @@ import Number from './text/Number';
 function Explain() {
   const scale = useScale();
   const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isMobile460 = useMediaQuery('(max-width: 460px)');
 
   // 모바일에서 blah 이미지 위치 조정
   const leftBlahLift = isMobile760 ? 40 : 0; // 좌측은 아래로 (양수)
@@ -46,7 +47,7 @@ function Explain() {
             <h2
               className="font-bold text-[var(--color-navy-blue)] m-0"
               style={{
-                fontSize: `${(36 / 16) * scale}rem`,
+                fontSize: `${(36 / 16) * scale * (isMobile460 ? 1.3 : 1)}rem`,
                 fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
                 fontWeight: '700',
                 textRendering: 'optimizeLegibility',

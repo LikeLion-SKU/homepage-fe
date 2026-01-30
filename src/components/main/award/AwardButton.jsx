@@ -2,16 +2,20 @@ import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useScale from '@/components/main/hooks/useScale';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 function AwardButton() {
   const scale = useScale();
+  const isMobile460 = useMediaQuery('(max-width: 460px)');
   const rootRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!rootRef.current) return;
-    rootRef.current.style.setProperty('--scale', String(scale));
-  }, [scale]);
+    // 모바일 460px 이하에서 버튼 크기를 1.5배로 증가
+    const mobileScaleFactor = isMobile460 ? 1.6 : 1;
+    rootRef.current.style.setProperty('--scale', String(scale * mobileScaleFactor));
+  }, [scale, isMobile460]);
 
   return (
     <div ref={rootRef} className="flex justify-center">

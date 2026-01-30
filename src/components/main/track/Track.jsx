@@ -75,7 +75,7 @@ function Track() {
           }}
         />
 
-        <div className="flex flex-col sm:flex-row gap-8 w-full sm:w-[125%] sm:-ml-[12%] mt-[42px] pb-20 sm:pb-0">
+        <div className="flex flex-col sm:flex-row gap-8 w-full sm:w-[125%] sm:-ml-[12%] mt-[42px] pb-20 max-[460px]:pb-6 sm:pb-0">
           <motion.div
             ref={card1Ref}
             className="flex-1 w-full"
