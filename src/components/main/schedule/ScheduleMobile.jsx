@@ -8,6 +8,7 @@ import mayIcon from '@/assets/icons/main/schedule/may.svg';
 import novemberIcon from '@/assets/icons/main/schedule/november.svg';
 import octoberIcon from '@/assets/icons/main/schedule/october.svg';
 import sebtemberIcon from '@/assets/icons/main/schedule/sebtember.svg';
+import umbrellaIcon from '@/assets/icons/main/schedule/umbrella.svg';
 
 function ScheduleMobile({ onMonthClick }) {
   // 월별 아이콘 매핑
@@ -89,7 +90,7 @@ function ScheduleMobile({ onMonthClick }) {
           </div>
         </div>
         {/* 중간 중앙2 dot 그룹 */}
-        <div className="absolute" style={{ left: '75%', top: '80px' }}>
+        <div className="absolute" style={{ left: '77%', top: '80px' }}>
           <div className="flex gap-2.5">
             {[...Array(1)].map((_, i) => (
               <div
@@ -212,9 +213,9 @@ function ScheduleMobile({ onMonthClick }) {
           className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
           style={{
             left: '3%',
-            top: '4px',
-            width: '55px',
-            height: '55px',
+            top: '8px',
+            width: '50px',
+            height: '48px',
           }}
           aria-label="3월 일정 보기"
         >
@@ -229,7 +230,7 @@ function ScheduleMobile({ onMonthClick }) {
           style={{
             left: '60%',
             top: '-17px',
-            width: '60px',
+            width: '53px',
             height: '60px',
           }}
           aria-label="5월 일정 보기"
@@ -245,7 +246,7 @@ function ScheduleMobile({ onMonthClick }) {
           style={{
             left: '30%',
             top: '77px',
-            width: '50px',
+            width: '45px',
             height: '50px',
           }}
           aria-label="6월 일정 보기"
@@ -261,13 +262,26 @@ function ScheduleMobile({ onMonthClick }) {
           style={{
             left: '83%',
             top: '91px',
-            width: '38px',
-            height: '38px',
+            width: '32px',
+            height: '32px',
           }}
           aria-label="7월 일정 보기"
         >
           <img src={monthIconMap['7월']} alt="7월" className="w-full h-full object-contain" />
         </button>
+
+        {/* umbrella 아이콘 - 7월 옆 */}
+        <img
+          src={umbrellaIcon}
+          alt="umbrella"
+          className="absolute"
+          style={{
+            left: '65%',
+            top: '97px',
+            width: '22px',
+            height: '24px',
+          }}
+        />
 
         {/* 8월 - 하단 왼쪽 */}
         <button
@@ -275,10 +289,10 @@ function ScheduleMobile({ onMonthClick }) {
           onClick={() => onMonthClick('8월')}
           className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
           style={{
-            left: '9%',
-            top: '185px',
-            width: '50px',
-            height: '50px',
+            left: '10%',
+            top: '186px',
+            width: '40px',
+            height: '45px',
           }}
           aria-label="8월 일정 보기"
         >
@@ -291,10 +305,10 @@ function ScheduleMobile({ onMonthClick }) {
           onClick={() => onMonthClick('9월')}
           className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
           style={{
-            left: '67%',
-            top: '183px',
-            width: '50px',
-            height: '50px',
+            left: '69%',
+            top: '189px',
+            width: '42px',
+            height: '38px',
           }}
           aria-label="9월 일정 보기"
         >
@@ -309,7 +323,7 @@ function ScheduleMobile({ onMonthClick }) {
           style={{
             left: '-9%',
             top: '270px',
-            width: '90px',
+            width: '73px',
             height: '80px',
           }}
           aria-label="10월 일정 보기"
@@ -323,10 +337,10 @@ function ScheduleMobile({ onMonthClick }) {
           onClick={() => onMonthClick('11월')}
           className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
           style={{
-            left: '44.27%',
-            top: '295px',
-            width: '38px',
-            height: '38px',
+            left: '46.27%',
+            top: '298px',
+            width: '35px',
+            height: '32px',
           }}
           aria-label="11월 일정 보기"
         >
@@ -341,7 +355,7 @@ function ScheduleMobile({ onMonthClick }) {
           style={{
             left: '92%',
             top: '275px',
-            width: '60px',
+            width: '45px',
             height: '63px',
           }}
           aria-label="12월 일정 보기"
