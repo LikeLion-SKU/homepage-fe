@@ -53,7 +53,6 @@ export default function ApplyTrack() {
     });
   };
 
-  //const questionStyle = `self-stretch px-8 py-7 bg-white border justify-center items-center min-h-62 resize-none overflow-y-auto`;
   const textareaStyle = `self-stretch px-8 py-7 bg-white border justify-center items-center min-h-109 pad:min-h-80 web:min-h-56 resize-none overflow-y-auto`;
 
   return (
