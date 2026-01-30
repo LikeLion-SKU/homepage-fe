@@ -13,8 +13,6 @@ function ExplainBackground({ children }) {
   const minHeightRem = (1358 / 16) * scale;
   const paddingRem = (160 / 16) * scale;
   const paddingBottomRem = (70 / 16) * scale; // 하단 패딩 (기본값: 80px, 이전: 160px)
-  const borderRadiusRem = (42 / 16) * scale;
-  const borderWidthRem = (1 / 16) * scale;
   const backgroundWidthRem = (1453 / 16) * scale;
   const containerPaddingRem = (175 / 16) * scale;
 
@@ -31,20 +29,18 @@ function ExplainBackground({ children }) {
 
   return (
     <section
-      className="relative w-full overflow-hidden"
+      className="relative w-full"
       style={{
-        backgroundColor: '#f9f9f9',
+        backgroundColor: '#ffffff',
         minHeight: `${minHeightRem}rem`,
         paddingTop: `${paddingRem}rem`,
         paddingBottom: `${paddingBottomRem}rem`,
         borderTopWidth: '0',
-        borderBottomWidth: `${borderWidthRem}rem`,
-        borderBottomColor: 'rgba(0, 0, 0, 0.2)',
-        borderBottomStyle: 'solid',
-        borderTopLeftRadius: `${borderRadiusRem}rem`,
-        borderTopRightRadius: `${borderRadiusRem}rem`,
+        borderTopLeftRadius: '20px',
+        borderTopRightRadius: '20px',
         borderBottomLeftRadius: '0',
         borderBottomRightRadius: '0',
+        overflow: 'hidden',
       }}
     >
       {/* 배경 - black dot pattern 및 이미지 */}

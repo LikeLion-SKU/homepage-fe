@@ -1,7 +1,9 @@
 import useScale from '@/components/main/hooks/useScale';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 function CardPlaceholder({ image }) {
   const scale = useScale();
+  const isMobile = useMediaQuery('(max-width: 460px)');
 
   return (
     <div
@@ -14,10 +16,13 @@ function CardPlaceholder({ image }) {
         <img
           src={image}
           alt=""
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 object-contain"
+          className="absolute object-contain"
           style={{
-            width: '88%',
-            height: '88%',
+            left: isMobile ? '50%' : '50%',
+            top: isMobile ? '45%' : '50%',
+            transform: isMobile ? 'translate(-50%, -50%)' : 'translate(-50%, -50%)',
+            width: isMobile ? '60%' : '88%',
+            height: isMobile ? '60%' : '88%',
           }}
         />
       )}

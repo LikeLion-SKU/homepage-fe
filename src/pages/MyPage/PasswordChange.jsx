@@ -19,10 +19,20 @@ export default function PasswordChange() {
 
   return (
     <div
-      className="flex flex-col items-center justify-center px-4 flex-1"
-      style={{ paddingTop: '120px', paddingBottom: '120px', minHeight: 0, overflow: 'hidden' }}
+      className="bg-white"
+      style={{
+        marginLeft: '-100vw',
+        marginRight: '-100vw',
+        paddingLeft: '100vw',
+        paddingRight: '100vw',
+      }}
     >
-      <PasswordChangeForm onSubmit={handlePasswordChange} />
+      <div
+        className="flex flex-col items-center justify-center px-4 flex-1"
+        style={{ paddingTop: '120px', paddingBottom: '120px', minHeight: 0, overflow: 'hidden' }}
+      >
+        <PasswordChangeForm onSubmit={handlePasswordChange} />
+      </div>
     </div>
   );
 }
