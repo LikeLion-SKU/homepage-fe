@@ -155,10 +155,10 @@ export default function ApplyBasicInfo() {
           <div>
             <div className="flex flex-col gap-4 pad:gap-10">
               <div className="self-stretch h-8 text-lg pad:text-2xl font-bold">인적사항</div>
-              <div className="self-stretch min-h-103 pt-11 pb-13 px-25 border bg-button-gray">
-                <div className="flex justify-between gap-5">
+              <div className="self-stretch web:min-h-103 pt-11 pb-13 px-25 border bg-button-gray">
+                <div className="flex flex-col web:flex-row web:justify-between gap-x-5 gap-y-6">
                   {/* 왼쪽 이름, 학과, 학번 */}
-                  <div className="flex-1 flex flex-col gap-6">
+                  <div className="web:flex-1 flex flex-col gap-6">
                     <Input
                       name="name"
                       label="이름"
@@ -191,7 +191,7 @@ export default function ApplyBasicInfo() {
                     ></Input>
                   </div>
                   {/* 오른쪽 전화번호, 이메일, 지원파트 */}
-                  <div className="flex-1 flex flex-col gap-6">
+                  <div className="web:flex-1 flex flex-col gap-6">
                     <Input
                       name="phone"
                       label="전화번호"
