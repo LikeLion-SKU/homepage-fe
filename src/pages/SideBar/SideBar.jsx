@@ -27,6 +27,7 @@ export default function SideBar({ handleSideBar }) {
   return (
     <div className="flex flex-col h-full pt-15 gap-16.5 pb-34 pad:pb-72 bg-[#FAFBF8]">
       <div className="border-y divide-y divide-black">
+        <MenuButton name="지원결과" path="/result/notice" handleSideBar={handleSideBar} />
         {menuName.map((data) => (
           <MenuButton
             key={data.name}

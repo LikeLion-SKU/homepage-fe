@@ -46,7 +46,7 @@ export default function RootLayout() {
   };
 
   return (
-    <main className="flex flex-col w-full min-h-screen overflow-x-hidden no-scrollbar">
+    <main className="flex flex-col w-full min-h-screen overflow-y-hidden overflow-x-hidden no-scrollbar">
       <CustomCursor />
       <Header handleSideBar={() => handleSideBar()} />
       <div className="relative flex-1 min-h-fit bg-[#FAFBF8] isolate">
