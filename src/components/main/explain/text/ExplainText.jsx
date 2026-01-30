@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 
+import useMediaQuery from '@/hooks/useMediaQuery';
+
 function ExplainText() {
   const [scale, setScale] = useState(1);
+  const isMobile460 = useMediaQuery('(max-width: 460px)');
 
   useEffect(() => {
     const calculateScale = () => {
@@ -17,7 +20,8 @@ function ExplainText() {
     return () => window.removeEventListener('resize', calculateScale);
   }, []);
 
-  const fontSize = `${(18 / 16) * scale}rem`;
+  // 460px 이하에서는 더 크게 (1.5배)
+  const fontSize = `${(18 / 16) * scale * (isMobile460 ? 1.5 : 1)}rem`;
   const lineHeight = '160%';
 
   return (

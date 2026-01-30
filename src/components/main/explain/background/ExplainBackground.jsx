@@ -12,7 +12,7 @@ function ExplainBackground({ children }) {
   const widthRem = (1440 / 16) * scale;
   const minHeightRem = (1358 / 16) * scale;
   const paddingRem = (160 / 16) * scale;
-  const paddingBottomRem = (70 / 16) * scale; // 하단 패딩 (기본값: 80px, 이전: 160px)
+  const paddingBottomRem = (170 / 16) * scale; // 하단 패딩 (track과의 간격을 위해 증가)
   const backgroundWidthRem = (1453 / 16) * scale;
   const containerPaddingRem = (175 / 16) * scale;
 
@@ -22,7 +22,7 @@ function ExplainBackground({ children }) {
   const itsSkuFontSize = (24 / 16) * scale; // 폰트 크기 (기본값: 24px)
 
   // blah-line 위치 및 크기 (임의로 조정 가능)
-  const blahLineTop = 38; // 상단에서의 거리 (% 단위, 기본값: 50% = 중앙)
+  const blahLineTop = 37; // 상단에서의 거리 (% 단위, 기본값: 50% = 중앙)
   const blahLineLeft = 0; // 좌측에서의 거리 (% 단위, 기본값: 40% = 왼쪽으로 이동)
   const blahLineWidth = (1450 / 16) * scale; // 너비 (기본값: 2000px)
   const blahLineHeight = 'auto'; // 높이 (auto)
