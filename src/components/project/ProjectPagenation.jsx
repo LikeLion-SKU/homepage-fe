@@ -35,7 +35,7 @@ export default function ProjectPagenation({ props }) {
   };
 
   return (
-    <div className="flex gap-5 text-[1.1rem] font-semibold justify-center mt-15">
+    <div className="flex gap-3 pad:gap-7 text-[0.9rem] pad:text-[1.1rem] font-semibold justify-center mt-15">
       <button onClick={() => pageChange(false)} className="w-7 h-7">
         &lt;&lt;
       </button>
