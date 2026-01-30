@@ -15,7 +15,7 @@ export default function ApplyBasicInfo() {
   const navigate = useNavigate();
   const isTrackSelected = !!formData.track; // 트랙 데이터 존재 여부
 
-  const inputStyle = `w-full bg-white border border-black h-12 px-4 py-4 placeholder:font-medium`;
+  const inputStyle = `pad:w-full bg-white border border-black h-12 px-4 py-4 placeholder:font-medium`;
   const parts = [
     { id: 'po', name: 'PO' },
     { id: 'fe', name: '프론트엔드' },
@@ -155,7 +155,7 @@ export default function ApplyBasicInfo() {
           <div>
             <div className="flex flex-col gap-4 pad:gap-10">
               <div className="self-stretch h-8 text-lg pad:text-2xl font-bold">인적사항</div>
-              <div className="self-stretch web:min-h-103 pt-11 pb-13 px-25 border bg-button-gray">
+              <div className="self-stretch web:min-h-103 pt-11 pb-13 items-center px-12 pad:px-17 web:px-25 border bg-button-gray">
                 <div className="flex flex-col web:flex-row web:justify-between gap-x-5 gap-y-6">
                   {/* 왼쪽 이름, 학과, 학번 */}
                   <div className="web:flex-1 flex flex-col gap-6">
@@ -164,7 +164,7 @@ export default function ApplyBasicInfo() {
                       label="이름"
                       placeholder=""
                       type=""
-                      className={`max-w-79 min-w-48 ${inputStyle}`}
+                      className={`max-w-57.75 pad:max-w-79 pad:min-w-48 ${inputStyle}`}
                       value={formData?.name || ''}
                       onChange={() => {}}
                       readOnly
@@ -174,7 +174,7 @@ export default function ApplyBasicInfo() {
                       label="학과"
                       placeholder=""
                       type=""
-                      className={`max-w-79 min-w-48 ${inputStyle}`}
+                      className={`max-w-57.75 pad:max-w-79 pad:min-w-48 ${inputStyle}`}
                       value={formData?.major || ''}
                       onChange={() => {}}
                       readOnly
@@ -184,7 +184,7 @@ export default function ApplyBasicInfo() {
                       label="학번"
                       placeholder=""
                       type=""
-                      className={`max-w-79 min-w-48 ${inputStyle}`}
+                      className={`max-w-57.75 pad:max-w-79 pad:min-w-48 ${inputStyle}`}
                       value={formData?.studentId || ''}
                       onChange={() => {}}
                       readOnly
@@ -197,27 +197,27 @@ export default function ApplyBasicInfo() {
                       label="전화번호"
                       placeholder=""
                       type=""
-                      className={`max-w-79 min-w-48 ${inputStyle}`}
+                      className={`max-w-57.75 pad:max-w-79 pad:min-w-48 ${inputStyle}`}
                       value={formData?.phone || ''} // 상태값 연결
                       onChange={() => {}} // 변경 함수 연결
                       readOnly
                     ></Input>
                     <div className="self-stretch flex flex-col">
                       <label className="text-lg font-semi-bold">이메일</label>
-                      <div className="flex items-center justify-start gap-2.5">
+                      <div className="flex items-center justify-start gap-1.5 pad:gap-2.5">
                         <div className="">
                           <Input
                             name="email"
                             label=""
                             placeholder=""
                             type=""
-                            className={`max-w-50 min-w-30 ${inputStyle}`}
+                            className={`max-w-31.75 pad:max-w-50 pad:min-w-30 ${inputStyle}`}
                             value={formData?.email || ''}
                             onChange={() => {}}
                             readOnly
                           ></Input>
                         </div>
-                        <div className="opacity-70 text-text-gray font-medium pt-3 pr-4">
+                        <div className="opacity-70 text-text-gray text-sm pad:text-lg font-semibold pad:font-medium pt-3 pr-4">
                           @skuniv.ac.kr
                         </div>
                       </div>
@@ -226,7 +226,7 @@ export default function ApplyBasicInfo() {
                     <div className="self-stretch flex flex-col gap-3">
                       <label className="text-lg font-semi-bold">지원트랙</label>
                       <div>
-                        <div className="flex gap-2.5">
+                        <div className="flex flex-col pad:flex-row gap-2.5">
                           {parts.map((part) => (
                             <Button
                               key={part.id}
