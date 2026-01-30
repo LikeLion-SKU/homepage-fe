@@ -40,11 +40,11 @@ export default function ApplyCommon() {
     });
   };
 
-  const questionStyle = `self-stretch px-8 py-7 bg-white border justify-center items-center min-h-62 resize-none overflow-y-auto`;
+  const textareaStyle = `self-stretch px-8 py-7 bg-white border justify-center items-center min-h-109 pad:min-h-80 web:min-h-56 resize-none overflow-y-auto`;
 
   return (
     <div className="pb-35">
-      <div className="w-full flex flex-col pt-18 px-45.5 gap-23">
+      <div className="w-full flex flex-col pt-18 pad:px-15 web:px-45.5 gap-23">
         <div className="flex flex-col gap-31">
           <div className="flex flex-col gap-20">
             {/* 지원서 작성 페이지의 기본 정보 섹션 */}
@@ -78,7 +78,7 @@ export default function ApplyCommon() {
           <div className="flex flex-col gap-10">
             <div className="self-stretch h-8 text-2xl font-bold font-['Pretendard']">공통 질문</div>
             {/* 공통질문 상자 */}
-            <div className="flex flex-col px-20 py-18 border bg-button-gray gap-15">
+            <div className="flex flex-col pad:px-10 web:px-20 pad:py-18 web:py-18.5 border bg-button-gray gap-15">
               {/* 공통질문 내용 */}
               {QUESTION_LIST.filter((item) => item.track === 'COMMON').map(
                 (
@@ -87,7 +87,7 @@ export default function ApplyCommon() {
                   <Question
                     key={item.id}
                     question={`${item.order_number}. ${item.question}`}
-                    className={questionStyle}
+                    className={textareaStyle}
                     // 2. 입력된 값: 해당 질문 ID에 맞는 답변 전달
                     value={formData?.answers?.[item.id] || ''}
                     // 3. 값 변경 시: 부모가 준 handleAnswerChange 실행
