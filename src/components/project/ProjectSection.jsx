@@ -36,7 +36,7 @@ export default function ProjectSection({ data }) {
               <Plus />
             </div>
           )}
-          <div className="grid grid-cols-3 gap-x-7 gap-y-15 mt-6">
+          <div className="flex flex-wrap gap-7 mt-6 justify-center">
             {data.length > 0 && data.map((data) => <ProjectCard props={data} isAdmin={isAdmin} />)}
           </div>
         </div>

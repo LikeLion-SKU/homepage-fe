@@ -12,20 +12,25 @@ export default function ProjectCard({ props, isAdmin }) {
       onClick={() => {
         !isAdmin && navigate('/project/viewDetail');
       }}
-      className="group relative w-101 h-86 border overflow-hidden bg-[#F9F9F9] "
+      className="group relative border overflow-hidden bg-[#F9F9F9] "
     >
-      <div className="flex flex-col w-101 h-86">
-        <img src={props.imgUrl} className="h-55 w-101 bg-[#D9D9D9]" />
-        <div className="flex flex-col gap-3 w-101 h-29 p-5 ">
+      <div className="flex flex-col">
+        <img
+          src={props.imgUrl}
+          className="h-23 pad:h-46 web:h-55 w-41 pad:w-82 web:w-101 bg-[#D9D9D9]"
+        />
+        <div className="flex flex-col pad:gap-2 web:gap-4 w-41 pad:w-82 web:w-101 p-2 pad:p-5 ">
           <div className="flex justify-between items-center">
-            <p className="text-[1.1rem] font-bold">{props.projectName}</p>
+            <p className="text-[0.6rem] pad:text-[1rem] web:text-[1.1rem] font-bold">
+              {props.projectName}
+            </p>
             <ProjectCategory
               isPrize={props.isPrize}
               ordinalNumber={props.ordinalNumber}
               contestName={props.contestName}
             />
           </div>
-          <p className="text-[0.9rem]">{props.explanation}</p>
+          <p className="text-[0.4rem] pad:text-[0.7rem] web:text-[0.9rem]">{props.explanation}</p>
         </div>
       </div>
 
