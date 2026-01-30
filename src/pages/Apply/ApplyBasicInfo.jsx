@@ -15,7 +15,7 @@ export default function ApplyBasicInfo() {
   const navigate = useNavigate();
   const isTrackSelected = !!formData.track; // 트랙 데이터 존재 여부
 
-  const inputStyle = `bg-white border border-black h-12 px-4 py-4 placeholder:font-medium`;
+  const inputStyle = `w-full bg-white border border-black h-12 px-4 py-4 placeholder:font-medium`;
   const parts = [
     { id: 'po', name: 'PO' },
     { id: 'fe', name: '프론트엔드' },
@@ -23,7 +23,8 @@ export default function ApplyBasicInfo() {
   ];
 
   const getButtonStyle = (isSelected) => {
-    const baseStyle = 'h-12 flex-1 outline py-2 text-lg font-semibold transition-all';
+    const baseStyle =
+      'h-12 w-full max-w-33 min-w-20 border py-2 text-lg font-semibold transition-all';
 
     // 선택 여부에 따른 버튼 색상
     const stateStyle = isSelected
@@ -35,15 +36,15 @@ export default function ApplyBasicInfo() {
 
   // 트랙 선택 안될 시 다음단계 비활성
   const disabledStyle = `
-    w-full h-14 bg-expired-gray-button outline -outline-offset-1 outline-black 
+    w-45 pad:w-47 web:w-53 h-11 pad:h-14 bg-expired-gray-button outline -outline-offset-1 outline-black 
     flex justify-center items-center 
     text-gray-800 text-lg font-semibold
     !drop-shadow-none !shadow-none
   `;
   // 트랙 선택 시 활성
   const buttonStyle = `
-    w-full h-14 bg-button-green outline -outline-offset-1 outline-black 
-    flex justify-center items-center transition-all hover:bg-button-hover"
+    w-45 pad:w-47 web:w-53 h-11 pad:h-14 bg-button-green outline -outline-offset-1 outline-black 
+    flex justify-center items-center transition-all hover:bg-button-hover
   `;
   // 트랙 선택 여부에 따른 다음단계 버튼 스타일링
   const nextButtonStyle = isTrackSelected ? buttonStyle : disabledStyle;
@@ -120,42 +121,42 @@ export default function ApplyBasicInfo() {
 
   return (
     <div className="pb-35">
-      <div className="w-full flex flex-col pt-18 px-45.5 gap-23">
-        <div className="flex flex-col gap-31">
-          <div className="flex flex-col gap-20">
+      <div className="w-full flex flex-col pt-18 px-6 pad:px-15 web:px-45.5 gap-23">
+        <div className="flex flex-col gap-20 pad:gap-31">
+          <div className="flex flex-col gap-15 pad:gap-20">
             {/* 지원서 작성 페이지의 기본 정보 섹션 */}
             <ApplyTitleSection></ApplyTitleSection>
             {/* 지원서 작성 단계 부분 */}
-            <div className="self-stretch inline-flex items-center gap-7">
+            <div className="self-stretch inline-flex items-start gap-7">
               <ApplyStep
                 step="STEP 1"
                 stepName="기본 인적사항"
                 lineStyle="self-stretch h-1 bg-button-green mb-5"
-                stepStyle="self-stretch text-center text-button-green text-1xl font-medium mb-1.5"
-                stepNameStyle="self-stretch text-center text-button-green text-2xl font-bold "
+                stepStyle="self-stretch text-center text-button-green text-sm font-semibold pad:text-1xl pad:font-medium mb-1.5"
+                stepNameStyle="self-stretch text-center text-button-green text-lg pad:text-2xl font-bold "
               ></ApplyStep>
               <ApplyStep
                 step="STEP 2"
                 stepName="공통 질문"
                 lineStyle="self-stretch h-1 bg-navy-blue mb-5"
-                stepStyle="self-stretch text-center text-navy-blue text-1xl font-medium mb-1.5"
-                stepNameStyle="self-stretch text-center text-navy-blue text-2xl font-bold "
+                stepStyle="self-stretch text-center text-navy-blue text-sm font-semibold pad:text-1xl pad:font-medium mb-1.5"
+                stepNameStyle="self-stretch text-center text-navy-blue text-lg pad:text-2xl font-bold"
               ></ApplyStep>
               <ApplyStep
                 step="STEP 3"
                 stepName="트랙별 질문"
                 lineStyle="self-stretch h-1 bg-navy-blue mb-5"
-                stepStyle="self-stretch text-center text-navy-blue text-1xl font-medium mb-1.5"
-                stepNameStyle="self-stretch text-center text-navy-blue text-2xl font-bold "
+                stepStyle="self-stretch text-center text-navy-blue text-sm font-semibold pad:text-1xl pad:font-medium mb-1.5"
+                stepNameStyle="self-stretch text-center text-navy-blue text-lg pad:text-2xl font-bold"
               ></ApplyStep>
             </div>
           </div>
           {/* 인적사항 기재 부분 */}
           <div>
-            <div className="flex flex-col gap-10">
-              <div className="self-stretch h-8 opacity-70 text-2xl font-bold ">인적사항</div>
-              <div className="self-stretch min-h-103 pt-11 pb-13 px-27 border bg-button-gray">
-                <div className="flex justify-between gap-48">
+            <div className="flex flex-col gap-4 pad:gap-10">
+              <div className="self-stretch h-8 text-lg pad:text-2xl font-bold">인적사항</div>
+              <div className="self-stretch min-h-103 pt-11 pb-13 px-25 border bg-button-gray">
+                <div className="flex justify-between gap-5">
                   {/* 왼쪽 이름, 학과, 학번 */}
                   <div className="flex-1 flex flex-col gap-6">
                     <Input
@@ -163,7 +164,7 @@ export default function ApplyBasicInfo() {
                       label="이름"
                       placeholder=""
                       type=""
-                      className={inputStyle}
+                      className={`max-w-79 min-w-48 ${inputStyle}`}
                       value={formData?.name || ''}
                       onChange={() => {}}
                       readOnly
@@ -173,7 +174,7 @@ export default function ApplyBasicInfo() {
                       label="학과"
                       placeholder=""
                       type=""
-                      className={inputStyle}
+                      className={`max-w-79 min-w-48 ${inputStyle}`}
                       value={formData?.major || ''}
                       onChange={() => {}}
                       readOnly
@@ -183,7 +184,7 @@ export default function ApplyBasicInfo() {
                       label="학번"
                       placeholder=""
                       type=""
-                      className={inputStyle}
+                      className={`max-w-79 min-w-48 ${inputStyle}`}
                       value={formData?.studentId || ''}
                       onChange={() => {}}
                       readOnly
@@ -196,21 +197,21 @@ export default function ApplyBasicInfo() {
                       label="전화번호"
                       placeholder=""
                       type=""
-                      className={inputStyle}
+                      className={`max-w-79 min-w-48 ${inputStyle}`}
                       value={formData?.phone || ''} // 상태값 연결
                       onChange={() => {}} // 변경 함수 연결
                       readOnly
                     ></Input>
                     <div className="self-stretch flex flex-col">
                       <label className="text-lg font-semi-bold">이메일</label>
-                      <div className="flex items-center justify-between">
-                        <div className="w-2/3">
+                      <div className="flex items-center justify-start gap-2.5">
+                        <div className="">
                           <Input
                             name="email"
                             label=""
                             placeholder=""
                             type=""
-                            className={inputStyle}
+                            className={`max-w-50 min-w-30 ${inputStyle}`}
                             value={formData?.email || ''}
                             onChange={() => {}}
                             readOnly
@@ -252,9 +253,11 @@ export default function ApplyBasicInfo() {
         </div>
         {/* 하단 버튼 부분 */}
         <div className="flex justify-center">
-          <div className="flex justify-center items-center gap-5 w-1/6">
+          <div className="flex justify-center items-center gap-5">
             <Button onClick={handleNext} className={nextButtonStyle}>
-              <span className="opacity-70 text-black text-lg font-medium">다음단계</span>
+              <span className="opacity-70 text-black text-base font-semibold pad:text-lg pad:font-medium">
+                다음단계
+              </span>
             </Button>
           </div>
         </div>
