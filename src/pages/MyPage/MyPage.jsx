@@ -51,12 +51,12 @@ export default function MyPage() {
   };
 
   return (
-    <div className="w-full min-h-screen relative bg-white">
-      <div className="flex flex-col web:flex-row web:items-start items-center web:justify-between px-6 pad:px-20 web:px-46.25">
+    <div className="w-full min-h-[calc(100vh-52px)] pad:min-h-[calc(100vh-68px)] web:min-h-[calc(100vh-76px)] relative flex flex-col items-center web:items-stretch justify-center bg-white isolate overflow-hidden">
+      <div className="flex flex-col web:flex-row web:items-start items-center web:justify-between px-6 pad:px-20 web:px-36 gap-16">
         {/* 왼쪽 부분 */}
-        <div className="relative flex flex-col web:flex-row justify-start items-center gap-9">
+        <div className="relative flex flex-col web:flex-row justify-start items-center gap-x-9 gap-y-14">
           <div className="w-40 h-40 pad:w-44 pad:h-44 relative">
-            <div className="relative w-44 h-44 pad:w-44 pad:h-44 bg-zinc-300 border border-black group">
+            <div className="relative w-40 h-40 pad:w-44 pad:h-44 bg-zinc-300 border border-black group">
               {/* 이 label을 누르면 input으로 입력받을 수 있게 */}
               <label
                 htmlFor="profile-upload"
@@ -103,7 +103,7 @@ export default function MyPage() {
           </div>
         </div>
         {/* 오른쪽 부분 */}
-        <div className="w-full pad:max-w-142 pad:min-w-48 web:min-w-96 flex flex-col justify-start items-start gap-4">
+        <div className="w-60 pad:w-full pad:max-w-120 web:max-w-96 pad:min-w-48 web:min-w-48 flex flex-col justify-start items-start gap-4">
           <div className="self-stretch">
             <Button
               onClick={() => {
@@ -168,7 +168,7 @@ export default function MyPage() {
       >
         로그아웃 하시겠습니까?
       </Modal>
-      <div className="w-146 h-145 left-186 top-46.25 absolute">
+      <div className="w-72 h-72 pad:w-113.5 pad:h-96 web:w-146 web:h-145 left-18.75 bottom-0 pad:left-69.5 pad:bottom-0 web:left-186 web:bottom-0 absolute -z-10">
         <img src={Home}></img>
       </div>
     </div>
