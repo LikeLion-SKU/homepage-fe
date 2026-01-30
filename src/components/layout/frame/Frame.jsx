@@ -49,7 +49,9 @@ function Frame({
   const cornerOffset = pxToRem(9 * cornerScale);
 
   // borderWidth를 rem으로 변환 (전체 scale 적용하여 콘텐츠와 같은 비율로 축소)
-  const borderWidthRem = pxToRem(borderWidth, true, true); // 전체 scale 적용하여 반응형으로
+  // 모바일일 때 borderWidth를 1.2배로 증가시켜 더 굵게 보이게 함
+  const adjustedBorderWidth = isMobile && !disableMobileScale ? borderWidth * 1.2 : borderWidth;
+  const borderWidthRem = pxToRem(adjustedBorderWidth, true, true); // 전체 scale 적용하여 반응형으로
 
   // padding 계산
   const paddingTopBottom = paddingY !== null ? paddingY : pxToRem(12);

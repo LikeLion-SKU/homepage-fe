@@ -52,6 +52,7 @@ function Track() {
     <MainSectionLayout
       title="트랙 소개"
       showTopBorder={false}
+      overflowVisible={true}
       backgroundStyle={{
         backgroundImage: 'linear-gradient(180deg, #F4F4F4 0%, rgba(217, 217, 217, 0) 100%)', // 그라데이션 배경
         backgroundBorderColor: '1px solid var(--color-navy-blue)',
@@ -75,10 +76,10 @@ function Track() {
           }}
         />
 
-        <div className="flex flex-col sm:flex-row gap-8 w-full sm:w-[125%] sm:-ml-[12%] mt-[42px] pb-20 max-[460px]:pb-6 sm:pb-0">
+        <div className="flex flex-col min-[461px]:flex-row gap-8 w-full min-[461px]:w-[125%] min-[461px]:-ml-[12%] mt-[42px] pb-0">
           <motion.div
             ref={card1Ref}
-            className="flex-1 w-full"
+            className="flex-1 min-[461px]:flex-1 max-[460px]:flex-none w-full"
             initial={{ y: 60, opacity: 0 }}
             animate={card1InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
             transition={{
@@ -97,7 +98,7 @@ function Track() {
           </motion.div>
           <motion.div
             ref={card2Ref}
-            className="flex-1 w-full sm:relative sm:top-10"
+            className="flex-1 min-[461px]:flex-1 max-[460px]:flex-none w-full min-[461px]:relative min-[461px]:top-10"
             initial={{ y: 60, opacity: 0 }}
             animate={card2InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
             transition={{
@@ -116,7 +117,7 @@ function Track() {
           </motion.div>
           <motion.div
             ref={card3Ref}
-            className="flex-1 w-full sm:relative sm:top-20"
+            className="flex-1 min-[461px]:flex-1 max-[460px]:flex-none w-full min-[461px]:relative min-[461px]:top-20"
             initial={{ y: 60, opacity: 0 }}
             animate={card3InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
             transition={{
