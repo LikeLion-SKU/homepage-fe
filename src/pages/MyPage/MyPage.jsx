@@ -32,6 +32,9 @@ export default function MyPage() {
     active:translate-x-[0.5px] active:translate-y-[0.5px]
   `;
 
+  const minHeight =
+    'min-h-[calc(100vh-52px)] pad:min-h-[calc(100vh-68px)] web:min-h-[calc(100vh-76px)]';
+
   const [isError, setIsError] = useState(false);
   const [preview, setPreview] = useState(null);
 
@@ -51,7 +54,9 @@ export default function MyPage() {
   };
 
   return (
-    <div className="w-full min-h-[calc(100vh-52px)] pad:min-h-[calc(100vh-68px)] web:min-h-[calc(100vh-76px)] relative flex flex-col items-center web:items-stretch justify-center bg-white isolate overflow-hidden">
+    <div
+      className={`w-full ${minHeight} relative flex flex-col items-center web:items-stretch justify-center bg-white isolate overflow-hidden"`}
+    >
       <div className="flex flex-col web:flex-row web:items-start items-center web:justify-between px-6 pad:px-20 web:px-36 gap-16">
         {/* 왼쪽 부분 */}
         <div className="relative flex flex-col web:flex-row justify-start items-center gap-x-9 gap-y-14">
