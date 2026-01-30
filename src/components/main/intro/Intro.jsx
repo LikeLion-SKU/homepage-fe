@@ -140,6 +140,7 @@ function Intro() {
               className="inline-block"
               color="#1928B0"
               paddingX={(40 / 16) * scale} // 가로 padding 증가 (기본 20px -> 40px)
+              disableMobileScale={true} // 인트로 섹션은 모바일 크기 조정 비활성화
             >
               <div
                 style={{

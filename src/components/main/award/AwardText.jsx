@@ -1,14 +1,16 @@
 import useScale from '@/components/main/hooks/useScale';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 function AwardText() {
   const scale = useScale();
+  const isMobile460 = useMediaQuery('(max-width: 460px)');
 
   return (
     <div
       className="text-[#1a1a1a] font-medium leading-[160%]"
       style={{
         fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-        fontSize: `${(18 / 16) * scale}rem`,
+        fontSize: `${(18 / 16) * scale * (isMobile460 ? 2 : 1)}rem`,
       }}
     >
       <div>
