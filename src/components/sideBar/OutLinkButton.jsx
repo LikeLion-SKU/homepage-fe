@@ -7,11 +7,11 @@ export default function OutLinkButton({ name, imgUrl, link }) {
       href={link}
       target="_blank"
       className="flex h-15 justify-between items-center bg-[#F9F9F9] pl-9 pr-7 
-                pad:pl-21 pad:pr-17 pad:text-[1.4rem] pad:font-semibold"
+      pad:pl-21 pad:pr-17 pad:font-semibold"
     >
       <LeftDown />
       <div className="flex gap-4 items-center">
-        <p className="text-[1rem]">{name}</p>
+        <p className="text-[1rem] pad:text-[1.4rem]">{name}</p>
         <img src={imgUrl} />
       </div>
     </a>
