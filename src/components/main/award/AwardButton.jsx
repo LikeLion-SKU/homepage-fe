@@ -13,7 +13,7 @@ function AwardButton() {
   useEffect(() => {
     if (!rootRef.current) return;
     // 모바일 460px 이하에서 버튼 크기를 1.5배로 증가
-    const mobileScaleFactor = isMobile460 ? 1.6 : 1;
+    const mobileScaleFactor = isMobile460 ? 1.5 : 1;
     rootRef.current.style.setProperty('--scale', String(scale * mobileScaleFactor));
   }, [scale, isMobile460]);
 

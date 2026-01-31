@@ -20,10 +20,10 @@ function Explain() {
   const isMobile460 = useMediaQuery('(max-width: 460px)');
 
   // 모바일에서 blah 이미지 위치 조정
-  const leftBlahLift = isMobile760 ? 40 : 0; // 좌측은 아래로 (양수)
-  const rightBlahLift = isMobile760 ? -50 : 0; // 우측은 위로 (음수)
+  const leftBlahLift = isMobile760 ? 30 : 0; // 좌측은 아래로 (양수)
+  const rightBlahLift = 0; // 우측은 움직이지 않음
   const leftBlahShift = isMobile760 ? -10 : 0; // 좌측은 왼쪽으로 (음수)
-  const rightBlahShift = isMobile760 ? 10 : 0; // 우측은 오른쪽으로 (양수)
+  const rightBlahShift = 0; // 우측은 움직이지 않음
 
   return (
     <ExplainBackground>
@@ -84,8 +84,8 @@ function Explain() {
             alt="BLAH"
             className="object-contain"
             style={{
-              width: `${(180 / 16) * scale}rem`,
-              height: `${(61 / 16) * scale}rem`,
+              width: `${(180 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
+              height: `${(61 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
               marginRight: `${(-10 / 16) * scale}rem`,
               imageRendering: 'crisp-edges',
               transform: 'translateY(150%)',
@@ -115,8 +115,8 @@ function Explain() {
             alt="BLAH"
             className="object-contain"
             style={{
-              width: `${(177 / 16) * scale}rem`,
-              height: `${(55 / 16) * scale}rem`,
+              width: `${(177 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
+              height: `${(55 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
               marginLeft: `${(332 / 16) * scale}rem`,
               imageRendering: 'crisp-edges',
               transform: 'translateY(140%)',

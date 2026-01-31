@@ -21,7 +21,7 @@ function ExplainText() {
   }, []);
 
   // 460px 이하에서는 더 크게 (1.5배)
-  const fontSize = `${(18 / 16) * scale * (isMobile460 ? 1.5 : 1)}rem`;
+  const fontSize = `${(18 / 16) * scale * (isMobile460 ? 1.8 : 1)}rem`;
   const lineHeight = '160%';
 
   return (
