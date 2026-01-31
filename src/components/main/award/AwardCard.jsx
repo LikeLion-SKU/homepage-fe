@@ -1,14 +1,16 @@
 import useScale from '@/components/main/hooks/useScale';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 function AwardCard({ title, image, onClick }) {
   const scale = useScale();
+  const isMobile460 = useMediaQuery('(max-width: 460px)');
 
   return (
     <div
       className="flex-shrink-0 bg-[#B0B0B0] overflow-hidden"
       style={{
-        width: `${(699 / 16) * scale}rem`,
-        height: `${(393 / 16) * scale}rem`,
+        width: `${(699 / 16) * scale * (isMobile460 ? 1.6 : 1)}rem`,
+        height: `${(393 / 16) * scale * (isMobile460 ? 1.6 : 1)}rem`,
         marginRight: `${(35 / 16) * scale}rem`,
         display: 'flex',
         flexDirection: 'column',

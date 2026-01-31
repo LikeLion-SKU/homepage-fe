@@ -2,12 +2,14 @@ import React, { useEffect } from 'react';
 
 import useScale from '@/components/main/hooks/useScale';
 import { useDragScroll } from '@/hooks/useDragScroll';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 import AwardCard from './AwardCard';
-import DragCursor from './DragCursor';
+import DragCursor from './ClickCursor';
 
 function AwardCardList({ cards = [] }) {
   const scale = useScale();
+  const isMobile460 = useMediaQuery('(max-width: 460px)');
   const { containerRef, cursorRef, clickGuard } = useDragScroll({
     inertia: true,
     inertiaFriction: 0.92,
@@ -19,7 +21,7 @@ function AwardCardList({ cards = [] }) {
     // 수상작2 카드(인덱스 1)를 찾아서 중앙에 위치시키기
     const centerCardIndex = cards.findIndex((card) => card.hasDragButton);
     if (centerCardIndex !== -1 && containerRef.current) {
-      const cardWidth = (699 / 16) * scale * 16; // px 단위로 변환
+      const cardWidth = (699 / 16) * scale * (isMobile460 ? 1.5 : 1) * 16; // px 단위로 변환 (모바일 배율 적용)
       const cardGap = (35 / 16) * scale * 16; // px 단위로 변환
       const viewportWidth = window.innerWidth;
 
@@ -29,7 +31,7 @@ function AwardCardList({ cards = [] }) {
 
       containerRef.current.scrollLeft = targetScrollLeft;
     }
-  }, [cards, scale, containerRef]);
+  }, [cards, scale, isMobile460, containerRef]);
 
   return (
     <>

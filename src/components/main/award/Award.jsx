@@ -29,6 +29,7 @@ const awardCards = [
 function Award() {
   const scale = useScale();
   const isMobile460 = useMediaQuery('(max-width: 460px)');
+  const isMobile760 = useMediaQuery('(max-width: 760px)');
 
   return (
     <MainSectionLayout
@@ -50,7 +51,7 @@ function Award() {
               style={{
                 left: `${(300 / 16) * scale}rem`,
                 top: `${(-150 / 16) * scale}rem`,
-                width: `${(159 / 16) * scale}rem`,
+                width: `${(159 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
                 height: 'auto',
                 zIndex: 30,
               }}
@@ -95,7 +96,7 @@ function Award() {
               style={{
                 left: `${(110 / 16) * scale}rem`,
                 top: `${(-30 / 16) * scale}rem`,
-                width: `${(159 / 16) * scale}rem`,
+                width: `${(159 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
                 height: 'auto',
                 zIndex: 30,
               }}
