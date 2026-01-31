@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 
 import useCountNum from '@/components/main/hooks/useCountNum';
 import useScale from '@/components/main/hooks/useScale';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 /**
  * 숫자 + 플러스 컴포넌트 (카운팅 애니메이션)
@@ -15,6 +16,7 @@ import useScale from '@/components/main/hooks/useScale';
  */
 export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
   const scale = useScale();
+  const isMobile = useMediaQuery('(max-width: 640px)');
   const [shouldStart, setShouldStart] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1440
@@ -34,7 +36,6 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
   const isYString = typeof initialY === 'string';
 
   // 화면 크기에 따라 위치 조정
-  const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
   const isWide = windowWidth > 1440;
 
@@ -117,7 +118,7 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
         style={{
           fontFamily: 'pixel, monospace',
           fontSize: isMobile
-            ? `${(48 / 16) * scale}rem`
+            ? `${(55 / 16) * scale}rem` // 모바일에서 50px 기준
             : isTablet
               ? `${(60 / 16) * scale}rem`
               : `${(72 / 16) * scale}rem`,
@@ -134,7 +135,7 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
               style={{
                 fontFamily: 'pixel, monospace',
                 fontSize: isMobile
-                  ? `${(48 / 16) * scale}rem`
+                  ? `${(55 / 16) * scale}rem` // 모바일에서 50px 기준
                   : isTablet
                     ? `${(60 / 16) * scale}rem`
                     : `${(72 / 16) * scale}rem`,
@@ -152,7 +153,7 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
           style={{
             fontFamily: 'pixel, monospace',
             fontSize: isMobile
-              ? `${(36 / 16) * scale}rem`
+              ? `${(45 / 16) * scale}rem` // 모바일에서 비례적으로 크게
               : isTablet
                 ? `${(44 / 16) * scale}rem`
                 : `${(56 / 16) * scale}rem`,

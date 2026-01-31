@@ -5,6 +5,7 @@ export function useDragScroll({
   inertiaFriction = 0.92, // 0.88~0.95 취향
   dragThreshold = 6,
   wheelToHorizontal = true,
+  enableDrag = true, // 드래그 활성화 여부
 } = {}) {
   const containerRef = useRef(null);
   const cursorRef = useRef(null);
@@ -20,6 +21,7 @@ export function useDragScroll({
     lastT: 0,
     vx: 0,
     moved: false,
+    isLinkElement: false, // Link 요소인지 여부
   });
 
   // cursor raf
@@ -104,6 +106,9 @@ export function useDragScroll({
     cursorRafRef.current = requestAnimationFrame(animate);
   };
 
+  // 드래그 중 클릭 방지용: item 링크/버튼 onClick에서 이 함수로 guard (원샷 방식)
+  const blockNextClickRef = useRef(false);
+
   useEffect(() => {
     const el = containerRef.current;
     const cursor = cursorRef.current;
@@ -172,6 +177,9 @@ export function useDragScroll({
       targetCursorPosRef.current = { x: e.clientX, y: e.clientY };
       scheduleCursorMove();
 
+      // 드래그가 비활성화된 경우 커서만 업데이트
+      if (!enableDrag) return;
+
       const s = stateRef.current;
       if (!s.dragging) return;
 
@@ -209,17 +217,19 @@ export function useDragScroll({
       s.vx = 0;
       s.moved = false;
 
+      // 다운할 때는 클릭 막지 않음
+      blockNextClickRef.current = false;
+
       el.classList.add('dragging');
       setCursorGrabbing(true);
 
-      // 포인터 캡처
-      el.setPointerCapture(e.pointerId);
+      // Link 요소가 아닌 경우에만 포인터 캡처 (Link 클릭 허용)
+      if (!s.isLinkElement) {
+        el.setPointerCapture(e.pointerId);
+      }
 
       // 커스텀 커서 숨기기 이벤트 발생
       window.dispatchEvent(new CustomEvent('dragscroll:start'));
-
-      // 이미지 ghost-drag, 텍스트 선택 방지
-      e.preventDefault();
     };
 
     const endDrag = () => {
@@ -227,7 +237,16 @@ export function useDragScroll({
       if (!s.dragging) return;
 
       s.dragging = false;
-      el.style.cursor = 'grab';
+
+      // 드래그였다면 다음 클릭 1번만 막기
+      // Link 요소이고 드래그가 아닌 경우는 클릭 허용
+      if (s.isLinkElement && !s.moved) {
+        blockNextClickRef.current = false; // Link 클릭 허용
+      } else {
+        blockNextClickRef.current = s.moved; // 드래그였으면 클릭 막기
+      }
+
+      el.classList.remove('dragging');
       setCursorGrabbing(false);
 
       try {
@@ -240,10 +259,13 @@ export function useDragScroll({
       window.dispatchEvent(new CustomEvent('dragscroll:end'));
 
       // 관성 시작: 마지막 vx 방향 그대로
-      // scrollLeft는 "startScrollLeft - dx"였으니,
+      // scrollLeft는 startScrollLeft - dx였으니,
       // vx가 +면 커서가 오른쪽으로 간 것(내용은 왼쪽으로 이동),
       // tick에서 scrollLeft -= vx*16로 방향 맞춤
       startInertia();
+
+      // 상태 초기화
+      s.isLinkElement = false;
     };
 
     const onPointerUp = endDrag;
@@ -263,9 +285,13 @@ export function useDragScroll({
     el.addEventListener('pointerenter', onEnter);
     el.addEventListener('pointerleave', onLeave);
     el.addEventListener('pointermove', onPointerMove);
-    el.addEventListener('pointerdown', onPointerDown);
-    el.addEventListener('pointerup', onPointerUp);
-    el.addEventListener('pointercancel', onPointerCancel);
+
+    // 드래그 활성화된 경우에만 드래그 관련 이벤트 등록
+    if (enableDrag) {
+      el.addEventListener('pointerdown', onPointerDown);
+      el.addEventListener('pointerup', onPointerUp);
+      el.addEventListener('pointercancel', onPointerCancel);
+    }
 
     // wheel은 passive:false 필요
     el.addEventListener('wheel', onWheel, { passive: false });
@@ -277,25 +303,21 @@ export function useDragScroll({
       el.removeEventListener('pointerenter', onEnter);
       el.removeEventListener('pointerleave', onLeave);
       el.removeEventListener('pointermove', onPointerMove);
-      el.removeEventListener('pointerdown', onPointerDown);
-      el.removeEventListener('pointerup', onPointerUp);
-      el.removeEventListener('pointercancel', onPointerCancel);
+
+      if (enableDrag) {
+        el.removeEventListener('pointerdown', onPointerDown);
+        el.removeEventListener('pointerup', onPointerUp);
+        el.removeEventListener('pointercancel', onPointerCancel);
+      }
+
       el.removeEventListener('wheel', onWheel);
     };
-  }, [dragThreshold, inertia, inertiaFriction, wheelToHorizontal]);
-
-  // 드래그 중 "클릭" 방지용: item 링크/버튼 onClick에서 이 함수로 guard
-  const shouldBlockClickRef = useRef(false);
-  useEffect(() => {
-    const id = setInterval(() => {
-      const s = stateRef.current;
-      shouldBlockClickRef.current = s.dragging || s.moved;
-    }, 50);
-    return () => clearInterval(id);
-  }, []);
+  }, [dragThreshold, inertia, inertiaFriction, wheelToHorizontal, enableDrag]);
 
   const clickGuard = (e) => {
-    if (shouldBlockClickRef.current) {
+    const shouldBlock = blockNextClickRef.current;
+    if (shouldBlock) {
+      blockNextClickRef.current = false; // 딱 한 번만 막고 풀기
       e.preventDefault();
       e.stopPropagation();
     }

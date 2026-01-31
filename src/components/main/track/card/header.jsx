@@ -10,7 +10,7 @@ function CardHeader({ title }) {
 
   return (
     <GridPattern
-      className="bg-white flex items-center relative overflow-hidden"
+      className="bg-[#FAFBF8] flex items-center relative overflow-hidden"
       style={{
         padding: isMobile
           ? `${(35 / 16) * scale}rem ${(28 / 16) * scale}rem`
@@ -23,7 +23,7 @@ function CardHeader({ title }) {
         style={{
           // 가로 길이를 더 늘려 헤더 안 텍스트 영역을 넉넉하게
           width: `calc(100% - ${isMobile ? (40 / 16) * scale : (32 / 16) * scale}rem)`,
-          maxWidth: `${isMobile ? (950 / 16) * scale : (400 / 16) * scale}rem`,
+          maxWidth: `${isMobile ? (950 / 16) * scale : (380 / 16) * scale}rem`,
           height: `${isMobile ? (80 / 16) * scale : (40 / 16) * scale}rem`,
           left: `${isMobile ? (70 / 16) * scale : (23 / 16) * scale}rem`,
           top: `${isMobile ? (35 / 16) * scale : (16 / 16) * scale}rem`,
