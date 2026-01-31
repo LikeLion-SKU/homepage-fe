@@ -78,7 +78,10 @@ export default function Header({ handleSideBar }) {
         )}
         {!isPhone && (
           <button
-            onClick={() => clickMenu('/login')}
+            onClick={() => {
+              if (token) clickMenu('/mypage');
+              else clickMenu('/login');
+            }}
             className="px-10 font-semibold items-center justify-center 
           border-x web:border-l web:border-r-0"
           >
