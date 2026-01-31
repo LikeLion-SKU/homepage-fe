@@ -9,11 +9,13 @@ import FEImage from '@/assets/images/FE-explain.svg';
 import POImage from '@/assets/images/PO-explain.svg';
 import useScale from '@/components/main/hooks/useScale';
 import MainSectionLayout from '@/components/main/layout';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 import Card from './card/card.jsx';
 
 function Track() {
   const scale = useScale();
+  const isMobile760 = useMediaQuery('(max-width: 760px)');
   const card1Ref = useRef(null);
   const card2Ref = useRef(null);
   const card3Ref = useRef(null);
@@ -68,7 +70,7 @@ function Track() {
             // 여기 값만 바꾸면 아이콘을 개별적으로 이동 가능
             left: `${(120 / 16) * scale}rem`,
             top: `${(-115 / 16) * scale}rem`,
-            width: `${(159 / 16) * scale}rem`,
+            width: `${(159 / 16) * scale * (isMobile760 ? 1.4 : 1)}rem`,
             height: 'auto',
             zIndex: 30,
             willChange: 'transform',

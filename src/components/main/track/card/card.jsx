@@ -11,7 +11,7 @@ function Card({ title, description, image = null }) {
 
   return (
     <GridPattern
-      className="w-full border border-[#00156A] flex flex-col bg-white relative overflow-hidden"
+      className="w-full border border-[#00156A] flex flex-col bg-[#FAFBF8] relative overflow-hidden"
       style={{
         aspectRatio: isMobile ? '3/4' : undefined,
         height: isMobile ? undefined : '100%',

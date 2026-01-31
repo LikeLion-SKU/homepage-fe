@@ -4,9 +4,11 @@ import { motion } from 'framer-motion';
 import blackDotSvg from '@/assets/icons/black-dot.svg';
 import blahLineIcon from '@/assets/icons/main/blah-line.svg';
 import useScale from '@/components/main/hooks/useScale';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 function ExplainBackground({ children }) {
   const scale = useScale();
+  const isMobile = useMediaQuery('(max-width: 640px)');
 
   // rem 값 계산 (1440px 기준, scale 적용)
   const widthRem = (1440 / 16) * scale;
@@ -23,8 +25,11 @@ function ExplainBackground({ children }) {
 
   // blah-line 위치 및 크기 (임의로 조정 가능)
   const blahLineTop = 37; // 상단에서의 거리 (% 단위, 기본값: 50% = 중앙)
-  const blahLineLeft = 0; // 좌측에서의 거리 (% 단위, 기본값: 40% = 왼쪽으로 이동)
-  const blahLineWidth = (1450 / 16) * scale; // 너비 (기본값: 2000px)
+  const blahLineLeft = isMobile ? -8 : 0; // 모바일에서 왼쪽으로 이동 (% 단위)
+  // 모바일에서 더 크게 (50px 기준)
+  const blahLineWidth = isMobile
+    ? (55 / 16) * scale * 29 // 모바일에서 50px 기준으로 크게
+    : (1450 / 16) * scale; // 기본 너비
   const blahLineHeight = 'auto'; // 높이 (auto)
 
   return (

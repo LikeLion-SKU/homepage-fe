@@ -17,20 +17,10 @@ export default function SignUp() {
 
   return (
     <div
-      className="bg-white"
-      style={{
-        marginLeft: '-100vw',
-        marginRight: '-100vw',
-        paddingLeft: '100vw',
-        paddingRight: '100vw',
-      }}
+      className="flex flex-col items-center justify-center px-4 flex-1"
+      style={{ paddingTop: '120px', paddingBottom: '120px', minHeight: 0, overflow: 'hidden' }}
     >
-      <div
-        className="flex flex-col items-center justify-center px-4 flex-1"
-        style={{ paddingTop: '120px', paddingBottom: '120px', minHeight: 0, overflow: 'hidden' }}
-      >
-        <SignUpForm onSubmit={handleSignUp} />
-      </div>
+      <SignUpForm onSubmit={handleSignUp} />
     </div>
   );
 }
