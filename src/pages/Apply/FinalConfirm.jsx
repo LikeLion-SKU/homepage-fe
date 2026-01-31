@@ -111,7 +111,7 @@ export default function FinalConfirm() {
                 ) => (
                   <div key={item.id} className="flex flex-col gap-4">
                     {/* 질문 제목 */}
-                    <div className="text-lg font-bold text-zinc-800">
+                    <div className="text-sm pad:text-lg font-semibold text-zinc-800">
                       {item.order_number}. {item.question}
                     </div>
                     {/* 답변 부분 */}
@@ -132,7 +132,7 @@ export default function FinalConfirm() {
               {QUESTION_LIST.filter((item) => item.track === formData.track).map((item) => (
                 <div key={item.id} className="flex flex-col gap-4">
                   {/* 질문 제목 */}
-                  <div className="text-lg font-bold text-zinc-800">
+                  <div className="text-sm pad:text-lg font-semibold text-zinc-800">
                     {item.order_number}. {item.question}
                   </div>
 
