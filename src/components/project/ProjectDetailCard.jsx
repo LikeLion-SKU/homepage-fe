@@ -56,7 +56,7 @@ export default function ProjectDetailCard({ data }) {
                   animate={{ left: handleLeft }} // 버튼 클릭 시에도 위치 이동
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   style={{
-                    width: `${handleWidth}%.5`,
+                    width: `${handleWidth}%`,
                     position: 'absolute',
                     top: 6,
                     bottom: 0,
