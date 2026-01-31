@@ -45,7 +45,7 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
           mb="mb-6"
           disabled={true}
           textColor="text-[#1A1A1A]"
-          bgColor="#FFFFFF"
+          bgColor="#FAFBF8"
           textAlign="center"
         />
         <div className="flex flex-col gap-2 mb-6">
@@ -58,12 +58,12 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
               value={newPassword}
               onChange={() => {}} // 수정 불가
               disabled={true}
-              className="w-full h-14 max-[380px]:h-10 px-4 max-[380px]:px-2.5 py-3 max-[380px]:py-2 pr-12 max-[380px]:pr-10 bg-[#FFFFFF] border border-[1px] border-[#B0B0B0] text-[#1A1A1A] text-base max-[380px]:text-xs text-center font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed"
+              className="w-full h-14 max-[380px]:h-10 px-4 max-[380px]:px-2.5 py-3 max-[380px]:py-2 pr-12 max-[380px]:pr-10 bg-[#FAFBF8] border border-[1px] border-[#B0B0B0] text-[#1A1A1A] text-base max-[380px]:text-xs text-center font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed"
             />
             <button
               type="button"
               onClick={handleCopyPassword}
-              className="absolute right-3 max-[380px]:right-2.5 top-1/2 -translate-y-1/2 flex items-center justify-center w-8 h-8 max-[380px]:w-7 max-[380px]:h-7 hover:bg-[#F5F5F5] rounded transition-colors cursor-pointer"
+              className="absolute right-3 max-[380px]:right-2.5 top-1/2 -translate-y-1/2 flex items-center justify-center w-8 h-8 max-[380px]:w-7 max-[380px]:h-7 hover:bg-[#FAFBF8] rounded transition-colors cursor-pointer"
               aria-label="비밀번호 복사"
             >
               <CopyIcon className="w-5 h-5 max-[380px]:w-4 max-[380px]:h-4" />
@@ -73,7 +73,7 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
         <div>
           <div className="w-full mb-6 text-center">
             <div
-              className="border border-gray-300 rounded px-4 max-[380px]:px-3 py-6 max-[380px]:py-4 bg-white"
+              className="border border-gray-300 rounded px-4 max-[380px]:px-3 py-6 max-[380px]:py-4 bg-[#FAFBF8]"
               style={{ transform: 'translateY(30px)' }}
             >
               <p className="text-black text-sm max-[380px]:text-xs font-['Pretendard'] mb-1">
