@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import OptionBox from '@/components/common/Option/optionBox';
+import { useIsPhone } from '@/hooks/useIsPhone';
 
 export default function ProjectOption() {
   const ordirnalNum = ['전체', '14기', '13기', '12기', '11기'];
@@ -14,21 +15,26 @@ export default function ProjectOption() {
     '블블라',
   ];
   const [selectMenu, setSelectMenu] = useState('전체');
+  const isPhone = useIsPhone();
 
   return (
     <div className="flex  h-20 items-center gap-5 pad:gap-15">
-      <OptionBox initValue="기수별" optionData={ordirnalNum} bgColor="#E9E9E9" />
-      <div className="flex flex-1 min-w-0 h-10 text-[1rem] pad:gap-5 items-center overflow-x-auto no-scrollbar border-r">
-        {contestName.map((name) => (
-          <div
-            key={name}
-            onClick={() => setSelectMenu(name)}
-            className={`text-[0.7rem] pad:text-[1rem] px-5 h-10 items-center flex shrink-0 ${selectMenu == name ? 'font-bold' : 'font-medium'}`}
-          >
-            {name}
-          </div>
-        ))}
-      </div>
+      <OptionBox initValue="대회별" optionData={ordirnalNum} bgColor="#E9E9E9" />
+      {isPhone ? (
+        <OptionBox initValue="기수별" optionData={contestName} bgColor="#E9E9E9" />
+      ) : (
+        <div className="flex flex-1 min-w-0 h-10 text-[1rem] pad:gap-5 items-center overflow-x-auto no-scrollbar border-r">
+          {contestName.map((name) => (
+            <div
+              key={name}
+              onClick={() => setSelectMenu(name)}
+              className={`text-[0.7rem] pad:text-[1rem] px-5 h-10 items-center flex shrink-0 ${selectMenu == name ? 'font-bold' : 'font-medium'}`}
+            >
+              {name}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

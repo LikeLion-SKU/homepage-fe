@@ -27,7 +27,7 @@ export default function ProjectViewDetail() {
 
   return (
     <GridSection>
-      <div className="flex px-5 pad:px-10 web:px-15 pt-18 pb-41">
+      <div className="flex px-8 pad:px-10 web:px-15 pt-18 pb-41">
         <div className="flex flex-col ">
           <div className="flex px-1 py-3 pad:px-3 pad:py-5 web:px-6.5 web:py-8 rounded-l-2xl mt-50 pad:mt-85 bg-[#F9F9F9] ml-auto">
             <Left className="web:w-9 pad:w-7 w-5" />

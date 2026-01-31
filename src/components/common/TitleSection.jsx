@@ -5,7 +5,7 @@ import PageTitle from '@/components/common/PageTitle';
 export default function TitleSection({ title, pageExplanation, onSearch = true, children }) {
   //children으로 dom구조 받아서 넣으므로 내용으로 옵션박스 넣기
   return (
-    <div className="flex flex-col gap-5.5 px-7 border-b">
+    <div className="flex flex-col gap-5.5 px-2 pad:px-7 border-b">
       <PageTitle title={title} />
       <p className="text-[0.9rem] pad:text-[1.1rem]">{pageExplanation}</p>
       <div className="flex justify-between h-30 items-center">
