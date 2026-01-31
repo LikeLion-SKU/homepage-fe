@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import Toggle from '@/assets/icons/under_toggle.svg';
@@ -46,6 +46,31 @@ export default function Recruitment() {
   const isExpired = checkExpired(deadline);
   // 기수
   const generation = '14';
+
+  // 스크롤 시 지원하기 박스 고정 (body 스크롤에서도 동작하도록)
+  const stickyBoxRef = useRef(null);
+  const [stickyState, setStickyState] = useState({ isSticky: false, left: 0, width: 0 });
+  const STICKY_TOP = 72; // top-18 = 4.5rem
+
+  useEffect(() => {
+    const updateSticky = () => {
+      const el = stickyBoxRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= STICKY_TOP) {
+        setStickyState({ isSticky: true, left: rect.left, width: rect.width });
+      } else {
+        setStickyState((prev) => ({ ...prev, isSticky: false }));
+      }
+    };
+    updateSticky();
+    window.addEventListener('scroll', updateSticky, { passive: true });
+    window.addEventListener('resize', updateSticky);
+    return () => {
+      window.removeEventListener('scroll', updateSticky);
+      window.removeEventListener('resize', updateSticky);
+    };
+  }, []);
 
   const questionData = [
     {
@@ -105,106 +130,121 @@ export default function Recruitment() {
   `;
 
   return (
-    <div className="flex pl-17.25 pt-18">
-      {/* 왼쪽 부분은 패딩으로 자동 왼쪽 정렬 */}
-      <div className="w-full bg-white flex flex-col items-start  gap-20">
-        {/* 제목 부분 */}
-        <div className="flex flex-col gap-7">
-          <h1 className="text-black text-4xl font-extrabold font-['Pretendard']">
-            {generation}기 아기사자 모집안내
-          </h1>
-          <p className="text-stone-900 text-lg font-medium font-['Pretendard']">
-            서경대학교 멋쟁이사자처럼 {generation}기 아기사자를 모집해요!
-          </p>
-        </div>
+    <div className="w-full max-w-full overflow-x-hidden">
+      <div className="flex min-w-0 w-full pl-17.25 pt-18">
+        {/* 왼쪽 부분은 패딩으로 자동 왼쪽 정렬 */}
+        <div className="min-w-0 flex-1 flex flex-col items-start gap-20">
+          {/* 제목 부분 */}
+          <div className="flex flex-col gap-7">
+            <h1 className="text-black text-4xl font-extrabold font-['Pretendard']">
+              {generation}기 아기사자 모집안내
+            </h1>
+            <p className="text-stone-900 text-lg font-medium font-['Pretendard']">
+              서경대학교 멋쟁이사자처럼 {generation}기 아기사자를 모집해요!
+            </p>
+          </div>
 
-        {/* 구분선 */}
-        <div className="w-212 border-t border-black" />
+          {/* 구분선 */}
+          <div className="w-212 border-t border-black" />
 
-        {/* 본문 내용들 */}
-        <div className="flex flex-col gap-24 pb-20">
-          <section>
-            <h2 className="text-2xl font-bold mb-7">모집 일정</h2>
-            <ul className="list-disc ml-5 flex flex-col gap-6 font-medium">
-              <li>1차 서류 모집 : ○월 ○일 ~ ○월 ○일</li>
-              <li>1차 합격자 발표 : ○월 ○일</li>
-              <li>2차 면접 : ○월 ○일 ~ ○월 ○일</li>
-              <li>2차 합격자 발표 : ○월 ○일</li>
-              <li>서경대 멋사 OT : ○월 ○일</li>
-            </ul>
-          </section>
+          {/* 본문 내용들 */}
+          <div className="flex flex-col gap-24 pb-20">
+            <section>
+              <h2 className="text-2xl font-bold mb-7">모집 일정</h2>
+              <ul className="list-disc ml-5 flex flex-col gap-6 font-medium">
+                <li>1차 서류 모집 : ○월 ○일 ~ ○월 ○일</li>
+                <li>1차 합격자 발표 : ○월 ○일</li>
+                <li>2차 면접 : ○월 ○일 ~ ○월 ○일</li>
+                <li>2차 합격자 발표 : ○월 ○일</li>
+                <li>서경대 멋사 OT : ○월 ○일</li>
+              </ul>
+            </section>
 
-          <section>
-            <h2 className="text-2xl font-bold mb-7">모집 대상</h2>
-            <ul className="list-disc ml-5 flex flex-col gap-6 font-medium">
-              <li>서경대학교 재학생 또는 휴학생</li>
-              <li>멋사 활동에 적극적으로 참여할 학생</li>
-              <li>개인 노트북 소유자</li>
-              <li>
-                주중 1일(트랙별 상이) 18시 30분부터 약 2시간 진행되는 대면 세션에 참여 가능한 학생
-              </li>
-              <li>지원 트랙에 대한 기본적인 역량을 갖춘 학생</li>
-            </ul>
-          </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-7">모집 대상</h2>
+              <ul className="list-disc ml-5 flex flex-col gap-6 font-medium">
+                <li>서경대학교 재학생 또는 휴학생</li>
+                <li>멋사 활동에 적극적으로 참여할 학생</li>
+                <li>개인 노트북 소유자</li>
+                <li>
+                  주중 1일(트랙별 상이) 18시 30분부터 약 2시간 진행되는 대면 세션에 참여 가능한 학생
+                </li>
+                <li>지원 트랙에 대한 기본적인 역량을 갖춘 학생</li>
+              </ul>
+            </section>
 
-          <section>
-            <h2 className="text-2xl font-bold mb-7">유의 사항</h2>
-            <ul className="list-disc ml-5 flex flex-col gap-6 font-medium">
-              <li>서경대학교 재학생 또는 휴학생</li>
-              <li>멋사 활동에 적극적으로 참여할 학생</li>
-              <li>중복 제출은 불가합니다.</li>
-              <li>
-                주중 1일(트랙별 상이) 18시 30분부터 약 2시간 진행되는 대면 세션에 참여 가능한 학생
-              </li>
-              <li>지원 트랙에 대한 기본적인 역량을 갖춘 학생</li>
-            </ul>
-          </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-7">유의 사항</h2>
+              <ul className="list-disc ml-5 flex flex-col gap-6 font-medium">
+                <li>서경대학교 재학생 또는 휴학생</li>
+                <li>멋사 활동에 적극적으로 참여할 학생</li>
+                <li>중복 제출은 불가합니다.</li>
+                <li>
+                  주중 1일(트랙별 상이) 18시 30분부터 약 2시간 진행되는 대면 세션에 참여 가능한 학생
+                </li>
+                <li>지원 트랙에 대한 기본적인 역량을 갖춘 학생</li>
+              </ul>
+            </section>
 
-          <section className="flex flex-col gap-3">
-            <h2 className="text-2xl font-bold mb-7">자주 묻는 질문</h2>
-            {questionData.map((item, index) => {
-              const isOpen = openToggle.includes(index);
-              return (
-                <div key={index}>
-                  <Button
-                    onClick={() => {
-                      handleToggle(index);
-                    }}
-                    data-variant=""
-                    data-size=""
-                    className={toggleButtonStyle}
-                  >
-                    • {item.question}
-                    <div className="w-3.5 h-3.5">
-                      <img src={Toggle}></img>
-                    </div>
-                  </Button>
-                  {isOpen && (
-                    <div
-                      className="
+            <section className="flex flex-col gap-3">
+              <h2 className="text-2xl font-bold mb-7">자주 묻는 질문</h2>
+              {questionData.map((item, index) => {
+                const isOpen = openToggle.includes(index);
+                return (
+                  <div key={index}>
+                    <Button
+                      onClick={() => {
+                        handleToggle(index);
+                      }}
+                      data-variant=""
+                      data-size=""
+                      className={toggleButtonStyle}
+                    >
+                      • {item.question}
+                      <div className="w-3.5 h-3.5">
+                        <img src={Toggle}></img>
+                      </div>
+                    </Button>
+                    {isOpen && (
+                      <div
+                        className="
                         w-212 self-stretch px-6 py-5 bg-toggle-green 
                         border border-black border-t-0
                         flex items-center justify-between
                         text-black text-base font-medium font-['Pretendard']
                         whitespace-pre-wrap"
-                    >
-                      {item.answer}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </section>
+                      >
+                        {item.answer}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </section>
+          </div>
         </div>
-      </div>
-      <div className="flex justify-end w-full pr-15">
-        {/* 추후 변경 필요 */}
-        <ApplyStickyBox
-          deadline={formatDeadline(deadline)}
-          onClickModal={handleButtonClick}
-          isExpired={isExpired}
-          buttonStyle={`${buttonStyle} ${isExpired ? disabledStyle : ''}`}
-        />
+        <div ref={stickyBoxRef} className="flex justify-end pr-15 self-stretch shrink-0">
+          {stickyState.isSticky && <div className="w-96 h-60 shrink-0" aria-hidden />}
+          <div
+            className={stickyState.isSticky ? 'fixed z-10 flex justify-end pr-15' : ''}
+            style={
+              stickyState.isSticky
+                ? {
+                    left: stickyState.left,
+                    width: stickyState.width,
+                    top: STICKY_TOP,
+                  }
+                : undefined
+            }
+          >
+            <ApplyStickyBox
+              deadline={formatDeadline(deadline)}
+              onClickModal={handleButtonClick}
+              isExpired={isExpired}
+              buttonStyle={`${buttonStyle} ${isExpired ? disabledStyle : ''}`}
+            />
+          </div>
+        </div>
       </div>
       <Modal
         isOpen={isApplyModalOpen}
