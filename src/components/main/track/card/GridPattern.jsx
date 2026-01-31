@@ -3,7 +3,7 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 
 function GridPattern({ className = '', style = {}, children = null }) {
   const scale = useScale();
-  const isMobile = useMediaQuery('(max-width: 460px)');
+  const isMobile = useMediaQuery('(max-width: 480px)');
 
   // 모바일에서는 scale을 적용하지 않고 고정값 사용 (웹과 동일한 격자 크기)
   const gridSize = isMobile ? `${20 / 16}rem` : `${(20 / 16) * scale}rem`;
