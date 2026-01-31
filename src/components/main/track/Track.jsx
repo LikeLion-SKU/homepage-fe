@@ -54,7 +54,7 @@ function Track() {
       showTopBorder={false}
       overflowVisible={true}
       backgroundStyle={{
-        backgroundBorderColor: '1px solid var(--color-navy-blue)',
+        backgroundImage: 'linear-gradient(rgb(244, 244, 244) 0%, rgba(217, 217, 217, 0) 100%)',
       }}
     >
       <div className="relative">
@@ -75,10 +75,10 @@ function Track() {
           }}
         />
 
-        <div className="flex flex-col min-[461px]:flex-row gap-8 w-full min-[461px]:w-[125%] min-[461px]:-ml-[12%] mt-[42px] pb-0">
+        <div className="flex flex-col min-[1200px]:flex-row gap-8 w-full min-[1200px]:w-[125%] min-[1200px]:-ml-[12%] mt-[42px] pb-0">
           <motion.div
             ref={card1Ref}
-            className="flex-1 min-[461px]:flex-1 max-[460px]:flex-none w-full"
+            className="flex-1 min-[1200px]:flex-1 max-[460px]:flex-none w-full"
             initial={{ y: 60, opacity: 0 }}
             animate={card1InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
             transition={{
@@ -90,14 +90,13 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
-              transform: 'translateZ(0)',
             }}
           >
             <Card title="PO 프로젝트 오너" description={poDescription} image={POImage} />
           </motion.div>
           <motion.div
             ref={card2Ref}
-            className="flex-1 min-[461px]:flex-1 max-[460px]:flex-none w-full min-[461px]:relative min-[461px]:top-10"
+            className="flex-1 min-[1200px]:flex-1 max-[460px]:flex-none w-full min-[1200px]:relative min-[1200px]:top-10"
             initial={{ y: 60, opacity: 0 }}
             animate={card2InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
             transition={{
@@ -109,14 +108,13 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
-              transform: 'translateZ(0)',
             }}
           >
             <Card title="FRONTEND 프론트엔드 개발자" description={feDescription} image={FEImage} />
           </motion.div>
           <motion.div
             ref={card3Ref}
-            className="flex-1 min-[461px]:flex-1 max-[460px]:flex-none w-full min-[461px]:relative min-[461px]:top-20"
+            className="flex-1 min-[1200px]:flex-1 max-[460px]:flex-none w-full min-[1200px]:relative min-[1200px]:top-20"
             initial={{ y: 60, opacity: 0 }}
             animate={card3InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
             transition={{
@@ -128,7 +126,6 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
-              transform: 'translateZ(0)',
             }}
           >
             <Card title="BACKEND 백엔드 개발자" description={beDescription} image={BEImage} />

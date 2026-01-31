@@ -7,6 +7,7 @@ import CardPlaceholder from './placeholder';
 
 function Card({ title, description, image = null }) {
   const isMobile = useMediaQuery('(max-width: 460px)');
+  const isTablet = useMediaQuery('(min-width: 461px) and (max-width: 1199px)');
 
   return (
     <GridPattern
@@ -19,8 +20,22 @@ function Card({ title, description, image = null }) {
       {/* 카드 전체 격자 위에 콘텐츠 배치 */}
       <div className="relative z-10 flex flex-col w-full h-full overflow-hidden">
         <CardHeader title={title} />
-        <CardPlaceholder image={image} />
-        <CardContent description={description} />
+        {/* 461px~1199px 구간: 이미지 좌측, 텍스트 우측 */}
+        {isTablet ? (
+          <div className="flex flex-row flex-1 min-h-0">
+            <div className="flex-1 min-w-0">
+              <CardPlaceholder image={image} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <CardContent description={description} />
+            </div>
+          </div>
+        ) : (
+          <>
+            <CardPlaceholder image={image} />
+            <CardContent description={description} />
+          </>
+        )}
       </div>
     </GridPattern>
   );

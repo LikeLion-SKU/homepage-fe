@@ -1,36 +1,38 @@
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 function useScale(baseWidth = 1440) {
   const [scale, setScale] = useState(1);
-  const timeoutRef = useRef(null);
+  const rafRef = useRef(0);
 
-  useEffect(() => {
-    const calculateScale = () => {
-      const windowWidth = window.innerWidth;
+  useLayoutEffect(() => {
+    const calculate = () => {
+      const vw = window.visualViewport?.width ?? document.documentElement.clientWidth; // innerWidth보다 안정적
+
       const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-      const calculatedScale = windowWidth / (baseWidth * (rootFontSize / 16));
-      setScale(calculatedScale);
+
+      return vw / (baseWidth * (rootFontSize / 16));
     };
 
-    // 초기 계산
-    calculateScale();
+    const commit = () => setScale(calculate());
 
-    // 리사이즈 이벤트 핸들러 (debounce 적용)
-    const handleResize = () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        calculateScale();
-      }, 16); // 약 60fps (16ms)
+    const onResize = () => {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(commit);
     };
 
-    window.addEventListener('resize', handleResize);
+    commit(); //  paint 전에 1회 확정
+    window.addEventListener('resize', onResize, { passive: true });
+    window.visualViewport?.addEventListener('resize', onResize, { passive: true });
+
+    //  폰트 로딩 이후에도 1회 재확정 (F12 새로고침에서 특히 도움)
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => requestAnimationFrame(commit));
+    }
+
     return () => {
-      window.removeEventListener('resize', handleResize);
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      window.removeEventListener('resize', onResize);
+      window.visualViewport?.removeEventListener('resize', onResize);
+      cancelAnimationFrame(rafRef.current);
     };
   }, [baseWidth]);
 
