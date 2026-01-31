@@ -14,7 +14,7 @@ function Frame({
   disableMobileScale = false, // 모바일 크기 조정 비활성화
 }) {
   const [scale, setScale] = useState(1);
-  const isMobile = useMediaQuery('(max-width: 460px)');
+  const isMobile = useMediaQuery('(max-width: 480px)');
 
   useEffect(() => {
     const calculateScale = () => {

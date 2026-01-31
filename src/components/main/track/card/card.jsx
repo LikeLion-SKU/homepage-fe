@@ -6,8 +6,8 @@ import CardHeader from './header';
 import CardPlaceholder from './placeholder';
 
 function Card({ title, description, image = null }) {
-  const isMobile = useMediaQuery('(max-width: 460px)');
-  const isTablet = useMediaQuery('(min-width: 461px) and (max-width: 1199px)');
+  const isMobile = useMediaQuery('(max-width: 480px)');
+  const isTablet = useMediaQuery('(min-width: 481px) and (max-width: 1199px)');
 
   return (
     <GridPattern
