@@ -1,7 +1,7 @@
 import useScale from '@/components/main/hooks/useScale';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
-function AwardCard({ title, image, onClick }) {
+function AwardCard({ title, image }) {
   const scale = useScale();
   const isMobile460 = useMediaQuery('(max-width: 460px)');
 
@@ -16,7 +16,6 @@ function AwardCard({ title, image, onClick }) {
         flexDirection: 'column',
         borderRadius: 0,
       }}
-      onClick={onClick}
     >
       {image ? (
         <div
