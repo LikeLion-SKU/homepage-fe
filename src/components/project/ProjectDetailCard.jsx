@@ -48,7 +48,10 @@ export default function ProjectDetailCard({ data }) {
           </p>
           <div className="flex gap-4 pad:gap-7 web:gap-12 items-center">
             <div className="flex pl-2 w-33 pad:w-70 web:w-93 h-3 pad:h-4 web:h-5 bg-[#00156A] items-center overflow-hidden">
-              <div ref={barRef} className="relative w-full h-full flex  overflow-hidden">
+              <div
+                ref={barRef}
+                className="relative w-full h-full flex items-center overflow-hidden"
+              >
                 <motion.div
                   drag="x"
                   dragConstraints={barRef}
@@ -58,10 +61,8 @@ export default function ProjectDetailCard({ data }) {
                   style={{
                     width: `${handleWidth}%`,
                     position: 'absolute',
-                    top: 6,
-                    bottom: 0,
                   }}
-                  className="h-1 web:h-2 bg-white"
+                  className="h-1 pad:h-1.5 web:h-2 bg-white"
                 />
               </div>
             </div>
