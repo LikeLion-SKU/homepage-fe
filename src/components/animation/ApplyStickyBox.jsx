@@ -2,17 +2,17 @@ import { motion } from 'framer-motion';
 
 import Button from '@/components/common/Button/Button';
 
-const Motion = motion;
+const MotionAside = motion.aside;
 
 export default function ApplyStickyBox({ deadline, onClickModal, isExpired, buttonStyle }) {
   return (
-    <aside className="sticky top-18 w-96 max-w-full h-60 px-7 py-9 outline bg-white shrink-0">
-      <Motion.div
-        className="flex flex-col justify-start items-start gap-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-      >
+    <MotionAside
+      className="sticky top-18 w-96 max-w-full h-60 px-7 py-9 outline bg-white shrink-0"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease: 'easeOut' }}
+    >
+      <div className="flex flex-col justify-start items-start gap-6">
         <div className=" flex flex-col gap-3">
           <div className="self-stretch h-4 justify-center text-stone-500 text-sm font-medium font-['Pretendard']">
             마감일
@@ -31,7 +31,7 @@ export default function ApplyStickyBox({ deadline, onClickModal, isExpired, butt
         >
           지원하기
         </Button>
-      </Motion.div>
-    </aside>
+      </div>
+    </MotionAside>
   );
 }
