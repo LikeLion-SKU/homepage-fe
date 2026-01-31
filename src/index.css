@@ -202,11 +202,11 @@ select {
 @keyframes scrollBounce {
   0%,
   100% {
-    transform: translate(-50%, 4px);
+    transform: translateX(-50%) translateY(4px);
     opacity: 0.65;
   }
   50% {
-    transform: translate(-50%, -8px);
+    transform: translateX(-50%) translateY(-8px);
     opacity: 1;
   }
 }
@@ -215,10 +215,12 @@ select {
   font-family: 'pixel', monospace;
   color: var(--color-bright-blue);
   position: relative;
+  display: inline-block;
   left: 50%;
   transform: translateX(-50%);
   animation: scrollBounce 2.3s ease-in-out infinite;
   white-space: nowrap;
+  will-change: transform;
 }
 
 /* hero-scroll 클래스가 absolute 위치 요소에도 적용되도록 */
