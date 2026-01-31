@@ -12,7 +12,7 @@ export default function TitleSection({ title, pageExplanation, onSearch = true, 
         <div className="flex-1 min-w-0">{children}</div>
         {onSearch && (
           <div
-            className="w-25.5 pad:w-34 web:w-83 h-7.5 pad:h-10 border flex justify-between items-center px-2 pad:px-3 web:px-7
+            className="w-20 pad:w-34 web:w-83 h-7.5 pad:h-10 border flex justify-between items-center px-2 pad:px-3 web:px-7
            bg-[#F9F9F9] gap-2 pad:gap-4 web:gap-7 ml-10  pad:ml-12 web:ml-30"
           >
             <Search className="w-4 pad:w-6" />
