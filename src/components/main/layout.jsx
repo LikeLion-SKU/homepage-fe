@@ -18,7 +18,7 @@ function MainSectionLayout({
   frameTopOffset = null, // 프레임 박스의 top 오프셋 커스터마이징 (null이면 기본값 사용)
 }) {
   const scale = useScale();
-  const isMobile = useMediaQuery('(max-width: 460px)');
+  const isMobile = useMediaQuery('(max-width: 480px)');
 
   // rem 값 계산 (1440x1024px 기준, scale 적용)
   const widthRem = (1440 / 16) * scale * maxWidthScale;

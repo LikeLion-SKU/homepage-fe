@@ -80,7 +80,7 @@ function Track() {
         <div className="flex flex-col min-[1200px]:flex-row gap-8 w-full min-[1200px]:w-[125%] min-[1200px]:-ml-[12%] mt-[42px] pb-0">
           <motion.div
             ref={card1Ref}
-            className="flex-1 min-[1200px]:flex-1 max-[460px]:flex-none w-full"
+            className="flex-1 min-[1200px]:flex-1 max-[480px]:flex-none w-full"
             initial={{ y: 60, opacity: 0 }}
             animate={card1InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
             transition={{
@@ -98,7 +98,7 @@ function Track() {
           </motion.div>
           <motion.div
             ref={card2Ref}
-            className="flex-1 min-[1200px]:flex-1 max-[460px]:flex-none w-full min-[1200px]:relative min-[1200px]:top-10"
+            className="flex-1 min-[1200px]:flex-1 max-[480px]:flex-none w-full min-[1200px]:relative min-[1200px]:top-10"
             initial={{ y: 60, opacity: 0 }}
             animate={card2InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
             transition={{
@@ -116,7 +116,7 @@ function Track() {
           </motion.div>
           <motion.div
             ref={card3Ref}
-            className="flex-1 min-[1200px]:flex-1 max-[460px]:flex-none w-full min-[1200px]:relative min-[1200px]:top-20"
+            className="flex-1 min-[1200px]:flex-1 max-[480px]:flex-none w-full min-[1200px]:relative min-[1200px]:top-20"
             initial={{ y: 60, opacity: 0 }}
             animate={card3InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
             transition={{

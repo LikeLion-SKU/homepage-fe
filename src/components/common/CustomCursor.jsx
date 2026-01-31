@@ -1,14 +1,24 @@
-import { useEffect, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 
 import cursorIcon from '@/assets/icons/cursor-pointer.svg';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 import './CustomCursor.css';
 
 function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 1024px)');
 
   useEffect(() => {
+    // 모바일에서는 커스텀 커서 비활성화
+    if (isMobile) {
+      startTransition(() => {
+        setIsVisible(false);
+      });
+      return;
+    }
+
     const updateCursorPosition = (e) => {
       setPosition({ x: e.clientX, y: e.clientY });
       setIsVisible(true);
@@ -25,7 +35,12 @@ function CustomCursor() {
       window.removeEventListener('mousemove', updateCursorPosition);
       document.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, []);
+  }, [isMobile]);
+
+  // 모바일에서는 렌더링하지 않음
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <div
