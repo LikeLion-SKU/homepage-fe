@@ -114,7 +114,7 @@ function Award() {
             <div
               className="text-right"
               style={{
-                marginTop: `${(80 / 16) * scale}rem`,
+                marginTop: `${(20 / 16) * scale}rem`,
                 marginBottom: `${(20 / 16) * scale}rem`,
                 transform: `translateX(${(120 / 16) * scale}rem)`,
                 maxWidth: '100%',
@@ -123,7 +123,7 @@ function Award() {
               <AwardText />
             </div>
             {/* 카드 */}
-            <div style={{ paddingTop: `${(60 / 16) * scale}rem` }}>
+            <div style={{ paddingTop: `${(20 / 16) * scale}rem` }}>
               <AwardCardList cards={awardCards} />
             </div>
           </>
@@ -134,7 +134,7 @@ function Award() {
               className="absolute text-right"
               style={{
                 right: `${(-70 / 16) * scale}rem`,
-                top: `${(-80 / 16) * scale}rem`,
+                top: `${(-110 / 16) * scale}rem`,
                 zIndex: 30,
                 maxWidth: `${(520 / 16) * scale}rem`,
               }}
@@ -156,7 +156,7 @@ function Award() {
               }}
             />
             {/* 카드만 아래로 내리기 */}
-            <div style={{ paddingTop: `${(140 / 16) * scale}rem` }}>
+            <div style={{ paddingTop: `${(60 / 16) * scale}rem` }}>
               <AwardCardList cards={awardCards} />
             </div>
           </>
@@ -164,7 +164,7 @@ function Award() {
 
         {/* 하단 버튼 */}
         <div
-          style={{ marginTop: isMobile480 ? `${(50 / 16) * scale}rem` : `${(30 / 16) * scale}rem` }}
+          style={{ marginTop: isMobile480 ? `${(50 / 16) * scale}rem` : `${(50 / 16) * scale}rem` }}
         >
           <AwardButton />
         </div>
