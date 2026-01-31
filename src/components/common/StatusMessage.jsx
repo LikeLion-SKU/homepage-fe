@@ -14,14 +14,14 @@ export default function StatusMessage({ title, content }) {
         <div className="absolute -bottom-0.5 -right-0.5 w-1.5 h-1.5 bg-zinc-900" />
 
         {/* 메인 타이틀 박스 */}
-        <div className="px-8 py-3 border border-black bg-white flex justify-center items-center">
-          <h1 className="text-center text-4xl font-bold font-['Pretendard'] text-zinc-900 leading-none">
+        <div className="min-h-9 pad:h-14 px-3.5 py-2 pad:px-8 pad:py-3 border border-black bg-white flex justify-center items-center">
+          <h1 className="text-center text-xl pad:text-4xl font-bold text-zinc-900 leading-none">
             {title}
           </h1>
         </div>
       </div>
       {/* 본문 내용 */}
-      <div className="text-center whitespace-pre-wrap font-medium font-['Pretendard'] text-lg text-stone-600 leading-relaxed">
+      <div className="text-center whitespace-pre-wrap font-semibold pad:font-medium text-sm pad:text-lg text-stone-600 leading-relaxed">
         {content}
       </div>
     </div>

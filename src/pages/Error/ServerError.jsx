@@ -5,7 +5,11 @@ import StatusMessage from '@/components/common/StatusMessage';
 import GridSection from '@/components/layout/background/GridSection';
 
 export default function ServerError() {
-  const title = '요청하신 작업을 수행하지 못했습니다.';
+  const title = (
+    <>
+      요청하신 작업을 <br className="pad:hidden" /> 수행하지 못했습니다.
+    </>
+  );
   const content = '서버에 오류가 발생했습니다.\n이용에 불편을 드려 죄송합니다.';
   const buttonName = '홈으로 돌아가기';
   const navigate = useNavigate();
