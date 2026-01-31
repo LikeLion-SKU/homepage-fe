@@ -17,12 +17,14 @@ import Number from './text/Number';
 function Explain() {
   const scale = useScale();
   const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
 
   // 모바일에서 blah 이미지 위치 조정
-  const leftBlahLift = isMobile760 ? 40 : 0; // 좌측은 아래로 (양수)
-  const rightBlahLift = isMobile760 ? -50 : 0; // 우측은 위로 (음수)
-  const leftBlahShift = isMobile760 ? -10 : 0; // 좌측은 왼쪽으로 (음수)
-  const rightBlahShift = isMobile760 ? 10 : 0; // 우측은 오른쪽으로 (양수)
+  // 480px 이하일 때는 별도 위치 값 사용
+  const leftBlahLift = isMobile480 ? 50 : isMobile760 ? 80 : 60; // 좌측은 아래로 (양수)
+  const rightBlahLift = isMobile480 ? -30 : isMobile760 ? -20 : 60; // 우측은 움직이지 않음
+  const leftBlahShift = isMobile480 ? -10 : isMobile760 ? -10 : 0; // 좌측은 왼쪽으로 (음수)
+  const rightBlahShift = 0; // 우측은 움직이지 않음
 
   return (
     <ExplainBackground>
@@ -36,7 +38,7 @@ function Explain() {
         }}
       >
         <SmallFrameBox
-          className="mb-12"
+          className="mb-2"
           cornerScale={0.9}
           borderWidth={2}
           letterSpacing={-0.88}
@@ -46,7 +48,7 @@ function Explain() {
             <h2
               className="font-bold text-[var(--color-navy-blue)] m-0"
               style={{
-                fontSize: `${(36 / 16) * scale}rem`,
+                fontSize: `${(36 / 16) * scale * (isMobile480 ? 1.3 : 1)}rem`,
                 fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
                 fontWeight: '700',
                 textRendering: 'optimizeLegibility',
@@ -60,7 +62,9 @@ function Explain() {
         </SmallFrameBox>
 
         {/* 본문 텍스트 */}
-        <ExplainText />
+        <div style={{ marginTop: '0.9rem' }}>
+          <ExplainText />
+        </div>
 
         {/* BLAH 이미지 좌측 */}
         <motion.div
@@ -81,8 +85,8 @@ function Explain() {
             alt="BLAH"
             className="object-contain"
             style={{
-              width: `${(180 / 16) * scale}rem`,
-              height: `${(61 / 16) * scale}rem`,
+              width: `${(180 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
+              height: `${(61 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
               marginRight: `${(-10 / 16) * scale}rem`,
               imageRendering: 'crisp-edges',
               transform: 'translateY(150%)',
@@ -112,8 +116,8 @@ function Explain() {
             alt="BLAH"
             className="object-contain"
             style={{
-              width: `${(177 / 16) * scale}rem`,
-              height: `${(55 / 16) * scale}rem`,
+              width: `${(177 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
+              height: `${(55 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
               marginLeft: `${(332 / 16) * scale}rem`,
               imageRendering: 'crisp-edges',
               transform: 'translateY(140%)',
@@ -127,7 +131,7 @@ function Explain() {
         {/* Label BLAH 1 + 2 (같이 이동) */}
         <motion.div
           style={{
-            marginTop: `${(330 / 16) * scale}rem`, // ← 여기 값만 조절
+            marginTop: `${(370 / 16) * scale}rem`, // ← 여기 값만 조절
           }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}

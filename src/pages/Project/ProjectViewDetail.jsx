@@ -27,12 +27,12 @@ export default function ProjectViewDetail() {
 
   return (
     <GridSection>
-      <div className="flex justify-center pt-18 pb-41">
+      <div className="flex px-8 pad:px-10 web:px-15 pt-18 pb-41">
         <div className="flex flex-col ">
-          <div className="flex items-center justify-center rounded-l-2xl mt-85 w-20 h-32 bg-[#F9F9F9] ml-auto">
-            <Left />
+          <div className="flex px-1 py-3 pad:px-3 pad:py-5 web:px-6.5 web:py-8 rounded-l-2xl mt-50 pad:mt-85 bg-[#F9F9F9] ml-auto">
+            <Left className="web:w-9 pad:w-7 w-5" />
           </div>
-          <p className="text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter mr-5">
+          <p className="text-[0.3rem] pad:text-[0.5rem] web:text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter">
             이전 프로젝트 보기
           </p>
         </div>
@@ -40,11 +40,11 @@ export default function ProjectViewDetail() {
         <div className="flex flex-col ">
           <button
             onClick={() => showToast('마지막 프로젝트 입니다.')}
-            className="flex items-center justify-center rounded-r-2xl mt-85 w-20 h-32 bg-[#F9F9F9] mr-auto relative z-1"
+            className="flex px-1 py-3 pad:px-3 pad:py-5 web:px-6.5 web:py-8 rounded-r-2xl mt-50 pad:mt-85 bg-[#F9F9F9] mr-auto relative z-1"
           >
-            <Right />
+            <Right className="web:w-9 pad:w-7 w-5" />
           </button>
-          <p className="text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter ml-5">
+          <p className="text-[0.3rem] pad:text-[0.5rem] web:text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter text-end">
             다음 프로젝트 보기
           </p>
         </div>

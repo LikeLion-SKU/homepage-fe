@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 
+import useMediaQuery from '@/hooks/useMediaQuery';
+
 function ExplainText() {
   const [scale, setScale] = useState(1);
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
 
   useEffect(() => {
     const calculateScale = () => {
@@ -17,13 +20,14 @@ function ExplainText() {
     return () => window.removeEventListener('resize', calculateScale);
   }, []);
 
-  const fontSize = `${(18 / 16) * scale}rem`;
+  // 480px 이하에서는 더 크게 (1.5배)
+  const fontSize = `${(20 / 15) * scale * (isMobile480 ? 1.3 : 1)}rem`;
   const lineHeight = '160%';
 
   return (
     <div
       style={{
-        color: '#1C1B1A',
+        color: '#1A1A1A',
         fontSize,
         fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
         lineHeight,

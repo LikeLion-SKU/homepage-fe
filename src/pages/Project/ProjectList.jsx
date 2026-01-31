@@ -40,12 +40,12 @@ export default function Project() {
           <ProjectOption />
         </TitleSection>
         <ProjectSection data={currentItems} />
-        <ProjectPagenation props={pageData} />
         {!(projectData.length > 0) && (
-          <div className="flex w-330 h-40 justify-center items-center text-[1.1rem] font-bold">
+          <p className="flex h-90 justify-center items-center text-[1.1rem] font-bold">
             검색 결과가 없습니다.
-          </div>
+          </p>
         )}
+        {projectData.length > 0 && <ProjectPagenation props={pageData} />}
       </div>
     </GridSection>
   );

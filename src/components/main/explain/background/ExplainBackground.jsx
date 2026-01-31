@@ -4,17 +4,17 @@ import { motion } from 'framer-motion';
 import blackDotSvg from '@/assets/icons/black-dot.svg';
 import blahLineIcon from '@/assets/icons/main/blah-line.svg';
 import useScale from '@/components/main/hooks/useScale';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 function ExplainBackground({ children }) {
   const scale = useScale();
+  const isMobile = useMediaQuery('(max-width: 640px)');
 
   // rem 값 계산 (1440px 기준, scale 적용)
   const widthRem = (1440 / 16) * scale;
   const minHeightRem = (1358 / 16) * scale;
   const paddingRem = (160 / 16) * scale;
-  const paddingBottomRem = (70 / 16) * scale; // 하단 패딩 (기본값: 80px, 이전: 160px)
-  const borderRadiusRem = (42 / 16) * scale;
-  const borderWidthRem = (1 / 16) * scale;
+  const paddingBottomRem = (170 / 16) * scale; // 하단 패딩 (track과의 간격을 위해 증가)
   const backgroundWidthRem = (1453 / 16) * scale;
   const containerPaddingRem = (175 / 16) * scale;
 
@@ -24,27 +24,28 @@ function ExplainBackground({ children }) {
   const itsSkuFontSize = (24 / 16) * scale; // 폰트 크기 (기본값: 24px)
 
   // blah-line 위치 및 크기 (임의로 조정 가능)
-  const blahLineTop = 38; // 상단에서의 거리 (% 단위, 기본값: 50% = 중앙)
-  const blahLineLeft = 0; // 좌측에서의 거리 (% 단위, 기본값: 40% = 왼쪽으로 이동)
-  const blahLineWidth = (1450 / 16) * scale; // 너비 (기본값: 2000px)
+  const blahLineTop = 37; // 상단에서의 거리 (% 단위, 기본값: 50% = 중앙)
+  const blahLineLeft = isMobile ? -8 : 0; // 모바일에서 왼쪽으로 이동 (% 단위)
+  // 모바일에서 더 크게 (50px 기준)
+  const blahLineWidth = isMobile
+    ? (55 / 16) * scale * 29 // 모바일에서 50px 기준으로 크게
+    : (1450 / 16) * scale; // 기본 너비
   const blahLineHeight = 'auto'; // 높이 (auto)
 
   return (
     <section
-      className="relative w-full overflow-hidden"
+      className="relative w-full"
       style={{
-        backgroundColor: '#f9f9f9',
+        backgroundColor: '#ffffff',
         minHeight: `${minHeightRem}rem`,
         paddingTop: `${paddingRem}rem`,
         paddingBottom: `${paddingBottomRem}rem`,
         borderTopWidth: '0',
-        borderBottomWidth: `${borderWidthRem}rem`,
-        borderBottomColor: 'rgba(0, 0, 0, 0.2)',
-        borderBottomStyle: 'solid',
-        borderTopLeftRadius: `${borderRadiusRem}rem`,
-        borderTopRightRadius: `${borderRadiusRem}rem`,
+        borderTopLeftRadius: '20px',
+        borderTopRightRadius: '20px',
         borderBottomLeftRadius: '0',
         borderBottomRightRadius: '0',
+        overflow: 'hidden',
       }}
     >
       {/* 배경 - black dot pattern 및 이미지 */}

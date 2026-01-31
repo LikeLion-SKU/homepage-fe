@@ -459,6 +459,7 @@ export default function SignUpForm({ onSubmit }) {
           onBlur={() => setNameTouched(true)}
           placeholder="홍길동"
           required
+          bgColor="#FAFBF8"
           mb="mb-6"
         />
         <SignUpInput
@@ -468,6 +469,7 @@ export default function SignUpForm({ onSubmit }) {
           placeholder="소프트웨어학과"
           required
           mb="mb-6"
+          bgColor="#FAFBF8"
         />
         <SignUpInput
           label="학번"
@@ -478,6 +480,7 @@ export default function SignUpForm({ onSubmit }) {
           required
           mb="mb-6"
           maxLength={10}
+          bgColor="#FAFBF8"
         />
         <SignUpInput
           label="전화번호"
@@ -493,6 +496,7 @@ export default function SignUpForm({ onSubmit }) {
           placeholder="010-1111-1111"
           required
           mb="mb-6"
+          bgColor="#FAFBF8"
         />
         <AgreeForm onAgreeChange={setIsAgreed} required />
         <div className="w-full mt-8">

@@ -1,16 +1,24 @@
-import { useEffect, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 
 import cursorIcon from '@/assets/icons/cursor-pointer.svg';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 import './CustomCursor.css';
 
 function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isOverDragArea, setIsOverDragArea] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 1024px)');
 
   useEffect(() => {
+    // 모바일에서는 커스텀 커서 비활성화
+    if (isMobile) {
+      startTransition(() => {
+        setIsVisible(false);
+      });
+      return;
+    }
+
     const updateCursorPosition = (e) => {
       setPosition({ x: e.clientX, y: e.clientY });
       setIsVisible(true);
@@ -20,46 +28,23 @@ function CustomCursor() {
       setIsVisible(false);
     };
 
-    // 드래그 스크롤 이벤트 리스너
-    const handleDragStart = () => {
-      setIsDragging(true);
-    };
-
-    const handleDragEnd = () => {
-      setIsDragging(false);
-    };
-
-    // Awards 드래그 영역 이벤트 리스너
-    const handleDragHover = () => {
-      setIsOverDragArea(true);
-    };
-
-    const handleDragLeave = () => {
-      setIsOverDragArea(false);
-    };
-
     window.addEventListener('mousemove', updateCursorPosition);
     document.addEventListener('mouseleave', handleMouseLeave);
-    window.addEventListener('dragscroll:start', handleDragStart);
-    window.addEventListener('dragscroll:end', handleDragEnd);
-    window.addEventListener('dragscroll:hover', handleDragHover);
-    window.addEventListener('dragscroll:leave', handleDragLeave);
 
     return () => {
       window.removeEventListener('mousemove', updateCursorPosition);
       document.removeEventListener('mouseleave', handleMouseLeave);
-      window.removeEventListener('dragscroll:start', handleDragStart);
-      window.removeEventListener('dragscroll:end', handleDragEnd);
-      window.removeEventListener('dragscroll:hover', handleDragHover);
-      window.removeEventListener('dragscroll:leave', handleDragLeave);
     };
-  }, []);
+  }, [isMobile]);
 
-  const shouldHide = isDragging || isOverDragArea;
+  // 모바일에서는 렌더링하지 않음
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <div
-      className={`custom-cursor ${isVisible && !shouldHide ? 'visible' : ''}`}
+      className={`custom-cursor ${isVisible ? 'visible' : ''}`}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,

@@ -34,17 +34,21 @@ export default function ProjectDetailCard({ data }) {
   const handleLeft = `${(imgNum / imgCount) * 100}%`;
 
   return (
-    <div className="relative z-2 flex flex-col w-285 h-256 bg-[#F9F9F9] py-10 px-8 gap-10 rounded-3xl shadow-[0_0_9px_0_rgba(0,0,0,0.25)]">
-      <img src={imgUrl} alt={`Project image ${imgNum}`} className="w-269 h-151 bg-[#D9D9D9]" />
+    <div className="relative w-full z-2 flex flex-col bg-[#F9F9F9] py-7 pad:py-7 web:py-10 px-5 pad:px-5 web:px-8 gap-10 rounded-3xl shadow-[0_0_9px_0_rgba(0,0,0,0.25)]">
+      <img
+        src={imgUrl}
+        alt={`Project image ${imgNum}`}
+        className="h-40 pad:h-84 web:h-151 bg-[#D9D9D9]"
+      />
+
       <div className="flex flex-col gap-3">
-        <div className="flex justify-between">
-          <p className="text-[2rem] font-bold">{data.projectName}</p>
-          <div className="flex gap-12 items-center">
-            <div className="flex pl-2 w-93 h-5 bg-[#00156A] items-center overflow-hidden">
-              <div
-                ref={barRef}
-                className="relative w-full h-full flex items-center overflow-hidden"
-              >
+        <div className="flex justify-between flex-wrap-reverse">
+          <p className="text-[1.1rem] pad:text-[1.5rem] web:text-[2rem] font-bold">
+            {data.projectName}
+          </p>
+          <div className="flex gap-4 pad:gap-7 web:gap-12 items-center">
+            <div className="flex pl-2 w-33 pad:w-70 web:w-93 h-3 pad:h-4 web:h-5 bg-[#00156A] items-center overflow-hidden">
+              <div ref={barRef} className="relative w-full h-full flex  overflow-hidden">
                 <motion.div
                   drag="x"
                   dragConstraints={barRef}
@@ -52,38 +56,42 @@ export default function ProjectDetailCard({ data }) {
                   animate={{ left: handleLeft }} // 버튼 클릭 시에도 위치 이동
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   style={{
-                    width: `${handleWidth}%`,
+                    width: `${handleWidth}%.5`,
                     position: 'absolute',
                     top: 6,
                     bottom: 0,
                   }}
-                  className="h-2 bg-white"
+                  className="h-1 web:h-2 bg-white"
                 />
               </div>
             </div>
-            <div className="flex gap-5">
+
+            <div className="flex gap-3 pad:gap-5">
               <button
                 onClick={() => changeImg(-1)}
-                className="flex justify-center items-center bg-[#00156A] w-12 h-12"
+                className="flex justify-center items-center bg-[#00156A] w-5 h-5 pad:w-9 pad:h-9 web:w-12 web:h-12"
               >
-                <Left />
+                <Left className="w-3 pad:w-5 web:w-7" />
               </button>
               <button
                 onClick={() => changeImg(+1)}
-                className="flex justify-center items-center bg-[#00156A] w-12 h-12"
+                className="flex justify-center items-center bg-[#00156A] w-5 h-5 pad:w-9 pad:h-9 web:w-12 web:h-12"
               >
-                <Right />
+                <Right className="w-3 pad:w-5 web:w-7" />
               </button>
             </div>
           </div>
         </div>
+
         <ProjectCategory
           isPrize={data.isPrize}
           ordinalNumber={data.ordinalNumber}
           contestName={data.contestName}
         />
-        <div className="flex justify-between items-center">
-          <p className="flex text-[1.1rem] w-164 h-50  text-[#3C3C3C] p-0 ">{data.explanation}</p>
+        <div className="flex justify-between items-center flex-wrap pad:flex-nowrap">
+          <p className="flex text-[0.6rem] pad:text-[0.7rem] web:text-[1.1rem] pad:mr-7 web:mr-15 h-25 pad:h-30 web:h-50  text-[#3C3C3C] p-0 ">
+            {data.explanation}
+          </p>
           <ProjectMember memberData={data.member} />
         </div>
       </div>

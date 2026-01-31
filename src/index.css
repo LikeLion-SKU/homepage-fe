@@ -5,6 +5,8 @@ html,
 body {
   overflow-x: hidden;
   width: 100%;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* 색상 추가 */
@@ -18,6 +20,7 @@ body {
   --color-button-gray: #f9f9f9;
   --color-text-gray: #b0b0b0;
   --color-gray-800: #686868;
+  --color-gray-900: #3c3c3c;
   --color-lime: #b0b0b0;
   --color-yellow-shadow: #cfd6a9;
   --color-expired-gray-button: #d3d3d3;
@@ -119,11 +122,13 @@ body {
 .font-sku-text {
   font-family: 'sku';
   font-variant-ligatures: none;
-  font-feature-settings: "liga" 0, "clig" 0;
+  font-feature-settings:
+    'liga' 0,
+    'clig' 0;
 }
 @theme {
-/* --font-이름: 폰트패밀리명; */
---font-sku: "sku", sans-serif;
+  /* --font-이름: 폰트패밀리명; */
+  --font-sku: 'sku', sans-serif;
 }
 
 /* Nerko 폰트*/
@@ -168,14 +173,14 @@ select {
 }
 
 /* Award 섹션 드래그 컨테이너는 커서 표시 */
-.award-drag-container,
-.award-drag-container * {
-  cursor: grab !important;
+.award-click-container,
+.award-click-container * {
+  cursor: click !important;
 }
 
-.award-drag-container.dragging,
-.award-drag-container.dragging * {
-  cursor: grabbing !important;
+.award-click-container.clicking,
+.award-click-container.clicking * {
+  cursor: click !important;
 }
 
 /* 타이핑 커서 깜빡임 애니메이션 */
@@ -197,11 +202,11 @@ select {
 @keyframes scrollBounce {
   0%,
   100% {
-    transform: translate(-50%, 4px);
+    transform: translateX(-50%) translateY(4px);
     opacity: 0.65;
   }
   50% {
-    transform: translate(-50%, -8px);
+    transform: translateX(-50%) translateY(-8px);
     opacity: 1;
   }
 }
@@ -210,10 +215,12 @@ select {
   font-family: 'pixel', monospace;
   color: var(--color-bright-blue);
   position: relative;
+  display: inline-block;
   left: 50%;
   transform: translateX(-50%);
   animation: scrollBounce 2.3s ease-in-out infinite;
   white-space: nowrap;
+  will-change: transform;
 }
 
 /* hero-scroll 클래스가 absolute 위치 요소에도 적용되도록 */
@@ -233,7 +240,7 @@ select {
 }
 
 /* 드래그 커서 네모 박스 */
-.awards-drag-cursor {
+.awards-click-cursor {
   position: fixed;
   left: 0;
   top: 0;
@@ -260,7 +267,7 @@ select {
   /* transform은 JS로 부드럽게 처리 */
 }
 
-.awards-drag-cursor-label {
+.awards-click-cursor-label {
   font-size: calc(20px * var(--scale, 1));
   letter-spacing: 0;
   text-transform: uppercase;
@@ -276,7 +283,7 @@ select {
   position: relative;
 }
 
-.awards-drag-cursor-arrow {
+.awards-click-cursor-arrow {
   font-size: calc(32px * var(--scale, 1));
   color: #1928b0;
   font-family:
@@ -290,22 +297,22 @@ select {
   position: relative;
 }
 
-.awards-drag-cursor-arrow-left {
+.awards-click-cursor-arrow-left {
   margin-right: calc(8px * var(--scale, 1));
 }
 
-.awards-drag-cursor-arrow-right {
+.awards-click-cursor-arrow-right {
   margin-left: calc(8px * var(--scale, 1));
 }
 
 /* 드래그 상태 시각 피드백 */
-.awards-drag-cursor[data-state='down'] {
+.awards-click-cursor[data-state='down'] {
   /* "잡는" 느낌 */
   min-width: calc(150px * var(--scale, 1));
   height: calc(52px * var(--scale, 1));
 }
 
 @theme {
-  --breakpoint-pad: 375px;
-  --breakpoint-web: 760px;
+  --breakpoint-pad: 768px;
+  --breakpoint-web: 1024px;
 }
