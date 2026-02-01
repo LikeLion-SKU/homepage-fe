@@ -22,6 +22,7 @@ export function useDragScroll({
     vx: 0,
     moved: false,
     isLinkElement: false, // Link 요소인지 여부
+    clickStartTime: 0, // 클릭 시작 시간 (모션 지속 시간 계산용)
   });
 
   // cursor raf
@@ -108,6 +109,9 @@ export function useDragScroll({
 
   // 드래그 중 클릭 방지용: item 링크/버튼 onClick에서 이 함수로 guard (원샷 방식)
   const blockNextClickRef = useRef(false);
+
+  // 클릭 모션 최소 지속 시간을 위한 타이머
+  const clickAnimationTimerRef = useRef(null);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -207,7 +211,26 @@ export function useDragScroll({
 
       stopInertia();
 
+      // 이전 클릭 모션 타이머가 있으면 취소
+      if (clickAnimationTimerRef.current) {
+        clearTimeout(clickAnimationTimerRef.current);
+        clickAnimationTimerRef.current = null;
+      }
+
       const s = stateRef.current;
+
+      // 클릭 시작 시간 기록
+      s.clickStartTime = performance.now();
+
+      // 클릭 모션을 위한 커서 상태 변경 (드래그 활성화 여부와 무관)
+      setCursorGrabbing(true);
+      el.classList.add('dragging');
+
+      // 드래그가 비활성화된 경우 커서 상태만 변경하고 종료
+      if (!enableDrag) {
+        return;
+      }
+
       s.dragging = true;
       s.pointerId = e.pointerId;
       s.startX = e.clientX;
@@ -220,9 +243,6 @@ export function useDragScroll({
       // 다운할 때는 클릭 막지 않음
       blockNextClickRef.current = false;
 
-      el.classList.add('dragging');
-      setCursorGrabbing(true);
-
       // Link 요소가 아닌 경우에만 포인터 캡처 (Link 클릭 허용)
       if (!s.isLinkElement) {
         el.setPointerCapture(e.pointerId);
@@ -234,6 +254,31 @@ export function useDragScroll({
 
     const endDrag = () => {
       const s = stateRef.current;
+
+      // 클릭 모션 최소 지속 시간 보장 (빠른 클릭에서도 모션이 보이도록)
+      const minClickDuration = 150; // 150ms
+      const elapsed = performance.now() - (s.clickStartTime || performance.now());
+
+      const restoreCursorState = () => {
+        el.classList.remove('dragging');
+        setCursorGrabbing(false);
+      };
+
+      // 최소 지속 시간이 지나면 상태 복원
+      if (elapsed < minClickDuration) {
+        clickAnimationTimerRef.current = setTimeout(() => {
+          restoreCursorState();
+          clickAnimationTimerRef.current = null;
+        }, minClickDuration - elapsed);
+      } else {
+        restoreCursorState();
+      }
+
+      // 드래그가 비활성화된 경우 커서 상태만 복원하고 종료
+      if (!enableDrag) {
+        return;
+      }
+
       if (!s.dragging) return;
 
       s.dragging = false;
@@ -245,9 +290,6 @@ export function useDragScroll({
       } else {
         blockNextClickRef.current = s.moved; // 드래그였으면 클릭 막기
       }
-
-      el.classList.remove('dragging');
-      setCursorGrabbing(false);
 
       try {
         if (s.pointerId != null) el.releasePointerCapture(s.pointerId);
@@ -286,12 +328,11 @@ export function useDragScroll({
     el.addEventListener('pointerleave', onLeave);
     el.addEventListener('pointermove', onPointerMove);
 
-    // 드래그 활성화된 경우에만 드래그 관련 이벤트 등록
-    if (enableDrag) {
-      el.addEventListener('pointerdown', onPointerDown);
-      el.addEventListener('pointerup', onPointerUp);
-      el.addEventListener('pointercancel', onPointerCancel);
-    }
+    // 클릭 모션을 위해 pointerdown/up은 항상 등록 (드래그 활성화 여부와 무관)
+    // 캡처 단계에서 처리하여 자식 요소(Link 등)의 이벤트도 감지
+    el.addEventListener('pointerdown', onPointerDown, true);
+    el.addEventListener('pointerup', onPointerUp, true);
+    el.addEventListener('pointercancel', onPointerCancel, true);
 
     // wheel은 passive:false 필요
     el.addEventListener('wheel', onWheel, { passive: false });
@@ -304,11 +345,10 @@ export function useDragScroll({
       el.removeEventListener('pointerleave', onLeave);
       el.removeEventListener('pointermove', onPointerMove);
 
-      if (enableDrag) {
-        el.removeEventListener('pointerdown', onPointerDown);
-        el.removeEventListener('pointerup', onPointerUp);
-        el.removeEventListener('pointercancel', onPointerCancel);
-      }
+      // 클릭 모션을 위해 pointerdown/up은 항상 제거 (캡처 단계)
+      el.removeEventListener('pointerdown', onPointerDown, true);
+      el.removeEventListener('pointerup', onPointerUp, true);
+      el.removeEventListener('pointercancel', onPointerCancel, true);
 
       el.removeEventListener('wheel', onWheel);
     };

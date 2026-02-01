@@ -262,8 +262,9 @@ select {
 
   transition:
     opacity 120ms ease,
-    min-width 200ms ease,
-    height 200ms ease;
+    min-width 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    height 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-width 150ms cubic-bezier(0.34, 1.56, 0.64, 1);
   /* transform은 JS로 부드럽게 처리 */
 }
 
@@ -307,9 +308,10 @@ select {
 
 /* 드래그 상태 시각 피드백 */
 .awards-click-cursor[data-state='down'] {
-  /* "잡는" 느낌 */
-  min-width: calc(150px * var(--scale, 1));
-  height: calc(52px * var(--scale, 1));
+  /* "잡는" 느낌 - 더 역동적으로 */
+  min-width: calc(170px * var(--scale, 1));
+  height: calc(60px * var(--scale, 1));
+  border-width: calc(12px * var(--scale, 1));
 }
 
 @theme {
