@@ -1,3 +1,5 @@
+import useMediaQuery from '@/hooks/useMediaQuery';
+
 export default function SignUpInput({
   label,
   value,
@@ -16,14 +18,16 @@ export default function SignUpInput({
   textAlign = 'left',
   inputRef = null,
 }) {
+  const isMobile = useMediaQuery('(max-width: 480px)');
+
   const bgColorClass = bgColor ? `bg-[${bgColor}]` : disabled ? 'bg-[#F5F5F5]' : 'bg-[#FFFFFF]';
   const textAlignClass =
     textAlign === 'center' ? 'text-center' : textAlign === 'right' ? 'text-right' : 'text-left';
-  const inputClasses = `w-full ${maxWidth || ''} h-14 max-[380px]:h-10 px-4 max-[380px]:px-2.5 py-3 max-[380px]:py-2 ${bgColorClass} border border-[1px] border-[#B0B0B0] ${textColor} text-base max-[380px]:text-xs ${textAlignClass} font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed`;
+  const inputClasses = `w-full ${maxWidth || ''} px-4 max-[480px]:px-2.5 py-3 max-[480px]:py-2 ${bgColorClass} border border-[1px] border-[#B0B0B0] ${textColor} text-base max-[480px]:text-xs ${textAlignClass} font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed`;
 
   return (
     <div className={`flex flex-col gap-2 ${mb}`}>
-      <label className="text-black text-base max-[380px]:text-sm font-medium font-['Pretendard']">
+      <label className="text-black text-base max-[480px]:text-sm font-medium font-['Pretendard']">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
@@ -42,7 +46,12 @@ export default function SignUpInput({
             required={required}
             maxLength={maxLength}
             className={inputClasses}
-            style={bgColor ? { backgroundColor: bgColor } : {}}
+            style={{
+              ...(bgColor ? { backgroundColor: bgColor } : {}),
+              height: isMobile
+                ? 'calc(2.5rem - 0.25rem)' // max-[480px]:h-10에서 4px 빼기
+                : 'calc(3.5rem - 0.25rem)', // h-14에서 4px 빼기
+            }}
           />
         </div>
         {rightButton && <div className="w-full sm:w-auto">{rightButton}</div>}

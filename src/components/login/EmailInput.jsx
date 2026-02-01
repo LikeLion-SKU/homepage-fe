@@ -1,3 +1,5 @@
+import useMediaQuery from '@/hooks/useMediaQuery';
+
 export default function EmailInput({
   value,
   onChange,
@@ -7,6 +9,8 @@ export default function EmailInput({
   disabled = false,
   textColor = 'text-black',
 }) {
+  const isMobile = useMediaQuery('(max-width: 480px)');
+  const isSmallScreen = useMediaQuery('(max-width: 640px)');
   return (
     <div className={`flex flex-col gap-2 ${mb}`}>
       <label className="text-black text-sm sm:text-base font-medium font-['Pretendard']">
@@ -20,8 +24,15 @@ export default function EmailInput({
             onChange={onChange}
             placeholder={placeholder}
             disabled={disabled}
-            className={`w-full sm:max-w-[280px] h-12 sm:h-14 max-[380px]:h-10 px-3 sm:px-4 max-[380px]:px-2.5 py-2.5 sm:py-3 max-[380px]:py-2 bg-[#FAFBF8] border border-[1px] border-[#B0B0B0] ${textColor} text-sm sm:text-base max-[380px]:text-xs text-left font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0`}
-            style={{ minWidth: 0 }}
+            className={`w-full sm:max-w-[280px] px-3 sm:px-4 max-[480px]:px-2.5 py-2.5 sm:py-3 max-[480px]:py-2 bg-[#FAFBF8] border border-[1px] border-[#B0B0B0] ${textColor} text-sm sm:text-base max-[480px]:text-xs text-left font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0`}
+            style={{
+              minWidth: 0,
+              height: isMobile
+                ? 'calc(2.5rem - 0.25rem)' // max-[480px]:h-10에서 4px 빼기
+                : isSmallScreen
+                  ? 'calc(3rem - 0.25rem)' // h-12에서 4px 빼기
+                  : 'calc(3.5rem - 0.25rem)', // sm:h-14에서 4px 빼기
+            }}
           />
           <span className="text-[#B0B0B0] text-sm sm:text-base font-['Pretendard'] whitespace-nowrap">
             @skuniv.ac.kr
