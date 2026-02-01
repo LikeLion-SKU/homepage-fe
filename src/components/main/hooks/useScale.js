@@ -6,7 +6,9 @@ function useScale(baseWidth = 1440) {
 
   useLayoutEffect(() => {
     const calculate = () => {
-      const vw = window.visualViewport?.width ?? document.documentElement.clientWidth; // innerWidth보다 안정적
+      // 브라우저 확대/축소에 반응하지 않도록 window.innerWidth 사용
+      // visualViewport는 확대/축소 시 변경되므로 사용하지 않음
+      const vw = window.innerWidth;
 
       const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 
