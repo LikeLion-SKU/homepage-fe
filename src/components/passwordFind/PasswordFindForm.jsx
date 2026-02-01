@@ -180,7 +180,7 @@ export default function PasswordFindForm({ onSubmit }) {
       </form>
       <div className="w-full mb-6 text-center">
         <div
-          className="border border-gray-300 rounded px-4 py-5 max-[480px]:px-3 max-[480px]:py-4 bg-white"
+          className="border border-gray-300 rounded px-4 py-5 max-[480px]:px-3 max-[480px]:py-4 bg-[#FAFBF8]"
           style={{ transform: 'translateY(45px)' }}
         >
           <p className="text-black text-sm max-[480px]:text-xs font-['Pretendard'] mb-1">
