@@ -329,17 +329,17 @@ export default function SignUpForm({ onSubmit }) {
                     className="flex justify-between items-center"
                     style={{ transform: 'translateY(4px)' }}
                   >
-                    <div className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0">
+                    <div className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0">
                       {countdown === 0 && '입력 시간이 만료되었습니다.'}
                     </div>
-                    <div className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-right font-['Pretendard'] ml-3">
+                    <div className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-right font-['Pretendard'] ml-3">
                       입력대기시간: {formatTime(countdown)}
                     </div>
                   </div>
                 )}
                 {verificationStatus === 'success' && (
                   <div
-                    className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0"
+                    className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0"
                     style={{ transform: 'translateY(-12px) translateX(4px)' }}
                   >
                     인증번호가 일치합니다.
@@ -347,7 +347,7 @@ export default function SignUpForm({ onSubmit }) {
                 )}
                 {verificationStatus === 'error' && countdown > 0 && (
                   <div
-                    className="text-[#B0B0B0] text-sm max-[380px]:text-xs text-left font-['Pretendard'] ml-0"
+                    className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0"
                     style={{ transform: 'translateY(-12px) translateX(4px)' }}
                   >
                     잘못된 인증번호입니다. 다시 입력해주세요.

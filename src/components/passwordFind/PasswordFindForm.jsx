@@ -180,19 +180,19 @@ export default function PasswordFindForm({ onSubmit }) {
       </form>
       <div className="w-full mb-6 text-center">
         <div
-          className="border border-gray-300 rounded px-4 py-5 max-[380px]:px-3 max-[380px]:py-4 bg-white"
+          className="border border-gray-300 rounded px-4 py-5 max-[480px]:px-3 max-[480px]:py-4 bg-[#FAFBF8]"
           style={{ transform: 'translateY(45px)' }}
         >
-          <p className="text-black text-sm max-[380px]:text-xs font-['Pretendard'] mb-1">
+          <p className="text-black text-sm max-[480px]:text-xs font-['Pretendard'] mb-1">
             아이디는 학교 이메일이며,
           </p>
-          <p className="text-black text-sm max-[380px]:text-xs font-['Pretendard'] mb-1">
+          <p className="text-black text-sm max-[480px]:text-xs font-['Pretendard'] mb-1">
             학교 포탈 아이디와는 연동되지 않습니다.
           </p>
-          <p className="text-black text-sm max-[380px]:text-xs font-['Pretendard'] mb-1">
+          <p className="text-black text-sm max-[480px]:text-xs font-['Pretendard'] mb-1">
             아이디 확인이 어려운 경우
           </p>
-          <p className="text-black text-sm max-[380px]:text-xs font-['Pretendard'] mb-1">
+          <p className="text-black text-sm max-[480px]:text-xs font-['Pretendard'] mb-1">
             {' '}
             skuofficial@likelion.org로 문의바랍니다.
           </p>
