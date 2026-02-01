@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router';
 
 import Home from '@/assets/icons/4.svg';
 import Camera from '@/assets/icons/mdi-light_camera.svg';
+import lionImg from '@/assets/images/lion-green.png';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
 
 export default function AdminPage() {
   const userData = {
-    name: '김멋사',
-    email: 'likelion@example.com',
-    profileImage: '',
+    name: '관리자',
+    email: 'likelion@thebest.com',
+    profileImage: lionImg,
   };
   // TODO: 지원서 존재여부로 지정
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function AdminPage() {
     <div className="h-191 relative bg-white overflow-hidden border-b-8 border-[#D9D9D9]">
       <div className="relative w-142 h-44 left-46.25 top-55.5 inline-flex justify-start items-center gap-9">
         <div className="w-44 h-44 relative">
-          <div className="relative w-44 h-44 bg-zinc-300 border border-black">
+          <div className="relative w-44 h-44 bg-[#FAFBF8] border border-black">
             <img src={userData.profileImage}></img> {/* 프로필 사진 */}
             <div className="w-8 h-8 left-[137.10px] top-[138.42px] absolute overflow-hidden">
               <img src={Camera}></img> {/* 카메라 아이콘 */}
