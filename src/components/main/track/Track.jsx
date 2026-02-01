@@ -16,6 +16,7 @@ import Card from './card/card.jsx';
 function Track() {
   const scale = useScale();
   const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isTablet = useMediaQuery('(min-width: 761px) and (max-width: 1199px)');
   const card1Ref = useRef(null);
   const card2Ref = useRef(null);
   const card3Ref = useRef(null);
@@ -81,8 +82,16 @@ function Track() {
           <motion.div
             ref={card1Ref}
             className="flex-1 min-[1200px]:flex-1 max-[480px]:flex-none w-full"
-            initial={{ y: 60, opacity: 0 }}
-            animate={card1InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
+            initial={{ y: 60, opacity: 0, x: 0 }}
+            animate={
+              card1InView
+                ? {
+                    y: 0,
+                    opacity: 1,
+                    x: isTablet ? `${(-80 / 16) * scale}rem` : 0,
+                  }
+                : { y: 60, opacity: 0, x: isTablet ? `${(-80 / 16) * scale}rem` : 0 }
+            }
             transition={{
               duration: 0.7,
               ease: 'easeOut',
@@ -99,8 +108,16 @@ function Track() {
           <motion.div
             ref={card2Ref}
             className="flex-1 min-[1200px]:flex-1 max-[480px]:flex-none w-full min-[1200px]:relative min-[1200px]:top-10"
-            initial={{ y: 60, opacity: 0 }}
-            animate={card2InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
+            initial={{ y: 60, opacity: 0, x: 0 }}
+            animate={
+              card2InView
+                ? {
+                    y: 0,
+                    opacity: 1,
+                    x: isTablet ? `${(80 / 16) * scale}rem` : 0,
+                  }
+                : { y: 60, opacity: 0, x: isTablet ? `${(80 / 16) * scale}rem` : 0 }
+            }
             transition={{
               duration: 0.7,
               ease: 'easeOut',
@@ -117,8 +134,16 @@ function Track() {
           <motion.div
             ref={card3Ref}
             className="flex-1 min-[1200px]:flex-1 max-[480px]:flex-none w-full min-[1200px]:relative min-[1200px]:top-20"
-            initial={{ y: 60, opacity: 0 }}
-            animate={card3InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
+            initial={{ y: 60, opacity: 0, x: 0 }}
+            animate={
+              card3InView
+                ? {
+                    y: 0,
+                    opacity: 1,
+                    x: isTablet ? `${(-80 / 16) * scale}rem` : 0,
+                  }
+                : { y: 60, opacity: 0, x: isTablet ? `${(-80 / 16) * scale}rem` : 0 }
+            }
             transition={{
               duration: 0.7,
               ease: 'easeOut',

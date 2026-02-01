@@ -32,7 +32,7 @@ export default function Project() {
 
   return (
     <GridSection>
-      <div className=" flex flex-col px-14.5 py-12 ">
+      <div className=" flex flex-col px-4 pad:px-14.5 py-12 ">
         <TitleSection
           title="프로젝트"
           pageExplanation="서경대학교 멋쟁이사자처럼에서 탄생한 다양한 서비스를 둘러보세요!"

@@ -28,11 +28,13 @@ const iconPositions = [
 function IntroIcons({ squareSizeRem, scale }) {
   // SCROLL 텍스트 위치 계산 (Intro.jsx와 동일)
   const scrollTop = 15.2 * (squareSizeRem || 0);
-  const scrollMarginBottom = (20 / 16) * scale;
+  const scrollMarginBottom = 16 / 16; // scale에 상관없이 고정된 간격
   const scrollFontSize = (16 / 16) * scale;
-  const scrollLineHeight = (24 / 16) * scale;
   const scrollTextHeight = scrollFontSize * 1.5; // 대략적인 텍스트 높이
-  const arrowSpacing = scrollLineHeight;
+  // 화면 크기에 상관없이 동일한 시각적 간격 유지: scale에 비례하여 조정
+  // scale이 작으면 (모바일) rem 값도 작게, scale이 크면 (데스크탑) rem 값도 크게
+  const baseArrowSpacingPx = 25; // 기준 픽셀 간격
+  const arrowSpacing = (baseArrowSpacingPx / 16) * scale; // scale에 비례하여 동일한 시각적 간격 유지
 
   // 첫 번째 화살표 위치: SCROLL 텍스트 바로 아래 (위로 올림)
   const firstArrowTop = scrollTop + scrollTextHeight + scrollMarginBottom;

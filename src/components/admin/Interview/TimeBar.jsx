@@ -5,7 +5,7 @@ import Trash from '@/assets/icons/trashcan_icon.svg?react';
 
 export default function TimeBar({ startTime, endTime }) {
   // @ts-ignore
-  const { openModal } = useOutletContext();
+  const { openModal, showToast } = useOutletContext();
 
   return (
     <div className="flex gap-5 items-center">
@@ -15,6 +15,7 @@ export default function TimeBar({ startTime, endTime }) {
       <Trash
         onClick={() =>
           openModal('등록된 일정을 삭제하시겠습니까?', () => {
+            showToast('삭제되었습니다.');
             /*실제 삭제 로직*/
           })
         }

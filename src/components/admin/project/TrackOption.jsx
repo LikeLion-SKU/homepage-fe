@@ -31,7 +31,7 @@ export default function TrackOption({
     >
       <summary
         style={{ backgroundColor: bgColor }}
-        className="flex w-28 h-10 list-none  border justify-center items-center text-[1rem] font-semibold"
+        className="flex w-28 h-7 list-none  border justify-center items-center text-[1rem] font-semibold"
       >
         {isOpen ? '선택확정' : '트랙선택'}
         <span className="mb-2 ml-2">⌵</span>
@@ -43,7 +43,7 @@ export default function TrackOption({
         {optionData.map((track) => (
           <li
             onClick={() => handleSelect(track)}
-            className={`flex gap-1 items-center justify-center w-22 text-[1rem] text-center py-3`}
+            className={`flex gap-1 items-center w-22 text-[1rem] text-center py-3`}
           >
             <p>{track in selectTrack ? '▣' : '▢'}</p>
             {track}

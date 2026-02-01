@@ -5,14 +5,18 @@ export default function DateCheckCard({ data }) {
     <div className="flex justify-between px-5 gap-5">
       <p className="text-[1.1rem] font-bold">{data.date.replaceAll('-', '.')}</p>
       <div className="flex flex-col gap-4">
-        {data.slots.map((interviewData, index) => (
-          <InterviewDateBox
-            key={index}
-            startTime={interviewData.startTime}
-            endTime={interviewData.endTime}
-            personalData={interviewData.person}
-          />
-        ))}
+        {data.slots.length > 0 ? (
+          data.slots.map((interviewData, index) => (
+            <InterviewDateBox
+              key={index}
+              startTime={interviewData.startTime}
+              endTime={interviewData.endTime}
+              personalData={interviewData.person}
+            />
+          ))
+        ) : (
+          <p className="text-[1.1rem] font-bold mr-10">등록된 지원자가 없습니다.</p>
+        )}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import './CustomCursor.css';
 function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
-  const isMobile = useMediaQuery('(max-width: 1024px)');
+  const isMobile = useMediaQuery('(max-width: 1200px)');
 
   useEffect(() => {
     // 모바일에서는 커스텀 커서 비활성화

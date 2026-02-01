@@ -6,9 +6,9 @@ export const scheduleMonthData = {
     {
       title: '3월',
       contentImage: OTImage,
-      contentTitle: '서경대학교 멋쟁이사자처럼 OT',
+      contentTitle: '서경대학교 멋쟁이사자처럼 OT 아주 좋습니다 굳',
       contentDescription:
-        '우리 삶 속 Pain Point를 찾아내고 이를 해결하기 위한 서비스를 출시해요. 이를 위해 와이어프레임 Flowchart를 배워요.',
+        '우리 삶 속 Pain Point를 찾아내고 이를 해결하기 위한 서비스를 출시해요. 이를 위해 와이어프레임 Flowchart를 배워요. 14기 운영진분들 정말 파아팅입니다. 텍스트 테스트. 어디까지 채워져야 모달창이 예쁘게 나오는지 확인. 여기까지가 딱 좋은 듯.',
     },
     {
       title: '3월',

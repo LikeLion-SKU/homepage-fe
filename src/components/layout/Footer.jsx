@@ -3,15 +3,17 @@ import Skon from '@/assets/icons/SKON_icon.svg?react';
 
 export default function Footer() {
   return (
-    <footer className="w-full web:h-40 flex items-center justify-between bg-[#F9F9F9] mt-auto px-6 pt-8">
+    <footer className="w-full flex items-center justify-between bg-[#F9F9F9] mt-auto px-6 py-2 web:py-5">
       <div>
         <div className="flex flex-wrap items-baseline web:gap-2">
           <div className="text-[#00156A]">
-            <span className="font-sku-icon text-[1.5rem] mr-1.5">SKU</span>
-            <span className="font-sku-text text-[1.5rem]">SKU LIKELION</span>
-            <span className="font-sku-text text-[2rem]">.</span>
+            <span className="font-sku-icon text-[1.25rem] pad:text-[1.5rem] mr-1.5">SKU</span>
+            <span className="font-sku-text text-[1.25rem] pad:text-[1.5rem]">SKU LIKELION</span>
+            <span className="font-sku-text  text-[1.9rem] pad:text-[3rem]">.</span>
           </div>
-          <p className="font-sku-text text-[0.9rem] text-[#3C3C3C]">ALL RIGHTS RESERVED.</p>
+          <p className="font-sku-text text-[0.7rem] pad:text-[0.9rem] text-[#3C3C3C]">
+            ALL RIGHTS RESERVED.
+          </p>
         </div>
 
         <div className="flex flex-wrap items-baseline gap-1">
