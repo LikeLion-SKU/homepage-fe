@@ -5,8 +5,8 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 
 function ClickCursor({ cursorRef }) {
   const scale = useScale();
-  // 모바일(터치 디바이스) 체크: 작은 화면 또는 터치 가능한 디바이스
-  const isMobile = useMediaQuery('(max-width: 768px) or (pointer: coarse)');
+  // 터치 디바이스만 체크 (데스크톱에서 모바일 사이즈로 봐도 커서 표시)
+  const isMobile = useMediaQuery('(pointer: coarse)');
 
   useEffect(() => {
     if (cursorRef.current) {

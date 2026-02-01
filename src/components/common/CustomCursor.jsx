@@ -8,8 +8,8 @@ import './CustomCursor.css';
 function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
-  // 모바일(터치 디바이스) 체크: 작은 화면 또는 터치 가능한 디바이스
-  const isMobile = useMediaQuery('(max-width: 768px) or (pointer: coarse)');
+  // 터치 디바이스만 체크 (데스크톱에서 모바일 사이즈로 봐도 커서 표시)
+  const isMobile = useMediaQuery('(pointer: coarse)');
 
   useEffect(() => {
     // 모바일(터치 디바이스)에서는 커스텀 커서 비활성화
