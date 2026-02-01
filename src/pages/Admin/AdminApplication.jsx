@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import AdminApplicationTitle from '@/components/admin/Application/AdminApplicationTitle';
 import ApplicantsList from '@/components/admin/Application/ApplicantsList';
-import AdminMember from '@/components/admin/User/AdminMember';
 import ButtonGroup from '@/components/admin/User/ButtonGroup';
 
 export default function AdminApplication() {
+  const navigate = useNavigate();
   const propsData = {
     title: '지원서/지원자 관리',
     explain: '지원서 / 지원자 관리 페이지입니다.',
@@ -16,8 +17,10 @@ export default function AdminApplication() {
     ],
     button: (
       <button
-        onClick={() => {}}
-        className="flex w-40 h-10 justify-center items-center text-[1rem] border bg-white hover:bg-stone-50 transition-all px-"
+        onClick={() => {
+          navigate('/admin/application/questions');
+        }}
+        className="flex w-40 h-10 justify-center items-center text-[1rem] border bg-white hover:bg-stone-50 transition-all "
       >
         지원서 추가&수정
       </button>
