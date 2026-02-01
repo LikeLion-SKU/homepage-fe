@@ -38,13 +38,14 @@ export default function WelcomeSection() {
 
             <img
               src={logo}
-              className="max-w-[70vw] w-[14rem] sm:w-[20rem] mb-8 sm:mb-10"
+              className="max-w-[70vw] w-[15rem] sm:w-[20rem] mb-8 sm:mb-10"
               alt="Logo"
+              style={{ marginLeft: '1rem' }}
             />
 
-            {/* 버튼만 오른쪽 정렬 */}
+            {/* 버튼 중앙 정렬 */}
             <div className="w-full flex justify-center">
-              <div className="ml-22">
+              <div className="ml-[0.5rem]">
                 <RedirectButton buttonName="홈으로" onClick={toHomeClick} />
               </div>
             </div>

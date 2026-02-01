@@ -8,10 +8,11 @@ import './CustomCursor.css';
 function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
-  const isMobile = useMediaQuery('(max-width: 1200px)');
+  // 모바일(터치 디바이스) 체크: 작은 화면 또는 터치 가능한 디바이스
+  const isMobile = useMediaQuery('(max-width: 768px) or (pointer: coarse)');
 
   useEffect(() => {
-    // 모바일에서는 커스텀 커서 비활성화
+    // 모바일(터치 디바이스)에서는 커스텀 커서 비활성화
     if (isMobile) {
       startTransition(() => {
         setIsVisible(false);
