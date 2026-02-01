@@ -233,7 +233,7 @@ function Intro() {
         style={{
           left: '50%',
           top: `${15.2 * (squareSizeRem || 0)}rem`,
-          transform: 'translateX(-50%)',
+          transform: `translateX(calc(-50% - ${(50 / 16) * scale}rem))`,
           opacity: isReady ? 1 : 0,
           transition: 'opacity 0.1s ease-in',
         }}
