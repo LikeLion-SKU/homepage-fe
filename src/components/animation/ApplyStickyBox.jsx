@@ -7,17 +7,17 @@ const MotionAside = motion.aside;
 export default function ApplyStickyBox({ deadline, onClickModal, isExpired, buttonStyle }) {
   return (
     <MotionAside
-      className="sticky top-18 w-full web:w-96 max-w-full h-60 px-7 py-9 outline bg-white shrink-0"
+      className="sticky top-18 w-full web:w-96 max-w-full pad:h-60 py-3 px-7 pad:py-9 outline bg-white shrink-0"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: 'easeOut' }}
     >
-      <div className="flex flex-col justify-start items-start gap-6">
-        <div className=" flex flex-col gap-3">
-          <div className="self-stretch h-4 justify-center text-stone-500 text-sm font-medium font-['Pretendard']">
+      <div className="flex flex-col justify-start items-start gap-4 pad:gap-6">
+        <div className=" flex flex-col gap-1 pad:gap-3">
+          <div className="self-stretch justify-center text-stone-500 text-xs pad:text-sm font-medium">
             마감일
           </div>
-          <div className="self-stretch h-7 justify-center text-black text-xl font-bold font-['Pretendard']">
+          <div className="self-stretch justify-center text-black text-sm font-semibold pad:text-xl pad:font-bold">
             {deadline}
           </div>
         </div>
@@ -27,7 +27,7 @@ export default function ApplyStickyBox({ deadline, onClickModal, isExpired, butt
           data-variant=""
           data-size=""
           disabled={isExpired}
-          className={buttonStyle}
+          className={`${buttonStyle} self-center`}
         >
           지원하기
         </Button>

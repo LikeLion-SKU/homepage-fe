@@ -110,15 +110,15 @@ export default function Recruitment() {
   const toggleButtonStyle = `
     w-full web:w-xl h-14 pl-4 pr-7 py-5 bg-white border border-black
     flex items-center justify-between
-    text-black text-base font-medium
+    text-black text-xs pad:text-base font-medium
     transition-all duration-200
     hover:drop-shadow-[5px_5px_0px_rgba(var(--color-yellow-shadow-rgb),0.6)]
     active:translate-x-[0.5px] active:translate-y-[0.5px]
   `;
   const buttonStyle = `
-    w-full h-15 bg-button-green border border-black
+    w-56 h-9 pad:w-full pad:h-15 bg-button-green border border-black
     flex justify-center items-center 
-    text-black text-lg font-semibold 
+    text-black text-sm pad:text-lg font-semibold 
     relative z-[1] transition-all duration-200
     hover:drop-shadow-[5px_5px_0px_var(--color-yellow-shadow)]
     active:translate-x-[0.5px] active:translate-y-[0.5px]
@@ -126,7 +126,7 @@ export default function Recruitment() {
 
   // 마감일 지났을때 지원하기 버튼 비활성화
   const disabledStyle = `
-    w-full h-15 bg-expired-gray-button border border-black
+    w-56 h-9 pad:w-full h-15 bg-expired-gray-button border border-black
     flex justify-center items-center 
     text-gray-800 text-lg font-semibold
     !drop-shadow-none !shadow-none
@@ -139,8 +139,10 @@ export default function Recruitment() {
         <div className="min-w-0 web:flex-1 flex flex-col items-stretch gap-20">
           {/* 제목 부분 */}
           <div className="flex flex-col gap-7">
-            <h1 className="text-black text-4xl font-extrabold">{generation}기 아기사자 모집안내</h1>
-            <p className="text-stone-900 text-lg font-medium">
+            <h1 className="text-black text-xl font-bold pad:text-4xl pad:font-extrabold">
+              {generation}기 아기사자 모집안내
+            </h1>
+            <p className="text-stone-900 text-sm font-semibold pad:text-lg pad:font-medium">
               서경대학교 멋쟁이사자처럼 {generation}기 아기사자를 모집해요!
             </p>
           </div>
@@ -151,8 +153,8 @@ export default function Recruitment() {
           {/* 본문 내용들 */}
           <div className="flex flex-col gap-24 pb-20">
             <section>
-              <h2 className="text-2xl font-bold mb-7">모집 일정</h2>
-              <ul className="list-disc ml-5 flex flex-col gap-6 font-medium">
+              <h2 className="text-lg pad:text-2xl font-bold mb-7">모집 일정</h2>
+              <ul className="list-disc ml-5 flex flex-col gap-6 text-xs pad:text-base font-medium">
                 <li>1차 서류 모집 : ○월 ○일 ~ ○월 ○일</li>
                 <li>1차 합격자 발표 : ○월 ○일</li>
                 <li>2차 면접 : ○월 ○일 ~ ○월 ○일</li>
@@ -162,8 +164,8 @@ export default function Recruitment() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-7">모집 대상</h2>
-              <ul className="list-disc ml-5 flex flex-col gap-6 font-medium">
+              <h2 className="text-lg pad:text-2xl font-bold mb-7">모집 대상</h2>
+              <ul className="list-disc ml-5 flex flex-col text-xs pad:text-base gap-6 font-medium">
                 <li>서경대학교 재학생 또는 휴학생</li>
                 <li>멋사 활동에 적극적으로 참여할 학생</li>
                 <li>개인 노트북 소유자</li>
@@ -175,8 +177,8 @@ export default function Recruitment() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mb-7">유의 사항</h2>
-              <ul className="list-disc ml-5 flex flex-col gap-6 font-medium">
+              <h2 className="text-lg pad:text-2xl font-bold mb-7">유의 사항</h2>
+              <ul className="list-disc ml-5 flex flex-col text-xs pad:text-base gap-6 font-medium">
                 <li>서경대학교 재학생 또는 휴학생</li>
                 <li>멋사 활동에 적극적으로 참여할 학생</li>
                 <li>중복 제출은 불가합니다.</li>
@@ -188,7 +190,7 @@ export default function Recruitment() {
             </section>
 
             <section className="flex flex-col gap-3 w-full">
-              <h2 className="text-2xl font-bold mb-7">자주 묻는 질문</h2>
+              <h2 className="text-lg pad:text-2xl font-bold mb-7">자주 묻는 질문</h2>
               {questionData.map((item, index) => {
                 const isOpen = openToggle.includes(index);
                 return (
@@ -212,7 +214,7 @@ export default function Recruitment() {
                         w-full web:w-xl self-stretch px-6 py-5 bg-toggle-green 
                         border border-black border-t-0
                         flex items-center justify-between
-                        text-black text-base font-medium font-['Pretendard']
+                        text-black text-xs pad:text-base font-medium font-['Pretendard']
                         whitespace-pre-wrap"
                       >
                         {item.answer}
