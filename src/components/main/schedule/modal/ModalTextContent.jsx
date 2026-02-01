@@ -14,9 +14,9 @@ function ModalTextContent({
       style={{
         ...style, // flex 비율 받기
         backgroundColor,
-        padding: `${(16 / 16) * scale}rem ${(20 / 16) * scale}rem`,
-        paddingLeft: `${(45 / 16) * scale}rem`,
-        paddingTop: `${(5 / 16) * scale}rem`,
+        padding: `${(10 / 16) * scale}rem ${(20 / 16) * scale}rem`,
+        paddingLeft: `${(25 / 16) * scale}rem`,
+        paddingTop: `${(3 / 16) * scale}rem`,
         position: 'relative',
         zIndex: 2,
         display: 'flex',

@@ -238,9 +238,9 @@ function Intro() {
         <div
           className="hero-scroll"
           style={{
-            marginBottom: `${(20 / 16) * scale}rem`,
-            fontSize: `${(16 / 16) * scale}rem`,
-            lineHeight: `${(24 / 16) * scale}rem`,
+            marginBottom: `${20 / 16}rem`,
+            fontSize: `${(24 / 16) * scale}rem`,
+            lineHeight: `${24 / 16}rem`,
           }}
         >
           SCROLL
