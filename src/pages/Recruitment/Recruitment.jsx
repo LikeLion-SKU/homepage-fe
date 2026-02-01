@@ -105,17 +105,17 @@ export default function Recruitment() {
     },
   ];
   const toggleButtonStyle = `
-    w-212 h-14 pl-4 pr-7 py-5 bg-white border border-black
+    w-full web:w-xl h-14 pl-4 pr-7 py-5 bg-white border border-black
     flex items-center justify-between
-    text-black text-base font-medium font-['Pretendard']
-    relative z-[1] transition-all duration-200
+    text-black text-base font-medium
+    transition-all duration-200
     hover:drop-shadow-[5px_5px_0px_rgba(var(--color-yellow-shadow-rgb),0.6)]
     active:translate-x-[0.5px] active:translate-y-[0.5px]
   `;
   const buttonStyle = `
     w-full h-15 bg-button-green border border-black
     flex justify-center items-center 
-    text-black text-lg font-semibold font-['Pretendard']
+    text-black text-lg font-semibold 
     relative z-[1] transition-all duration-200
     hover:drop-shadow-[5px_5px_0px_var(--color-yellow-shadow)]
     active:translate-x-[0.5px] active:translate-y-[0.5px]
@@ -130,22 +130,20 @@ export default function Recruitment() {
   `;
 
   return (
-    <div className="w-full max-w-full overflow-x-hidden">
-      <div className="flex min-w-0 w-full pl-17.25 pt-18">
+    <div className="w-full relative max-w-full overflow-x-hidden">
+      <div className="flex min-w-0 w-full px-4.5 pad:px-10 web:px-21 pt-18">
         {/* 왼쪽 부분은 패딩으로 자동 왼쪽 정렬 */}
-        <div className="min-w-0 flex-1 flex flex-col items-start gap-20">
+        <div className="min-w-0 web:flex-1 flex flex-col items-stretch gap-20">
           {/* 제목 부분 */}
           <div className="flex flex-col gap-7">
-            <h1 className="text-black text-4xl font-extrabold font-['Pretendard']">
-              {generation}기 아기사자 모집안내
-            </h1>
-            <p className="text-stone-900 text-lg font-medium font-['Pretendard']">
+            <h1 className="text-black text-4xl font-extrabold">{generation}기 아기사자 모집안내</h1>
+            <p className="text-stone-900 text-lg font-medium">
               서경대학교 멋쟁이사자처럼 {generation}기 아기사자를 모집해요!
             </p>
           </div>
 
           {/* 구분선 */}
-          <div className="w-212 border-t border-black" />
+          <div className="w-full web:w-212 border-t border-black" />
 
           {/* 본문 내용들 */}
           <div className="flex flex-col gap-24 pb-20">
@@ -186,12 +184,12 @@ export default function Recruitment() {
               </ul>
             </section>
 
-            <section className="flex flex-col gap-3">
+            <section className="flex flex-col gap-3 w-full">
               <h2 className="text-2xl font-bold mb-7">자주 묻는 질문</h2>
               {questionData.map((item, index) => {
                 const isOpen = openToggle.includes(index);
                 return (
-                  <div key={index}>
+                  <div key={index} className="w-full">
                     <Button
                       onClick={() => {
                         handleToggle(index);
@@ -208,7 +206,7 @@ export default function Recruitment() {
                     {isOpen && (
                       <div
                         className="
-                        w-212 self-stretch px-6 py-5 bg-toggle-green 
+                        w-full web:w-xl self-stretch px-6 py-5 bg-toggle-green 
                         border border-black border-t-0
                         flex items-center justify-between
                         text-black text-base font-medium font-['Pretendard']
@@ -223,10 +221,17 @@ export default function Recruitment() {
             </section>
           </div>
         </div>
-        <div ref={stickyBoxRef} className="flex justify-end pr-15 self-stretch shrink-0">
-          {stickyState.isSticky && <div className="w-96 h-60 shrink-0" aria-hidden />}
+        <div
+          ref={stickyBoxRef}
+          // 기본에서는 좌우 여백을 주어 꽉 채우고, 웹에서는 오른쪽 정렬
+          className="absolute inset-x-4.5 pad:inset-x-10 web:left-auto web:right-0 web:px-21 z-20"
+        >
+          {/* 스티키일 때 자리 차지용 더미 똑같이 반응형 */}
+          {stickyState.isSticky && <div className="w-full web:w-96 h-60 shrink-0" aria-hidden />}
+
           <div
-            className={stickyState.isSticky ? 'fixed z-10 flex justify-end pr-15' : ''}
+            // 스티키가 아닐 때
+            className={stickyState.isSticky ? 'fixed z-10 flex justify-end' : 'w-full'}
             style={
               stickyState.isSticky
                 ? {

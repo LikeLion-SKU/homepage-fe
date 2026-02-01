@@ -7,7 +7,7 @@ const MotionAside = motion.aside;
 export default function ApplyStickyBox({ deadline, onClickModal, isExpired, buttonStyle }) {
   return (
     <MotionAside
-      className="sticky top-18 w-96 max-w-full h-60 px-7 py-9 outline bg-white shrink-0"
+      className="sticky top-18 w-full web:w-96 max-w-full h-60 px-7 py-9 outline bg-white shrink-0"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: 'easeOut' }}
@@ -21,7 +21,7 @@ export default function ApplyStickyBox({ deadline, onClickModal, isExpired, butt
             {deadline}
           </div>
         </div>
-        <div className="w-80 border-t border-black"></div>
+        <div className="w-full border-t border-black"></div>
         <Button
           onClick={onClickModal}
           data-variant=""
