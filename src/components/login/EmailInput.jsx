@@ -24,7 +24,7 @@ export default function EmailInput({
             onChange={onChange}
             placeholder={placeholder}
             disabled={disabled}
-            className={`w-full sm:max-w-[280px] px-3 sm:px-4 max-[480px]:px-2.5 py-2.5 sm:py-3 max-[480px]:py-2 bg-[#FAFBF8] border border-[1px] border-[#B0B0B0] ${textColor} text-sm sm:text-base max-[480px]:text-xs text-left font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0`}
+            className={`w-full max-w-[280px] px-3 sm:px-4 max-[480px]:px-2.5 py-2.5 sm:py-3 max-[480px]:py-2 bg-[#FAFBF8] border border-[1px] border-[#B0B0B0] ${textColor} text-sm sm:text-base max-[480px]:text-xs text-left font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0`}
             style={{
               minWidth: 0,
               height: isMobile
