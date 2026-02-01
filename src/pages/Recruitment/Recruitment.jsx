@@ -52,6 +52,9 @@ export default function Recruitment() {
   const [stickyState, setStickyState] = useState({ isSticky: false, left: 0, width: 0 });
   const STICKY_TOP = 72; // top-18 = 4.5rem
 
+  // 모바일이나 패드가 맞는지 여부 확인
+  const isMobileOrPad = typeof window !== 'undefined' ? window.innerWidth < 1024 : false;
+
   useEffect(() => {
     const updateSticky = () => {
       const el = stickyBoxRef.current;
@@ -130,7 +133,7 @@ export default function Recruitment() {
   `;
 
   return (
-    <div className="w-full relative max-w-full overflow-x-hidden">
+    <div className="w-full min-h-screen relative pb-50 max-w-full overflow-x-hidden">
       <div className="flex min-w-0 w-full px-4.5 pad:px-10 web:px-21 pt-18">
         {/* 왼쪽 부분은 패딩으로 자동 왼쪽 정렬 */}
         <div className="min-w-0 web:flex-1 flex flex-col items-stretch gap-20">
@@ -223,19 +226,27 @@ export default function Recruitment() {
         </div>
         <div
           ref={stickyBoxRef}
-          // 기본에서는 좌우 여백을 주어 꽉 채우고, 웹에서는 오른쪽 정렬
-          className="absolute inset-x-4.5 pad:inset-x-10 web:left-auto web:right-0 web:px-21 z-20"
+          className="absolute inset-x-4.5 pad:inset-x-10 top-[55vh] web:top-18 web:left-auto web:right-0 web:px-21 z-20"
         >
-          {/* 스티키일 때 자리 차지용 더미 똑같이 반응형 */}
-          {stickyState.isSticky && <div className="w-full web:w-96 h-60 shrink-0" aria-hidden />}
+          {/* 웹에서만 더미 유지 */}
+          {stickyState.isSticky && (
+            <div className="hidden web:block w-full web:w-96 h-60 shrink-0" aria-hidden />
+          )}
 
           <div
-            // 스티키가 아닐 때
-            className={stickyState.isSticky ? 'fixed z-10 flex justify-end' : 'w-full'}
+            className={
+              // 웹이 아닐 때는 무조건 fixed로 화면 하단에 고정
+              // 웹일 때는 기존 스티키 로직
+              isMobileOrPad
+                ? 'fixed bottom-10 left-4.5 right-4.5 pad:left-10 pad:right-10 z-50'
+                : stickyState.isSticky
+                  ? 'fixed z-10 flex justify-end web:right-21'
+                  : 'w-full'
+            }
             style={
-              stickyState.isSticky
+              !isMobileOrPad && stickyState.isSticky
                 ? {
-                    left: stickyState.left,
+                    left: 'auto',
                     width: stickyState.width,
                     top: STICKY_TOP,
                   }
