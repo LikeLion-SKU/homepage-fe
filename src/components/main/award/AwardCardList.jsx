@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import useScale from '@/components/main/hooks/useScale';
 import { useDragScroll } from '@/hooks/useDragScroll';
@@ -8,6 +8,7 @@ import ClickCursor from './ClickCursor';
 
 function AwardCardList({ cards = [] }) {
   const scale = useScale();
+  const navigate = useNavigate();
 
   // 드래그 비활성화, 마우스 휠과 커서만 활성화
   const { containerRef, cursorRef } = useDragScroll({
@@ -36,13 +37,13 @@ function AwardCardList({ cards = [] }) {
           }}
         >
           {cards.map((card, index) => (
-            <Link
+            <div
               key={index}
-              to={card.to || '/project'}
-              style={{ display: 'block', textDecoration: 'none' }}
+              onClick={() => navigate(card.to || '/project')}
+              style={{ display: 'block', cursor: 'pointer' }}
             >
               <AwardCard title={card.title} image={card.image} />
-            </Link>
+            </div>
           ))}
         </div>
       </div>
