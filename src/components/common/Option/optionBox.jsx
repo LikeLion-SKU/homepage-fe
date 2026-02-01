@@ -13,10 +13,10 @@ export default function OptionBox({ initValue, optionData, bgColor = 'white' }) 
         style={{ backgroundColor: bgColor }}
         className="flex w-19 pad:w-28 h-7.5 pad:h-10 list-none  border justify-center items-center 
         text-[0.7rem] pad:text-[1rem] font-bold pad:font-semibold"
-      >
-        {selectedNum}
-        <span className="mb-1 ml-1 pad:mb-2 pad:ml-2">⌵</span>
-      </summary>
+      />
+      {selectedNum || '선택'}
+      <span className="mb-1 ml-1 pad:mb-2 pad:ml-2">⌵</span>
+
       <ul
         style={{ backgroundColor: bgColor }}
         className="flex flex-col absolute items-center w-19 pad:w-28 px-2 pad:px-3 mt-2 

@@ -11,6 +11,8 @@ import AdminOption from '@/pages/Admin/AdminOption';
 import AdminPage from '@/pages/Admin/AdminPage';
 import AdminProject from '@/pages/Admin/AdminProject';
 import AdminProjectEdit from '@/pages/Admin/AdminProjectEdit';
+import AdminQuestion from '@/pages/Admin/AdminQuestion';
+import AdminQuestionDetail from '@/pages/Admin/AdminQuestionDetail';
 import AdminUser from '@/pages/Admin/AdminUser';
 import Apply from '@/pages/Apply/Apply';
 import ApplyBasicInfo from '@/pages/Apply/ApplyBasicInfo';
@@ -94,6 +96,9 @@ const router = createBrowserRouter([
           { path: 'notice', Component: AdminNotice },
           { path: 'interview', Component: AdminInterview },
           { path: 'application', Component: AdminApplication },
+          { path: 'application/questions', Component: AdminQuestion },
+          { path: 'application/questions/new', Component: AdminQuestionDetail },
+          { path: 'application/questions/:id', Component: AdminQuestionDetail },
 
           //{path: '', Component: },
         ],
