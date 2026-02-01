@@ -9,6 +9,7 @@ import {
   interviewCheckData,
 } from '@/components/admin/Interview/InterviewDummyData';
 import TrackDateBox from '@/components/admin/Interview/TrackDateBox';
+import OptionBox from '@/components/common/Option/optionBox';
 
 export default function DateAdminSection() {
   const [isDateAdd, setIsDateAdd] = useState(true);
@@ -16,6 +17,7 @@ export default function DateAdminSection() {
   const formattedDate = today.toLocaleDateString('en-CA');
   const [selectedDate, setSelectedDate] = useState(formattedDate);
   const dateInputRef = useRef(null);
+  const semesterData = ['14기', '13기', '12기', '11기'];
 
   // 버튼 클릭 시 숨겨진 input을 클릭하게 함
   const handleButtonClick = () => {
@@ -26,6 +28,9 @@ export default function DateAdminSection() {
     <div className="flex flex-col gap-5">
       <div className="flex justify-between items-center">
         <div className="flex gap-2">
+          <div>
+            <OptionBox initValue={semesterData[0]} optionData={semesterData} />
+          </div>
           <button
             onClick={() => setIsDateAdd(true)}
             className={`w-35 h-9.5 border text-center items-center 

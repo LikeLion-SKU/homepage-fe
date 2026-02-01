@@ -29,7 +29,7 @@ export default function AdminUserMember() {
           setOtherData={setMemberData}
         />
       </div>
-      <div className="flex flex-col gap-12 py-15 w-158 px-8.5">
+      <div className="flex flex-col gap-12 py-15 w-158 px-8.5 bg-white">
         <p className="text-[1.4rem] font-bold">구성원 정보</p>
         <UserTable
           option={optionData}
