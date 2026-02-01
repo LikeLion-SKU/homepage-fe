@@ -13,7 +13,7 @@ export default function OptionBox({ initValue, optionData, bgColor = 'white' }) 
         style={{ backgroundColor: bgColor }}
         className="flex w-28 h-10 list-none  border justify-center items-center text-[1rem] font-semibold"
       >
-        {selectedNum}
+        {selectedNum || '선택'}
         <span className="mb-2 ml-2">⌵</span>
       </summary>
       <ul

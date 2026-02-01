@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import AdminApplicationTitle from '@/components/admin/Application/AdminApplicationTitle';
+import ApplicantsList from '@/components/admin/Application/ApplicantsList';
 import AdminMember from '@/components/admin/User/AdminMember';
 import ButtonGroup from '@/components/admin/User/ButtonGroup';
 
@@ -40,7 +41,7 @@ export default function AdminApplication() {
         </div>
       </AdminApplicationTitle>
       <div className="flex border-t">
-        <AdminMember />
+        <ApplicantsList />
       </div>
     </div>
   );
