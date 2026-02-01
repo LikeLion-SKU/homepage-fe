@@ -17,11 +17,13 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 
 import ScheduleDesktop from './ScheduleDesktop';
 import ScheduleMobile from './ScheduleMobile';
+import SchedulePad from './SchedulePad';
 
 function Schedule() {
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 480px)');
+  const isPad = useMediaQuery('(min-width: 481px) and (max-width: 760px)');
 
   const handleMonthClick = (monthName) => {
     setSelectedMonth(monthName);
@@ -56,11 +58,13 @@ function Schedule() {
     <MainSectionLayout
       title="2026 연간 일정"
       showTopBorder={false}
-      paddingBottomScale={0.2}
+      paddingBottomScale={isPad ? 4.5 : 0.2}
       overflowVisible={true}
     >
       {isMobile ? (
         <ScheduleMobile onMonthClick={handleMonthClick} />
+      ) : isPad ? (
+        <SchedulePad onMonthClick={handleMonthClick} />
       ) : (
         <ScheduleDesktop months={months} onMonthClick={handleMonthClick} />
       )}

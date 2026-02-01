@@ -37,7 +37,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
         className="absolute pointer-events-none"
         style={{
           left: `${(210 / 16) * scale}rem`,
-          top: `${(-225 / 16) * scale}rem`,
+          top: `${(-275 / 16) * scale}rem`,
           width: `${(159 / 16) * scale}rem`,
           height: 'auto',
           zIndex: 30,
@@ -47,7 +47,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
       <div
         className="flex items-center"
         style={{
-          marginTop: `${(55 / 16) * scale}rem`,
+          marginTop: `${(85 / 16) * scale}rem`,
           marginLeft: `${(-5 / 16) * scale}rem`,
           gap: `${(16 / 16) * scale}rem`,
         }}
@@ -57,7 +57,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
           alt="dote-s"
           className="h-auto"
           style={{
-            width: `${(80 / 16) * scale}rem`,
+            width: `${(75 / 16) * scale}rem`,
             marginRight: `${(65 / 16) * scale}rem`,
           }}
         />
@@ -66,8 +66,8 @@ function ScheduleDesktop({ months, onMonthClick }) {
           alt="dote-m2"
           className="h-auto"
           style={{
-            width: `${(250 / 16) * scale}rem`,
-            marginLeft: `${(20 / 16) * scale}rem`,
+            width: `${(240 / 16) * scale}rem`,
+            marginLeft: `${(25 / 16) * scale}rem`,
           }}
         />
         <img
@@ -78,7 +78,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
           style={{
             width: `${(65 / 16) * scale}rem`,
             height: `${(60 / 16) * scale}rem`,
-            marginRight: `${(10 / 16) * scale}rem`,
+            marginRight: `${(12 / 16) * scale}rem`,
           }}
         />
         <img
@@ -110,23 +110,13 @@ function ScheduleDesktop({ months, onMonthClick }) {
           }}
         />
         <img
-          src={julyIcon}
-          alt="july"
-          className="cursor-pointer"
-          onClick={() => onMonthClick('7월')}
-          style={{
-            width: `${(60 / 16) * scale}rem`,
-            height: `${(60 / 16) * scale}rem`,
-            marginTop: `${(-100 / 16) * scale}rem`,
-          }}
-        />
-        <img
           src={doteM3Icon}
           alt="dote-m3"
           className="h-auto"
           style={{
             width: `${(270 / 16) * scale}rem`,
-            marginTop: `${(-110 / 16) * scale}rem`,
+            marginTop: `${(-113 / 16) * scale}rem`,
+            marginLeft: `${(65 / 16) * scale}rem`,
           }}
         />
       </div>
@@ -145,8 +135,8 @@ function ScheduleDesktop({ months, onMonthClick }) {
           className="cursor-pointer"
           onClick={() => onMonthClick('8월')}
           style={{
-            width: `${(60 / 16) * scale}rem`,
-            height: `${(60 / 16) * scale}rem`,
+            width: `${(70 / 16) * scale}rem`,
+            height: `${(70 / 16) * scale}rem`,
           }}
         />
         <img
@@ -155,6 +145,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
           className="h-auto"
           style={{
             width: `${(280 / 16) * scale}rem`,
+            marginTop: `${(-15 / 16) * scale}rem`,
           }}
         />
         <img
@@ -163,8 +154,9 @@ function ScheduleDesktop({ months, onMonthClick }) {
           className="cursor-pointer"
           onClick={() => onMonthClick('9월')}
           style={{
-            width: `${(60 / 16) * scale}rem`,
-            height: `${(60 / 16) * scale}rem`,
+            width: `${(70 / 16) * scale}rem`,
+            height: `${(70 / 16) * scale}rem`,
+            marginLeft: `${(-5 / 16) * scale}rem`,
           }}
         />
       </div>
@@ -186,7 +178,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
         style={{
           width: `${(100 / 16) * scale}rem`,
           height: `${(70 / 16) * scale}rem`,
-          left: `${(215 / 16) * scale}rem`,
+          left: `${(205 / 16) * scale}rem`,
           top: `${(440 / 16) * scale}rem`,
         }}
       />
@@ -205,7 +197,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
           className="h-auto"
           style={{
             width: `${(380 / 16) * scale}rem`,
-            marginTop: `${(112 / 16) * scale}rem`,
+            marginTop: `${(103 / 16) * scale}rem`,
           }}
         />
       </div>
@@ -242,7 +234,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
           width: `${(45 / 16) * scale}rem`,
           height: `${(60 / 16) * scale}rem`,
           left: `${(460 / 16) * scale}rem`,
-          top: `${(570 / 16) * scale}rem`,
+          top: `${(560 / 16) * scale}rem`,
         }}
       />
       {/* march 아이콘 독립적으로 배치 */}
@@ -286,6 +278,19 @@ function ScheduleDesktop({ months, onMonthClick }) {
           top: `${(105 / 16) * scale}rem`, // marginTop(5) + marginTop(-100)
         }}
       />
+      {/* july 아이콘 독립적으로 배치 */}
+      <img
+        src={julyIcon}
+        alt="july"
+        className="absolute cursor-pointer"
+        onClick={() => onMonthClick('7월')}
+        style={{
+          width: `${(65 / 16) * scale}rem`,
+          height: `${(65 / 16) * scale}rem`,
+          left: `${(295 / 16) * scale}rem`, // -55 + 350 + 16(gap)
+          top: `${(135 / 16) * scale}rem`, // 5 + 95 - 100
+        }}
+      />
       {/* october 아이콘 독립적으로 배치 */}
       <img
         src={octoberIcon}
@@ -311,7 +316,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
           width: `${(100 / 16) * scale}rem`,
           height: `${(100 / 16) * scale}rem`,
           left: `${(927 / 16) * scale}rem`, // marginLeft(525) + doteLIcon width(380) + gap(16) + gap(4)
-          top: `${(532 / 16) * scale}rem`,
+          top: `${(523 / 16) * scale}rem`,
         }}
       />
       {/* dote-m1 아이콘 독립적으로 배치 */}
@@ -321,8 +326,8 @@ function ScheduleDesktop({ months, onMonthClick }) {
         className="absolute h-auto"
         style={{
           width: `${(230 / 16) * scale}rem`,
-          left: `${(320 / 16) * scale}rem`,
-          top: `${(450 / 16) * scale}rem`,
+          left: `${(310 / 16) * scale}rem`,
+          top: `${(445 / 16) * scale}rem`,
         }}
       />
       {/* dote-c11 아이콘 독립적으로 배치 */}
@@ -333,7 +338,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
         style={{
           width: `${(380 / 16) * scale}rem`,
           left: `${(60 / 16) * scale}rem`,
-          top: `${(480 / 16) * scale}rem`,
+          top: `${(470 / 16) * scale}rem`,
         }}
       />
       {/* dote-c9 아이콘 독립적으로 배치 */}
@@ -343,8 +348,8 @@ function ScheduleDesktop({ months, onMonthClick }) {
         className="absolute h-auto"
         style={{
           width: `${(280 / 16) * scale}rem`,
-          left: `${(560 / 16) * scale}rem`,
-          top: `${(300 / 16) * scale}rem`,
+          left: `${(570 / 16) * scale}rem`,
+          top: `${(295 / 16) * scale}rem`,
         }}
       />
       {/* dote-c5 아이콘 독립적으로 배치 */}
@@ -355,7 +360,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
         style={{
           width: `${(300 / 16) * scale}rem`,
           left: `${(755 / 16) * scale}rem`,
-          top: `${(10 / 16) * scale}rem`,
+          top: `${(7 / 16) * scale}rem`,
         }}
       />
       {/* 월별 아이콘들을 세로로 배치 - 기존 아이콘들 제거 */}
