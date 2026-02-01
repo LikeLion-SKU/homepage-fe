@@ -7,10 +7,10 @@ const MotionAside = motion.aside;
 export default function ApplyStickyBox({ deadline, onClickModal, isExpired, buttonStyle }) {
   return (
     <MotionAside
-      className="sticky top-18 w-96 h-60 px-7 py-9 outline bg-white"
+      className="sticky top-18 w-96 max-w-full h-60 px-7 py-9 outline bg-white shrink-0"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
+      transition={{ duration: 0.45, ease: 'easeOut' }}
     >
       <div className="flex flex-col justify-start items-start gap-6">
         <div className=" flex flex-col gap-3">

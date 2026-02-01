@@ -51,7 +51,7 @@ const dummyAwardCards = [
 
 function Award() {
   const scale = useScale();
-  const isMobile460 = useMediaQuery('(max-width: 460px)');
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
   const isMobile760 = useMediaQuery('(max-width: 760px)');
 
   // TODO: API 호출로 수상작 카드 데이터 받아오기
@@ -89,13 +89,13 @@ function Award() {
     <MainSectionLayout
       title="역대 수상작"
       showTopBorder={false}
-      paddingScale={isMobile460 ? 0.6 : 0.39}
-      paddingBottomScale={isMobile460 ? 5 : 1}
-      frameTopOffset={isMobile460 ? -80 : null}
+      paddingScale={isMobile480 ? 0.6 : 0.39}
+      paddingBottomScale={isMobile480 ? 5 : 1}
+      frameTopOffset={isMobile480 ? -80 : null}
     >
       <div className="relative" style={{ minHeight: `${(800 / 16) * scale}rem` }}>
-        {/* 모바일 460px 이하: 텍스트를 프레임 박스 아래로 배치 */}
-        {isMobile460 ? (
+        {/* 모바일 480px 이하: 텍스트를 프레임 박스 아래로 배치 */}
+        {isMobile480 ? (
           <>
             {/* 타이틀 옆 장식 아이콘 */}
             <img
@@ -114,7 +114,7 @@ function Award() {
             <div
               className="text-right"
               style={{
-                marginTop: `${(80 / 16) * scale}rem`,
+                marginTop: `${(20 / 16) * scale}rem`,
                 marginBottom: `${(20 / 16) * scale}rem`,
                 transform: `translateX(${(120 / 16) * scale}rem)`,
                 maxWidth: '100%',
@@ -123,7 +123,7 @@ function Award() {
               <AwardText />
             </div>
             {/* 카드 */}
-            <div style={{ paddingTop: `${(60 / 16) * scale}rem` }}>
+            <div style={{ paddingTop: `${(20 / 16) * scale}rem` }}>
               <AwardCardList cards={awardCards} />
             </div>
           </>
@@ -134,7 +134,7 @@ function Award() {
               className="absolute text-right"
               style={{
                 right: `${(-70 / 16) * scale}rem`,
-                top: `${(-80 / 16) * scale}rem`,
+                top: `${(-110 / 16) * scale}rem`,
                 zIndex: 30,
                 maxWidth: `${(520 / 16) * scale}rem`,
               }}
@@ -156,7 +156,7 @@ function Award() {
               }}
             />
             {/* 카드만 아래로 내리기 */}
-            <div style={{ paddingTop: `${(140 / 16) * scale}rem` }}>
+            <div style={{ paddingTop: `${(60 / 16) * scale}rem` }}>
               <AwardCardList cards={awardCards} />
             </div>
           </>
@@ -164,7 +164,7 @@ function Award() {
 
         {/* 하단 버튼 */}
         <div
-          style={{ marginTop: isMobile460 ? `${(50 / 16) * scale}rem` : `${(30 / 16) * scale}rem` }}
+          style={{ marginTop: isMobile480 ? `${(50 / 16) * scale}rem` : `${(50 / 16) * scale}rem` }}
         >
           <AwardButton />
         </div>

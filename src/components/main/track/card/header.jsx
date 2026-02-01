@@ -6,7 +6,7 @@ import GridPattern from './GridPattern';
 
 function CardHeader({ title }) {
   const scale = useScale();
-  const isMobile = useMediaQuery('(max-width: 460px)');
+  const isMobile = useMediaQuery('(max-width: 480px)');
 
   return (
     <GridPattern

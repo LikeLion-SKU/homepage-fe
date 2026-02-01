@@ -3,14 +3,14 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 
 function AwardCard({ title, image }) {
   const scale = useScale();
-  const isMobile460 = useMediaQuery('(max-width: 460px)');
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
 
   return (
     <div
       className="flex-shrink-0 bg-[#B0B0B0] overflow-hidden"
       style={{
-        width: `${(699 / 16) * scale * (isMobile460 ? 1.6 : 1)}rem`,
-        height: `${(393 / 16) * scale * (isMobile460 ? 1.6 : 1)}rem`,
+        width: `${(699 / 16) * scale * (isMobile480 ? 1.6 : 1)}rem`,
+        height: `${(393 / 16) * scale * (isMobile480 ? 1.6 : 1)}rem`,
         marginRight: `${(35 / 16) * scale}rem`,
         display: 'flex',
         flexDirection: 'column',

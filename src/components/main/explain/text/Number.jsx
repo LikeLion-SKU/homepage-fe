@@ -120,8 +120,8 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
           fontSize: isMobile
             ? `${(55 / 16) * scale}rem` // 모바일에서 50px 기준
             : isTablet
-              ? `${(60 / 16) * scale}rem`
-              : `${(72 / 16) * scale}rem`,
+              ? `${(65 / 16) * scale}rem`
+              : `${(70 / 16) * scale}rem`,
           fontWeight: 'bold',
           lineHeight: 1,
           color: '#00156A',
@@ -153,10 +153,10 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
           style={{
             fontFamily: 'pixel, monospace',
             fontSize: isMobile
-              ? `${(45 / 16) * scale}rem` // 모바일에서 비례적으로 크게
+              ? `${(55 / 16) * scale}rem` // 모바일에서 비례적으로 크게
               : isTablet
-                ? `${(44 / 16) * scale}rem`
-                : `${(56 / 16) * scale}rem`,
+                ? `${(60 / 16) * scale}rem`
+                : `${(72 / 16) * scale}rem`,
             fontWeight: 'bold',
             lineHeight: 1,
             color: '#00156A',

@@ -21,7 +21,7 @@ import ScheduleMobile from './ScheduleMobile';
 function Schedule() {
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const isMobile = useMediaQuery('(max-width: 460px)');
+  const isMobile = useMediaQuery('(max-width: 480px)');
 
   const handleMonthClick = (monthName) => {
     setSelectedMonth(monthName);

@@ -17,12 +17,13 @@ import Number from './text/Number';
 function Explain() {
   const scale = useScale();
   const isMobile760 = useMediaQuery('(max-width: 760px)');
-  const isMobile460 = useMediaQuery('(max-width: 460px)');
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
 
   // 모바일에서 blah 이미지 위치 조정
-  const leftBlahLift = isMobile760 ? 30 : 0; // 좌측은 아래로 (양수)
-  const rightBlahLift = 0; // 우측은 움직이지 않음
-  const leftBlahShift = isMobile760 ? -10 : 0; // 좌측은 왼쪽으로 (음수)
+  // 480px 이하일 때는 별도 위치 값 사용
+  const leftBlahLift = isMobile480 ? 50 : isMobile760 ? 80 : 60; // 좌측은 아래로 (양수)
+  const rightBlahLift = isMobile480 ? -30 : isMobile760 ? -20 : 60; // 우측은 움직이지 않음
+  const leftBlahShift = isMobile480 ? -10 : isMobile760 ? -10 : 0; // 좌측은 왼쪽으로 (음수)
   const rightBlahShift = 0; // 우측은 움직이지 않음
 
   return (
@@ -47,7 +48,7 @@ function Explain() {
             <h2
               className="font-bold text-[var(--color-navy-blue)] m-0"
               style={{
-                fontSize: `${(36 / 16) * scale * (isMobile460 ? 1.3 : 1)}rem`,
+                fontSize: `${(36 / 16) * scale * (isMobile480 ? 1.3 : 1)}rem`,
                 fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
                 fontWeight: '700',
                 textRendering: 'optimizeLegibility',
@@ -61,7 +62,7 @@ function Explain() {
         </SmallFrameBox>
 
         {/* 본문 텍스트 */}
-        <div style={{ marginTop: '0.5rem' }}>
+        <div style={{ marginTop: '0.9rem' }}>
           <ExplainText />
         </div>
 

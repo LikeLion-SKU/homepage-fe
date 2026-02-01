@@ -3,8 +3,8 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 
 function CardPlaceholder({ image }) {
   const scale = useScale();
-  const isMobile = useMediaQuery('(max-width: 460px)');
-  const isTablet = useMediaQuery('(min-width: 461px) and (max-width: 1199px)');
+  const isMobile = useMediaQuery('(max-width: 480px)');
+  const isTablet = useMediaQuery('(min-width: 481px) and (max-width: 1199px)');
 
   return (
     <div

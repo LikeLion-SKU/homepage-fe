@@ -6,16 +6,16 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 
 function AwardButton() {
   const scale = useScale();
-  const isMobile460 = useMediaQuery('(max-width: 460px)');
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
   const rootRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!rootRef.current) return;
-    // 모바일 460px 이하에서 버튼 크기를 1.5배로 증가
-    const mobileScaleFactor = isMobile460 ? 1.5 : 1;
+    // 모바일 480px 이하에서 버튼 크기를 1.5배로 증가
+    const mobileScaleFactor = isMobile480 ? 1.5 : 1;
     rootRef.current.style.setProperty('--scale', String(scale * mobileScaleFactor));
-  }, [scale, isMobile460]);
+  }, [scale, isMobile480]);
 
   return (
     <div ref={rootRef} className="flex justify-center">
