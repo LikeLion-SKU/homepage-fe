@@ -21,7 +21,7 @@ export default function AdminUser() {
     rule: [],
   };
   const semesterData = ['14기', '13기', '12기', '11기'];
-  const trackData = ['PO', 'PM', 'Design', 'Fronted', 'Backend'];
+  const trackData = ['PO', 'PM', 'Design', 'Frontend', 'Backend'];
   const roleData = ['대표', '부대표', '운영진', '아기사자'];
 
   const [isUser, setIsUser] = useState(true);
