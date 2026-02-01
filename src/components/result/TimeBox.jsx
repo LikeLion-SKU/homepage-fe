@@ -22,8 +22,8 @@ export default function TimeBox({
     <button
       onClick={() => handleCheck()}
       disabled={data.available === 0}
-      className={`flex w-41 h-13 text-center justify-center items-center border text-[1.1rem]
-        ${getAvailable()} `}
+      className={`flex w-37 h-9 pad:w-41 pad:h-13 text-center justify-center items-center font-semibold pad:font-medium
+        border text-[0.9rem] pad:text-[1.1rem] ${getAvailable()} `}
     >
       {data.startTime}
       <span

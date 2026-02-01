@@ -158,7 +158,7 @@ function ModalTitleBar({
                 top: 0,
                 width: `${(38 / 16) * scale * boxSize}rem`,
                 height: `${(42 / 16) * scale * boxSize}rem`,
-                backgroundColor: '#1928B0',
+                backgroundColor: '#00156A',
                 borderRadius: `${(10 / 16) * scale * boxSize}rem`,
                 zIndex: 0,
               }}

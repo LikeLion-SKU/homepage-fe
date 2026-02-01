@@ -5,6 +5,7 @@ export function useDragScroll({
   inertiaFriction = 0.92, // 0.88~0.95 취향
   dragThreshold = 6,
   wheelToHorizontal = true,
+  enableDrag = true, // 드래그 활성화 여부
 } = {}) {
   const containerRef = useRef(null);
   const cursorRef = useRef(null);
@@ -20,6 +21,8 @@ export function useDragScroll({
     lastT: 0,
     vx: 0,
     moved: false,
+    isLinkElement: false, // Link 요소인지 여부
+    clickStartTime: 0, // 클릭 시작 시간 (모션 지속 시간 계산용)
   });
 
   // cursor raf
@@ -104,6 +107,12 @@ export function useDragScroll({
     cursorRafRef.current = requestAnimationFrame(animate);
   };
 
+  // 드래그 중 클릭 방지용: item 링크/버튼 onClick에서 이 함수로 guard (원샷 방식)
+  const blockNextClickRef = useRef(false);
+
+  // 클릭 모션 최소 지속 시간을 위한 타이머
+  const clickAnimationTimerRef = useRef(null);
+
   useEffect(() => {
     const el = containerRef.current;
     const cursor = cursorRef.current;
@@ -172,6 +181,9 @@ export function useDragScroll({
       targetCursorPosRef.current = { x: e.clientX, y: e.clientY };
       scheduleCursorMove();
 
+      // 드래그가 비활성화된 경우 커서만 업데이트
+      if (!enableDrag) return;
+
       const s = stateRef.current;
       if (!s.dragging) return;
 
@@ -199,7 +211,26 @@ export function useDragScroll({
 
       stopInertia();
 
+      // 이전 클릭 모션 타이머가 있으면 취소
+      if (clickAnimationTimerRef.current) {
+        clearTimeout(clickAnimationTimerRef.current);
+        clickAnimationTimerRef.current = null;
+      }
+
       const s = stateRef.current;
+
+      // 클릭 시작 시간 기록
+      s.clickStartTime = performance.now();
+
+      // 클릭 모션을 위한 커서 상태 변경 (드래그 활성화 여부와 무관)
+      setCursorGrabbing(true);
+      el.classList.add('dragging');
+
+      // 드래그가 비활성화된 경우 커서 상태만 변경하고 종료
+      if (!enableDrag) {
+        return;
+      }
+
       s.dragging = true;
       s.pointerId = e.pointerId;
       s.startX = e.clientX;
@@ -209,26 +240,56 @@ export function useDragScroll({
       s.vx = 0;
       s.moved = false;
 
-      el.classList.add('dragging');
-      setCursorGrabbing(true);
+      // 다운할 때는 클릭 막지 않음
+      blockNextClickRef.current = false;
 
-      // 포인터 캡처
-      el.setPointerCapture(e.pointerId);
+      // Link 요소가 아닌 경우에만 포인터 캡처 (Link 클릭 허용)
+      if (!s.isLinkElement) {
+        el.setPointerCapture(e.pointerId);
+      }
 
       // 커스텀 커서 숨기기 이벤트 발생
       window.dispatchEvent(new CustomEvent('dragscroll:start'));
-
-      // 이미지 ghost-drag, 텍스트 선택 방지
-      e.preventDefault();
     };
 
     const endDrag = () => {
       const s = stateRef.current;
+
+      // 클릭 모션 최소 지속 시간 보장 (빠른 클릭에서도 모션이 보이도록)
+      const minClickDuration = 150; // 150ms
+      const elapsed = performance.now() - (s.clickStartTime || performance.now());
+
+      const restoreCursorState = () => {
+        el.classList.remove('dragging');
+        setCursorGrabbing(false);
+      };
+
+      // 최소 지속 시간이 지나면 상태 복원
+      if (elapsed < minClickDuration) {
+        clickAnimationTimerRef.current = setTimeout(() => {
+          restoreCursorState();
+          clickAnimationTimerRef.current = null;
+        }, minClickDuration - elapsed);
+      } else {
+        restoreCursorState();
+      }
+
+      // 드래그가 비활성화된 경우 커서 상태만 복원하고 종료
+      if (!enableDrag) {
+        return;
+      }
+
       if (!s.dragging) return;
 
       s.dragging = false;
-      el.style.cursor = 'grab';
-      setCursorGrabbing(false);
+
+      // 드래그였다면 다음 클릭 1번만 막기
+      // Link 요소이고 드래그가 아닌 경우는 클릭 허용
+      if (s.isLinkElement && !s.moved) {
+        blockNextClickRef.current = false; // Link 클릭 허용
+      } else {
+        blockNextClickRef.current = s.moved; // 드래그였으면 클릭 막기
+      }
 
       try {
         if (s.pointerId != null) el.releasePointerCapture(s.pointerId);
@@ -240,10 +301,13 @@ export function useDragScroll({
       window.dispatchEvent(new CustomEvent('dragscroll:end'));
 
       // 관성 시작: 마지막 vx 방향 그대로
-      // scrollLeft는 "startScrollLeft - dx"였으니,
+      // scrollLeft는 startScrollLeft - dx였으니,
       // vx가 +면 커서가 오른쪽으로 간 것(내용은 왼쪽으로 이동),
       // tick에서 scrollLeft -= vx*16로 방향 맞춤
       startInertia();
+
+      // 상태 초기화
+      s.isLinkElement = false;
     };
 
     const onPointerUp = endDrag;
@@ -263,9 +327,12 @@ export function useDragScroll({
     el.addEventListener('pointerenter', onEnter);
     el.addEventListener('pointerleave', onLeave);
     el.addEventListener('pointermove', onPointerMove);
-    el.addEventListener('pointerdown', onPointerDown);
-    el.addEventListener('pointerup', onPointerUp);
-    el.addEventListener('pointercancel', onPointerCancel);
+
+    // 클릭 모션을 위해 pointerdown/up은 항상 등록 (드래그 활성화 여부와 무관)
+    // 캡처 단계에서 처리하여 자식 요소(Link 등)의 이벤트도 감지
+    el.addEventListener('pointerdown', onPointerDown, true);
+    el.addEventListener('pointerup', onPointerUp, true);
+    el.addEventListener('pointercancel', onPointerCancel, true);
 
     // wheel은 passive:false 필요
     el.addEventListener('wheel', onWheel, { passive: false });
@@ -277,25 +344,20 @@ export function useDragScroll({
       el.removeEventListener('pointerenter', onEnter);
       el.removeEventListener('pointerleave', onLeave);
       el.removeEventListener('pointermove', onPointerMove);
-      el.removeEventListener('pointerdown', onPointerDown);
-      el.removeEventListener('pointerup', onPointerUp);
-      el.removeEventListener('pointercancel', onPointerCancel);
+
+      // 클릭 모션을 위해 pointerdown/up은 항상 제거 (캡처 단계)
+      el.removeEventListener('pointerdown', onPointerDown, true);
+      el.removeEventListener('pointerup', onPointerUp, true);
+      el.removeEventListener('pointercancel', onPointerCancel, true);
+
       el.removeEventListener('wheel', onWheel);
     };
-  }, [dragThreshold, inertia, inertiaFriction, wheelToHorizontal]);
-
-  // 드래그 중 "클릭" 방지용: item 링크/버튼 onClick에서 이 함수로 guard
-  const shouldBlockClickRef = useRef(false);
-  useEffect(() => {
-    const id = setInterval(() => {
-      const s = stateRef.current;
-      shouldBlockClickRef.current = s.dragging || s.moved;
-    }, 50);
-    return () => clearInterval(id);
-  }, []);
+  }, [dragThreshold, inertia, inertiaFriction, wheelToHorizontal, enableDrag]);
 
   const clickGuard = (e) => {
-    if (shouldBlockClickRef.current) {
+    const shouldBlock = blockNextClickRef.current;
+    if (shouldBlock) {
+      blockNextClickRef.current = false; // 딱 한 번만 막고 풀기
       e.preventDefault();
       e.stopPropagation();
     }

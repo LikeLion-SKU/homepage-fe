@@ -4,6 +4,7 @@ import TypingAnimation from '@/components/animation/TypingAnimation';
 import BigFrameBox from '@/components/layout/frame/Frame';
 import IntroIcons from '@/components/main/intro/IntroIcons';
 import Square from '@/components/main/intro/square/Square';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 // Grid configuration: 24 columns x 19 rows(피그마 디자인)
 const columns = 24;
@@ -16,6 +17,8 @@ function Intro() {
   const [shouldStartSecondTyping, setShouldStartSecondTyping] = useState(false);
   const [shouldStartImaginationTyping, setShouldStartImaginationTyping] = useState(false);
   const [showExclamation, setShowExclamation] = useState(false);
+  const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
 
   const stableLayoutRef = useRef({ squareSizeRem: null, scale: null });
   const stableTimeoutRef = useRef(null);
@@ -135,11 +138,12 @@ function Intro() {
             }}
           >
             <BigFrameBox
-              cornerScale={1.4}
-              borderWidth={1.5}
+              cornerScale={isMobile480 ? 1.2 : isMobile760 ? 1.4 : 1.6}
+              borderWidth={isMobile480 ? 3 : isMobile760 ? 3.5 : 2.5}
               className="inline-block"
               color="#1928B0"
               paddingX={(40 / 16) * scale} // 가로 padding 증가 (기본 20px -> 40px)
+              disableMobileScale={false} // 인트로 섹션은 모바일 크기 조정 비활성화
             >
               <div
                 style={{
@@ -229,7 +233,7 @@ function Intro() {
         style={{
           left: '50%',
           top: `${15.2 * (squareSizeRem || 0)}rem`,
-          transform: 'translateX(-50%)',
+          transform: `translateX(calc(-50% - ${(50 / 16) * scale}rem))`,
           opacity: isReady ? 1 : 0,
           transition: 'opacity 0.1s ease-in',
         }}
@@ -237,9 +241,9 @@ function Intro() {
         <div
           className="hero-scroll"
           style={{
-            marginBottom: `${(20 / 16) * scale}rem`,
-            fontSize: `${(16 / 16) * scale}rem`,
-            lineHeight: `${(24 / 16) * scale}rem`,
+            marginBottom: `${20 / 16}rem`,
+            fontSize: `${(24 / 16) * scale}rem`,
+            lineHeight: `${24 / 16}rem`,
           }}
         >
           SCROLL

@@ -26,7 +26,10 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
   const handleEdit = () => {
     if (isEditingThisCard) {
       // 수정 완료 시
-      cardCheckData.setIsEdit(-1);
+      openModal('선택한 구성원을 수정하시겠습니까?', () => {
+        cardCheckData.setIsEdit(-1);
+        showToast('수정완료 되었습니다.');
+      });
     } else if (cardCheckData.isEdit === -1) {
       // 수정 시작 시
       cardCheckData.setIsEdit(index);
@@ -51,20 +54,10 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
       showToast('복사가 완료되었습니다.');
     });
   };
-  const getBgColor = () => {
-    if (isEditingThisCard) {
-      if (cardCheckData.isCopy === index) {
-        return 'bg-[#DFEBB5]';
-      }
-      return 'bg-[#E7E7E7]';
-    } else {
-      return '';
-    }
-  };
 
   return (
     <div
-      className={`w-314 h-21 flex items-center pl-11 pr-10 text-[1.1rem] font-semibold gap-10 ${getBgColor()}`}
+      className={`w-314 h-21 flex items-center pl-11 pr-10 text-[1.1rem] font-semibold gap-10 ${isEditingThisCard ? 'bg-[#E7E7E7]' : ''}`}
     >
       {isChecked ? (
         <Check onClick={() => handleToggle()} />
@@ -92,11 +85,11 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
         <p className="mx-5">{cardData.stdNum}</p>
         <button
           onClick={() => handleEdit()}
-          className={`text-[1.1rem] font-semibold ${isEditingThisCard ? 'text-[#F80000]' : 'text-black'}`}
+          className={`w-17 h-9 border text-center text-[1.1rem] font-semibold ${isEditingThisCard ? 'bg-[#D3D3D3]' : ''}`}
         >
-          <p className="ml-1">{isEditingThisCard ? '수정완료' : '수정하기'}</p>
+          수정
         </button>
-        <div className="w-6 h-6 ml-16">
+        <div className="w-6 h-6 ml-14">
           {isEditingThisCard && <Copy onClick={() => handleCopyClick()} />}
         </div>
       </div>

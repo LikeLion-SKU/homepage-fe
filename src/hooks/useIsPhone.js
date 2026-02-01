@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
 export function useIsPhone() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 375);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 375);
+      setIsMobile(window.innerWidth < 768);
     };
 
     window.addEventListener('resize', handleResize);

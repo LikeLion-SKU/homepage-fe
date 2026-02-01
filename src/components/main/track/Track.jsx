@@ -9,11 +9,14 @@ import FEImage from '@/assets/images/FE-explain.svg';
 import POImage from '@/assets/images/PO-explain.svg';
 import useScale from '@/components/main/hooks/useScale';
 import MainSectionLayout from '@/components/main/layout';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 import Card from './card/card.jsx';
 
 function Track() {
   const scale = useScale();
+  const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isTablet = useMediaQuery('(min-width: 761px) and (max-width: 1199px)');
   const card1Ref = useRef(null);
   const card2Ref = useRef(null);
   const card3Ref = useRef(null);
@@ -52,9 +55,9 @@ function Track() {
     <MainSectionLayout
       title="트랙 소개"
       showTopBorder={false}
+      overflowVisible={true}
       backgroundStyle={{
-        backgroundImage: 'linear-gradient(180deg, #F4F4F4 0%, rgba(217, 217, 217, 0) 100%)', // 그라데이션 배경
-        backgroundBorderColor: '1px solid var(--color-navy-blue)',
+        backgroundImage: 'linear-gradient(rgb(244, 244, 244) 0%, rgba(217, 217, 217, 0) 100%)',
       }}
     >
       <div className="relative">
@@ -68,19 +71,27 @@ function Track() {
             // 여기 값만 바꾸면 아이콘을 개별적으로 이동 가능
             left: `${(120 / 16) * scale}rem`,
             top: `${(-115 / 16) * scale}rem`,
-            width: `${(159 / 16) * scale}rem`,
+            width: `${(159 / 16) * scale * (isMobile760 ? 1.4 : 1)}rem`,
             height: 'auto',
             zIndex: 30,
             willChange: 'transform',
           }}
         />
 
-        <div className="flex flex-col sm:flex-row gap-8 w-full sm:w-[125%] sm:-ml-[12%] mt-[42px] pb-20 sm:pb-0">
+        <div className="flex flex-col min-[1200px]:flex-row gap-8 w-full min-[1200px]:w-[125%] min-[1200px]:-ml-[12%] mt-[42px] pb-0">
           <motion.div
             ref={card1Ref}
-            className="flex-1 w-full"
-            initial={{ y: 60, opacity: 0 }}
-            animate={card1InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
+            className="flex-1 min-[1200px]:flex-1 max-[480px]:flex-none w-full"
+            initial={{ y: 60, opacity: 0, x: 0 }}
+            animate={
+              card1InView
+                ? {
+                    y: 0,
+                    opacity: 1,
+                    x: isTablet ? `${(-80 / 16) * scale}rem` : 0,
+                  }
+                : { y: 60, opacity: 0, x: isTablet ? `${(-80 / 16) * scale}rem` : 0 }
+            }
             transition={{
               duration: 0.7,
               ease: 'easeOut',
@@ -90,16 +101,23 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
-              transform: 'translateZ(0)',
             }}
           >
             <Card title="PO 프로젝트 오너" description={poDescription} image={POImage} />
           </motion.div>
           <motion.div
             ref={card2Ref}
-            className="flex-1 w-full sm:relative sm:top-10"
-            initial={{ y: 60, opacity: 0 }}
-            animate={card2InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
+            className="flex-1 min-[1200px]:flex-1 max-[480px]:flex-none w-full min-[1200px]:relative min-[1200px]:top-10"
+            initial={{ y: 60, opacity: 0, x: 0 }}
+            animate={
+              card2InView
+                ? {
+                    y: 0,
+                    opacity: 1,
+                    x: isTablet ? `${(80 / 16) * scale}rem` : 0,
+                  }
+                : { y: 60, opacity: 0, x: isTablet ? `${(80 / 16) * scale}rem` : 0 }
+            }
             transition={{
               duration: 0.7,
               ease: 'easeOut',
@@ -109,16 +127,23 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
-              transform: 'translateZ(0)',
             }}
           >
             <Card title="FRONTEND 프론트엔드 개발자" description={feDescription} image={FEImage} />
           </motion.div>
           <motion.div
             ref={card3Ref}
-            className="flex-1 w-full sm:relative sm:top-20"
-            initial={{ y: 60, opacity: 0 }}
-            animate={card3InView ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
+            className="flex-1 min-[1200px]:flex-1 max-[480px]:flex-none w-full min-[1200px]:relative min-[1200px]:top-20"
+            initial={{ y: 60, opacity: 0, x: 0 }}
+            animate={
+              card3InView
+                ? {
+                    y: 0,
+                    opacity: 1,
+                    x: isTablet ? `${(-80 / 16) * scale}rem` : 0,
+                  }
+                : { y: 60, opacity: 0, x: isTablet ? `${(-80 / 16) * scale}rem` : 0 }
+            }
             transition={{
               duration: 0.7,
               ease: 'easeOut',
@@ -128,7 +153,6 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
-              transform: 'translateZ(0)',
             }}
           >
             <Card title="BACKEND 백엔드 개발자" description={beDescription} image={BEImage} />

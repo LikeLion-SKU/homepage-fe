@@ -1,4 +1,5 @@
 import Frame from '@/components/layout/frame/Frame';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 import useScale from './hooks/useScale';
 
@@ -13,8 +14,11 @@ function MainSectionLayout({
   paddingScale = 1,
   paddingBottomScale = 1,
   paddingBottomOffsetRem = 0,
+  overflowVisible = false, // overflow를 visible로 설정할지 여부
+  frameTopOffset = null, // 프레임 박스의 top 오프셋 커스터마이징 (null이면 기본값 사용)
 }) {
   const scale = useScale();
+  const isMobile = useMediaQuery('(max-width: 480px)');
 
   // rem 값 계산 (1440x1024px 기준, scale 적용)
   const widthRem = (1440 / 16) * scale * maxWidthScale;
@@ -29,7 +33,7 @@ function MainSectionLayout({
 
   return (
     <section
-      className={`relative w-full bg-white overflow-hidden ${backgroundClassName}`}
+      className={`relative w-full bg-white ${overflowVisible ? 'overflow-visible' : 'overflow-hidden'} ${backgroundClassName}`}
       style={{
         minHeight: `${minHeightRem}rem`,
         paddingTop: `${paddingRem}rem`,
@@ -54,7 +58,14 @@ function MainSectionLayout({
           style={{
             position: 'absolute',
             left: `${(120 / 16) * scale}rem`,
-            top: `${(-60 / 16) * scale}rem`,
+            top:
+              frameTopOffset !== null
+                ? `${(frameTopOffset / 16) * scale}rem`
+                : isMobile
+                  ? `${(-100 / 16) * scale}rem`
+                  : `${(-60 / 16) * scale}rem`,
+            overflow: 'visible',
+            zIndex: 20,
           }}
         >
           <Frame
@@ -68,7 +79,7 @@ function MainSectionLayout({
               <h2
                 className="font-bold text-[var(--color-navy-blue)] m-0"
                 style={{
-                  fontSize: `${(36 / 16) * scale}rem`,
+                  fontSize: `${(36 / 16) * scale * (isMobile ? 1.7 : 1)}rem`,
                   fontFamily:
                     'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
                   fontWeight: '700',

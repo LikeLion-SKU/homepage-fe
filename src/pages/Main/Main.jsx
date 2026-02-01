@@ -11,12 +11,20 @@ const AnimatedAward = withBottomUpAnimation(Award);
 
 export default function Main() {
   return (
-    <>
+    <div
+      className="bg-white"
+      style={{
+        marginLeft: '-100vw',
+        marginRight: '-100vw',
+        paddingLeft: '100vw',
+        paddingRight: '100vw',
+      }}
+    >
       <Intro />
       <Explain />
       <AnimatedTrack />
       <AnimatedSchedule />
       <AnimatedAward />
-    </>
+    </div>
   );
 }

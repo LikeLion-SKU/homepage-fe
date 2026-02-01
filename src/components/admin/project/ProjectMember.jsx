@@ -42,7 +42,7 @@ export default function AdminProjectMember({ optionData, selectedTrack, setSelec
   };
 
   return (
-    <div className="flex flex-col px-8 py-2 border w-84 h-58 gap-3">
+    <div className="flex flex-col px-8 py-2 border w-84 h-58 gap-2">
       <TrackOption
         optionData={optionData}
         bgColor="#D9D9D9"
@@ -52,8 +52,8 @@ export default function AdminProjectMember({ optionData, selectedTrack, setSelec
       {optionData.map((track, index) => {
         if (track in selectedTrack) {
           return (
-            <div key={track} className="flex w-68 text-[1rem] font-semibold">
-              <p className="flex items-center h-8">{track}</p>
+            <div key={track} className="flex w-75 text-[1rem] font-semibold">
+              <p className="flex items-center w-25 h-8">{track}</p>
               <div className="flex gap-x-3 w-55 ml-auto flex-wrap items-center">
                 {selectedTrack[track] &&
                   selectedTrack[track].map((nameItem, idx) => (

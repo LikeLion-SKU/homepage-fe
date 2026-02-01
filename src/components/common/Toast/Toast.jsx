@@ -8,7 +8,7 @@ export default function Toast({ isToast, message }) {
             : 'opacity-0  pointer-events-none' /*부드럽게 가기위해 초기값을 다 0으로 설정,안보일 때는 마우스 이벤트 안 먹음 */
         }`}
     >
-      <div className="flex px-15 h-13 bg-white justify-center items-center text-[1.1rem] font-bold border shadow-lg">
+      <div className="flex px-10 pad:px-15 h-11 pad:h-13 bg-white justify-center items-center text-[0.8rem] pad:text-[1.1rem] font-bold border shadow-lg">
         {message}
       </div>
     </div>

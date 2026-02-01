@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import useMediaQuery from '@/hooks/useMediaQuery';
+
 export default function PasswordInput({
   value,
   onChange,
@@ -15,6 +17,8 @@ export default function PasswordInput({
   disabled = false,
 }) {
   const [showPassword, setShowPassword] = useState(true);
+  const isMobile = useMediaQuery('(max-width: 480px)');
+  const isSmallScreen = useMediaQuery('(max-width: 640px)');
 
   const togglePasswordVisibility = (e) => {
     e.preventDefault();
@@ -49,8 +53,15 @@ export default function PasswordInput({
             onBlur={onBlur}
             placeholder={placeholder}
             disabled={disabled}
-            className={`w-full h-12 sm:h-14 max-[380px]:h-10 px-3 sm:px-4 max-[380px]:px-2.5 py-2.5 sm:py-3 max-[380px]:py-2 ${disabled ? 'bg-[#F5F5F5]' : 'bg-[#FFFFFF]'} border border-[1px] border-[#B0B0B0] ${disabled ? 'text-[#D3D3D3]' : 'text-black'} text-sm sm:text-base max-[380px]:text-xs font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed ${hideToggle ? 'pr-3 sm:pr-4 max-[380px]:pr-2.5' : 'pr-35'}`}
-            style={{ minWidth: 0 }}
+            className={`w-full px-3 sm:px-4 max-[480px]:px-2.5 py-2.5 sm:py-3 max-[480px]:py-2 ${disabled ? 'bg-[#F5F5F5]' : 'bg-[#FAFBF8]'} border border-[1px] border-[#B0B0B0] ${disabled ? 'text-[#D3D3D3]' : 'text-black'} text-sm sm:text-base max-[480px]:text-xs font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed ${hideToggle ? 'pr-3 sm:pr-4 max-[480px]:pr-2.5' : 'pr-35'}`}
+            style={{
+              minWidth: 0,
+              height: isMobile
+                ? 'calc(2.5rem - 0.25rem)' // max-[480px]:h-10에서 4px 빼기
+                : isSmallScreen
+                  ? 'calc(3rem - 0.25rem)' // h-12에서 4px 빼기
+                  : 'calc(3.5rem - 0.25rem)', // sm:h-14에서 4px 빼기
+            }}
           />
           {!hideToggle && (
             <button
