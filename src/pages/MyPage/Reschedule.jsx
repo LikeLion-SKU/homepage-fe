@@ -6,6 +6,10 @@ import GridSection from '@/components/layout/background/GridSection';
 import CheckButton from '@/components/result/CheckButton';
 import InterviewTime from '@/components/result/InterviewTime';
 
+// TODO :
+// 현재 등록되어있는 사용자의 면접 일정 데이터 받아서 미리 초록색으로 띄워놓기
+// 이후에 누른 일정으로 변경해서 저장버튼
+
 export default function Reschedule() {
   const navigate = useNavigate();
   const pass = true;
