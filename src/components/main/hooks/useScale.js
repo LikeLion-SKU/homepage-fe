@@ -24,7 +24,7 @@ function useScale(baseWidth = 1440) {
 
     commit(); //  paint 전에 1회 확정
     window.addEventListener('resize', onResize, { passive: true });
-    window.visualViewport?.addEventListener('resize', onResize, { passive: true });
+    // visualViewport resize 이벤트는 제거하여 브라우저 확대/축소 시 요소가 움직이지 않도록 함
 
     //  폰트 로딩 이후에도 1회 재확정 (F12 새로고침에서 특히 도움)
     if (document.fonts?.ready) {
@@ -33,7 +33,6 @@ function useScale(baseWidth = 1440) {
 
     return () => {
       window.removeEventListener('resize', onResize);
-      window.visualViewport?.removeEventListener('resize', onResize);
       cancelAnimationFrame(rafRef.current);
     };
   }, [baseWidth]);
