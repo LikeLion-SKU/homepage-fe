@@ -33,6 +33,7 @@ import Member from '@/pages/Member/Member';
 import Application from '@/pages/MyPage/Application';
 import MyPage from '@/pages/MyPage/MyPage';
 import PasswordChange from '@/pages/MyPage/PasswordChange';
+import Reschedule from '@/pages/MyPage/Reschedule';
 import PasswordFind from '@/pages/PasswordFind/PasswordFind';
 import PasswordResult from '@/pages/PasswordFind/PasswordResult';
 import ProjectList from '@/pages/Project/ProjectList';
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
         /*Component: ProtectedRoute,*/
         children: [
           { path: '/mypage', Component: MyPage },
+          { path: '/mypage/reschedule', Component: Reschedule },
           { path: '/mypage/password/change', Component: PasswordChange },
           { path: '/welcome', Component: Welcome },
           { path: '/apply/complete', Component: ApplyComplete },
