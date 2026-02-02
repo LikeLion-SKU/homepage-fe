@@ -20,6 +20,9 @@ import ApplyCommon from '@/pages/Apply/ApplyCommon';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
 import ApplyTrack from '@/pages/Apply/ApplyTrack';
 import FinalConfirm from '@/pages/Apply/FinalConfirm';
+import Error401 from '@/pages/Error/Error401';
+import Error403 from '@/pages/Error/Error403';
+import Error404 from '@/pages/Error/Error404';
 import LoginRequired from '@/pages/Error/LoginRequired';
 import ServerError from '@/pages/Error/ServerError';
 import Login from '@/pages/Login/Login';
@@ -82,6 +85,9 @@ const router = createBrowserRouter([
           { path: '/password/result', Component: PasswordResult },
           { path: '/require', Component: LoginRequired },
           { path: '/error', Component: ServerError },
+          { path: '/404', Component: Error404 },
+          { path: '/403', Component: Error403 },
+          { path: '/401', Component: Error401 },
         ],
       },
       {
