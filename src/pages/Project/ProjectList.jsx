@@ -1,32 +1,32 @@
 import { useState } from 'react';
+import { useLoaderData, useSearchParams } from 'react-router';
 
 import TitleSection from '@/components/common/TitleSection';
 import GridSection from '@/components/layout/background/GridSection';
 import ProjectOption from '@/components/project/ProjectOption';
 import ProjectPagenation from '@/components/project/ProjectPagenation';
 import ProjectSection from '@/components/project/ProjectSection';
-import { projectData } from '@/components/project/projectDummyData';
 
 export default function Project() {
-  const [pageOn, setPageOn] = useState(1);
-  const ITEMS_PER_PAGE = 6;
-  const maxPage = Math.ceil(projectData.length / 6);
+  const projectListdata = useLoaderData(); //loader로 가져온 데이터
+  const [filterParams, setFilterParams] = useSearchParams(); //파라미터 관리
+  const pageOn = Number(filterParams.get('page') || 0);
+  const maxPage = projectListdata.totalPages;
   const [pageArray, setPageArray] = useState(() => {
-    if (maxPage > 5) {
-      return [1, 2, 3, 4, 5];
-    } else {
-      return [1, 2, 3, 4, 5].filter((num) => {
-        if (num <= maxPage) return num;
-      });
-    }
+    return [0, 1, 2, 3, 4].filter((num) => num < maxPage); // API가 0부터 시작할 때 예시
   });
-  const currentItems = projectData.slice((pageOn - 1) * ITEMS_PER_PAGE, pageOn * ITEMS_PER_PAGE);
+
+  // 2. 페이지 변경 함수: URL의 쿼리 파라미터를 변경함
+  const handlePageChange = (newPage) => {
+    filterParams.set('page', newPage);
+    setFilterParams(filterParams); // URL이 바뀌면 loader가 자동 실행됨
+  };
 
   const pageData = {
     pageArray: pageArray,
     setPageArray: setPageArray,
     pageOn: pageOn,
-    setPageOn: setPageOn,
+    setPageOn: handlePageChange,
     maxPage: maxPage,
   };
 
@@ -39,13 +39,13 @@ export default function Project() {
         >
           <ProjectOption />
         </TitleSection>
-        <ProjectSection data={currentItems} />
-        {!(projectData.length > 0) && (
+        <ProjectSection data={projectListdata} />
+        {!(projectListdata.content.length > 0) && (
           <p className="flex h-90 justify-center items-center text-[1.1rem] font-bold">
             검색 결과가 없습니다.
           </p>
         )}
-        {projectData.length > 0 && <ProjectPagenation props={pageData} />}
+        {projectListdata.content.length > 0 && <ProjectPagenation props={pageData} />}
       </div>
     </GridSection>
   );
