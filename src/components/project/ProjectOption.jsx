@@ -49,6 +49,7 @@ export default function ProjectOption({ handleSemester, handleProjectType }) {
     } else {
       handleProjectType(projectTypeMap[selectProjectType]);
     }
+    lastSentProjectType.current = selectProjectType;
   }, [selectProjectType]);
 
   useEffect(() => {
@@ -64,6 +65,7 @@ export default function ProjectOption({ handleSemester, handleProjectType }) {
       const semesterNumber = selectSemester.replace(/[^0-9]/g, '');
       handleSemester(Number(semesterNumber));
     }
+    lastSentSemester.current = selectSemester;
   }, [selectSemester]);
 
   return (

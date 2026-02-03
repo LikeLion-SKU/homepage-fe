@@ -61,6 +61,21 @@ export default function Project() {
     },
     [setFilterParams]
   );
+  const handleSearch = useCallback(
+    (keyword) => {
+      setFilterParams((prev) => {
+        const params = new URLSearchParams(prev);
+        if (!keyword) {
+          params.delete('search'); // 검색어 없으면 파라미터 삭제
+        } else {
+          params.set('search', keyword);
+        }
+        params.set('page', '0'); // 검색 시 페이지 초기화는 필수!
+        return params;
+      });
+    },
+    [setFilterParams]
+  );
 
   const pageData = {
     pageArray: pageArray,
@@ -76,6 +91,7 @@ export default function Project() {
         <TitleSection
           title="프로젝트"
           pageExplanation="서경대학교 멋쟁이사자처럼에서 탄생한 다양한 서비스를 둘러보세요!"
+          searchApi={handleSearch}
         >
           <ProjectOption handleSemester={handleSemester} handleProjectType={handleProjectType} />
         </TitleSection>
