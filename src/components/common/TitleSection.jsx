@@ -1,6 +1,6 @@
-// @ts-ignore
 import { useEffect, useRef, useState } from 'react';
 
+// @ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 import PageTitle from '@/components/common/PageTitle';
 
