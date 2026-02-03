@@ -40,10 +40,12 @@ function ScheduleModal({
   const [fitScale, setFitScale] = useState(1);
 
   // 최대 2개까지
-  const modalsToShow = modalData.slice(0, 2);
+  const modalsToShow = useMemo(() => modalData.slice(0, 2), [modalData]);
   const count = modalsToShow.length;
 
   useEffect(() => {
+    let rafId = null;
+
     const recalc = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -94,9 +96,17 @@ function ScheduleModal({
       setFitScale(clamp(s, MIN_S, MAX_S));
     };
 
+    const handleResize = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(recalc);
+    };
+
     recalc();
-    window.addEventListener('resize', recalc, { passive: true });
-    return () => window.removeEventListener('resize', recalc);
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [isMobile, count, modalGap]);
 
   // 2개일 때 gap을 자동으로 줄이기
