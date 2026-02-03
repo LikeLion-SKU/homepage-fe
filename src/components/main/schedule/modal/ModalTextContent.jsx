@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 function ModalTextContent({
   className = '',
   style = {},
@@ -47,12 +49,11 @@ function ModalTextContent({
             fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
             margin: 0,
           }}
-        >
-          {description}
-        </p>
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
       )}
     </div>
   );
 }
 
-export default ModalTextContent;
+export default memo(ModalTextContent);
