@@ -1,67 +1,18 @@
 import { publicAPI } from '@/api/api';
 
-/**
- * 이메일 인증 코드 전송
- * @param {string} email - 인증 코드를 받을 사람의 이메일 주소
- * @returns {Promise} 인증 코드 전송 성공/실패 여부
- * @description 10~15초 정도 소요되며, 비동기로 처리되지만 완료될 때까지 대기 후 결과 반환
- */
-export const requestEmailVerification = async (email) => {
-  try {
-    const res = await publicAPI.post('/v1/auth/email/verify/request', {
-      email,
-    });
-    return res.data;
-  } catch (error) {
-    console.error('이메일 인증 코드 전송 실패:', error);
-    throw error;
-  }
+// 공통 POST
+const post = async (url, body) => {
+  const res = await publicAPI.post(url, body);
+  return res.data;
 };
 
-/**
- * 이메일 인증 코드 검증
- * @param {string} email - 인증을 받을 사람의 이메일 주소
- * @param {string} code - 이메일로 발송된 인증 코드
- * @returns {Promise} 이메일 인증 코드 검증 성공/실패 여부
- * @description 두 값이 일치하면 인증 성공
- */
-export const confirmEmailVerification = async (email, code) => {
-  try {
-    const res = await publicAPI.post('/v1/auth/email/verify/confirm', {
-      email,
-      code,
-    });
-    return res.data;
-  } catch (error) {
-    console.error('이메일 인증 코드 검증 실패:', error);
-    throw error;
-  }
-};
+// 이메일 인증 코드 전송
+export const requestEmailVerification = ({ email }) =>
+  post('/v1/auth/email/verify/request', { email });
 
-/**
- * 회원가입
- * @param {Object} data - 회원가입 정보
- * @param {string} data.email - 사용자 이메일 주소
- * @param {string} data.password - 사용자 비밀번호
- * @param {string} data.name - 이름(본명)
- * @param {string} data.department - 학과
- * @param {string} data.studentNumber - 학번
- * @param {string} data.phoneNumber - 전화번호
- * @returns {Promise} 회원가입 성공 여부
- */
-export const register = async (data) => {
-  try {
-    const res = await publicAPI.post('/v1/auth/register', {
-      email: data.email,
-      password: data.password,
-      name: data.name,
-      department: data.department,
-      studentNumber: data.studentNumber,
-      phoneNumber: data.phoneNumber,
-    });
-    return res.data;
-  } catch (error) {
-    console.error('회원가입 실패:', error);
-    throw error;
-  }
-};
+// 이메일 인증 코드 검증
+export const confirmEmailVerification = ({ email, code }) =>
+  post('/v1/auth/email/verify/confirm', { email, code });
+
+// 회원가입
+export const register = (data) => post('/v1/auth/register', data);

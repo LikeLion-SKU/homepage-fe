@@ -15,7 +15,10 @@ import VerificationButton from './VerificationButton';
 export default function SignUpForm({ onSubmit }) {
   const [step, setStep] = useState(1); // 1: 인증번호 확인, 2: 회원정보 입력
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
+  // 인증번호
+  const [verificationCode, setVerificationCode] = useState('');
+
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [countdown, setCountdown] = useState(0); // 초 단위
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
@@ -37,22 +40,15 @@ export default function SignUpForm({ onSubmit }) {
   const [_phoneTouched, setPhoneTouched] = useState(false);
 
   // 전화번호 포맷팅 함수 (하이픈 자동 추가)
-  // 01[016789]-XXX-XXXX 또는 01[016789]-XXXX-XXXX 형식
   const formatPhoneNumber = (value, prevValue = '') => {
-    // 숫자만 추출
     const numbers = value.replace(/[^\d]/g, '');
     const prevNumbers = prevValue.replace(/[^\d]/g, '');
-
-    // 삭제 중인 경우 (숫자 개수가 줄어든 경우 또는 전체 길이가 줄어든 경우)
     const isDeleting = numbers.length < prevNumbers.length || value.length < prevValue.length;
 
-    // 01[016789]로 시작하는지 확인
     if (numbers.length === 0) return '';
-    if (numbers.length <= 2) {
-      return numbers;
-    }
+    if (numbers.length <= 2) return numbers;
+
     if (numbers.length === 3) {
-      // 삭제 중이 아니고, 유효한 번호(010, 011, 016, 017, 018, 019)면 하이픈 추가
       if (
         !isDeleting &&
         numbers[0] === '0' &&
@@ -61,10 +57,9 @@ export default function SignUpForm({ onSubmit }) {
       ) {
         return `${numbers.slice(0, 3)}-`;
       }
-      // 삭제 중이거나 유효하지 않은 번호면 숫자만 반환
       return numbers;
     }
-    // 010, 011, 016, 017, 018, 019로 시작
+
     if (
       numbers[0] === '0' &&
       numbers[1] === '1' &&
@@ -73,50 +68,51 @@ export default function SignUpForm({ onSubmit }) {
       if (numbers.length <= 6) {
         return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
       } else if (numbers.length <= 10) {
-        // 010-1234-5678 또는 010-123-4567 형식
-        return `${numbers.slice(0, 3)}-${numbers.slice(3, numbers.length === 10 ? 7 : 6)}-${numbers.slice(numbers.length === 10 ? 7 : 6)}`;
+        return `${numbers.slice(0, 3)}-${numbers.slice(3, numbers.length === 10 ? 7 : 6)}-${numbers.slice(
+          numbers.length === 10 ? 7 : 6
+        )}`;
       } else {
         return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
       }
     }
-    // 잘못된 형식이지만 삭제 중이면 원본 값 반환 (삭제 가능하도록)
-    if (isDeleting) {
-      return value;
-    }
-    // 잘못된 형식이고 입력 중이면 숫자만 반환
+
+    if (isDeleting) return value;
     return numbers;
   };
 
-  // 비밀번호 유효성 검사: 최소 영문자 1자, 숫자 1자, 특수문자 1자를 포함한 8~20자리
+  // 비밀번호 유효성 검사
   const isValidPassword = (password) => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
     return passwordRegex.test(password);
   };
 
-  // 이름 유효성 검사: 2~17자리 문자열
-  const isValidName = (name) => {
-    if (!name) return false;
-    return name.length >= 2 && name.length <= 17;
+  // 이름 유효성 검사
+  const isValidName = (nameValue) => {
+    if (!nameValue) return false;
+    return nameValue.length >= 2 && nameValue.length <= 17;
   };
 
-  // 학번 유효성 검사: 10자리 숫자만 가능
-  const isValidStudentNumber = (studentNumber) => {
+  // 학번 유효성 검사
+  const isValidStudentNumber = (studentNumberValue) => {
     const studentNumberRegex = /^[0-9]{10}$/;
-    return studentNumberRegex.test(studentNumber);
+    return studentNumberRegex.test(studentNumberValue);
   };
 
-  // 전화번호 형식 검증 함수: 01[016789]-XXX-XXXX 또는 01[016789]-XXXX-XXXX
+  // 전화번호 형식 검증
   const isValidPhoneNumber = (phoneNumber) => {
     const phoneRegex = /^01[016789]-\d{3,4}-\d{4}$/;
     return phoneRegex.test(phoneNumber);
   };
 
   const handleNextStep = () => {
-    // 인증번호 확인이 성공했을 때만 다음 단계로 이동
     if (verificationStatus === 'success') {
       setStep(2);
-    } else if (password && verificationStatus !== 'success') {
-      // 인증번호가 입력되었지만 성공하지 않은 경우 모달 표시
+      return;
+    }
+
+    //  기존 로직은 인증번호 입력만 해도 모달이 뜰 수 있어서,
+    // 최소한 error일 때만 잘못된 인증번호로 처리
+    if (verificationStatus === 'error') {
       setConfirmModalMessage('잘못된 인증번호입니다.');
       setShowConfirmModal(true);
     }
@@ -124,127 +120,117 @@ export default function SignUpForm({ onSubmit }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (step === 2) {
-      // 동의 항목 체크 여부 확인
-      if (!isAgreed) {
-        setConfirmModalMessage('개인정보 수집에 동의해주세요.');
-        setShowConfirmModal(true);
-        return;
-      }
 
-      // 개별 필수 항목 검증
-      if (!signupPassword) {
-        setConfirmModalMessage('비밀번호를 입력해주세요.');
-        setShowConfirmModal(true);
-        return;
-      }
+    if (step !== 2) return;
 
-      if (!major) {
-        setConfirmModalMessage('학과를 입력해주세요.');
-        setShowConfirmModal(true);
-        return;
-      }
+    if (!isAgreed) {
+      setConfirmModalMessage('개인정보 수집에 동의해주세요.');
+      setShowConfirmModal(true);
+      return;
+    }
 
-      if (!name) {
-        setConfirmModalMessage('이름을 입력해주세요.');
-        setShowConfirmModal(true);
-        return;
-      }
+    if (!signupPassword) {
+      setConfirmModalMessage('비밀번호를 입력해주세요.');
+      setShowConfirmModal(true);
+      return;
+    }
 
-      // 나머지 필수 항목 검증
-      if (!confirmPassword || !studentNumber || !phone) {
-        setConfirmModalMessage('필수 항목을 모두 입력해주세요.');
-        setShowConfirmModal(true);
-        return;
-      }
+    if (!major) {
+      setConfirmModalMessage('학과를 입력해주세요.');
+      setShowConfirmModal(true);
+      return;
+    }
 
-      // 비밀번호 유효성 검사
-      if (!isValidPassword(signupPassword)) {
-        setConfirmModalMessage(
-          '비밀번호는 영문자, 숫자, 특수문자를 각각 최소 1자 이상 포함한 8~20자리여야 합니다.'
-        );
-        setShowConfirmModal(true);
-        setPasswordTouched(true);
-        return;
-      }
+    if (!name) {
+      setConfirmModalMessage('이름을 입력해주세요.');
+      setShowConfirmModal(true);
+      return;
+    }
 
-      // 비밀번호 일치 여부 확인
-      if (signupPassword !== confirmPassword) {
-        setConfirmModalMessage('비밀번호가 일치하지 않습니다.');
-        setShowConfirmModal(true);
-        return;
-      }
+    if (!confirmPassword || !studentNumber || !phone) {
+      setConfirmModalMessage('필수 항목을 모두 입력해주세요.');
+      setShowConfirmModal(true);
+      return;
+    }
 
-      // 이름 유효성 검사
-      if (!isValidName(name)) {
-        setConfirmModalMessage('이름은 2자 이상 17자 이하로 입력해주세요.');
-        setShowConfirmModal(true);
-        setNameTouched(true);
-        return;
-      }
+    if (!isValidPassword(signupPassword)) {
+      setConfirmModalMessage(
+        '비밀번호는 영문자, 숫자, 특수문자를 각각 최소 1자 이상 포함한 8~20자리여야 합니다.'
+      );
+      setShowConfirmModal(true);
+      setPasswordTouched(true);
+      return;
+    }
 
-      // 학번 유효성 검사
-      if (!isValidStudentNumber(studentNumber)) {
-        setConfirmModalMessage('학번 10자리를 입력해주세요.');
-        setShowConfirmModal(true);
-        setStudentNumberTouched(true);
-        return;
-      }
+    if (signupPassword !== confirmPassword) {
+      setConfirmModalMessage('비밀번호가 일치하지 않습니다.');
+      setShowConfirmModal(true);
+      return;
+    }
 
-      // 전화번호 형식 검증
-      if (!isValidPhoneNumber(phone)) {
-        setConfirmModalMessage('전화번호를 입력해주세요.');
-        setShowConfirmModal(true);
-        setPhoneTouched(true);
-        return;
-      }
+    if (!isValidName(name)) {
+      setConfirmModalMessage('이름은 2자 이상 17자 이하로 입력해주세요.');
+      setShowConfirmModal(true);
+      setNameTouched(true);
+      return;
+    }
 
-      try {
-        // 이메일 값에 @skuniv.ac.kr이 없으면 추가
-        const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
+    if (!isValidStudentNumber(studentNumber)) {
+      setConfirmModalMessage('학번 10자리를 입력해주세요.');
+      setShowConfirmModal(true);
+      setStudentNumberTouched(true);
+      return;
+    }
 
-        // 회원가입 API 호출
-        await register({
+    if (!isValidPhoneNumber(phone)) {
+      setConfirmModalMessage('전화번호를 입력해주세요.');
+      setShowConfirmModal(true);
+      setPhoneTouched(true);
+      return;
+    }
+
+    try {
+      const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
+
+      await register({
+        email: finalEmail,
+        password: signupPassword,
+        name,
+        department: major,
+        studentNumber,
+        phoneNumber: phone,
+      });
+
+      if (onSubmit) {
+        onSubmit({
           email: finalEmail,
-          password: signupPassword,
           name,
-          department: major,
+          password: signupPassword,
+          confirmPassword,
+          phone,
+          major,
           studentNumber,
-          phoneNumber: phone,
+          isAgreed,
         });
-
-        // 성공 시 onSubmit 콜백 호출 (기존 로직 유지)
-        if (onSubmit) {
-          onSubmit({
-            email: finalEmail,
-            name,
-            password: signupPassword,
-            confirmPassword,
-            phone,
-            major,
-            studentNumber,
-            isAgreed,
-          });
-        }
-      } catch (error) {
-        console.error('회원가입 실패:', error);
-        setConfirmModalMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
-        setShowConfirmModal(true);
       }
+    } catch (error) {
+      console.error('회원가입 실패:', error);
+      setConfirmModalMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
+      setShowConfirmModal(true);
     }
   };
 
   const handleVerificationSend = async () => {
     try {
-      // 이메일 값에 @skuniv.ac.kr이 없으면 추가
       const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
-      await requestEmailVerification(finalEmail);
+      // 객체 파라미터 통일
+      await requestEmailVerification({ email: finalEmail });
 
       console.log('인증번호 전송 (회원가입)');
       setIsVerificationSent(true);
-      setCountdown(300); // 5분 = 300초
-      setVerificationStatus(null); // 상태 초기화
+      setCountdown(300); // 5분
+      setVerificationStatus(null);
     } catch (error) {
       console.error('인증번호 전송 실패:', error);
       setConfirmModalMessage('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
@@ -253,21 +239,14 @@ export default function SignUpForm({ onSubmit }) {
   };
 
   const handleVerificationCheck = async () => {
-    // 만료된 경우 에러 메시지 표시하지 않음
-    if (countdown === 0) {
-      return;
-    }
-
-    // 이미 인증 성공한 경우 다시 호출하지 않음
-    if (verificationStatus === 'success') {
-      return;
-    }
+    if (countdown === 0) return;
+    if (verificationStatus === 'success') return;
 
     try {
-      // 이메일 값에 @skuniv.ac.kr이 없으면 추가
       const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
-      await confirmEmailVerification(finalEmail, password);
+      // 인증번호 변수명 반영
+      await confirmEmailVerification({ email: finalEmail, code: verificationCode });
 
       console.log('인증번호 확인 (회원가입)');
       setVerificationStatus('success');
@@ -287,14 +266,13 @@ export default function SignUpForm({ onSubmit }) {
     }
   }, [countdown]);
 
-  // 카운트다운 포맷팅 (MM:SS)
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
   };
 
-  // 첫 번째 단계: 인증번호 확인
+  // 1단계: 인증번호 확인
   if (step === 1) {
     return (
       <>
@@ -305,8 +283,8 @@ export default function SignUpForm({ onSubmit }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               mb="mb-3"
-              disabled={password.length > 0}
-              textColor={password.length > 0 ? 'text-[#D3D3D3]' : 'text-black'}
+              disabled={verificationCode.length > 0}
+              textColor={verificationCode.length > 0 ? 'text-[#D3D3D3]' : 'text-black'}
               rightButton={
                 <VerificationButton
                   onClick={handleVerificationSend}
@@ -320,10 +298,10 @@ export default function SignUpForm({ onSubmit }) {
             <div>
               <PasswordInput
                 label="인증번호"
-                value={password}
+                value={verificationCode}
                 onChange={(e) => {
-                  setPassword(e.target.value);
-                  setVerificationStatus(null); // 입력 시 상태 초기화
+                  setVerificationCode(e.target.value);
+                  setVerificationStatus(null);
                 }}
                 placeholder="인증번호를 입력해주세요"
                 hideLabel
@@ -333,7 +311,7 @@ export default function SignUpForm({ onSubmit }) {
                 rightButton={
                   <VerificationButton
                     onClick={handleVerificationCheck}
-                    disabled={!password || verificationStatus === 'success'}
+                    disabled={!verificationCode || verificationStatus === 'success'}
                     text="인증번호 확인"
                     isActive={!!email && verificationStatus !== 'success'}
                   />
@@ -372,11 +350,13 @@ export default function SignUpForm({ onSubmit }) {
               </div>
             </div>
           </form>
+
           <div className="w-full mt-24">
-            <LoginButton onClick={handleNextStep} disabled={!password}>
+            <LoginButton onClick={handleNextStep} disabled={!verificationCode}>
               다음
             </LoginButton>
           </div>
+
           <SignupLink
             questionText="이미 계정이 있으신가요?"
             linkText="로그인"
@@ -384,6 +364,7 @@ export default function SignUpForm({ onSubmit }) {
             showNotice={false}
           />
         </div>
+
         <CheckModal
           isOpen={showConfirmModal}
           cancel={() => setShowConfirmModal(false)}
@@ -397,8 +378,7 @@ export default function SignUpForm({ onSubmit }) {
     );
   }
 
-  // 두 번째 단계: 회원정보 입력
-  // 이메일 값에 @skuniv.ac.kr이 없으면 추가
+  // 2단계: 회원정보 입력
   const displayEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
   return (
@@ -409,11 +389,12 @@ export default function SignUpForm({ onSubmit }) {
           label="아이디"
           value={displayEmail}
           onChange={() => {}}
-          disabled={true}
+          disabled
           placeholder="abcd1234@skuniv.ac.kr"
           required
           mb="mb-6"
         />
+
         <div>
           <PasswordInput
             label="비밀번호"
@@ -443,6 +424,7 @@ export default function SignUpForm({ onSubmit }) {
             </p>
           </div>
         </div>
+
         <div>
           <PasswordInput
             label="비밀번호 확인"
@@ -514,10 +496,13 @@ export default function SignUpForm({ onSubmit }) {
           mb="mb-6"
           bgColor="#FAFBF8"
         />
+
         <AgreeForm onAgreeChange={setIsAgreed} required />
+
         <div className="w-full mt-8">
           <LoginButton onClick={handleSubmit}>다음</LoginButton>
         </div>
+
         <SignupLink
           questionText="이미 계정이 있으신가요?"
           linkText="로그인"
@@ -525,6 +510,7 @@ export default function SignUpForm({ onSubmit }) {
           showNotice={false}
         />
       </form>
+
       <CheckModal
         isOpen={showConfirmModal}
         cancel={() => setShowConfirmModal(false)}
