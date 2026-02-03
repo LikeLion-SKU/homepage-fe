@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { confirmEmailVerification, requestEmailVerification } from '@/api/authApi';
 import CheckModal from '@/components/common/Modal/CheckModal';
 
 import AgreeForm from './AgreeForm';
@@ -18,7 +19,6 @@ export default function SignUpForm({ onSubmit }) {
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [countdown, setCountdown] = useState(0); // 초 단위
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
-  const [correctCode, setCorrectCode] = useState(''); // 실제 인증번호 (임시로 저장)
 
   // 두 번째 단계 입력 필드
   const [name, setName] = useState('');
@@ -218,21 +218,19 @@ export default function SignUpForm({ onSubmit }) {
 
   const handleVerificationSend = async () => {
     try {
-      // TODO: 회원가입용 인증번호 전송 API 호출
-      // 엔드포인트 api/v1/auth/email/verify/request
-      // await APIService.public.post('api/v1/auth/email/verify/request', { email });
+      // 이메일 값에 @skuniv.ac.kr이 없으면 추가
+      const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
+
+      await requestEmailVerification(finalEmail);
 
       console.log('인증번호 전송 (회원가입)');
       setIsVerificationSent(true);
       setCountdown(300); // 5분 = 300초
-      // 임시로 인증번호 123456으로 테스트
-      const randomCode = '123456';
-      setCorrectCode(randomCode);
       setVerificationStatus(null); // 상태 초기화
-      console.log('인증번호:', randomCode); // 개발용
     } catch (error) {
       console.error('인증번호 전송 실패:', error);
-      // TODO: 에러 처리 (토스트 메시지 등)
+      setConfirmModalMessage('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
+      setShowConfirmModal(true);
     }
   };
 
@@ -242,22 +240,22 @@ export default function SignUpForm({ onSubmit }) {
       return;
     }
 
+    // 이미 인증 성공한 경우 다시 호출하지 않음
+    if (verificationStatus === 'success') {
+      return;
+    }
+
     try {
-      // TODO: 회원가입용 인증번호 확인 API 호출
-      // 엔드포인트/api/v1/auth/email/verify/confirm
-      // const response = await APIService.public.post('api/v1/auth/email/verify/confirm', { email, code: password });
+      // 이메일 값에 @skuniv.ac.kr이 없으면 추가
+      const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
+
+      await confirmEmailVerification(finalEmail, password);
 
       console.log('인증번호 확인 (회원가입)');
-      // 임시로 하드코딩된 코드와 비교
-      if (password === correctCode) {
-        setVerificationStatus('success');
-      } else {
-        setVerificationStatus('error');
-      }
+      setVerificationStatus('success');
     } catch (error) {
       console.error('인증번호 확인 실패:', error);
       setVerificationStatus('error');
-      // TODO: 에러 처리 (토스트 메시지 등)
     }
   };
 
@@ -317,9 +315,9 @@ export default function SignUpForm({ onSubmit }) {
                 rightButton={
                   <VerificationButton
                     onClick={handleVerificationCheck}
-                    disabled={!password}
+                    disabled={!password || verificationStatus === 'success'}
                     text="인증번호 확인"
-                    isActive={!!email}
+                    isActive={!!email && verificationStatus !== 'success'}
                   />
                 }
               />
