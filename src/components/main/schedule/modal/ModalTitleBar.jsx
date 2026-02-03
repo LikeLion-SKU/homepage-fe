@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import rightIcon from '@/assets/icons/main/schedule/modal-arrow.svg';
 
 function ModalTitleBar({
@@ -179,4 +181,4 @@ function ModalTitleBar({
   );
 }
 
-export default ModalTitleBar;
+export default memo(ModalTitleBar);
