@@ -23,11 +23,11 @@ export default function InterviewTime({ setAllChecked, hide = false }) {
   const [selectedTime, setSelectedTime] = useState({ date: '', starTime: '' });
 
   return (
-    <div className="flex flex-col gap-20 items-center mt-30 px-8">
+    <div className="flex flex-col w-full gap-20 items-center mt-30 px-8">
       <div className="flex">
         <PageTitle title="면접 날짜 선택" color="Navy" />
       </div>
-      <div className="flex flex-col gap-13 ">
+      <div className="flex flex-col items-center gap-13 w-full ">
         {interviewTimeData.map((data, index) => (
           <TimeBar
             key={index}
