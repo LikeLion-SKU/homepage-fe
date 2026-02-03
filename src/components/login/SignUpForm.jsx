@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { confirmEmailVerification, requestEmailVerification } from '@/api/authApi';
+import { confirmEmailVerification, register, requestEmailVerification } from '@/api/authApi';
 import CheckModal from '@/components/common/Modal/CheckModal';
 
 import AgreeForm from './AgreeForm';
@@ -122,7 +122,7 @@ export default function SignUpForm({ onSubmit }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (step === 2) {
       // 동의 항목 체크 여부 확인
@@ -199,19 +199,37 @@ export default function SignUpForm({ onSubmit }) {
         return;
       }
 
-      if (onSubmit) {
+      try {
         // 이메일 값에 @skuniv.ac.kr이 없으면 추가
         const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
-        onSubmit({
+
+        // 회원가입 API 호출
+        await register({
           email: finalEmail,
-          name,
           password: signupPassword,
-          confirmPassword,
-          phone,
-          major,
+          name,
+          department: major,
           studentNumber,
-          isAgreed,
+          phoneNumber: phone,
         });
+
+        // 성공 시 onSubmit 콜백 호출 (기존 로직 유지)
+        if (onSubmit) {
+          onSubmit({
+            email: finalEmail,
+            name,
+            password: signupPassword,
+            confirmPassword,
+            phone,
+            major,
+            studentNumber,
+            isAgreed,
+          });
+        }
+      } catch (error) {
+        console.error('회원가입 실패:', error);
+        setConfirmModalMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
+        setShowConfirmModal(true);
       }
     }
   };

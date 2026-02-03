@@ -37,3 +37,31 @@ export const confirmEmailVerification = async (email, code) => {
     throw error;
   }
 };
+
+/**
+ * 회원가입
+ * @param {Object} data - 회원가입 정보
+ * @param {string} data.email - 사용자 이메일 주소
+ * @param {string} data.password - 사용자 비밀번호
+ * @param {string} data.name - 이름(본명)
+ * @param {string} data.department - 학과
+ * @param {string} data.studentNumber - 학번
+ * @param {string} data.phoneNumber - 전화번호
+ * @returns {Promise} 회원가입 성공 여부
+ */
+export const register = async (data) => {
+  try {
+    const res = await publicAPI.post('/v1/auth/register', {
+      email: data.email,
+      password: data.password,
+      name: data.name,
+      department: data.department,
+      studentNumber: data.studentNumber,
+      phoneNumber: data.phoneNumber,
+    });
+    return res.data;
+  } catch (error) {
+    console.error('회원가입 실패:', error);
+    throw error;
+  }
+};
