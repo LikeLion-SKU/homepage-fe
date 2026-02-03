@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import aprilIcon from '@/assets/icons/main/schedule/april.svg';
 import augustIcon from '@/assets/icons/main/schedule/august.svg';
@@ -39,6 +39,35 @@ function Schedule() {
   const currentMonthData = selectedMonth
     ? scheduleMonthData[selectedMonth] || []
     : scheduleMonthData['3월'] || [];
+
+  // 모든 이미지를 초기에 미리 로드 (백그라운드에서)
+  useEffect(() => {
+    // 모든 월의 이미지를 수집
+    const allImages = [];
+    Object.values(scheduleMonthData).forEach((monthData) => {
+      monthData.forEach((item) => {
+        if (item.contentImage) {
+          allImages.push(item.contentImage);
+        }
+      });
+    });
+
+    // 이미지들을 순차적으로 preload (너무 동시에 로드하면 브라우저가 느려질 수 있음)
+    // 하지만 병렬로 로드하되 우선순위를 높여서 빠르게 로드
+    allImages.forEach((imageSrc) => {
+      // link preload로 우선순위 높이기
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = imageSrc;
+      link.fetchPriority = 'high';
+      document.head.appendChild(link);
+
+      // Image 객체로도 preload (브라우저 캐시에 저장)
+      const img = new Image();
+      img.src = imageSrc;
+    });
+  }, []);
 
   // 월별 아이콘 데이터
   const months = [
