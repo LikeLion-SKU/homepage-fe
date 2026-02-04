@@ -9,7 +9,9 @@ export default function TitleSection({
   pageExplanation,
   onSearch = true,
   children,
-  searchApi = null,
+  searchApi = (value) => {
+    console.log(value);
+  },
 }) {
   const [searchName, setSearchName] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
