@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 import { useFetcher } from 'react-router-dom';
 
+//import { useRevalidator } from 'react-router-dom';
+
+import { APIService } from '@/api/api';
 import Home from '@/assets/icons/4.svg';
 import Camera from '@/assets/icons/mdi-light_camera.svg';
 //import defaultProfileImage from '@/assets/images/lion.png';
@@ -10,6 +13,7 @@ import Modal from '@/components/common/Modal/ConfirmModal';
 
 export default function MyPage() {
   const userData = useLoaderData(); // 데이터 가져오기
+  //const revalidator = useRevalidator();
 
   const defaultProfileImage = null; // 기본 이미지
   const navigate = useNavigate();
@@ -43,8 +47,8 @@ export default function MyPage() {
   const minHeight =
     'min-h-[calc(100vh-52px)] pad:min-h-[calc(100vh-68px)] web:min-h-[calc(100vh-76px)]';
 
-  // 프로필 이미지 변경하는 함수 -> 추후 이미지 백엔드에게 전달 필요!
-  const handleFileChange = (e) => {
+  // 프로필 이미지 수정
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
 
     if (file) {
@@ -55,6 +59,22 @@ export default function MyPage() {
       };
 
       reader.readAsDataURL(file);
+
+      // 서버에 사용자가 변경한 사진 url 전달
+      const formData = new FormData();
+      formData.append('profile-image', file);
+
+      try {
+        const response = await APIService.private.patch('/v1/users/me/image', formData);
+        if (response.success) {
+          //revalidator.revalidate();
+          setPreview(response.data.profileImageUrl); // 서버에 이미지 보내고 받은 이미지 url 띄우기
+          console.log(response);
+          console.log('프로필 이미지 수정 완료');
+        }
+      } catch (error) {
+        console.error('프로필 이미지 수정 실패', error);
+      }
     }
   };
 
@@ -76,7 +96,7 @@ export default function MyPage() {
                   src={
                     isError
                       ? defaultProfileImage
-                      : preview || userData.profieImageUrl || defaultProfileImage
+                      : preview || userData.profileImageUrl || defaultProfileImage
                   }
                   onError={() => setIsError(true)}
                   className="w-full h-full object-cover group-hover:brightness-75"
@@ -91,7 +111,7 @@ export default function MyPage() {
               <input
                 id="profile-upload"
                 type="file"
-                accept="image/*"
+                accept=".jpg, .jpeg, .png, .webp"
                 className="hidden"
                 onChange={handleFileChange} // 파일 선택 시 실행될 함수
               />
