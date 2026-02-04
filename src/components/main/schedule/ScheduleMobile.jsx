@@ -1,5 +1,6 @@
 import aprilIcon from '@/assets/icons/main/schedule/april.svg';
 import augustIcon from '@/assets/icons/main/schedule/august.svg';
+import clickBoxIcon from '@/assets/icons/main/schedule/click-box.svg';
 import decemberIcon from '@/assets/icons/main/schedule/december.svg';
 import julyIcon from '@/assets/icons/main/schedule/july.svg';
 import juneIcon from '@/assets/icons/main/schedule/june.svg';
@@ -207,26 +208,79 @@ function ScheduleMobile({ onMonthClick }) {
         </div>
 
         {/* 3월 - 상단 왼쪽 */}
-        <button
-          type="button"
-          onClick={() => onMonthClick('3월')}
-          className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
+        <div
+          className="absolute group"
           style={{
             left: '3%',
             top: '8px',
             width: '50px',
             height: '48px',
           }}
-          aria-label="3월 일정 보기"
         >
-          <img src={monthIconMap['3월']} alt="3월" className="w-full h-full object-contain" />
-        </button>
+          {/* click-box를 march 위에 배치 */}
+          <div
+            className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
+            style={{
+              left: '-53px',
+              top: '-65px',
+              width: '137px',
+              height: '60px',
+              zIndex: 20,
+            }}
+          >
+            <img
+              src={clickBoxIcon}
+              alt="click-box"
+              className="w-full h-full"
+              style={{ pointerEvents: 'none' }}
+            />
+            {/* 텍스트 입력 영역 */}
+            <div
+              className="absolute inset-0 flex flex-col items-center justify-center"
+              style={{
+                padding: '5px 10px',
+                marginTop: '-5px',
+              }}
+            >
+              <div
+                contentEditable
+                suppressContentEditableWarning
+                className="text-[#00156A] font-bold text-center outline-none cursor-text"
+                style={{
+                  fontSize: '10px',
+                  lineHeight: '15px',
+                  fontFamily: 'Pretendard, sans-serif',
+                  minHeight: '18px',
+                }}
+                onBlur={() => {
+                  // 텍스트 변경 시 저장 로직 (필요시 추가)
+                }}
+              >
+                클릭 해 월별 상세 일정을
+                <br />
+                확인해보세요!
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => onMonthClick('3월')}
+            className="relative cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
+            style={{
+              width: '50px',
+              height: '48px',
+            }}
+            aria-label="3월 일정 보기"
+          >
+            <img src={monthIconMap['3월']} alt="3월" className="w-full h-full object-contain" />
+          </button>
+        </div>
 
         {/* 5월 - 상단 오른쪽 */}
         <button
           type="button"
           onClick={() => onMonthClick('5월')}
-          className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
           style={{
             left: '60%',
             top: '-17px',
@@ -242,7 +296,7 @@ function ScheduleMobile({ onMonthClick }) {
         <button
           type="button"
           onClick={() => onMonthClick('6월')}
-          className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
           style={{
             left: '30%',
             top: '77px',
@@ -258,7 +312,7 @@ function ScheduleMobile({ onMonthClick }) {
         <button
           type="button"
           onClick={() => onMonthClick('7월')}
-          className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
           style={{
             left: '83%',
             top: '91px',
@@ -287,7 +341,7 @@ function ScheduleMobile({ onMonthClick }) {
         <button
           type="button"
           onClick={() => onMonthClick('8월')}
-          className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
           style={{
             left: '10%',
             top: '186px',
@@ -303,7 +357,7 @@ function ScheduleMobile({ onMonthClick }) {
         <button
           type="button"
           onClick={() => onMonthClick('9월')}
-          className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
           style={{
             left: '69%',
             top: '189px',
@@ -319,7 +373,7 @@ function ScheduleMobile({ onMonthClick }) {
         <button
           type="button"
           onClick={() => onMonthClick('10월')}
-          className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
           style={{
             left: '-9%',
             top: '270px',
@@ -335,7 +389,7 @@ function ScheduleMobile({ onMonthClick }) {
         <button
           type="button"
           onClick={() => onMonthClick('11월')}
-          className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
           style={{
             left: '46.27%',
             top: '298px',
@@ -351,7 +405,7 @@ function ScheduleMobile({ onMonthClick }) {
         <button
           type="button"
           onClick={() => onMonthClick('12월')}
-          className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
           style={{
             left: '92%',
             top: '275px',
@@ -367,7 +421,7 @@ function ScheduleMobile({ onMonthClick }) {
         <button
           type="button"
           onClick={() => onMonthClick('4월')}
-          className="absolute cursor-pointer hover:opacity-80 transition-opacity active:opacity-70"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
           style={{
             left: '-14%',
             top: '90px',

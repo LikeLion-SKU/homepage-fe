@@ -84,7 +84,7 @@ function SchedulePad({ onMonthClick }) {
             className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
             style={{
               left: `${(-105 / 16) * scale}rem`,
-              top: `${(-120 / 16) * scale}rem`,
+              top: `${(-130 / 16) * scale}rem`,
               width: `${(280 / 16) * scale}rem`,
               height: `${(120 / 16) * scale}rem`,
               zIndex: 20,
