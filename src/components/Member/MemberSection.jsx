@@ -45,10 +45,10 @@ export default function MemberSection({ title, data }) {
         <div className="flex flex-col gap-12">
           <p className="text-[1.2rem] pad:text-[1.9rem] font-bold">{title}</p>
           <div className="flex flex-col gap-20">
-            {data.map((memberData) => (
+            {data.map((memberData, index) => (
               <div className="flex flex-col gap-5">
                 <p className="text-[1rem] pad:text-[1.25rem] font-semibold">
-                  {memberData.track
+                  {index > 1
                     ? memberData.track
                     : `${memberData.position == 'LEAD' ? '대표' : '부대표'}`}
                 </p>
