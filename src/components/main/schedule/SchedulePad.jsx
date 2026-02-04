@@ -1,6 +1,7 @@
 import scheduleBlahIcon from '@/assets/icons/main/schedule/2026-blah.svg';
 import aprilIcon from '@/assets/icons/main/schedule/april.svg';
 import augustIcon from '@/assets/icons/main/schedule/august.svg';
+import clickBoxIcon from '@/assets/icons/main/schedule/click-box.svg';
 import decemberIcon from '@/assets/icons/main/schedule/december.svg';
 import dinoIcon from '@/assets/icons/main/schedule/dino.svg';
 import doteP5Icon from '@/assets/icons/main/schedule/dote-p5.svg';
@@ -70,19 +71,71 @@ function SchedulePad({ onMonthClick }) {
             top: `${(60 / 16) * scale}rem`,
           }}
         />
-        {/* march 아이콘 독립적으로 배치 */}
-        <img
-          src={marchIcon}
-          alt="march"
-          className="absolute cursor-pointer"
-          onClick={() => onMonthClick('3월')}
+        {/* march 아이콘과 click-box를 하나의 섹션으로 묶어서 배치 */}
+        <div
+          className="absolute group"
           style={{
-            width: `${(120 / 16) * scale}rem`,
-            height: `${(120 / 16) * scale}rem`,
             left: `${(105 / 16) * scale}rem`,
             top: `${(40 / 16) * scale}rem`,
           }}
-        />
+        >
+          {/* click-box를 march 위에 배치 */}
+          <div
+            className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
+            style={{
+              left: `${(-105 / 16) * scale}rem`,
+              top: `${(-120 / 16) * scale}rem`,
+              width: `${(280 / 16) * scale}rem`,
+              height: `${(120 / 16) * scale}rem`,
+              zIndex: 20,
+            }}
+          >
+            <img
+              src={clickBoxIcon}
+              alt="click-box"
+              className="w-full h-full"
+              style={{ pointerEvents: 'none' }}
+            />
+            {/* 텍스트 입력 영역 */}
+            <div
+              className="absolute inset-0 flex flex-col items-center justify-center"
+              style={{
+                padding: `${(10 / 16) * scale}rem ${(20 / 16) * scale}rem`,
+                marginTop: `${(-15 / 16) * scale}rem`,
+              }}
+            >
+              <div
+                contentEditable
+                suppressContentEditableWarning
+                className="text-[#00156A] font-bold text-center outline-none cursor-text"
+                style={{
+                  fontSize: `${(20 / 16) * scale}rem`,
+                  lineHeight: `${(30 / 16) * scale}rem`,
+                  fontFamily: 'Pretendard, sans-serif',
+                  minHeight: `${(36 / 16) * scale}rem`,
+                }}
+                onBlur={() => {
+                  // 텍스트 변경 시 저장 로직 (필요시 추가)
+                }}
+              >
+                클릭 해 월별 상세 일정을
+                <br />
+                확인해보세요!
+              </div>
+            </div>
+          </div>
+          {/* march 아이콘 */}
+          <img
+            src={marchIcon}
+            alt="march"
+            className="relative cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('3월')}
+            style={{
+              width: `${(120 / 16) * scale}rem`,
+              height: `${(120 / 16) * scale}rem`,
+            }}
+          />
+        </div>
         {/* dote-p-6 독립적으로 배치 */}
         <img
           src={doteP6Icon}
@@ -98,7 +151,7 @@ function SchedulePad({ onMonthClick }) {
         <img
           src={aprilIcon}
           alt="april"
-          className="absolute cursor-pointer"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
           onClick={() => onMonthClick('4월')}
           style={{
             width: `${(85 / 16) * scale}rem`,
@@ -122,7 +175,7 @@ function SchedulePad({ onMonthClick }) {
         <img
           src={mayIcon}
           alt="may"
-          className="absolute cursor-pointer"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
           onClick={() => onMonthClick('5월')}
           style={{
             width: `${(125 / 16) * scale}rem`,
@@ -148,7 +201,7 @@ function SchedulePad({ onMonthClick }) {
         <img
           src={juneIcon}
           alt="june"
-          className="absolute cursor-pointer"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
           onClick={() => onMonthClick('6월')}
           style={{
             width: `${(120 / 16) * scale}rem`,
@@ -172,7 +225,7 @@ function SchedulePad({ onMonthClick }) {
         <img
           src={julyIcon}
           alt="july"
-          className="absolute cursor-pointer"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
           onClick={() => onMonthClick('7월')}
           style={{
             width: `${(80 / 16) * scale}rem`,
@@ -208,7 +261,7 @@ function SchedulePad({ onMonthClick }) {
         <img
           src={augustIcon}
           alt="august"
-          className="absolute cursor-pointer"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
           onClick={() => onMonthClick('8월')}
           style={{
             width: `${(83 / 16) * scale}rem`,
@@ -232,7 +285,7 @@ function SchedulePad({ onMonthClick }) {
         <img
           src={sebtemberIcon}
           alt="september"
-          className="absolute cursor-pointer"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
           onClick={() => onMonthClick('9월')}
           style={{
             width: `${(80 / 16) * scale}rem`,
@@ -256,7 +309,7 @@ function SchedulePad({ onMonthClick }) {
         <img
           src={octoberIcon}
           alt="october"
-          className="absolute cursor-pointer"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
           onClick={() => onMonthClick('10월')}
           style={{
             width: `${(180 / 16) * scale}rem`,
@@ -283,7 +336,7 @@ function SchedulePad({ onMonthClick }) {
         <img
           src={novemberIcon}
           alt="november"
-          className="absolute cursor-pointer"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
           onClick={() => onMonthClick('11월')}
           style={{
             width: `${(120 / 16) * scale}rem`,
@@ -332,7 +385,7 @@ function SchedulePad({ onMonthClick }) {
         <img
           src={decemberIcon}
           alt="december"
-          className="absolute cursor-pointer"
+          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
           onClick={() => onMonthClick('12월')}
           style={{
             width: `${(110 / 16) * scale}rem`,
