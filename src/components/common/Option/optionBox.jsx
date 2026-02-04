@@ -1,8 +1,13 @@
 import { useState } from 'react';
 
-export default function OptionBox({ initValue, optionData, bgColor = 'white' }) {
+export default function OptionBox({
+  initValue,
+  optionData,
+  bgColor = 'white',
+  selectedNum,
+  setSelectedNum,
+}) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedNum, setSelectedNum] = useState(initValue);
   return (
     <details
       open={isOpen}
@@ -14,7 +19,7 @@ export default function OptionBox({ initValue, optionData, bgColor = 'white' }) 
         className="flex w-19 pad:w-28 h-7.5 pad:h-10 list-none  border justify-center items-center 
         text-[0.7rem] pad:text-[1rem] font-bold pad:font-semibold"
       >
-        {selectedNum || '선택'}
+        {selectedNum || initValue}
         <span className="mb-1 ml-1 pad:mb-2 pad:ml-2">⌵</span>
       </summary>
       <ul

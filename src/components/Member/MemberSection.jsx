@@ -20,7 +20,7 @@ export default function MemberSection({ title, data }) {
     },
   ];
   const handleLoading = () => {
-    setIsLoading(true);
+    setIsLoading(false);
   }; //esLint 제거를 위해 임시로 넣음
   handleLoading;
   return (
@@ -45,12 +45,16 @@ export default function MemberSection({ title, data }) {
         <div className="flex flex-col gap-12">
           <p className="text-[1.2rem] pad:text-[1.9rem] font-bold">{title}</p>
           <div className="flex flex-col gap-20">
-            {data.map((track) => (
+            {data.map((memberData) => (
               <div className="flex flex-col gap-5">
-                <p className="text-[1rem] pad:text-[1.25rem] font-semibold">{track.name}</p>
+                <p className="text-[1rem] pad:text-[1.25rem] font-semibold">
+                  {memberData.track
+                    ? memberData.track
+                    : `${memberData.position == 'LEAD' ? '대표' : '부대표'}`}
+                </p>
                 <div className="flex flex-wrap gap-2 pad:gap-4 web:gap-5.5">
-                  {track.member.map((data) => (
-                    <MemberCard data={data} />
+                  {memberData.clubMembers.map((data, index) => (
+                    <MemberCard key={index} data={data} />
                   ))}
                 </div>
               </div>

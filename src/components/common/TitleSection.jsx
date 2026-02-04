@@ -1,8 +1,36 @@
+import { useEffect, useRef, useState } from 'react';
+
 // @ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 import PageTitle from '@/components/common/PageTitle';
 
-export default function TitleSection({ title, pageExplanation, onSearch = true, children }) {
+export default function TitleSection({
+  title,
+  pageExplanation,
+  onSearch = true,
+  children,
+  searchApi = (value) => {
+    console.log(value);
+  },
+}) {
+  const [searchName, setSearchName] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  let isMount = useRef(false);
+
+  /* 1) 검색어 디바운싱 */
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(searchName), 800);
+    return () => clearTimeout(t);
+  }, [searchName]);
+
+  /* 2) 검색 API (검색어 있을 때만) */
+  useEffect(() => {
+    if (!isMount.current) {
+      isMount.current = true;
+      return;
+    }
+    searchApi(debouncedSearch);
+  }, [debouncedSearch]);
   //children으로 dom구조 받아서 넣으므로 내용으로 옵션박스 넣기
   return (
     <div className="flex flex-col gap-5.5 px-2 pad:px-7 border-b">
@@ -17,6 +45,8 @@ export default function TitleSection({ title, pageExplanation, onSearch = true, 
           >
             <Search className="w-4 pad:w-6" />
             <input
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
               placeholder="검색하기"
               className="w-full focus:outline-none placeholder:text-[0.7rem] pad:placeholder:text-[1rem] 
               text-[0.7rem] pad:text-[1rem] placeholder:font-bold placeholder:text-black"
