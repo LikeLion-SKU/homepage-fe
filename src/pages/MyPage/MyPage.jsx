@@ -11,7 +11,7 @@ import Modal from '@/components/common/Modal/ConfirmModal';
 export default function MyPage() {
   const userData = useLoaderData(); // 데이터 가져오기
 
-  const defaultProfileImage = ''; // 기본 이미지
+  const defaultProfileImage = null; // 기본 이미지
   const navigate = useNavigate();
 
   const hasApplication = userData.documentSubmitted; // 지원서 제출 여부
