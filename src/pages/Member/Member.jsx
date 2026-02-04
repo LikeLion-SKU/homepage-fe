@@ -11,7 +11,7 @@ import TitleSection from '@/components/common/TitleSection';
 
 export default function Member() {
   const [semesters, setSemesters] = useState([]);
-  const [selectSemester, setSelectSemester] = useState('');
+  const [selectSemester, setSelectSemester] = useState('13기');
   const [members, setMembers] = useState([]);
   const [cursor, setCursor] = useState({ position: 'LEAD', track: null });
   const [hasNext, setHasNext] = useState(true);
@@ -39,6 +39,7 @@ export default function Member() {
       try {
         // "14기"에서 숫자 14만 추출 (API가 integer를 요구하므로)
         const semesterNum = parseInt(selectSemester);
+        if (isNaN(semesterNum)) return;
 
         const res = await getClubMember(semesterNum, {
           'next-position-cursor': isInitial ? 'LEAD' : cursor.position,

@@ -4,8 +4,8 @@ export const getClubMember = async (semester, parameter) => {
   try {
     const res = await APIService.public.get(`/v1/users/club-members/${semester}`, {
       params: {
-        'next-position-cursor': parameter.nextPositionCursor,
-        'next-track-cursor': parameter?.nextTrackCursor,
+        'next-position-cursor': parameter['next-position-cursor'],
+        'next-track-cursor': parameter['next-track-cursor'],
       },
     });
 
