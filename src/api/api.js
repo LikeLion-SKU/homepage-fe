@@ -1,26 +1,59 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
+import { refresh } from '@/api/authApi';
+import useAuthStore from '@/store/useAuthStore';
 
 // 공용 API 인스턴스 (토큰이 필요 없는 경우)
 const publicAPI = axios.create({
-  baseURL: BASE_URL,
+  baseURL: '/api', // 중요: 환경변수 BASE_URL 쓰지 말기
 });
 
-// 인증 API 인스턴스 (토큰이 필요한 경우)
+// 인증 API 인스턴스 (쿠키 기반 인증)
 const privateAPI = axios.create({
-  baseURL: BASE_URL,
-  withCredentials: false,
+  baseURL: '/api', // 중요: 환경변수 BASE_URL 쓰지 말기
+  withCredentials: true, // 쿠키 전송 활성화
 });
 
-// accessToken을 자동으로 Authorization 헤더에 삽입
-privateAPI.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+// 쿠키 기반 인증이므로 Authorization 헤더 삽입 불필요
+// 쿠키가 자동으로 전송됨
+
+// refresh 중복 호출 방지
+let isRefreshing = false;
+
+// 응답 인터셉터: 401 에러 시 자동 refresh + 재시도
+privateAPI.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // 401 에러이고, 아직 재시도하지 않은 요청인 경우
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      // 이미 refresh 중이면 원래 요청 실패 처리
+      if (isRefreshing) {
+        return Promise.reject(error);
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        // refresh API 호출
+        await refresh();
+        // refresh 성공 시 원래 요청 1번만 재시도
+        isRefreshing = false;
+        return privateAPI(originalRequest);
+      } catch (refreshError) {
+        // refresh 실패 (401/403) 시 상태 초기화하고 alert 표시
+        isRefreshing = false;
+        useAuthStore.getState().logout();
+        alert('401입니다.');
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
 /**
  * API 서비스 객체
