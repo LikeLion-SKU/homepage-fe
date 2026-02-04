@@ -11,7 +11,7 @@ import TitleSection from '@/components/common/TitleSection';
 
 export default function Member() {
   const [semesters, setSemesters] = useState([]);
-  const [selectSemester, setSelectSemester] = useState('13기');
+  const [selectSemester, setSelectSemester] = useState('12기');
   const [members, setMembers] = useState([]);
   const [cursor, setCursor] = useState({ position: 'LEAD', track: null });
   const [hasNext, setHasNext] = useState(true);
@@ -23,7 +23,7 @@ export default function Member() {
       try {
         const data = await getSemester();
         setSemesters(data);
-        if (data.length > 0) setSelectSemester(`${data[0]}기`);
+        //if (data.length > 0) setSelectSemester(`${data[0]}기`);//14아직 조회 불가라 초기값 설정 막기
       } catch (error) {
         console.log('기수 데이터 조회 실패:', error);
       }
@@ -47,7 +47,7 @@ export default function Member() {
         });
 
         // 초기화 로드면 새로 갈아끼우고, 추가 로드면 기존 뒤에 붙임
-        setMembers((prev) => (isInitial ? res.content : [...prev, ...res.content]));
+        setMembers(res.content);
 
         // 상태 업데이트
         setCursor({
@@ -82,7 +82,7 @@ export default function Member() {
 
     if (observerRef.current) observer.observe(observerRef.current);
     return () => observer.disconnect();
-  }, [fetchMembers, hasNext, loading]);
+  }, [hasNext, loading]);
 
   return (
     <div className="flex flex-col py-14 px-5 pad:px-7  web:px-14 relative mb-70">
@@ -99,11 +99,13 @@ export default function Member() {
       </TitleSection>
       <div className="flex flex-col gap-32 pad:pl-3.25 web:pl-7 pt-20">
         <MemberSection title="운영진" data={members.filter((m) => m.position !== 'BABYLION')} />
-        <MemberSection title="아기사자" data={members.filter((m) => m.position === 'BABYLION')} />
+        {members.filter((m) => m.position === 'BABYLION').length > 0 && (
+          <MemberSection title="아기사자" data={members.filter((m) => m.position === 'BABYLION')} />
+        )}
       </div>
 
       <div ref={observerRef} className="h-10 w-full flex justify-center items-center">
-        {loading && <div className="animate-spin">🌀</div>}
+        {loading && <div className="animate-spin"></div>}
       </div>
       <img src={BackgroundImg1} className="absolute w-191 left-auto right-0 -z-1" />
       <img src={BackgroundImg2} className="absolute w-191 top-400 left-0 -z-1" />

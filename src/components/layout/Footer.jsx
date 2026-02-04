@@ -3,7 +3,7 @@ import Skon from '@/assets/icons/SKON_icon.svg?react';
 
 export default function Footer() {
   return (
-    <footer className="w-full flex items-center justify-between bg-[#F9F9F9] mt-auto px-6 py-2 web:py-5">
+    <footer className="z-50 w-full flex items-center justify-between bg-[#F9F9F9] mt-auto px-6 py-2 web:py-5">
       <div>
         <div className="flex flex-wrap items-baseline web:gap-2">
           <div className="text-[#00156A]">
