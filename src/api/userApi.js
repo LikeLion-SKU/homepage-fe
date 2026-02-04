@@ -1,4 +1,4 @@
-import { APIService } from '@/api/api';
+import { privateAPI } from '@/api/api';
 
 export const getClubMember = async (semester, parameter) => {
   try {
@@ -14,3 +14,13 @@ export const getClubMember = async (semester, parameter) => {
     console.log('구성원 조회 실패:', error);
   }
 };
+
+// 비밀번호 변경
+export const changePassword = ({ currentPassword, newPassword, newPasswordConfirmation }) =>
+  privateAPI
+    .patch('/v1/users/me/password', {
+      currentPassword,
+      newPassword,
+      newPasswordConfirmation,
+    })
+    .then((r) => r.data);
