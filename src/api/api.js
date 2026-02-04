@@ -45,13 +45,13 @@ privateAPI.interceptors.response.use(
       } catch (refreshError) {
         // refresh 실패 (401/403) 시 상태 초기화하고 alert 표시
         isRefreshing = false;
-        useAuthStore.getState().logout();
-        alert('401입니다.');
+        useAuthStore.getState().setLogout();
+        window.location.href = '/401';
         return Promise.reject(refreshError);
       }
     }
 
-    return Promise.reject(error);
+    return new Promise(() => {});
   }
 );
 
