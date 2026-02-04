@@ -1,5 +1,6 @@
 import { APIService, privateAPI } from '@/api/api';
 
+//기수별 구성원 조회
 export const getClubMember = async (semester, parameter) => {
   try {
     const res = await APIService.public.get(`/v1/users/club-members/${semester}`, {
@@ -24,3 +25,13 @@ export const changePassword = ({ currentPassword, newPassword, newPasswordConfir
       newPasswordConfirmation,
     })
     .then((r) => r.data);
+
+export const getUserRole = async () => {
+  try {
+    const res = await APIService.private.get('/v1/users/role');
+
+    return res.data.userRole;
+  } catch (error) {
+    console.log('권한 조회 실패:', error);
+  }
+};
