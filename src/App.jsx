@@ -2,6 +2,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { logoutAction } from '@/api/logoutAction';
+import { myPageLoader } from '@/api/myPageLoader';
 import { getProjectList } from '@/api/projectApi';
 import RootLayout from '@/layouts/RootLayout';
 import ServiceLayout from '@/layouts/ServiceLayout';
@@ -54,7 +56,7 @@ const router = createBrowserRouter([
         // 보호가 필요한 페이지들,ProtectedRoute에서 토큰 검사
         /*Component: ProtectedRoute,*/
         children: [
-          { path: '/mypage', Component: MyPage },
+          { path: '/mypage', Component: MyPage, loader: myPageLoader },
           { path: '/mypage/reschedule', Component: Reschedule },
           { path: '/mypage/password/change', Component: PasswordChange },
           { path: '/welcome', Component: Welcome },
@@ -91,6 +93,7 @@ const router = createBrowserRouter([
           { path: '/404', Component: Error404 },
           { path: '/403', Component: Error403 },
           { path: '/401', Component: Error401 },
+          { path: 'logout', action: logoutAction }, // 페이지는 없지만 action 등록용
         ],
       },
       {
