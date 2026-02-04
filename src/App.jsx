@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { logoutAction } from '@/api/logoutAction';
 import { myPageLoader } from '@/api/myPageLoader';
-import { getProjectList } from '@/api/projectApi';
+import { getFilterProjectList } from '@/api/projectApi';
 import RootLayout from '@/layouts/RootLayout';
 import ServiceLayout from '@/layouts/ServiceLayout';
 import AdminApplication from '@/pages/Admin/AdminApplication';
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
       {
         // 기타 공개 페이지들, 로그인 없이도 볼 수 있는 페이지
         children: [
-          { path: '/project', Component: ProjectList, loader: getProjectList },
+          { path: '/project', Component: ProjectList, loader: getFilterProjectList },
           { path: '/project/viewDetail', Component: ProjectViewDetail },
           { path: '/recruit', Component: Recruitment },
           { path: '/member', Component: Member },

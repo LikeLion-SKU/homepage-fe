@@ -2,7 +2,7 @@ import { APIService } from '@/api/api';
 
 export const getProjectList = async (parameter) => {
   try {
-    const res = await APIService.public.get('/v1/projects?page', {
+    const res = await APIService.public.get('/v1/projects', {
       params: {
         page: parameter.page || 0,
         semester: parameter.semester,
