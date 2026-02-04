@@ -31,3 +31,6 @@ export const login = ({ email, password }) =>
 
 // 토큰 갱신 (쿠키 기반)
 export const refresh = () => authAPI.post('/v1/auth/refresh').then((r) => r.data);
+
+// 로그아웃 (쿠키 기반)
+export const logout = () => authAPI.post('/v1/auth/logout').then((r) => r.data);
