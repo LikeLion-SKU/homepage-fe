@@ -1,4 +1,4 @@
-import { privateAPI } from '@/api/api';
+import { APIService, privateAPI } from '@/api/api';
 
 export const getClubMember = async (semester, parameter) => {
   try {
