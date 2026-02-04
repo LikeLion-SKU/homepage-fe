@@ -1,6 +1,5 @@
 import aprilIcon from '@/assets/icons/main/schedule/april.svg';
 import augustIcon from '@/assets/icons/main/schedule/august.svg';
-import clickBoxIcon from '@/assets/icons/main/schedule/click-box.svg';
 import decemberIcon from '@/assets/icons/main/schedule/december.svg';
 import julyIcon from '@/assets/icons/main/schedule/july.svg';
 import juneIcon from '@/assets/icons/main/schedule/june.svg';
@@ -10,6 +9,7 @@ import novemberIcon from '@/assets/icons/main/schedule/november.svg';
 import octoberIcon from '@/assets/icons/main/schedule/october.svg';
 import sebtemberIcon from '@/assets/icons/main/schedule/sebtember.svg';
 import umbrellaIcon from '@/assets/icons/main/schedule/umbrella.svg';
+import ClickBox from '@/components/main/schedule/ClickBox';
 
 function ScheduleMobile({ onMonthClick }) {
   // 월별 아이콘 매핑
@@ -24,6 +24,20 @@ function ScheduleMobile({ onMonthClick }) {
     '10월': octoberIcon,
     '11월': novemberIcon,
     '12월': decemberIcon,
+  };
+
+  // 월별 말풍선 오프셋 (px)
+  const CLICKBOX_OFFSET = {
+    '3월': { x: 0, y: 0 },
+    '4월': { x: 0, y: 0 },
+    '5월': { x: 20, y: 25 },
+    '6월': { x: 0, y: 15 },
+    '7월': { x: 0, y: 0 },
+    '8월': { x: 5, y: 0 },
+    '9월': { x: 5, y: -5 },
+    '10월': { x: 10, y: 30 },
+    '11월': { x: 5, y: 0 },
+    '12월': { x: 5, y: 5 },
   };
 
   return (
@@ -210,66 +224,13 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 3월 - 상단 왼쪽 */}
         <div
           className="absolute group"
-          style={{
-            left: '3%',
-            top: '8px',
-            width: '50px',
-            height: '48px',
-          }}
+          style={{ left: '3%', top: '8px', width: '50px', height: '48px' }}
         >
-          {/* click-box를 march 위에 배치 */}
-          <div
-            className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
-            style={{
-              left: '-53px',
-              top: '-65px',
-              width: '137px',
-              height: '60px',
-              zIndex: 20,
-            }}
-          >
-            <img
-              src={clickBoxIcon}
-              alt="click-box"
-              className="w-full h-full"
-              style={{ pointerEvents: 'none' }}
-            />
-            {/* 텍스트 입력 영역 */}
-            <div
-              className="absolute inset-0 flex flex-col items-center justify-center"
-              style={{
-                padding: '5px 10px',
-                marginTop: '-5px',
-              }}
-            >
-              <div
-                contentEditable
-                suppressContentEditableWarning
-                className="text-[#00156A] font-bold text-center outline-none cursor-text"
-                style={{
-                  fontSize: '10px',
-                  lineHeight: '15px',
-                  fontFamily: 'Pretendard, sans-serif',
-                  minHeight: '18px',
-                }}
-                onBlur={() => {
-                  // 텍스트 변경 시 저장 로직 (필요시 추가)
-                }}
-              >
-                클릭 해 월별 상세 일정을
-                <br />
-                확인해보세요!
-              </div>
-            </div>
-          </div>
+          <ClickBox offsetXPx={CLICKBOX_OFFSET['3월'].x} offsetYPx={CLICKBOX_OFFSET['3월'].y} />
           <button
             type="button"
             onClick={() => onMonthClick('3월')}
-            className="relative cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
-            style={{
-              width: '50px',
-              height: '48px',
-            }}
+            className="relative w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
             aria-label="3월 일정 보기"
           >
             <img src={monthIconMap['3월']} alt="3월" className="w-full h-full object-contain" />
@@ -277,52 +238,52 @@ function ScheduleMobile({ onMonthClick }) {
         </div>
 
         {/* 5월 - 상단 오른쪽 */}
-        <button
-          type="button"
-          onClick={() => onMonthClick('5월')}
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
-          style={{
-            left: '60%',
-            top: '-17px',
-            width: '53px',
-            height: '60px',
-          }}
-          aria-label="5월 일정 보기"
+        <div
+          className="absolute group"
+          style={{ left: '60%', top: '-17px', width: '53px', height: '60px' }}
         >
-          <img src={monthIconMap['5월']} alt="5월" className="w-full h-full object-contain" />
-        </button>
+          <ClickBox offsetXPx={CLICKBOX_OFFSET['5월'].x} offsetYPx={CLICKBOX_OFFSET['5월'].y} />
+          <button
+            type="button"
+            onClick={() => onMonthClick('5월')}
+            className="relative w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
+            aria-label="5월 일정 보기"
+          >
+            <img src={monthIconMap['5월']} alt="5월" className="w-full h-full object-contain" />
+          </button>
+        </div>
 
         {/* 6월 - 중간 왼쪽 */}
-        <button
-          type="button"
-          onClick={() => onMonthClick('6월')}
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
-          style={{
-            left: '30%',
-            top: '77px',
-            width: '45px',
-            height: '50px',
-          }}
-          aria-label="6월 일정 보기"
+        <div
+          className="absolute group"
+          style={{ left: '30%', top: '77px', width: '45px', height: '50px' }}
         >
-          <img src={monthIconMap['6월']} alt="6월" className="w-full h-full object-contain" />
-        </button>
+          <ClickBox offsetXPx={CLICKBOX_OFFSET['6월'].x} offsetYPx={CLICKBOX_OFFSET['6월'].y} />
+          <button
+            type="button"
+            onClick={() => onMonthClick('6월')}
+            className="relative w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
+            aria-label="6월 일정 보기"
+          >
+            <img src={monthIconMap['6월']} alt="6월" className="w-full h-full object-contain" />
+          </button>
+        </div>
 
         {/* 7월 - 중간 오른쪽 */}
-        <button
-          type="button"
-          onClick={() => onMonthClick('7월')}
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
-          style={{
-            left: '83%',
-            top: '91px',
-            width: '32px',
-            height: '32px',
-          }}
-          aria-label="7월 일정 보기"
+        <div
+          className="absolute group"
+          style={{ left: '83%', top: '91px', width: '32px', height: '32px' }}
         >
-          <img src={monthIconMap['7월']} alt="7월" className="w-full h-full object-contain" />
-        </button>
+          <ClickBox offsetXPx={CLICKBOX_OFFSET['7월'].x} offsetYPx={CLICKBOX_OFFSET['7월'].y} />
+          <button
+            type="button"
+            onClick={() => onMonthClick('7월')}
+            className="relative w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
+            aria-label="7월 일정 보기"
+          >
+            <img src={monthIconMap['7월']} alt="7월" className="w-full h-full object-contain" />
+          </button>
+        </div>
 
         {/* umbrella 아이콘 - 7월 옆 */}
         <img
@@ -338,100 +299,100 @@ function ScheduleMobile({ onMonthClick }) {
         />
 
         {/* 8월 - 하단 왼쪽 */}
-        <button
-          type="button"
-          onClick={() => onMonthClick('8월')}
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
-          style={{
-            left: '10%',
-            top: '186px',
-            width: '40px',
-            height: '45px',
-          }}
-          aria-label="8월 일정 보기"
+        <div
+          className="absolute group"
+          style={{ left: '10%', top: '186px', width: '40px', height: '45px' }}
         >
-          <img src={monthIconMap['8월']} alt="8월" className="w-full h-full object-contain" />
-        </button>
+          <ClickBox offsetXPx={CLICKBOX_OFFSET['8월'].x} offsetYPx={CLICKBOX_OFFSET['8월'].y} />
+          <button
+            type="button"
+            onClick={() => onMonthClick('8월')}
+            className="relative w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
+            aria-label="8월 일정 보기"
+          >
+            <img src={monthIconMap['8월']} alt="8월" className="w-full h-full object-contain" />
+          </button>
+        </div>
 
         {/* 9월 - 중앙 */}
-        <button
-          type="button"
-          onClick={() => onMonthClick('9월')}
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
-          style={{
-            left: '69%',
-            top: '189px',
-            width: '42px',
-            height: '38px',
-          }}
-          aria-label="9월 일정 보기"
+        <div
+          className="absolute group"
+          style={{ left: '69%', top: '189px', width: '42px', height: '38px' }}
         >
-          <img src={monthIconMap['9월']} alt="9월" className="w-full h-full object-contain" />
-        </button>
+          <ClickBox offsetXPx={CLICKBOX_OFFSET['9월'].x} offsetYPx={CLICKBOX_OFFSET['9월'].y} />
+          <button
+            type="button"
+            onClick={() => onMonthClick('9월')}
+            className="relative w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
+            aria-label="9월 일정 보기"
+          >
+            <img src={monthIconMap['9월']} alt="9월" className="w-full h-full object-contain" />
+          </button>
+        </div>
 
         {/* 10월 - 하단 왼쪽 */}
-        <button
-          type="button"
-          onClick={() => onMonthClick('10월')}
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
-          style={{
-            left: '-9%',
-            top: '270px',
-            width: '73px',
-            height: '80px',
-          }}
-          aria-label="10월 일정 보기"
+        <div
+          className="absolute group"
+          style={{ left: '-9%', top: '270px', width: '73px', height: '80px' }}
         >
-          <img src={monthIconMap['10월']} alt="10월" className="w-full h-full object-contain" />
-        </button>
+          <ClickBox offsetXPx={CLICKBOX_OFFSET['10월'].x} offsetYPx={CLICKBOX_OFFSET['10월'].y} />
+          <button
+            type="button"
+            onClick={() => onMonthClick('10월')}
+            className="relative w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
+            aria-label="10월 일정 보기"
+          >
+            <img src={monthIconMap['10월']} alt="10월" className="w-full h-full object-contain" />
+          </button>
+        </div>
 
         {/* 11월 - 하단 중앙 */}
-        <button
-          type="button"
-          onClick={() => onMonthClick('11월')}
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
-          style={{
-            left: '46.27%',
-            top: '298px',
-            width: '35px',
-            height: '32px',
-          }}
-          aria-label="11월 일정 보기"
+        <div
+          className="absolute group"
+          style={{ left: '46.27%', top: '298px', width: '35px', height: '32px' }}
         >
-          <img src={monthIconMap['11월']} alt="11월" className="w-full h-full object-contain" />
-        </button>
+          <ClickBox offsetXPx={CLICKBOX_OFFSET['11월'].x} offsetYPx={CLICKBOX_OFFSET['11월'].y} />
+          <button
+            type="button"
+            onClick={() => onMonthClick('11월')}
+            className="relative w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
+            aria-label="11월 일정 보기"
+          >
+            <img src={monthIconMap['11월']} alt="11월" className="w-full h-full object-contain" />
+          </button>
+        </div>
 
         {/* 12월 - 하단 오른쪽 */}
-        <button
-          type="button"
-          onClick={() => onMonthClick('12월')}
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
-          style={{
-            left: '92%',
-            top: '275px',
-            width: '45px',
-            height: '63px',
-          }}
-          aria-label="12월 일정 보기"
+        <div
+          className="absolute group"
+          style={{ left: '92%', top: '275px', width: '45px', height: '63px' }}
         >
-          <img src={monthIconMap['12월']} alt="12월" className="w-full h-full object-contain" />
-        </button>
+          <ClickBox offsetXPx={CLICKBOX_OFFSET['12월'].x} offsetYPx={CLICKBOX_OFFSET['12월'].y} />
+          <button
+            type="button"
+            onClick={() => onMonthClick('12월')}
+            className="relative w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
+            aria-label="12월 일정 보기"
+          >
+            <img src={monthIconMap['12월']} alt="12월" className="w-full h-full object-contain" />
+          </button>
+        </div>
 
         {/* 4월 - 상단 중앙 (필요시 추가) */}
-        <button
-          type="button"
-          onClick={() => onMonthClick('4월')}
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
-          style={{
-            left: '-14%',
-            top: '90px',
-            width: '35px',
-            height: '35px',
-          }}
-          aria-label="4월 일정 보기"
+        <div
+          className="absolute group"
+          style={{ left: '-14%', top: '90px', width: '35px', height: '35px' }}
         >
-          <img src={monthIconMap['4월']} alt="4월" className="w-full h-full object-contain" />
-        </button>
+          <ClickBox offsetXPx={CLICKBOX_OFFSET['4월'].x} offsetYPx={CLICKBOX_OFFSET['4월'].y} />
+          <button
+            type="button"
+            onClick={() => onMonthClick('4월')}
+            className="relative w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 active:scale-105"
+            aria-label="4월 일정 보기"
+          >
+            <img src={monthIconMap['4월']} alt="4월" className="w-full h-full object-contain" />
+          </button>
+        </div>
       </div>
     </div>
   );

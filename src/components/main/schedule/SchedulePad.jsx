@@ -1,7 +1,6 @@
 import scheduleBlahIcon from '@/assets/icons/main/schedule/2026-blah.svg';
 import aprilIcon from '@/assets/icons/main/schedule/april.svg';
 import augustIcon from '@/assets/icons/main/schedule/august.svg';
-import clickBoxIcon from '@/assets/icons/main/schedule/click-box.svg';
 import decemberIcon from '@/assets/icons/main/schedule/december.svg';
 import dinoIcon from '@/assets/icons/main/schedule/dino.svg';
 import doteP5Icon from '@/assets/icons/main/schedule/dote-p5.svg';
@@ -23,10 +22,23 @@ import octoberIcon from '@/assets/icons/main/schedule/october.svg';
 import sebtemberIcon from '@/assets/icons/main/schedule/sebtember.svg';
 import umbrellaIcon from '@/assets/icons/main/schedule/umbrella.svg';
 import useScale from '@/components/main/hooks/useScale';
+import ClickBox from '@/components/main/schedule/ClickBox';
 
 function SchedulePad({ onMonthClick }) {
   // ScheduleDesktop과 동일한 baseWidth 사용하여 일관된 스케일 계산
   const scale = useScale();
+  const CLICKBOX_OFFSET = {
+    '3월': { x: -30, y: -10 },
+    '4월': { x: 0, y: 0 },
+    '5월': { x: 20, y: 45 },
+    '6월': { x: -35, y: 30 },
+    '7월': { x: 0, y: -5 },
+    '8월': { x: 0, y: 0 },
+    '9월': { x: 0, y: -5 },
+    '10월': { x: -50, y: 55 },
+    '11월': { x: -5, y: -5 },
+    '12월': { x: -5, y: -5 },
+  };
 
   return (
     <div className="relative" style={{ minHeight: `${(800 / 16) * scale}rem` }}>
@@ -79,51 +91,12 @@ function SchedulePad({ onMonthClick }) {
             top: `${(40 / 16) * scale}rem`,
           }}
         >
-          {/* click-box를 march 위에 배치 */}
-          <div
-            className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
-            style={{
-              left: `${(-105 / 16) * scale}rem`,
-              top: `${(-130 / 16) * scale}rem`,
-              width: `${(280 / 16) * scale}rem`,
-              height: `${(120 / 16) * scale}rem`,
-              zIndex: 20,
-            }}
-          >
-            <img
-              src={clickBoxIcon}
-              alt="click-box"
-              className="w-full h-full"
-              style={{ pointerEvents: 'none' }}
-            />
-            {/* 텍스트 입력 영역 */}
-            <div
-              className="absolute inset-0 flex flex-col items-center justify-center"
-              style={{
-                padding: `${(10 / 16) * scale}rem ${(20 / 16) * scale}rem`,
-                marginTop: `${(-15 / 16) * scale}rem`,
-              }}
-            >
-              <div
-                contentEditable
-                suppressContentEditableWarning
-                className="text-[#00156A] font-bold text-center outline-none cursor-text"
-                style={{
-                  fontSize: `${(20 / 16) * scale}rem`,
-                  lineHeight: `${(30 / 16) * scale}rem`,
-                  fontFamily: 'Pretendard, sans-serif',
-                  minHeight: `${(36 / 16) * scale}rem`,
-                }}
-                onBlur={() => {
-                  // 텍스트 변경 시 저장 로직 (필요시 추가)
-                }}
-              >
-                클릭 해 월별 상세 일정을
-                <br />
-                확인해보세요!
-              </div>
-            </div>
-          </div>
+          <ClickBox
+            scale={scale}
+            left="60%"
+            offsetXPx={CLICKBOX_OFFSET['3월'].x}
+            offsetYPx={CLICKBOX_OFFSET['3월'].y}
+          />
           {/* march 아이콘 */}
           <img
             src={marchIcon}
@@ -147,19 +120,29 @@ function SchedulePad({ onMonthClick }) {
             top: `${(58 / 16) * scale}rem`,
           }}
         />
-        {/* april 아이콘 독립적으로 배치 */}
-        <img
-          src={aprilIcon}
-          alt="april"
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('4월')}
+        {/* april */}
+        <div
+          className="absolute group"
           style={{
             width: `${(85 / 16) * scale}rem`,
             height: `${(85 / 16) * scale}rem`,
             left: `${(460 / 16) * scale}rem`, // -5 + 95 + 65 + 16 + 60 + 250 + 16 - 5
             top: `${(40 / 16) * scale}rem`,
           }}
-        />
+        >
+          <ClickBox
+            scale={scale}
+            left="60%"
+            offsetXPx={CLICKBOX_OFFSET['4월'].x}
+            offsetYPx={CLICKBOX_OFFSET['4월'].y}
+          />
+          <img
+            src={aprilIcon}
+            alt="april"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('4월')}
+          />
+        </div>
         {/* dote-p-10 (dote-m5) 독립적으로 배치 */}
         <img
           src={doteP10Icon}
@@ -171,12 +154,9 @@ function SchedulePad({ onMonthClick }) {
             top: `${(55 / 16) * scale}rem`,
           }}
         />
-        {/* may 아이콘 독립적으로 배치 */}
-        <img
-          src={mayIcon}
-          alt="may"
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('5월')}
+        {/* may */}
+        <div
+          className="absolute group"
           style={{
             width: `${(125 / 16) * scale}rem`,
             height: `${(125 / 16) * scale}rem`,
@@ -185,7 +165,20 @@ function SchedulePad({ onMonthClick }) {
             zIndex: 10,
             pointerEvents: 'auto',
           }}
-        />
+        >
+          <ClickBox
+            scale={scale}
+            left="60%"
+            offsetXPx={CLICKBOX_OFFSET['5월'].x}
+            offsetYPx={CLICKBOX_OFFSET['5월'].y}
+          />
+          <img
+            src={mayIcon}
+            alt="may"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('5월')}
+          />
+        </div>
         {/* dote-c5 */}
         <img
           src={doteP5Icon}
@@ -197,19 +190,29 @@ function SchedulePad({ onMonthClick }) {
             top: `${(58 / 16) * scale}rem`,
           }}
         />
-        {/* june 아이콘 독립적으로 배치 */}
-        <img
-          src={juneIcon}
-          alt="june"
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('6월')}
+        {/* june */}
+        <div
+          className="absolute group"
           style={{
             width: `${(120 / 16) * scale}rem`,
             height: `${(120 / 16) * scale}rem`,
             left: `${(720 / 16) * scale}rem`,
             top: `${(288 / 16) * scale}rem`,
           }}
-        />
+        >
+          <ClickBox
+            scale={scale}
+            left="60%"
+            offsetXPx={CLICKBOX_OFFSET['6월'].x}
+            offsetYPx={CLICKBOX_OFFSET['6월'].y}
+          />
+          <img
+            src={juneIcon}
+            alt="june"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('6월')}
+          />
+        </div>
         {/* dote-p-6  독립적으로 배치 */}
         <img
           src={doteP6Icon}
@@ -221,19 +224,29 @@ function SchedulePad({ onMonthClick }) {
             top: `${(345 / 16) * scale}rem`,
           }}
         />
-        {/* july 아이콘 독립적으로 배치 */}
-        <img
-          src={julyIcon}
-          alt="july"
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('7월')}
+        {/* july */}
+        <div
+          className="absolute group"
           style={{
             width: `${(80 / 16) * scale}rem`,
             height: `${(80 / 16) * scale}rem`,
             left: `${(360 / 16) * scale}rem`,
             top: `${(330 / 16) * scale}rem`,
           }}
-        />
+        >
+          <ClickBox
+            scale={scale}
+            left="60%"
+            offsetXPx={CLICKBOX_OFFSET['7월'].x}
+            offsetYPx={CLICKBOX_OFFSET['7월'].y}
+          />
+          <img
+            src={julyIcon}
+            alt="july"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('7월')}
+          />
+        </div>
         {/* dote-p7 아이콘 독립적으로 배치 */}
         <img
           src={dotePc7Icon}
@@ -257,19 +270,29 @@ function SchedulePad({ onMonthClick }) {
             top: `${(528 / 16) * scale}rem`,
           }}
         />
-        {/* august 아이콘 독립적으로 배치 */}
-        <img
-          src={augustIcon}
-          alt="august"
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('8월')}
+        {/* august */}
+        <div
+          className="absolute group"
           style={{
             width: `${(83 / 16) * scale}rem`,
             height: `${(83 / 16) * scale}rem`,
             left: `${(160 / 16) * scale}rem`,
             top: `${(640 / 16) * scale}rem`,
           }}
-        />
+        >
+          <ClickBox
+            scale={scale}
+            left="60%"
+            offsetXPx={CLICKBOX_OFFSET['8월'].x}
+            offsetYPx={CLICKBOX_OFFSET['8월'].y}
+          />
+          <img
+            src={augustIcon}
+            alt="august"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('8월')}
+          />
+        </div>
         {/* dote-p-7(8월 옆)*/}
         <img
           src={doteP7Icon}
@@ -281,19 +304,29 @@ function SchedulePad({ onMonthClick }) {
             top: `${(660 / 16) * scale}rem`,
           }}
         />
-        {/* september 아이콘 독립적으로 배치 */}
-        <img
-          src={sebtemberIcon}
-          alt="september"
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('9월')}
+        {/* september */}
+        <div
+          className="absolute group"
           style={{
             width: `${(80 / 16) * scale}rem`,
             height: `${(80 / 16) * scale}rem`,
             left: `${(565 / 16) * scale}rem`,
             top: `${(640 / 16) * scale}rem`,
           }}
-        />
+        >
+          <ClickBox
+            scale={scale}
+            left="60%"
+            offsetXPx={CLICKBOX_OFFSET['9월'].x}
+            offsetYPx={CLICKBOX_OFFSET['9월'].y}
+          />
+          <img
+            src={sebtemberIcon}
+            alt="september"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('9월')}
+          />
+        </div>
         {/* dote-p9 */}
         <img
           src={doteP9Icon}
@@ -305,12 +338,9 @@ function SchedulePad({ onMonthClick }) {
             top: `${(659 / 16) * scale}rem`,
           }}
         />
-        {/* october 아이콘 독립적으로 배치 */}
-        <img
-          src={octoberIcon}
-          alt="october"
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('10월')}
+        {/* october */}
+        <div
+          className="absolute group"
           style={{
             width: `${(180 / 16) * scale}rem`,
             height: `${(180 / 16) * scale}rem`,
@@ -319,7 +349,20 @@ function SchedulePad({ onMonthClick }) {
             zIndex: 10,
             pointerEvents: 'auto',
           }}
-        />
+        >
+          <ClickBox
+            scale={scale}
+            left="60%"
+            offsetXPx={CLICKBOX_OFFSET['10월'].x}
+            offsetYPx={CLICKBOX_OFFSET['10월'].y}
+          />
+          <img
+            src={octoberIcon}
+            alt="october"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('10월')}
+          />
+        </div>
         {/* dote-p-7(11월 옆) */}
         <img
           src={doteP7Icon}
@@ -332,12 +375,9 @@ function SchedulePad({ onMonthClick }) {
           }}
         />
 
-        {/* november 아이콘 독립적으로 배치 */}
-        <img
-          src={novemberIcon}
-          alt="november"
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('11월')}
+        {/* november */}
+        <div
+          className="absolute group"
           style={{
             width: `${(120 / 16) * scale}rem`,
             height: `${(80 / 16) * scale}rem`,
@@ -346,7 +386,20 @@ function SchedulePad({ onMonthClick }) {
             zIndex: 10,
             pointerEvents: 'auto',
           }}
-        />
+        >
+          <ClickBox
+            scale={scale}
+            left="60%"
+            offsetXPx={CLICKBOX_OFFSET['11월'].x}
+            offsetYPx={CLICKBOX_OFFSET['11월'].y}
+          />
+          <img
+            src={novemberIcon}
+            alt="november"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('11월')}
+          />
+        </div>
         {/* dote-p11 */}
         <img
           src={doteP11Icon}
@@ -381,19 +434,29 @@ function SchedulePad({ onMonthClick }) {
             top: `${(1170 / 16) * scale}rem`,
           }}
         />
-        {/* december 아이콘 독립적으로 배치 */}
-        <img
-          src={decemberIcon}
-          alt="december"
-          className="absolute cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('12월')}
+        {/* december */}
+        <div
+          className="absolute group"
           style={{
             width: `${(110 / 16) * scale}rem`,
             height: `${(110 / 16) * scale}rem`,
             left: `${(1123 / 16) * scale}rem`,
             top: `${(1120 / 16) * scale}rem`,
           }}
-        />
+        >
+          <ClickBox
+            scale={scale}
+            left="60%"
+            offsetXPx={CLICKBOX_OFFSET['12월'].x}
+            offsetYPx={CLICKBOX_OFFSET['12월'].y}
+          />
+          <img
+            src={decemberIcon}
+            alt="december"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('12월')}
+          />
+        </div>
       </div>
     </div>
   );
