@@ -2,33 +2,57 @@ import PageTitle from '@/components/common/PageTitle';
 import TextTile from '@/components/result/TextTile';
 
 export default function ResultSection({ pass }) {
-  const notPassText = `안녕하세요. IT동아리 멋쟁이사자처럼 운영진입니다.
-        먼저 저희 동아리에 지원해주셔서 감사합니다.
-        14기 면접 결과 불합격이라는 소식을 전해드립니다.
-        많은 지원자로 인해 면접자님의 뛰어난 역량에도 불구하고 한정된 인원 
-        때문에 더 많은 부원들을 모시지 못하게 되어 송구스럽게 생각합니다.
-        다음 모집에는 더 많은 분들과 함께 하기 위해 노력하겠습니다.
-        다시 한번 소중한 시간을 내어 면접에 응해 주셔서
-        진심으로 감사드립니다.
-        지원자님의 정보는 한 달 이내로 일괄 삭제하겠습니다.`;
-  //const passText = `합격 축하요`;
-  const date = new Date().getTime();
-  const applyResultDate = [
-    new Date(2026, 0, 22, 0, 0).getTime(),
-    new Date(2026, 1, 25, 0, 0).getTime(),
-  ];
-  const interviewResultDate = [
-    new Date(2026, 1, 22, 0, 0).getTime(),
-    new Date(2026, 2, 25, 0, 0).getTime(),
-  ];
+  const documentPass = `안녕하세요. IT 동아리 멋쟁이사자처럼 서경대학교 14기입니다.
+OO 트랙 1차 서류 전형 합격을 진심으로 축하드립니다. 많은 분들께서 지원해 주신 만큼, 
+지원서를 여러 차례 면밀히 검토한 후 운영진의 논의를 거쳐 신중하게 선발하였습니다.
+2차 면접을 통해 지원자님을 직접 만나 뵙기를 기대하고 있겠습니다.
+아래에서 면접 가능 날짜를 선택하신 후, 3월 9일 자정까지 반드시 입력해 주시기 바랍니다.
+선택하신 면접 일정은 제출 이후에도 마이페이지에서 지정된 기간 내 수정이 가능합니다.
+면접 장소는 유담관 코워킹 스페이스2입니다.
+감사합니다.`;
+  const documentNotPass = `안녕하세요. IT 동아리 멋쟁이사자처럼 서경대학교 14기입니다.
+OO 트랙에 지원해 주셔서 진심으로 감사드립니다. 지원자님의 서류는 운영진 모두가 끝까지 신중하게 검토하였으며,
+지원하신 과정에서 보여주신 고민과 의지를 충분히 확인할 수 있었습니다.
+다만 이번 전형에서는 동아리 운영 방향과 일정 등의 여건을 종합적으로 고려한 결과, 아쉽게도 함께하지 못하게 되었음을 안내드립니다.
+이번 결과는 지원자님의 역량이나 잠재력을 판단한 것이 아니며, 앞으로의 경험과 도전에 따라 충분히 더 큰 성장을 이루실 수 있으리라 생각합니다.
+멋쟁이사자처럼은 언제나 새로운 도전을 응원하며, 앞으로의 활동과 다음 기회에서 다시 만나 뵐 수 있기를 기대하겠습니다.
+지원해 주셔서 다시 한 번 감사드리며,
+지원자님의 앞으로의 활동에 좋은 결과가 함께하길 진심으로 바랍니다.`;
+  const interviewPass = `최종 합격을 축하드립니다!
+안녕하세요. IT 동아리 멋쟁이사자처럼 서경대학교 14기입니다.
+OO 트랙 면접 전형 최종 합격을 진심으로 축하드립니다. 면접을 통해 지원자님께서 보여주신 생각의 깊이와 태도, 
+그리고 성장 가능성을 높이 평가하여 운영진의 논의를 거쳐 최종 선발하게 되었습니다.
+앞으로 멋쟁이사자처럼 서경대학교 14기 OO 트랙으로서
+함께 배우고, 도전하며, 성장해 나가기를 기대하고 있습니다.
+향후 일정 및 활동 관련 안내는 별도로 전달드릴 예정이니 확인 부탁드립니다. 다시 한 번 합격을 축하드리며, 
+곧 만나 뵙기를 기대하겠습니다. 감사합니다.`;
+  const interviewNotPass = `안녕하세요. IT 동아리 멋쟁이사자처럼 서경대학교 14기입니다.
+OO 트랙 면접 전형에 참여해 주셔서 진심으로 감사드립니다. 면접 과정에서 지원자님께서 보여주신 고민과 경험, 
+그리고 진지한 태도는 운영진에게도 인상 깊게 다가왔습니다.
+다만 이번 기수의 운영 방향과 구성 등을 종합적으로 고려한 결과, 아쉽게도 이번에는 함께하지 못하게 되었음을 안내드립니다.
+이번 결과는 지원자님의 역량이나 가능성을 제한하는 판단이 아니며, 앞으로의 경험과 도전을 통해 충분히 더 큰 성장을 이루실 수 있다고 생각합니다.
+멋쟁이사자처럼은 언제나 새로운 도전을 응원하며, 앞으로 또 다른 기회로 다시 만나 뵐 수 있기를 기대하겠습니다.
+소중한 시간 내어 면접에 참여해 주셔서 감사드리며, 지원자님의 앞으로의 활동에 좋은 결과가 함께하시길 바랍니다. 감사합니다.`;
+
+  const getText = () => {
+    if (pass.type == 'document') {
+      if (pass.result) {
+        return documentPass;
+      } else {
+        return documentNotPass;
+      }
+    } else {
+      if (pass.result) {
+        return interviewPass;
+      } else {
+        interviewNotPass;
+      }
+    }
+  };
   return (
     <div className="flex flex-col px-6 justify-center items-center gap-9 pt-40">
       <PageTitle title="면접 결과 안내" color="Navy" />
-      <TextTile>
-        {date > applyResultDate[0] && date < applyResultDate[1] && !pass && notPassText}
-        {date > applyResultDate[0] && date < applyResultDate[1] && pass && notPassText}
-        {date > interviewResultDate[0] && date < interviewResultDate[1] && '면접 기간'}
-      </TextTile>
+      <TextTile>{getText()}</TextTile>
     </div>
   );
 }

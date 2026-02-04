@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { getResult } from '@/api/applicationResult';
 import { logoutAction } from '@/api/logoutAction';
 import { myPageLoader } from '@/api/myPageLoader';
 import { getFilterProjectList } from '@/api/projectApi';
@@ -44,11 +45,13 @@ import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
 import Recruitment from '@/pages/Recruitment/Recruitment';
 import Result from '@/pages/Result/Result';
 import ResultNotice from '@/pages/Result/ResultNotice';
+import { showResultButton } from '@/utils/showResultButton';
 
 const router = createBrowserRouter([
   // 일반 서비스 브랜치 (RootLayout 사용)
   {
     Component: RootLayout,
+    loader: showResultButton,
     children: [
       { index: true, Component: Main }, //경로가 /일 때 보여줄 페이지
 
@@ -73,7 +76,7 @@ const router = createBrowserRouter([
             ],
           },
           { path: '/result/notice', Component: ResultNotice },
-          { path: '/result', Component: Result },
+          { path: '/result', Component: Result, loader: getResult },
           { path: '/application', Component: Application },
         ],
       },

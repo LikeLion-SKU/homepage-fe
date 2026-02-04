@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
 
 import CheckModal from '@/components/common/Modal/CheckModal';
 import GridSection from '@/components/layout/background/GridSection';
@@ -9,11 +9,12 @@ import ResultSection from '@/components/result/ResultSection';
 
 export default function Result() {
   const navigate = useNavigate();
-  const pass = true;
   const [onModal, setOnModal] = useState(false);
   const [allChecked, setAllChecked] = useState([false, false]);
+  const resultData = useLoaderData();
+
   const buttonClick = () => {
-    if (pass) {
+    if (resultData.type === 'document' && resultData.result) {
       setOnModal(true);
     } else {
       navigate('/');
@@ -37,10 +38,16 @@ export default function Result() {
   return (
     <GridSection>
       <div className="flex flex-col items-center gap-19 mb-60">
-        <ResultSection pass={pass} />
-        {pass && <InterviewTime setAllChecked={setAllChecked} />}
+        <ResultSection pass={resultData} />
+        {resultData.type === 'document' && resultData.result && (
+          <InterviewTime setAllChecked={setAllChecked} />
+        )}
         <CheckButton
-          buttonName={pass ? '면접 날짜 제출하기' : '확인했어요.'}
+          buttonName={
+            resultData.type === 'document' && resultData.result
+              ? '면접 날짜 제출하기'
+              : '확인했어요.'
+          }
           onClick={() => buttonClick()}
         />
       </div>
