@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router';
 
 import { login } from '@/api/authApi';
 import LoginForm from '@/components/login/LoginForm';
+import useAuthStore from '@/store/useAuthStore';
 
 export default function Login() {
   const navigate = useNavigate();
+  const setLogin = useAuthStore((state) => state.setLogin);
 
   const handleLogin = async (credentials) => {
     try {
@@ -13,13 +15,14 @@ export default function Login() {
         ? credentials.email
         : `${credentials.email}@skuniv.ac.kr`;
 
-      await login({
+      const response = await login({
         email: finalEmail,
         password: credentials.password,
       });
 
-      // 쿠키 기반 인증이므로 서버에서 쿠키를 설정함
-      // 클라이언트에서 localStorage에 저장할 필요 없음
+      // 로그인 성공 시 상태 저장 (localStorage에 isLogin 저장)
+      setLogin(response?.user || { email: finalEmail });
+
       // 로그인 성공 시 메인 페이지로 이동
       navigate('/');
     } catch (error) {
