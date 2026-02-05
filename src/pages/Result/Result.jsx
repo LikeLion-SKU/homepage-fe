@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 
 import CheckModal from '@/components/common/Modal/CheckModal';
@@ -13,16 +13,20 @@ export default function Result() {
   const [onModal, setOnModal] = useState(false);
   const [allChecked, setAllChecked] = useState([false, false]);
   const resultData = useLoaderData();
-  const getInterviewDate = async () => {
-    return await availbleChangeInterview();
-  };
+  const [interviewDate, setInterviewDate] = useState(true);
+  useEffect(() => {
+    const getInterviewDate = async () => {
+      setInterviewDate(await availbleChangeInterview());
+    };
+    getInterviewDate();
+  }, []);
 
   const buttonClick = () => {
     if (resultData.test === 'document' && resultData.result) {
-      if (getInterviewDate()) {
-        navigate('/'); //추후 면접 확인 페이지로 경로 변동 예정
-      } else {
+      if (interviewDate) {
         setOnModal(true);
+      } else {
+        navigate('/'); //추후 면접 확인 페이지로 경로 변동 예정
       }
     } else {
       navigate('/');
@@ -47,13 +51,13 @@ export default function Result() {
     <GridSection>
       <div className="flex flex-col items-center gap-19 mb-60">
         <ResultSection pass={resultData} />
-        {resultData.test === 'document' && resultData.result && getInterviewDate() && (
+        {resultData.test === 'document' && resultData.result && interviewDate && (
           <InterviewTime setAllChecked={setAllChecked} />
         )}
         <CheckButton
           buttonName={
             resultData.test === 'document' && resultData.result
-              ? `${getInterviewDate() ? '면접 날짜 확인하기' : '면접 날짜 제출하기'}`
+              ? `${interviewDate ? '면접 날짜 제출하기' : '면접 날짜 확인하기'}`
               : '확인했어요.'
           }
           onClick={() => buttonClick()}
