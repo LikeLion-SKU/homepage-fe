@@ -89,9 +89,13 @@ function Award() {
     <MainSectionLayout
       title="역대 수상작"
       showTopBorder={false}
-      paddingScale={isMobile480 ? 0.6 : 0.39}
+      paddingScale={isMobile480 ? 0.6 : 0.25}
       paddingBottomScale={isMobile480 ? 5 : 1}
       frameTopOffset={isMobile480 ? -80 : null}
+      backgroundStyle={{
+        isolation: 'isolate',
+        zIndex: 10,
+      }}
     >
       <div className="relative" style={{ minHeight: `${(800 / 16) * scale}rem` }}>
         {/* 모바일 480px 이하: 텍스트를 프레임 박스 아래로 배치 */}
@@ -114,10 +118,12 @@ function Award() {
             <div
               className="text-right"
               style={{
-                marginTop: `${(20 / 16) * scale}rem`,
+                position: 'relative',
+                marginTop: `${(10 / 16) * scale}rem`,
                 marginBottom: `${(20 / 16) * scale}rem`,
                 transform: `translateX(${(120 / 16) * scale}rem)`,
                 maxWidth: '100%',
+                zIndex: 100,
               }}
             >
               <AwardText />
@@ -133,9 +139,10 @@ function Award() {
             <div
               className="absolute text-right"
               style={{
+                position: 'absolute',
                 right: `${(-70 / 16) * scale}rem`,
-                top: `${(-110 / 16) * scale}rem`,
-                zIndex: 30,
+                top: `${(-160 / 16) * scale}rem`,
+                zIndex: 100,
                 maxWidth: `${(520 / 16) * scale}rem`,
               }}
             >

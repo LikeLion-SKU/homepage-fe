@@ -14,7 +14,6 @@ function MainSectionLayout({
   paddingScale = 1,
   paddingBottomScale = 1,
   paddingBottomOffsetRem = 0,
-  overflowVisible = false, // overflow를 visible로 설정할지 여부
   frameTopOffset = null, // 프레임 박스의 top 오프셋 커스터마이징 (null이면 기본값 사용)
 }) {
   const scale = useScale();
@@ -33,7 +32,7 @@ function MainSectionLayout({
 
   return (
     <section
-      className={`relative w-full bg-white ${overflowVisible ? 'overflow-visible' : 'overflow-hidden'} ${backgroundClassName}`}
+      className={`relative w-full bg-white ${backgroundClassName}`}
       style={{
         minHeight: `${minHeightRem}rem`,
         paddingTop: `${paddingRem}rem`,
