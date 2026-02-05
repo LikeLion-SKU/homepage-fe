@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useLoaderData, useNavigate } from 'react-router';
 
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
@@ -14,12 +14,11 @@ export default function Header({ handleSideBar }) {
   const token = localStorage.getItem('accessToken');
   const isDesktop = useIsDesktop();
   const isPhone = useIsPhone();
+  const showResult = useLoaderData();
 
   const clickMenu = (menu) => {
     navigate(menu);
   };
-  const date = new Date().getTime();
-  const resultDate = [new Date(2026, 0, 22, 0, 0).getTime(), new Date(2026, 1, 25, 0, 0).getTime()];
 
   return (
     <header className="w-full h-13 pad:h-17 web:h-19  flex justify-between border-b">
@@ -42,7 +41,7 @@ export default function Header({ handleSideBar }) {
                 관리자
               </button>
             )}
-            {date > resultDate[0] && date < resultDate[1] && (
+            {showResult && (
               <button onClick={() => clickMenu('/result/notice')}>
                 <motion.span
                   className="font-bold bg-clip-text text-transparent block"
