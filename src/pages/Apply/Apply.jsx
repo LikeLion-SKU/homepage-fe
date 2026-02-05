@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router';
+import { useLoaderData } from 'react-router';
 
 export default function Apply() {
   // 더미
@@ -11,6 +12,8 @@ export default function Apply() {
     email: 'likelion',
   };
 
+  const userInfoData = useLoaderData(); // 사용자 기본 인적사항 정보
+
   // 세션 스토리지 상태관리
   const [formData, setFormData] = useState(() => {
     try {
@@ -21,12 +24,12 @@ export default function Apply() {
       return {
         ...dummyUserData, // 기본 더미 데이터
         ...parsedSaved, // 세션 스토리지에 작업 중이던 내용이 있다면 덮어씀
-        track: parsedSaved.track || '', // 아직 선택 안 했으면 빈 값
+        track: parsedSaved.track || userInfoData?.track || '', // 아직 선택 안 했으면 빈 값
         answers: parsedSaved.answers || {}, // 아직 작성 안 했으면 빈 객체
       };
     } catch (error) {
       console.error('저장된 데이터를 읽는 중 오류 발생:', error);
-      return { ...dummyUserData, track: '', answers: {} };
+      return { ...dummyUserData, track: userInfoData?.track || '', answers: {} };
     }
   });
 
@@ -47,7 +50,9 @@ export default function Apply() {
 
   return (
     <div>
-      <Outlet context={{ formData, setFormData, updateFormData, handleAnswerChange }} />
+      <Outlet
+        context={{ formData, userInfoData, setFormData, updateFormData, handleAnswerChange }}
+      />
     </div>
   );
 }
