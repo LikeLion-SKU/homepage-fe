@@ -14,7 +14,6 @@ import useAuthStore from '@/store/useAuthStore';
 
 export default function Header({ handleSideBar }) {
   const navigate = useNavigate();
-  const token = localStorage.getItem('accessToken');
   const isDesktop = useIsDesktop();
   const isPhone = useIsPhone();
   const showResult = useLoaderData();
@@ -36,7 +35,6 @@ export default function Header({ handleSideBar }) {
           setIsAdmin(false);
         }
       }
-      console.log('showAdmin 실행');
     };
     showAdmin();
   }, [isLogin]);
@@ -85,9 +83,14 @@ export default function Header({ handleSideBar }) {
                 </motion.span>
               </button>
             )}
-            <button onClick={() => clickMenu('/recruit')} className="font-semibold cursor-pointer">
-              지원하기
-            </button>
+            {!showResult && (
+              <button
+                onClick={() => clickMenu('/recruit')}
+                className="font-semibold cursor-pointer"
+              >
+                지원하기
+              </button>
+            )}
             <button onClick={() => clickMenu('/project')} className="font-semibold cursor-pointer">
               프로젝트
             </button>
@@ -99,13 +102,13 @@ export default function Header({ handleSideBar }) {
         {!isPhone && (
           <button
             onClick={() => {
-              if (token) clickMenu('/mypage');
+              if (isLogin) clickMenu('/mypage');
               else clickMenu('/login');
             }}
             className="px-10 font-semibold items-center justify-center 
           border-x web:border-l web:border-r-0"
           >
-            {token ? '마이페이지' : '로그인/회원가입'}
+            {isLogin ? '마이페이지' : '로그인/회원가입'}
           </button>
         )}
         {!isDesktop && (

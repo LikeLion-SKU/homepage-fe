@@ -6,16 +6,24 @@ import GridSection from '@/components/layout/background/GridSection';
 import CheckButton from '@/components/result/CheckButton';
 import InterviewTime from '@/components/result/InterviewTime';
 import ResultSection from '@/components/result/ResultSection';
+import { availbleChangeInterview } from '@/utils/availableChangeInterview';
 
 export default function Result() {
   const navigate = useNavigate();
   const [onModal, setOnModal] = useState(false);
   const [allChecked, setAllChecked] = useState([false, false]);
   const resultData = useLoaderData();
+  const getInterviewDate = async () => {
+    return await availbleChangeInterview();
+  };
 
   const buttonClick = () => {
     if (resultData.test === 'document' && resultData.result) {
-      setOnModal(true);
+      if (getInterviewDate()) {
+        navigate('/'); //추후 면접 확인 페이지로 경로 변동 예정
+      } else {
+        setOnModal(true);
+      }
     } else {
       navigate('/');
     }
@@ -39,13 +47,13 @@ export default function Result() {
     <GridSection>
       <div className="flex flex-col items-center gap-19 mb-60">
         <ResultSection pass={resultData} />
-        {resultData.test === 'document' && resultData.result && (
+        {resultData.test === 'document' && resultData.result && getInterviewDate() && (
           <InterviewTime setAllChecked={setAllChecked} />
         )}
         <CheckButton
           buttonName={
             resultData.test === 'document' && resultData.result
-              ? '면접 날짜 제출하기'
+              ? `${getInterviewDate() ? '면접 날짜 확인하기' : '면접 날짜 제출하기'}`
               : '확인했어요.'
           }
           onClick={() => buttonClick()}
