@@ -68,10 +68,11 @@ const router = createBrowserRouter([
           { path: '/apply/complete', Component: ApplyComplete },
           {
             path: '/apply',
-            Component: Apply, // 부모가 중심을 잡습니다.
+            Component: Apply,
+            loader: basicInfoLoader,
             children: [
               { index: true, Component: ApplyBasicInfo },
-              { path: 'info', Component: ApplyBasicInfo, loader: basicInfoLoader },
+              { path: 'info', Component: ApplyBasicInfo },
               { path: 'common', Component: ApplyCommon },
               { path: 'track', Component: ApplyTrack },
               { path: 'confirm', Component: FinalConfirm },
