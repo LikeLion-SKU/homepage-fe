@@ -7,20 +7,23 @@ function AwardText() {
 
   return (
     <div
-      className="text-[#1a1a1a] font-medium leading-[160%] text-right"
+      className="text-[#1a1a1a] font-medium leading-[180%] text-right"
       style={{
         fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-        fontSize: `${(20 / 15) * scale * (isMobile480 ? 1.3 : 1)}rem`,
+        fontSize: `${(18 / 15) * scale * (isMobile480 ? 1.3 : 1)}rem`,
       }}
     >
-      <div style={{ whiteSpace: 'nowrap' }}>
-        안녕하세요 <span className="font-bold">서경대학교 멋쟁이사자처럼</span>입니다.
+      <div style={{ whiteSpace: 'nowrap', display: 'flex', justifyContent: 'flex-end' }}>
+        단순한 아이디어에 그치지 않고, 기획부터 디자인, 개발까지 전 과정을 거쳐
       </div>
       <div style={{ whiteSpace: 'nowrap', display: 'flex', justifyContent: 'flex-end' }}>
-        멋쟁이사자처럼은 다양한 전공의 학생들로 이루어진 IT 동아리입니다.
+        실제 서비스와 의미 있는 결과로 완성된 프로젝트들입니다.
       </div>
       <div style={{ whiteSpace: 'nowrap', display: 'flex', justifyContent: 'flex-end' }}>
-        서경대 멋쟁이사자처럼은 함께 배우고 성장하는 커뮤니티를 지향합니다.
+        멋쟁이사자들이 팀으로 협업하며 현실의 문제를 정의하고 해결해 온 과정이 담긴
+      </div>
+      <div style={{ whiteSpace: 'nowrap', display: 'flex', justifyContent: 'flex-end' }}>
+        역대 수상 프로젝트의 이야기를 만나보세요.
       </div>
     </div>
   );

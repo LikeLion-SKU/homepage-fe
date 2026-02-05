@@ -55,7 +55,6 @@ function Track() {
     <MainSectionLayout
       title="트랙 소개"
       showTopBorder={false}
-      overflowVisible={true}
       backgroundStyle={{
         backgroundImage: 'linear-gradient(rgb(244, 244, 244) 0%, rgba(217, 217, 217, 0) 100%)',
       }}

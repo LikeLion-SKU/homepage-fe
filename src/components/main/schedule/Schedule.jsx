@@ -88,7 +88,6 @@ function Schedule() {
       title="2026 연간 일정"
       showTopBorder={false}
       paddingBottomScale={isPad ? 4.5 : 0.2}
-      overflowVisible={true}
     >
       {isMobile ? (
         <ScheduleMobile onMonthClick={handleMonthClick} />
