@@ -49,7 +49,10 @@ function ExplainText() {
       <span
         style={{
           fontWeight: '700',
-          color: '#00A424',
+          background: 'linear-gradient(to right, #BCD800, #65C42A)',
+          WebkitBackgroundClip: 'text',
+          backgroundClip: 'text',
+          color: 'transparent',
           fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
         }}
       >
