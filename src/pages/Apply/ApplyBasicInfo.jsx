@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLoaderData, useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
@@ -9,15 +9,13 @@ import Input from '@/components/common/apply/Input';
 
 export default function ApplyBasicInfo() {
   /** @type {any} */
-  const { formData, updateFormData } = useOutletContext();
+  const { formData, userInfoData, updateFormData } = useOutletContext();
   const navigate = useNavigate();
   const isTrackSelected = !!formData.track; // 트랙 데이터 존재 여부
   // 모달 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
   // 모달에서 확인/취소 버튼 눌렀을때 선택할 트랙 임시 상태 저장
   const [pendingTrack, setPendingTrack] = useState('');
-
-  const userInfoData = useLoaderData(); // 사용자 기본 인적사항 정보
 
   const parts = [
     { id: 'PO', name: 'PO' },
@@ -203,7 +201,7 @@ export default function ApplyBasicInfo() {
                               onClick={() => handleTrackSelect(part.id)}
                               data-variant=""
                               data-size=""
-                              className={getButtonStyle(userInfoData.track === part.id)}
+                              className={getButtonStyle(formData.track === part.id)}
                             >
                               {part.name}
                             </Button>
