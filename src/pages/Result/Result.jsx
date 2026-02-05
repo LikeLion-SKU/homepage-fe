@@ -14,7 +14,7 @@ export default function Result() {
   const resultData = useLoaderData();
 
   const buttonClick = () => {
-    if (resultData.type === 'document' && resultData.result) {
+    if (resultData.test === 'document' && resultData.result) {
       setOnModal(true);
     } else {
       navigate('/');
@@ -39,12 +39,12 @@ export default function Result() {
     <GridSection>
       <div className="flex flex-col items-center gap-19 mb-60">
         <ResultSection pass={resultData} />
-        {resultData.type === 'document' && resultData.result && (
+        {resultData.test === 'document' && resultData.result && (
           <InterviewTime setAllChecked={setAllChecked} />
         )}
         <CheckButton
           buttonName={
-            resultData.type === 'document' && resultData.result
+            resultData.test === 'document' && resultData.result
               ? '면접 날짜 제출하기'
               : '확인했어요.'
           }

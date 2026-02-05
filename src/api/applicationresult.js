@@ -12,12 +12,24 @@ export const getResult = async () => {
     const finalResultAt = new Date(resultDate.finalResultAt).getTime();
 
     if (applicationResultAt <= nowDate && nowDate <= interviewScheduleConfirmedAt) {
-      return { type: 'document', result: await getDocumentResult() };
+      const resultData = await getDocumentResult();
+      return {
+        test: 'document',
+        semseter: resultData.semseter,
+        documentPassed: resultData.documentPassed,
+        track: resultData.track,
+      };
     } else if (nowDate > finalResultAt) {
-      //최종 결과 얻기 api
+      const resultData = await getInterviewResult();
+      return {
+        test: 'document',
+        semseter: resultData.semseter,
+        interviewPassed: resultData.interviewPassed,
+        track: resultData.track,
+      };
     } else {
       console.log('결과 확인 기간이 아닙니다');
-      return;
+      return { test: 'document', semseter: 0, interviewPassed: false, track: 'oo' };
     }
   } catch (error) {
     console.log('결과 조회 실패:', error);
@@ -28,8 +40,18 @@ export const getDocumentResult = async () => {
   try {
     const res = await APIService.private.get('/v1/interviews/schedules');
 
-    return res.data.documentPassed;
+    return res.data;
   } catch (error) {
     console.log('서류 결과 조회 실패:', error);
+  }
+};
+
+export const getInterviewResult = async () => {
+  try {
+    const res = await APIService.private.get('/v1/users/interview-result');
+
+    return res.data;
+  } catch (error) {
+    console.log('면접 결과 조회 실패:', error);
   }
 };
