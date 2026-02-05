@@ -121,11 +121,12 @@ function ExplainBackground({ children }) {
 
       {/* 컨테이너 */}
       <div
-        className="relative z-10 mx-auto"
+        className="relative mx-auto"
         style={{
           maxWidth: `${widthRem}rem`,
           paddingLeft: `${containerPaddingRem}rem`,
           paddingRight: `${containerPaddingRem}rem`,
+          zIndex: 20,
         }}
       >
         {children}

@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 
 import labelBlah1Icon from '@/assets/icons/main/label-blah1.svg';
 import labelBlah2Icon from '@/assets/icons/main/label-blah2.svg';
-import leftBlahIcon from '@/assets/icons/main/left-blah.svg';
-import rightBlahIcon from '@/assets/icons/main/right-blah.svg';
+import projectIcon from '@/assets/icons/main/project-blah.svg';
+import skullionIcon from '@/assets/icons/main/skulions-blah.svg';
 import LabelAnimation from '@/components/animation/LabelAnimation';
 import SmallFrameBox from '@/components/layout/frame/Frame';
 import ExplainBackground from '@/components/main/explain/background/ExplainBackground';
@@ -22,7 +22,7 @@ function Explain() {
   // 모바일에서 blah 이미지 위치 조정
   // 480px 이하일 때는 별도 위치 값 사용
   const leftBlahLift = isMobile480 ? 50 : isMobile760 ? 80 : 60; // 좌측은 아래로 (양수)
-  const rightBlahLift = isMobile480 ? -30 : isMobile760 ? -20 : 60; // 우측은 움직이지 않음
+  const skullionLift = isMobile480 ? -30 : isMobile760 ? -20 : 20; // skullionIcon만 데스크톱에서 위로
   const leftBlahShift = isMobile480 ? -10 : isMobile760 ? -10 : 0; // 좌측은 왼쪽으로 (음수)
   const rightBlahShift = 0; // 우측은 움직이지 않음
 
@@ -66,11 +66,13 @@ function Explain() {
           <ExplainText />
         </div>
 
-        {/* BLAH 이미지 좌측 */}
+        {/* Project 이미지 좌측 */}
         <motion.div
           className="flex justify-end mb-8"
           style={{
             marginTop: `${(160 / 16) * scale}rem`,
+            position: 'relative',
+            zIndex: 25,
           }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -81,15 +83,17 @@ function Explain() {
           }}
         >
           <motion.img
-            src={leftBlahIcon}
-            alt="BLAH"
+            src={projectIcon}
+            alt="Project"
             className="object-contain"
             style={{
-              width: `${(180 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
-              height: `${(61 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
+              width: `${(200 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
+              height: `${(100 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
               marginRight: `${(-10 / 16) * scale}rem`,
               imageRendering: 'crisp-edges',
               transform: 'translateY(150%)',
+              position: 'relative',
+              zIndex: 30,
             }}
             initial={false}
             animate={{ y: leftBlahLift, x: leftBlahShift }}
@@ -97,11 +101,13 @@ function Explain() {
           />
         </motion.div>
 
-        {/* BLAH 이미지 우측 */}
+        {/* Skullions 이미지 우측 */}
         <motion.div
           className="flex justify-start mb-8"
           style={{
-            marginTop: `${(80 / 16) * scale}rem`,
+            marginTop: `${(40 / 16) * scale}rem`,
+            position: 'relative',
+            zIndex: 25,
           }}
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -112,18 +118,20 @@ function Explain() {
           }}
         >
           <motion.img
-            src={rightBlahIcon}
-            alt="BLAH"
+            src={skullionIcon}
+            alt="Skullions"
             className="object-contain"
             style={{
-              width: `${(177 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
-              height: `${(55 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
-              marginLeft: `${(332 / 16) * scale}rem`,
+              width: `${(200 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
+              height: `${(130 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
+              marginLeft: `${(325 / 16) * scale}rem`,
               imageRendering: 'crisp-edges',
               transform: 'translateY(140%)',
+              position: 'relative',
+              zIndex: 30,
             }}
             initial={false}
-            animate={{ y: rightBlahLift, x: rightBlahShift }}
+            animate={{ y: skullionLift, x: rightBlahShift }}
             transition={{ type: 'tween', duration: 0.01 }}
           />
         </motion.div>
@@ -181,8 +189,8 @@ function Explain() {
 
         {/* 숫자 */}
 
-        <Number value={50} initialX={495} initialY={40} />
-        <Number value={54} initialX={140} initialY={-100} />
+        <Number value={42} initialX={495} initialY={40} />
+        <Number value={108} initialX={140} initialY={-100} />
       </motion.div>
     </ExplainBackground>
   );
