@@ -92,7 +92,7 @@ export default function ApplyCommon() {
                     question={`${item.orderNumber}. ${item.content}`}
                     className={textareaStyle}
                     // 2. 입력된 값: 해당 질문 ID에 맞는 답변 전달
-                    value={formData?.answers?.[item.questionId] || ''}
+                    value={formData?.answers?.[item.questionId]?.content || ''} // answers 객체의 content만 뺴서
                     // 3. 값 변경 시: 부모가 준 handleAnswerChange 실행
                     onChange={(e) => handleAnswerChange(item.questionId, e.target.value)}
                   ></Question>
