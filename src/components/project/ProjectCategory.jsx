@@ -1,7 +1,7 @@
-export default function ProjectCategory({ isPrize, ordinalNumber, contestName }) {
+export default function ProjectCategory({ award, semester, projectTypeName }) {
   return (
     <div className="flex gap-1">
-      {isPrize && (
+      {award && (
         <div
           className="flex border-2 border-[#B8D300] rounded-3xl h-3.5 pad:h-5 px-2 text-[#B8D300] 
         text-[0.6rem] web:text-[0.9rem] text-center items-center bg-white"
@@ -13,13 +13,13 @@ export default function ProjectCategory({ isPrize, ordinalNumber, contestName })
         className="flex border rounded-3xl h-3.5 pad:h-5 px-1
       text-[0.6rem] web:text-[0.9rem] text-center items-center bg-white"
       >
-        {ordinalNumber}기
+        {semester}기
       </div>
       <div
         className="flex border rounded-3xl h-3.5 pad:h-5 px-2
       text-[0.6rem] web:text-[0.9rem] text-center items-center bg-white"
       >
-        {contestName}
+        {projectTypeName}
       </div>
     </div>
   );

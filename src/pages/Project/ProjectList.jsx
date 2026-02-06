@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useLoaderData, useSearchParams } from 'react-router';
 
 import TitleSection from '@/components/common/TitleSection';
@@ -12,9 +12,13 @@ export default function Project() {
   const [filterParams, setFilterParams] = useSearchParams({}); //파라미터 관리
   const pageOn = Number(filterParams.get('page') || 0);
   const maxPage = projectListdata.totalPages;
-  const [pageArray, setPageArray] = useState(() => {
-    return [0, 1, 2, 3, 4].filter((num) => num < maxPage); // API가 0부터 시작할 때 예시
-  });
+  const pageArray = useMemo(() => {
+    // 5개씩 끊어서 보여주기 위한 시작 인덱스 (0, 5, 10...)
+    const startPage = Math.floor(pageOn / 5) * 5;
+
+    // startPage부터 5개를 생성하되, maxPage를 넘지 않는 것만 필터링
+    return Array.from({ length: 5 }, (_, i) => startPage + i).filter((num) => num < maxPage);
+  }, [pageOn, maxPage]);
 
   // 페이지 변경 함수: URL의 쿼리 파라미터를 변경함
   const handlePageChange = useCallback(
@@ -78,11 +82,10 @@ export default function Project() {
   );
 
   const pageData = {
-    pageArray: pageArray,
-    setPageArray: setPageArray,
-    pageOn: pageOn,
-    setPageOn: handlePageChange,
-    maxPage: maxPage,
+    pageArray, // 계산된 배열
+    pageOn, // 현재 페이지 번호
+    setPageOn: handlePageChange, // 페이지 변경 함수
+    maxPage, // 최대 페이지 수
   };
 
   return (
