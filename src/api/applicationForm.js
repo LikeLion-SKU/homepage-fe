@@ -7,5 +7,6 @@ export const getCurrentForm = async () => {
     return res.data;
   } catch (error) {
     console.log('진행중인 지원 일정 조회 실패:', error);
+    return null;
   }
 };
