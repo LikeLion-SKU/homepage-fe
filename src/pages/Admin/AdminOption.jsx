@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router';
 
+import { getProjectType, postProjectType } from '@/api/projectApi';
+import { getSemester, postSemester } from '@/api/semesterApi';
 import OptionAdminTable from '@/components/admin/Option/OptionAdminTable';
 import OptionTitle from '@/components/admin/Option/OptionTitle';
 
 export default function AdminOption() {
-  const [ordinalData, setOrdinalData] = useState(['14기', '13기', '12기', '11기']);
-  const [contestData, setContestData] = useState([
+  const [semester, setSemester] = useState(['14기', '13기', '12기', '11기']);
+  const [projectType, setProjectType] = useState([
     '중앙해커톤',
     '아이디어톤',
     '4호선톤',
@@ -17,14 +19,23 @@ export default function AdminOption() {
   const { openModal, showToast } = useOutletContext();
   const saveOption = () => {
     //저장 api 추가 예정
+    postProjectType();
+    postSemester();
     showToast('저장되었습니다!');
   };
+  useEffect(() => {
+    const getOption = async () => {
+      setSemester(await getSemester());
+      setProjectType(await getProjectType());
+    };
+    getOption();
+  }, []);
   return (
     <div className="flex flex-col gap-20 px-21 py-30">
       <OptionTitle />
       <div className="flex gap-4 mt-10">
-        <OptionAdminTable title="기수" optionData={ordinalData} setOptionData={setOrdinalData} />
-        <OptionAdminTable title="대회명" optionData={contestData} setOptionData={setContestData} />
+        <OptionAdminTable title="기수" optionData={semester} setOptionData={setSemester} />
+        <OptionAdminTable title="대회명" optionData={projectType} setOptionData={setProjectType} />
       </div>
       <button
         onClick={() => openModal('저장하시겠습니까?', () => saveOption())}

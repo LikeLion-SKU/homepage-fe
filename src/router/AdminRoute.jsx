@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useOutletContext } from 'react-router-dom';
 
-export default function AdninRoute() {
+export default function AdminRoute() {
   const token = localStorage.getItem('accessToken');
   const context = useOutletContext();
 

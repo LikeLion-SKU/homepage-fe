@@ -1,6 +1,7 @@
 import { APIService } from '@/api/api';
 
 export const getProjectList = async (parameter) => {
+  //프로젝트 필터 미적용
   try {
     const res = await APIService.public.get('/v1/projects', {
       params: {
@@ -17,6 +18,7 @@ export const getProjectList = async (parameter) => {
 };
 
 export const getFilterProjectList = async ({ request }) => {
+  //프로젝트 조회 필터 적용
   const url = new URL(request.url);
 
   // URL에서 파라미터 추출 (?page=1&search=멋사 등)
@@ -32,6 +34,7 @@ export const getFilterProjectList = async ({ request }) => {
 };
 
 export const getProjectType = async () => {
+  //대회명 조회
   try {
     const res = await APIService.public.get('/v1/project-types');
 
@@ -42,11 +45,24 @@ export const getProjectType = async () => {
 };
 
 export const getProjectDetail = async (projectId) => {
+  //프로젝트 상세조회
   try {
     const res = await APIService.public.get(`/v1/projects/${projectId}`);
 
     return res.data;
   } catch (error) {
     console.log('프로젝트 상세조회 실패:', error);
+  }
+};
+
+export const postProjectType = async (projectTypeName) => {
+  try {
+    const res = await APIService.private.post('/v1/admin/project-types', {
+      projectTypeName: projectTypeName,
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log('대회명 추가 실패:', error);
   }
 };
