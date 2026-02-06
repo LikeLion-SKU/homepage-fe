@@ -3,6 +3,7 @@ import { Outlet } from 'react-router';
 import { useLoaderData, useLocation } from 'react-router';
 
 import { APIService } from '@/api/api';
+import { getQuesAndAnswerByTrack } from '@/api/getQuestionAnswer';
 
 export default function Apply() {
   // 원본 데이터 불러오기 (from back)
@@ -34,32 +35,6 @@ export default function Apply() {
     }
   });
 
-  // 사용자의 트랙 선택에 따른 api 호출
-  const getQuesAndAnswerByTrack = async (trackId) => {
-    try {
-      const [questionRes, answerRes] = await Promise.all([
-        APIService.private.get(`/v1/applications/questions?track=${trackId}`),
-        APIService.private.get(`/v1/applications/records/draft/answers?track=${trackId}`),
-      ]);
-      const newQuestions = questionRes.data.questions || [];
-      const newAnswers = answerRes.data || [];
-
-      const formattedAnswers = newAnswers.reduce((acc, cur) => {
-        // {"questionId": 10,"answer": "답변~"} -> {10: "답변~ "} 이런식으로 포멧팅
-        acc[cur.questionId] = cur.answer;
-        return acc;
-      }, {});
-
-      setQuestions(newQuestions);
-      setRecordAnswer(formattedAnswers);
-
-      return { questions: newQuestions, answers: formattedAnswers };
-    } catch (error) {
-      console.error('트랙별 질문, 답변 데이터 로드 실패: ', error);
-      return { questions: [], answers: {} };
-    }
-  };
-
   // 트랙 정보로 그에 따른 api 응답값 저장
   useEffect(() => {
     const syncTrackData = async () => {
@@ -68,7 +43,10 @@ export default function Apply() {
       const targetTrack = location.pathname.includes('common') ? 'COMMON' : formData.track;
 
       if (targetTrack) {
-        const { answers: formattedAnswers } = await getQuesAndAnswerByTrack(targetTrack);
+        const { questions, formattedAnswers } = await getQuesAndAnswerByTrack(targetTrack);
+
+        setQuestions(questions);
+        setRecordAnswer(formattedAnswers);
 
         setFormData((prev) => {
           const nextData = {
