@@ -27,6 +27,7 @@ export default function TimeBar({ setAllChecked, data, selectedTime, setSelected
                 startTime: time.startTime,
                 endTime: time.endTime,
                 booked: time.booked,
+                scheduleId: time.scheduleId,
               }}
             />
           ))}

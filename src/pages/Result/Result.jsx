@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 
+import { interviewBooking } from '@/api/interviewBooking';
 import CheckModal from '@/components/common/Modal/CheckModal';
 import GridSection from '@/components/layout/background/GridSection';
 import CheckButton from '@/components/result/CheckButton';
@@ -14,6 +15,7 @@ export default function Result() {
   const [allChecked, setAllChecked] = useState([false, false]);
   const resultData = useLoaderData();
   const [interviewDate, setInterviewDate] = useState(true);
+  const [selectedTime, setSelectedTime] = useState({ date: '', scheduleId: 0 });
   useEffect(() => {
     const getInterviewDate = async () => {
       setInterviewDate(await availbleChangeInterview());
@@ -24,6 +26,7 @@ export default function Result() {
   const buttonClick = () => {
     if (resultData.test === 'document' && resultData.result) {
       if (interviewDate) {
+        interviewBooking(selectedTime.scheduleId);
         setOnModal(true);
       } else {
         navigate('/'); //추후 면접 확인 페이지로 경로 변동 예정
@@ -52,7 +55,11 @@ export default function Result() {
       <div className="flex flex-col items-center gap-19 mb-60">
         <ResultSection pass={resultData} />
         {resultData.test === 'document' && resultData.result && interviewDate && (
-          <InterviewTime setAllChecked={setAllChecked} />
+          <InterviewTime
+            setAllChecked={setAllChecked}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+          />
         )}
         <CheckButton
           buttonName={

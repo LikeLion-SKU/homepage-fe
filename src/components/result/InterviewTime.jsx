@@ -6,7 +6,12 @@ import Agreement from '@/components/result/Agreement';
 import TimeBar from '@/components/result/TimeBar';
 
 // true: 동의 부분 숨기기, false: 동의 부분 보이게
-export default function InterviewTime({ setAllChecked, hide = false }) {
+export default function InterviewTime({
+  setAllChecked,
+  hide = false,
+  selectedTime,
+  setSelectedTime,
+}) {
   const [interviewSchedule, setinterviewSchedule] = useState({
     semester: 0,
     documentPassed: true,
@@ -19,7 +24,6 @@ export default function InterviewTime({ setAllChecked, hide = false }) {
     };
     getInterview();
   }, []);
-  const [selectedTime, setSelectedTime] = useState({ date: '', starTime: '' });
 
   return (
     <div className="flex flex-col w-full gap-20 items-center mt-30 px-8">
