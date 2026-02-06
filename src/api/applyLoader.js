@@ -1,20 +1,12 @@
 import { APIService } from '@/api/api';
 
-export const applyLoader = async () => {
+// basicInfoLoader 수정
+export const basicInfoLoader = async () => {
   try {
-    const [basicInfoRes, QuestionRes, recordAnswerRes] = await Promise.all([
-      APIService.private.get('/v1/applications/records/personal-info'), // 기본 인적사항 조회 api
-      APIService.private.get('/v1/applications/questions'), // 트랙별 질문 조회 api
-      APIService.private.get('/v1/applications/records/draft/answers'), // 임시저장 지원서 트랙별 답변 조회 api
-    ]);
-
-    return {
-      basicInfo: basicInfoRes.data || {},
-      Question: QuestionRes.data || {},
-      recordAnswer: recordAnswerRes.data || {},
-    };
+    const response = await APIService.private.get('/v1/applications/records/personal-info');
+    return { userInfoData: response.data || {} }; // const{userInfoData} = useLoaderData(); 라고 가져오려면 키를 지정해야함
   } catch (error) {
-    console.error('데이터 통합 로딩 실패:', error);
-    throw error;
+    console.log('기본 인적사항 정보 조회 실패:', error);
+    return { userInfoData: {} }; // 에러 시에도 구조는 유지
   }
 };
