@@ -9,36 +9,31 @@ export default function ProjectPagenation({ props }) {
     }
   };
 
-  const pageListChange = (plus) => {
-    if (plus) {
-      if (props.pageArray[0] + 5 < props.maxPage) {
-        props.setPageArray((prev) => {
-          // 1. 모든 요소에 5를 더함 (map 사용)
-          const nextArray = prev.map((num) => num + 5);
+  const pageListChange = (isNext) => {
+    if (isNext) {
+      // 1. 다음 그룹의 첫 번째 페이지 계산 (현재 0~4라면 5, 5~9라면 10)
+      const nextGroupPage = Math.floor(props.pageOn / 5) * 5 + 5;
 
-          // 2. maxPage를 넘어가는 번호는 없애줌 (filter 사용)
-          return nextArray.filter((num) => num < props.maxPage);
-        });
-        props.setPageOn(props.pageArray[0] + 5);
+      if (nextGroupPage < props.maxPage) {
+        // 다음 그룹으로 갈 수 있으면 이동
+        props.setPageOn(nextGroupPage);
       } else {
-        props.setPageOn(props.maxPage - 1);
+        // 다음 그룹이 없다면, 전체의 마지막 페이지로 이동 (maxPage - 1)
+        // 현재 페이지가 이미 마지막 페이지가 아닐 때만 실행하는 것이 효율적
+        if (props.pageOn < props.maxPage - 1) {
+          props.setPageOn(props.maxPage - 1);
+        }
       }
     } else {
-      if (props.pageOn - 5 > 0) {
-        if (props.pageArray.length < 5) {
-          props.setPageArray((prev) => [
-            prev[0] - 5,
-            prev[0] - 4,
-            prev[0] - 3,
-            prev[0] - 2,
-            prev[0] - 1,
-          ]);
-        } else {
-          props.setPageArray((prev) => prev.map((num) => num - 5));
-        }
-        props.setPageOn(props.pageArray[0] - 1);
+      // 이전 그룹으로 가는 로직 (0 미만으로 내려가지 않게 처리)
+      const prevGroupPage = Math.floor(props.pageOn / 5) * 5 - 1;
+      if (prevGroupPage >= 0) {
+        props.setPageOn(prevGroupPage);
       } else {
-        props.setPageOn(0);
+        // 이전 그룹이 없다면 첫 페이지(0)로 이동
+        if (props.pageOn > 0) {
+          props.setPageOn(0);
+        }
       }
     }
   };

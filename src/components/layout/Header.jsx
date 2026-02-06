@@ -1,24 +1,43 @@
+import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
+import { getUserRole } from '@/api/userApi';
 import Logo from '@/assets/icons/Logo_icon.png';
 //@ts-ignore
 import Hamberger from '@/assets/icons/hambergerBar_icon.svg?react';
 import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { useIsPhone } from '@/hooks/useIsPhone';
+import useAuthStore from '@/store/useAuthStore';
 
 export default function Header({ handleSideBar }) {
   const navigate = useNavigate();
-  const token = localStorage.getItem('accessToken');
   const isDesktop = useIsDesktop();
   const isPhone = useIsPhone();
   const showResult = useLoaderData();
+  const isLogin = useAuthStore((state) => state.isLoggedIn);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const clickMenu = (menu) => {
     navigate(menu);
   };
+
+  useEffect(() => {
+    const showAdmin = async () => {
+      if (isLogin) {
+        const userRole = await getUserRole();
+
+        if (userRole === 'ADMIN') {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
+      }
+    };
+    showAdmin();
+  }, [isLogin]);
 
   return (
     <header className="w-full h-13 pad:h-17 web:h-19  flex justify-between border-b">
@@ -33,7 +52,7 @@ export default function Header({ handleSideBar }) {
       <div className="flex">
         {isDesktop && (
           <div className="flex items-center web:gap-10 border-l px-10 text-[1.1rem] ">
-            {!!token && (
+            {isAdmin && (
               <button
                 onClick={() => clickMenu('/admin')}
                 className="text-[1.1rem] font-semibold cursor-pointer"
@@ -64,9 +83,14 @@ export default function Header({ handleSideBar }) {
                 </motion.span>
               </button>
             )}
-            <button onClick={() => clickMenu('/recruit')} className="font-semibold cursor-pointer">
-              지원하기
-            </button>
+            {!showResult && (
+              <button
+                onClick={() => clickMenu('/recruit')}
+                className="font-semibold cursor-pointer"
+              >
+                지원하기
+              </button>
+            )}
             <button onClick={() => clickMenu('/project')} className="font-semibold cursor-pointer">
               프로젝트
             </button>
@@ -78,13 +102,13 @@ export default function Header({ handleSideBar }) {
         {!isPhone && (
           <button
             onClick={() => {
-              if (token) clickMenu('/mypage');
+              if (isLogin) clickMenu('/mypage');
               else clickMenu('/login');
             }}
             className="px-10 font-semibold items-center justify-center 
           border-x web:border-l web:border-r-0"
           >
-            {token ? '마이페이지' : '로그인/회원가입'}
+            {isLogin ? '마이페이지' : '로그인/회원가입'}
           </button>
         )}
         {!isDesktop && (

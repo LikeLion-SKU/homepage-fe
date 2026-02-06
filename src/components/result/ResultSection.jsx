@@ -22,7 +22,7 @@ ${pass.track} 트랙에 지원해 주셔서 진심으로 감사드립니다. 지
 안녕하세요. IT 동아리 멋쟁이사자처럼 서경대학교 ${pass.semester}기입니다.
 ${pass.track} 트랙 면접 전형 최종 합격을 진심으로 축하드립니다. 면접을 통해 지원자님께서 보여주신 생각의 깊이와 태도, 
 그리고 성장 가능성을 높이 평가하여 운영진의 논의를 거쳐 최종 선발하게 되었습니다.
-앞으로 멋쟁이사자처럼 서경대학교 14기 OO 트랙으로서
+앞으로 멋쟁이사자처럼 서경대학교 ${pass.semester}기 ${pass.track} 트랙으로서
 함께 배우고, 도전하며, 성장해 나가기를 기대하고 있습니다.
 향후 일정 및 활동 관련 안내는 별도로 전달드릴 예정이니 확인 부탁드립니다. 다시 한 번 합격을 축하드리며, 
 곧 만나 뵙기를 기대하겠습니다. 감사합니다.`;
@@ -49,9 +49,24 @@ ${pass.track} 트랙 면접 전형에 참여해 주셔서 진심으로 감사드
       }
     }
   };
+  const getTitle = () => {
+    if (pass.test == 'document') {
+      if (pass.result) {
+        return '서류 합격을 축하드립니다!';
+      } else {
+        return '서류 결과 안내';
+      }
+    } else {
+      if (pass.result) {
+        return '최종 합격을 축하드립니다!!';
+      } else {
+        return '면접 결과 안내';
+      }
+    }
+  };
   return (
     <div className="flex flex-col px-6 justify-center items-center gap-9 pt-40">
-      <PageTitle title="면접 결과 안내" color="Navy" />
+      <PageTitle title={getTitle()} color="Navy" />
       <TextTile>{getText()}</TextTile>
     </div>
   );

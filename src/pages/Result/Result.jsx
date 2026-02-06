@@ -1,21 +1,44 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 
+import { interviewBooking, putInterviewChange } from '@/api/interviewBooking';
 import CheckModal from '@/components/common/Modal/CheckModal';
 import GridSection from '@/components/layout/background/GridSection';
 import CheckButton from '@/components/result/CheckButton';
 import InterviewTime from '@/components/result/InterviewTime';
 import ResultSection from '@/components/result/ResultSection';
+import useInterviewStore from '@/store/useInterviewStore';
+import { availbleChangeInterview } from '@/utils/availableChangeInterview';
 
 export default function Result() {
   const navigate = useNavigate();
   const [onModal, setOnModal] = useState(false);
   const [allChecked, setAllChecked] = useState([false, false]);
   const resultData = useLoaderData();
+  const [interviewDate, setInterviewDate] = useState(true);
+  const [selectedTime, setSelectedTime] = useState({ date: '', scheduleId: 0 });
+  const { myInterviews } = useInterviewStore();
+  useEffect(() => {
+    const getInterviewDate = async () => {
+      setInterviewDate(await availbleChangeInterview());
+    };
+    getInterviewDate();
+  }, []);
 
   const buttonClick = () => {
     if (resultData.test === 'document' && resultData.result) {
-      setOnModal(true);
+      if (interviewDate) {
+        if (myInterviews.booking.scheduleId) {
+          if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
+            putInterviewChange(selectedTime.scheduleId);
+          }
+        } else {
+          interviewBooking(selectedTime.scheduleId);
+        }
+        setOnModal(true);
+      } else {
+        navigate('/'); //추후 면접 확인 페이지로 경로 변동 예정
+      }
     } else {
       navigate('/');
     }
@@ -39,13 +62,17 @@ export default function Result() {
     <GridSection>
       <div className="flex flex-col items-center gap-19 mb-60">
         <ResultSection pass={resultData} />
-        {resultData.test === 'document' && resultData.result && (
-          <InterviewTime setAllChecked={setAllChecked} />
+        {resultData.test === 'document' && resultData.result && interviewDate && (
+          <InterviewTime
+            setAllChecked={setAllChecked}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+          />
         )}
         <CheckButton
           buttonName={
             resultData.test === 'document' && resultData.result
-              ? '면접 날짜 제출하기'
+              ? `${interviewDate ? '면접 날짜 제출하기' : '면접 날짜 확인하기'}`
               : '확인했어요.'
           }
           onClick={() => buttonClick()}
