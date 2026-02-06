@@ -10,7 +10,7 @@ export default function ProjectCard({ props, isAdmin }) {
   return (
     <div
       onClick={() => {
-        !isAdmin && navigate('/project/viewDetail');
+        !isAdmin && navigate(`/project/viewDetail`, { state: { projectId: props.projectId } });
       }}
       className="group relative border overflow-hidden bg-[#F9F9F9] w-101 pad:w-82 web:w-101 "
     >

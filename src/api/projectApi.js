@@ -40,3 +40,13 @@ export const getProjectType = async () => {
     console.error('프로젝트 타입 조회 실패:', error);
   }
 };
+
+export const getProjectDetail = async (projectId) => {
+  try {
+    const res = await APIService.public.get(`/v1/projects/${projectId}`);
+
+    return res.data;
+  } catch (error) {
+    console.log('프로젝트 상세조회 실패:', error);
+  }
+};
