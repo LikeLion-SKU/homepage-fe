@@ -9,7 +9,7 @@ import Question from '@/components/common/apply/Question';
 
 export default function ApplyCommon() {
   /** @type {any} */
-  const { formData, questions, handleAnswerChange } = useOutletContext();
+  const { formData, questions, recordDraft, handleAnswerChange } = useOutletContext();
   console.log('공통 질문 리스트:', questions);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -104,7 +104,7 @@ export default function ApplyCommon() {
           <div className="flex justify-center">
             <div className="flex flex-col pad:flex-row justify-center items-center gap-5">
               <Button
-                onClick={() => {}}
+                onClick={() => recordDraft()}
                 className="w-45 pad:w-47 web:w-53 h-11 pad:h-14 outline -outline-offset-1 outline-text-gray flex justify-center items-center bg-white transition-all hover:bg-stone-100"
               >
                 <span className=" text-gray-900 text-base font-semibold pad:text-lg pad:font-medium">

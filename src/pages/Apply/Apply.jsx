@@ -43,7 +43,7 @@ export default function Apply() {
       const targetTrack = location.pathname.includes('common') ? 'COMMON' : formData.track;
 
       if (targetTrack) {
-        const { questions, formattedAnswers } = await getQuesAndAnswerByTrack(targetTrack);
+        const { _track, questions, formattedAnswers } = await getQuesAndAnswerByTrack(targetTrack);
 
         setQuestions(questions);
         setRecordAnswer(formattedAnswers);
@@ -71,6 +71,88 @@ export default function Apply() {
     // 의존성 배열에 formData.track을 추가하여 트랙 변경 시마다 실행되게 함
   }, [location.pathname, formData.track, userInfoData]);
 
+  // 백엔드에게 보낼 요청 구조로 포멧팅
+  const formatAnswers = () => {
+    const commonAnswers = [];
+    const trackAnswers = [];
+
+    console.log('질문' + questions);
+    // 불러온 questions를 기준으로 루프 돌면서 돌기
+    questions.forEach((q) => {
+      console.log('질문' + q.questionId);
+      const answerContent = formData.answers[q.questionId] || ''; // 답변이 없으면 빈 문자열
+      // answer 구조로 변경
+      const answerObj = {
+        questionId: q.questionId,
+        content: answerContent,
+      };
+      console.log('트랙:' + formData.track); // 이거로 변경해야함
+      // 질문의 트랙 정보에 따라 분류 (서버 응답의 'track' 필드 활용)
+      if (q.track === 'COMMON') {
+        commonAnswers.push(answerObj);
+      } else {
+        trackAnswers.push(answerObj);
+      }
+    });
+
+    return { commonAnswers, trackAnswers };
+  };
+
+  // 임시저장 api 호출
+  // 사용자 인적사항 정보의 track이 null 일때 isFirst = true
+  const recordDraft = async (isFirst = false) => {
+    try {
+      const { commonAnswers, trackAnswers } = formatAnswers();
+
+      const record = {
+        track: formData.track, // 유저가 선택한 트랙 (예: 'BACKEND')
+        commonAnswers: commonAnswers,
+        trackAnswers: trackAnswers,
+      };
+      console.log('서버로 보내는 데이터 확인:', record);
+
+      if (isFirst) {
+        await APIService.private.post('/v1/applications/records/first-draft', record);
+      } else {
+        await APIService.private.put('/v1/applications/records/draft', record);
+      }
+    } catch (error) {
+      console.error('저장 실패:', error);
+    }
+  };
+
+  // // 최초 임시저장 api 호출
+  // const recordFirstDraft = async () => {
+  //   try {
+  //     const record = {
+  //       track: formData.track,
+  //       answers: Object.entries(formData.answers).map(([questionId, answer]) => ({
+  //         questionId: Number(questionId),
+  //         answer: answer,
+  //       })),
+  //     };
+  //     await APIService.private.post('/v1/applications/records/first-draft', record);
+  //   } catch (error) {
+  //     console.error('최초 임시저장 실패:', error);
+  //   }
+  // };
+
+  // // 임시저장 api 호출
+  // const recordDraft = async () => {
+  //   try {
+  //     const record = {
+  //       track: formData.track,
+  //       answers: Object.entries(formData.answers).map(([questionId, answer]) => ({
+  //         questionId: Number(questionId),
+  //         answer: answer,
+  //       })),
+  //     };
+  //     await APIService.private.put('/v1/applications/records/draft', record);
+  //   } catch (error) {
+  //     console.error('임시저장 실패:', error);
+  //   }
+  // };
+
   // 통합 sessionStorage 업데이트 함수
   const updateFormData = (nextFormData) => {
     setFormData(nextFormData);
@@ -94,6 +176,7 @@ export default function Apply() {
           userInfoData,
           questions,
           recordAnswer,
+          recordDraft,
           setFormData,
           updateFormData,
           handleAnswerChange,
