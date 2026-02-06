@@ -270,12 +270,12 @@ export default function Recruitment() {
         confirm={() => {
           setIsApplyModalOpen(false);
           // 백엔드 연결 전 임시 로직
-          const hasSubmitted = true; // 나중에 API 결과값으로 대체
+          const hasSubmitted = false; // 나중에 API 결과값으로 대체!!!!!!!!!!!!!!!!!!!!!
 
           if (hasSubmitted) {
             navigate('/apply/complete'); // 이미 제출했으면 완료 페이지로
           } else {
-            navigate('/application'); // 제출 안 했으면 신청 페이지로
+            navigate('/apply/info'); // 제출 안 했으면 신청 페이지로
           }
         }}
       >
