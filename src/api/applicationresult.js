@@ -15,21 +15,21 @@ export const getResult = async () => {
       const resultData = await getDocumentResult();
       return {
         test: 'document',
-        semseter: resultData.semseter,
-        documentPassed: resultData.documentPassed,
+        semester: resultData.semester,
+        result: resultData.documentPassed,
         track: resultData.track,
       };
     } else if (nowDate > finalResultAt) {
       const resultData = await getInterviewResult();
       return {
-        test: 'document',
-        semseter: resultData.semseter,
-        interviewPassed: resultData.interviewPassed,
+        test: 'interview',
+        semester: resultData.semester,
+        result: resultData.interviewPassed,
         track: resultData.track,
       };
     } else {
       console.log('결과 확인 기간이 아닙니다');
-      return { test: 'document', semseter: 0, interviewPassed: false, track: 'oo' };
+      return { test: 'document', semester: 0, interviewPassed: false, track: 'oo' };
     }
   } catch (error) {
     console.log('결과 조회 실패:', error);

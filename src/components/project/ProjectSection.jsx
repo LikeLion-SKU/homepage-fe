@@ -37,8 +37,10 @@ export default function ProjectSection({ data }) {
             </div>
           )}
           <div className="grid grid-cols-[repeat(auto-fill,404px)] pad:grid-cols-[repeat(auto-fill,328px)] web:grid-cols-[repeat(auto-fill,404px)] gap-7 mt-6 justify-center">
-            {data.length > 0 &&
-              data.map((item) => <ProjectCard key={item.id} props={item} isAdmin={isAdmin} />)}
+            {data.content.length > 0 &&
+              data.content.map((item) => (
+                <ProjectCard key={item.id} props={item} isAdmin={isAdmin} />
+              ))}
           </div>
         </div>
       )}

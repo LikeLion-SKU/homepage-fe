@@ -16,19 +16,19 @@ export default function ProjectCard({ props, isAdmin }) {
     >
       <div className="flex flex-col">
         <img
-          src={props.imgUrl}
+          src={props.thumbnailUrl}
           className="h-47.5 pad:h-46 web:h-57 w-101 pad:w-82 web:w-101 bg-[#D9D9D9]"
         />
         <div className="flex flex-col pad:gap-2 web:gap-4 pad:w-82 web:w-101 p-5">
           <div className="flex justify-between items-center">
-            <p className="text-[1rem] web:text-[1.1rem] font-bold">{props.projectName}</p>
+            <p className="text-[1rem] web:text-[1.1rem] font-bold">{props.title}</p>
             <ProjectCategory
-              isPrize={props.isPrize}
-              ordinalNumber={props.ordinalNumber}
-              contestName={props.contestName}
+              award={props.award}
+              semester={props.semester}
+              projectTypeName={props.projectTypeName}
             />
           </div>
-          <p className="text-[0.7rem] web:text-[0.9rem]">{props.explanation}</p>
+          <p className="text-[0.7rem] web:text-[0.9rem]">{props.content}</p>
         </div>
       </div>
 
