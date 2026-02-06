@@ -5,12 +5,12 @@ import useAuthStore from '@/store/useAuthStore';
 
 // 공용 API 인스턴스 (토큰이 필요 없는 경우)
 const publicAPI = axios.create({
-  baseURL: '/api', // 중요: 환경변수 BASE_URL 쓰지 말기
+  baseURL: import.meta.env.VITE_SERVER_BASE_URL, // 중요: 환경변수 BASE_URL 쓰지 말기
 });
 
 // 인증 API 인스턴스 (쿠키 기반 인증)
 const privateAPI = axios.create({
-  baseURL: '/api', // 중요: 환경변수 BASE_URL 쓰지 말기
+  baseURL: import.meta.env.VITE_SERVER_BASE_URL, // 중요: 환경변수 BASE_URL 쓰지 말기
   withCredentials: true, // 쿠키 전송 활성화
 });
 
