@@ -35,20 +35,29 @@ export default function Apply() {
     }
   });
 
-  // 트랙 정보로 그에 따른 api 응답값 저장
   useEffect(() => {
     const syncTrackData = async () => {
-      // 현재 어떤 트랙 데이터를 불러와야 하는지 결정
-      // 만약 현재 경로가 /common 이라면 "COMMON"을, 아니라면 formData.track을 사용
+      // 경로에 따라 COMMON 또는 선택한 트랙
       const targetTrack = location.pathname.includes('common') ? 'COMMON' : formData.track;
 
       if (targetTrack) {
-        const { _track, questions, formattedAnswers } = await getQuesAndAnswerByTrack(targetTrack);
+        const { track, questions, formattedAnswers } = await getQuesAndAnswerByTrack(targetTrack);
 
         setQuestions(questions);
         setRecordAnswer(formattedAnswers);
 
         setFormData((prev) => {
+          // 백에서 불러온 트랙별 질문과 답변 정보의 track을 type으로 직접 주입
+          const typedNewAnswers = Object.entries(formattedAnswers).reduce(
+            (acc, [questionId, content]) => {
+              acc[questionId] = {
+                content: content || '',
+                type: track, // 여기서 API 응답의 track 정보를 사용
+              };
+              return acc;
+            },
+            {}
+          );
           const nextData = {
             ...prev,
             name: prev.name || userInfoData?.name || '',
@@ -58,8 +67,8 @@ export default function Apply() {
             email: prev.email || userInfoData?.email || '',
             track: prev.track,
             answers: {
-              ...formattedAnswers,
-              ...prev.answers,
+              ...prev.answers, // 기존 답변 유지
+              ...typedNewAnswers, // API에서 온 답변을 해당 track 타입과 함께 병합
             },
           };
           sessionStorage.setItem('apply_draft', JSON.stringify(nextData));
@@ -68,34 +77,39 @@ export default function Apply() {
       }
     };
     syncTrackData();
-    // 의존성 배열에 formData.track을 추가하여 트랙 변경 시마다 실행되게 함
   }, [location.pathname, formData.track, userInfoData]);
 
-  // 백엔드에게 보낼 요청 구조로 포멧팅
+  // 백에게 보낼 구조로 포멧
   const formatAnswers = () => {
     const commonAnswers = [];
     const trackAnswers = [];
 
-    console.log('질문' + questions);
-    // 불러온 questions를 기준으로 루프 돌면서 돌기
-    questions.forEach((q) => {
-      console.log('질문' + q.questionId);
-      const answerContent = formData.answers[q.questionId] || ''; // 답변이 없으면 빈 문자열
-      // answer 구조로 변경
+    // 현재 사용자가 최종적으로 선택한 트랙
+    const currentSelectedTrack = formData.track;
+
+    // formData.answers객체 돌기
+    Object.entries(formData.answers).forEach(([questionId, data]) => {
+      // 객체에서 content와 type 추출
+      const content = typeof data === 'object' ? data.content : data;
+      const type = typeof data === 'object' ? data.type : '';
+
       const answerObj = {
-        questionId: q.questionId,
-        content: answerContent,
+        questionId: Number(questionId),
+        content: content || '',
       };
-      console.log('트랙:' + formData.track); // 이거로 변경해야함
-      // 질문의 트랙 정보에 따라 분류 (서버 응답의 'track' 필드 활용)
-      if (q.track === 'COMMON') {
-        commonAnswers.push(answerObj);
-      } else {
+      // API 응답에서 받은 track(type) 정보에 따라 분류
+      if (type === 'COMMON') {
+        commonAnswers.push(answerObj); // COMMON이면 commonAnswer에
+      } else if (type === currentSelectedTrack) {
+        // 사용자 선택한 트랙 = formData 속 type이 일치할때만 보여줘야 함 -> 안그러면 사용자가 frontend 선택했어도 formData의 backend 의 답변이 나올 수 잇음
         trackAnswers.push(answerObj);
       }
     });
-
-    return { commonAnswers, trackAnswers };
+    return {
+      track: formData.track, // 유저가 최종 선택한 트랙 (예: "BACKEND")
+      commonAnswers,
+      trackAnswers,
+    };
   };
 
   // 임시저장 api 호출
@@ -121,52 +135,34 @@ export default function Apply() {
     }
   };
 
-  // // 최초 임시저장 api 호출
-  // const recordFirstDraft = async () => {
-  //   try {
-  //     const record = {
-  //       track: formData.track,
-  //       answers: Object.entries(formData.answers).map(([questionId, answer]) => ({
-  //         questionId: Number(questionId),
-  //         answer: answer,
-  //       })),
-  //     };
-  //     await APIService.private.post('/v1/applications/records/first-draft', record);
-  //   } catch (error) {
-  //     console.error('최초 임시저장 실패:', error);
-  //   }
-  // };
-
-  // // 임시저장 api 호출
-  // const recordDraft = async () => {
-  //   try {
-  //     const record = {
-  //       track: formData.track,
-  //       answers: Object.entries(formData.answers).map(([questionId, answer]) => ({
-  //         questionId: Number(questionId),
-  //         answer: answer,
-  //       })),
-  //     };
-  //     await APIService.private.put('/v1/applications/records/draft', record);
-  //   } catch (error) {
-  //     console.error('임시저장 실패:', error);
-  //   }
-  // };
-
   // 통합 sessionStorage 업데이트 함수
   const updateFormData = (nextFormData) => {
     setFormData(nextFormData);
     sessionStorage.setItem('apply_draft', JSON.stringify(nextFormData));
   };
 
-  const handleAnswerChange = (questionId, value) => {
-    const limitedValue = value.slice(0, 500);
-    const newFormData = {
-      ...formData,
-      answers: { ...formData.answers, [questionId]: limitedValue },
-    };
-    updateFormData(newFormData); // 통합 함수 사용
+  const handleAnswerChange = (questionId, newValue) => {
+    setFormData((prev) => {
+      // 해당 질문의 기존 데이터 (type 정보를 유지하기 위함)
+      const existingData = prev.answers?.[questionId] || {};
+
+      const nextData = {
+        ...prev,
+        answers: {
+          ...prev.answers,
+          [questionId]: {
+            ...existingData, // 기존의 type: 'COMMON' 혹은 'TRACK' 유지
+            content: newValue, // 텍스트만 새로 변경
+          },
+        },
+      };
+
+      // 세션 스토리지 업데이트
+      sessionStorage.setItem('apply_draft', JSON.stringify(nextData));
+      return nextData;
+    });
   };
+
   console.log('원본데이터:', userInfoData);
   return (
     <div>
