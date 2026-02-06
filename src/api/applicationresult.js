@@ -2,6 +2,7 @@ import { APIService } from '@/api/api';
 import { getCurrentForm } from '@/api/applicationForm';
 
 export const getResult = async () => {
+  //기간에 따라 맞는 결과 받아오기
   try {
     const nowDate = new Date().getTime();
     const resultDate = await getCurrentForm();
