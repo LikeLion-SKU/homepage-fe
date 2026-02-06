@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { getCurrentForm } from '@/api/applicationForm';
 import { getResult } from '@/api/applicationresult';
+import { basicInfoLoader } from '@/api/applyLoader';
 import { logoutAction } from '@/api/logoutAction';
 import { myPageLoader } from '@/api/myPageLoader';
 import { getFilterProjectList } from '@/api/projectApi';
@@ -67,7 +68,8 @@ const router = createBrowserRouter([
           { path: '/apply/complete', Component: ApplyComplete },
           {
             path: '/apply',
-            Component: Apply, // 부모가 중심을 잡습니다.
+            Component: Apply,
+            loader: basicInfoLoader,
             children: [
               { index: true, Component: ApplyBasicInfo },
               { path: 'info', Component: ApplyBasicInfo },

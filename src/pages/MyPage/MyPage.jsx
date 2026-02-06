@@ -140,7 +140,7 @@ export default function MyPage() {
                 if (hasApplication) {
                   navigate('/application');
                 } else {
-                  navigate('/apply');
+                  navigate('/apply/info');
                 }
               }}
               data-variant=""
