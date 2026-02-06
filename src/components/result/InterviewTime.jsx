@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
+import { getInterviewBooking } from '@/api/interviewBooking';
 import { getInterviewSchedule } from '@/api/interviewSchedule';
 import PageTitle from '@/components/common/PageTitle';
 import Agreement from '@/components/result/Agreement';
 import TimeBar from '@/components/result/TimeBar';
+import useInterviewStore from '@/store/useInterviewStore';
 
 // true: 동의 부분 숨기기, false: 동의 부분 보이게
 export default function InterviewTime({
@@ -12,15 +14,17 @@ export default function InterviewTime({
   selectedTime,
   setSelectedTime,
 }) {
-  const [interviewSchedule, setinterviewSchedule] = useState({
-    semester: 0,
-    documentPassed: true,
-    track: '',
-    dates: [],
-  });
+  const { interviews, setInterviewSchdule, setMyInterview } = useInterviewStore();
   useEffect(() => {
     const getInterview = async () => {
-      setinterviewSchedule(await getInterviewSchedule());
+      setInterviewSchdule(await getInterviewSchedule());
+      const bookingData = await getInterviewBooking();
+      setSelectedTime(
+        bookingData.booking.scheduleId
+          ? { date: bookingData.booking.date, scheduleId: bookingData.booking.scheduleId }
+          : { date: '', scheduleId: 0 }
+      );
+      setMyInterview(bookingData);
     };
     getInterview();
   }, []);
@@ -31,7 +35,7 @@ export default function InterviewTime({
         <PageTitle title="면접 날짜 선택" color="Navy" />
       </div>
       <div className="flex flex-col items-center gap-13 w-full ">
-        {interviewSchedule.dates.map((data, index) => (
+        {interviews?.dates.map((data, index) => (
           <TimeBar
             key={index}
             setAllChecked={setAllChecked}

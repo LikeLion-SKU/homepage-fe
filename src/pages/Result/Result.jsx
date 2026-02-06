@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 
-import { interviewBooking } from '@/api/interviewBooking';
+import { interviewBooking, putInterviewChange } from '@/api/interviewBooking';
 import CheckModal from '@/components/common/Modal/CheckModal';
 import GridSection from '@/components/layout/background/GridSection';
 import CheckButton from '@/components/result/CheckButton';
 import InterviewTime from '@/components/result/InterviewTime';
 import ResultSection from '@/components/result/ResultSection';
+import useInterviewStore from '@/store/useInterviewStore';
 import { availbleChangeInterview } from '@/utils/availableChangeInterview';
 
 export default function Result() {
@@ -16,6 +17,7 @@ export default function Result() {
   const resultData = useLoaderData();
   const [interviewDate, setInterviewDate] = useState(true);
   const [selectedTime, setSelectedTime] = useState({ date: '', scheduleId: 0 });
+  const { myInterviews } = useInterviewStore();
   useEffect(() => {
     const getInterviewDate = async () => {
       setInterviewDate(await availbleChangeInterview());
@@ -26,7 +28,13 @@ export default function Result() {
   const buttonClick = () => {
     if (resultData.test === 'document' && resultData.result) {
       if (interviewDate) {
-        interviewBooking(selectedTime.scheduleId);
+        if (myInterviews.booking.scheduleId) {
+          if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
+            putInterviewChange(selectedTime.scheduleId);
+          }
+        } else {
+          interviewBooking(selectedTime.scheduleId);
+        }
         setOnModal(true);
       } else {
         navigate('/'); //추후 면접 확인 페이지로 경로 변동 예정
