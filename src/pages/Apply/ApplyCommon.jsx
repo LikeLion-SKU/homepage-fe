@@ -6,19 +6,22 @@ import CheckModal from '@/components/common/Modal/CheckModal';
 import ApplyStep from '@/components/common/apply/ApplyStep';
 import ApplyTitleSection from '@/components/common/apply/ApplyTitleSection';
 import Question from '@/components/common/apply/Question';
-import { QUESTION_LIST } from '@/constants/QuestionData';
 
 export default function ApplyCommon() {
   /** @type {any} */
-  const { formData, handleAnswerChange } = useOutletContext();
+  const { formData, questions, recordDraft, handleAnswerChange } = useOutletContext();
+  console.log('공통 질문 리스트:', questions);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // 이전 페이지로 이동
   const handlePrevious = () => {
-    navigate('/apply/info'); // URL 이동
+    navigate('/apply/info');
   };
+
+  // 다음페이지로 넘어가기 가능 여부 확인
   const handleNext = () => {
-    const commonQuestions = QUESTION_LIST.filter((item) => item.track === 'COMMON'); // 공통 질문만 가져오기
+    const commonQuestions = questions.filter((item) => item.track === 'COMMON'); // 공통 질문만 가져오기
     const isAllAnswered = validateAnswers(commonQuestions, formData.answers);
 
     if (!isAllAnswered) {
@@ -80,18 +83,18 @@ export default function ApplyCommon() {
             {/* 공통질문 상자 */}
             <div className="flex flex-col px-6 py-7 pad:px-10 web:px-20 pad:py-18 web:py-18.5 border bg-button-gray gap-15">
               {/* 공통질문 내용 */}
-              {QUESTION_LIST.filter((item) => item.track === 'COMMON').map(
+              {questions.map(
                 (
                   item // 공통질문만 map 돌면서 보여주기
                 ) => (
                   <Question
-                    key={item.id}
-                    question={`${item.order_number}. ${item.question}`}
+                    key={item.questionId}
+                    question={`${item.orderNumber}. ${item.content}`}
                     className={textareaStyle}
                     // 2. 입력된 값: 해당 질문 ID에 맞는 답변 전달
-                    value={formData?.answers?.[item.id] || ''}
+                    value={formData?.answers?.[item.questionId]?.content || ''} // answers 객체의 content만 뺴서
                     // 3. 값 변경 시: 부모가 준 handleAnswerChange 실행
-                    onChange={(e) => handleAnswerChange(item.id, e.target.value)}
+                    onChange={(e) => handleAnswerChange(item.questionId, e.target.value)}
                   ></Question>
                 )
               )}
@@ -101,7 +104,7 @@ export default function ApplyCommon() {
           <div className="flex justify-center">
             <div className="flex flex-col pad:flex-row justify-center items-center gap-5">
               <Button
-                onClick={() => {}}
+                onClick={() => recordDraft()}
                 className="w-45 pad:w-47 web:w-53 h-11 pad:h-14 outline -outline-offset-1 outline-text-gray flex justify-center items-center bg-white transition-all hover:bg-stone-100"
               >
                 <span className=" text-gray-900 text-base font-semibold pad:text-lg pad:font-medium">
