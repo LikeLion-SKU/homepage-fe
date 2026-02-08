@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
 //@ts-ignore
@@ -6,15 +5,10 @@ import Plus from '@/assets/icons/plus_icon.svg?react';
 import ProjectCard from '@/components/project/ProjectCard';
 import ProjectSkeleton from '@/components/project/ProjectSkeleton';
 
-export default function ProjectSection({ data }) {
+export default function ProjectSection({ data, isLoading }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith('/admin');
-  const [isLoading, setIsLoading] = useState(false);
-  const handleLoading = () => {
-    setIsLoading(true);
-  }; //esLint 제거를 위해 임시로 넣음
-  handleLoading;
 
   return (
     <>
