@@ -50,8 +50,9 @@ export default function Apply() {
           // 백에서 불러온 트랙별 질문과 답변 정보의 track을 type으로 직접 주입
           const typedNewAnswers = Object.entries(formattedAnswers).reduce(
             (acc, [questionId, content]) => {
+              const existingContent = prev.answers?.[questionId]?.content; // sessionStorage의 내용 prev.answers?.[questionId]이 없으면 원래 api 원본 데이터로
               acc[questionId] = {
-                content: content || '',
+                content: existingContent !== undefined ? existingContent : content || '',
                 type: track, // 여기서 API 응답의 track 정보를 사용
               };
               return acc;
