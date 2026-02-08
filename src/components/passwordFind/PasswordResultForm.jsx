@@ -3,8 +3,7 @@ import { useNavigate, useOutletContext } from 'react-router';
 import { login } from '@/api/authApi';
 //@ts-ignore
 import CopyIcon from '@/assets/icons/copy_icon.svg?react';
-import Navy from '@/assets/icons/right_navy_icon.svg';
-import Button from '@/components/common/Button/Button';
+import LoginButton from '@/components/login/LoginButton';
 import useAuthStore from '@/store/useAuthStore';
 
 import LoginTitle from '../login/LoginTitle';
@@ -110,24 +109,8 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
             </div>
           </div>
         </div>
-        <div className="w-full mt-20 flex justify-start">
-          <div className="w-full max-w-2xl">
-            <div className="flex justify-start items-center z-10">
-              <Button
-                onClick={handleLoginClick}
-                data-variant=""
-                data-size=""
-                className="w-12 h-12 bg-button-green hover:bg-button-hover px-3 py-3.5 outline flex-col justify-center items-center gap-2.5 flex-shrink-0"
-              >
-                <img src={Navy} className="w-6 h-5" alt="navy icon" />
-              </Button>
-              <div className="flex-1 self-stretch h-12 px-4 py-3 outline bg-button-gray relative z-10">
-                <div className="flex justify-center items-center h-full mr-14 text-zinc-900 text-lg font-medium font-['Pretendard']">
-                  비밀번호 변경
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="w-full mt-20">
+          <LoginButton onClick={handleLoginClick}>비밀번호 변경</LoginButton>
         </div>
       </form>
     </div>
