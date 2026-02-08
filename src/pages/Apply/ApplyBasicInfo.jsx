@@ -9,13 +9,12 @@ import Input from '@/components/common/apply/Input';
 
 export default function ApplyBasicInfo() {
   /** @type {any} */
-  const { formData, userInfoData, updateFormData } = useOutletContext();
+  const { formData, _userInfoData, updateFormData } = useOutletContext();
   const navigate = useNavigate();
   const isTrackSelected = !!formData.track; // 트랙 데이터 존재 여부
-  // 모달 상태 관리
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  // 모달에서 확인/취소 버튼 눌렀을때 선택할 트랙 임시 상태 저장
-  const [pendingTrack, setPendingTrack] = useState('');
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
+  const [pendingTrack, setPendingTrack] = useState(''); // 모달에서 확인/취소 버튼 눌렀을때 선택할 트랙 임시 상태 저장
 
   const parts = [
     { id: 'PO', name: 'PO' },
@@ -52,12 +51,13 @@ export default function ApplyBasicInfo() {
 
   // 다음 페이지 이동
   const handleNext = () => {
-    // 간단한 유효성 검사
-    const { name, major, studentId, phone, email, track } = formData;
-    if (!name || !major || !studentId || !phone || !email || !track) {
+    const { name, department, studentNumber, phoneNumber, email, track } = formData;
+
+    if (!name || !department || !studentNumber || !phoneNumber || !email || !track) {
+      alert('모든 정보를 입력하고 트랙을 선택해주세요.');
       return;
     }
-    navigate('/apply/common'); // URL 이동
+    navigate('/apply/common');
   };
 
   const getButtonStyle = (isSelected) => {
@@ -133,7 +133,7 @@ export default function ApplyBasicInfo() {
                       placeholder=""
                       type=""
                       className={`max-w-57.75 pad:max-w-79 pad:min-w-48 ${inputStyle}`}
-                      value={userInfoData?.name || ''}
+                      value={formData?.name || ''}
                       onChange={() => {}}
                       readOnly
                     ></Input>
@@ -143,7 +143,7 @@ export default function ApplyBasicInfo() {
                       placeholder=""
                       type=""
                       className={`max-w-57.75 pad:max-w-79 pad:min-w-48 ${inputStyle}`}
-                      value={userInfoData?.department || ''}
+                      value={formData?.department || ''}
                       onChange={() => {}}
                       readOnly
                     ></Input>
@@ -153,7 +153,7 @@ export default function ApplyBasicInfo() {
                       placeholder=""
                       type=""
                       className={`max-w-57.75 pad:max-w-79 pad:min-w-48 ${inputStyle}`}
-                      value={userInfoData?.studentNumber || ''}
+                      value={formData?.studentNumber || ''}
                       onChange={() => {}}
                       readOnly
                     ></Input>
@@ -166,7 +166,7 @@ export default function ApplyBasicInfo() {
                       placeholder=""
                       type=""
                       className={`max-w-57.75 pad:max-w-79 pad:min-w-48 ${inputStyle}`}
-                      value={userInfoData?.phoneNumber || ''} // 상태값 연결
+                      value={formData?.phoneNumber || ''} // 상태값 연결
                       onChange={() => {}} // 변경 함수 연결
                       readOnly
                     ></Input>
@@ -180,7 +180,7 @@ export default function ApplyBasicInfo() {
                             placeholder=""
                             type=""
                             className={`max-w-31.75 pad:max-w-50 pad:min-w-30 ${inputStyle}`}
-                            value={userInfoData?.email ? userInfoData.email.split('@')[0] : ''}
+                            value={formData?.email ? formData.email.split('@')[0] : ''}
                             onChange={() => {}}
                             readOnly
                           ></Input>
