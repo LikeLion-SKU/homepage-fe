@@ -21,7 +21,7 @@ export default function Project() {
   }); //loader로 가져온 데이터
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const [filterParams, setFilterParams] = useSearchParams({}); //파라미터 관리
-  const pageOn = Number(filterParams.get('page') || 0);
+  const pageOn = Number(filterParams.get('pageNum') || 1);
   const semester = filterParams.get('semester');
   const projectTypeId = filterParams.get('projectTypeId');
   const search = filterParams.get('search');
@@ -32,7 +32,7 @@ export default function Project() {
       setIsLoading(true); // 로딩 시작
       try {
         const params = {
-          page: pageOn,
+          pageNum: pageOn,
           semester,
           projectTypeId,
           search,
@@ -51,14 +51,14 @@ export default function Project() {
     // 의존성 배열에 파라미터들을 넣어주어 값이 바뀔 때마다 실행되게 함
   }, [pageOn, semester, projectTypeId, search]);
 
-  const maxPage = projectListData?.totalPages || 0;
+  const maxPage = projectListData?.totalPages || 1;
 
   const pageArray = useMemo(() => {
-    // 5개씩 끊어서 보여주기 위한 시작 인덱스 (0, 5, 10...)
-    const startPage = Math.floor(pageOn / 5) * 5;
-
+    if (maxPage === 0) return [1];
+    const startPage = Math.floor((pageOn - 1) / 5) * 5 + 1;
+    console.log(maxPage);
     // startPage부터 5개를 생성하되, maxPage를 넘지 않는 것만 필터링
-    return Array.from({ length: 5 }, (_, i) => startPage + i).filter((num) => num < maxPage);
+    return Array.from({ length: 5 }, (_, i) => startPage + i).filter((num) => num <= maxPage);
   }, [pageOn, maxPage]);
 
   // 페이지 변경 함수: URL의 쿼리 파라미터를 변경함
@@ -67,7 +67,7 @@ export default function Project() {
       setFilterParams(
         (prev) => {
           const params = new URLSearchParams(prev);
-          params.set('page', String(newPage));
+          params.set('pageNum', String(newPage));
           return params;
         },
         { replace: true }
@@ -84,7 +84,7 @@ export default function Project() {
         } else {
           params.set('projectTypeId', String(newProjectTypeId));
         }
-        params.set('page', '0');
+        params.set('pageNum', '1');
         return params;
       });
     },
@@ -99,7 +99,7 @@ export default function Project() {
         } else {
           params.set('semester', newSemester);
         }
-        params.delete('page');
+        params.set('pageNum', '1');
         console.log('최종 파라미터:', params.toString());
         return params;
       });
@@ -115,7 +115,7 @@ export default function Project() {
         } else {
           params.set('search', keyword);
         }
-        params.set('page', '0'); // 검색 시 페이지 초기화는 필수!
+        params.set('pageNum', '1'); // 검색 시 페이지 초기화는 필수!
         return params;
       });
     },
