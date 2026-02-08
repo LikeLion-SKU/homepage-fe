@@ -8,7 +8,7 @@ import useSemesterStore from '@/store/useSemesterStore';
 export default function Application() {
   /** @type {any} */
   const { userInfo, commonQuestions, trackQuestions } = useLoaderData();
-  const { semester, fetchSemester } = useSemesterStore();
+  const { semesterData, fetchSemesterData } = useSemesterStore();
   const navigate = useNavigate();
   const TRACK_NAMES = {
     FRONTEND: '프론트엔드',
@@ -17,8 +17,8 @@ export default function Application() {
   };
 
   useEffect(() => {
-    if (!semester) fetchSemester();
-  }, [fetchSemester, semester]);
+    if (!semesterData) fetchSemesterData();
+  }, [fetchSemesterData, semesterData]);
 
   return (
     <div className="pb-35">
@@ -51,7 +51,7 @@ export default function Application() {
               <div className="text-lg pad:text-3xl font-semibold text-gray-800">님의 지원서</div>
             </div>
             <div className="text-sm pad:text-lg font-medium ">
-              멋쟁이사자처럼 {semester}기 아기사자 지원서
+              멋쟁이사자처럼 {semesterData?.semester}기 아기사자 지원서
             </div>
           </div>
         </div>
