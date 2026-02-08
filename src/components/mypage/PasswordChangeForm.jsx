@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useOutletContext } from 'react-router';
 
 import Modal from '@/components/common/Modal/ConfirmModal';
 import useAuthStore from '@/store/useAuthStore';
@@ -10,17 +10,34 @@ import PasswordInput from '../login/PasswordInput';
 
 export default function PasswordChangeForm({ onSubmit }) {
   const navigate = useNavigate();
+  // @ts-ignore
+  const { showToast } = useOutletContext() || {};
   const currentPasswordFromStore = useAuthStore((state) => state.currentPassword);
+  const isTemporaryPassword = useAuthStore((state) => state.isTemporaryPassword);
   const setLogin = useAuthStore((state) => state.setLogin);
   const user = useAuthStore((state) => state.user);
-  const [currentPassword, setCurrentPassword] = useState('');
+
+  // 임시 비밀번호로 로그인한 경우에만 현재 비밀번호 필드에 자동 입력
+  const [currentPassword, setCurrentPassword] = useState(() => {
+    // 초기 렌더링 시 임시 비밀번호로 로그인한 경우에만 자동 입력
+    if (isTemporaryPassword && currentPasswordFromStore) {
+      return currentPasswordFromStore;
+    }
+    return '';
+  });
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
+  const [currentPasswordTouched, setCurrentPasswordTouched] = useState(false);
+  const [isPasswordChanged, setIsPasswordChanged] = useState(false);
 
   // 현재 비밀번호 일치 여부 확인
   const currentPasswordStatus = useMemo(() => {
+    // 비밀번호 변경 후에는 항상 일치로 표시 (메시지 유지)
+    if (isPasswordChanged) {
+      return 'match';
+    }
     if (!currentPassword || !currentPasswordFromStore) {
       return null;
     }
@@ -28,7 +45,7 @@ export default function PasswordChangeForm({ onSubmit }) {
       return 'match';
     }
     return 'mismatch';
-  }, [currentPassword, currentPasswordFromStore]);
+  }, [currentPassword, currentPasswordFromStore, isPasswordChanged]);
 
   // 비밀번호 유효성 검사: 최소 영문자 1자, 숫자 1자, 특수문자 1자를 포함한 8~20자리
   const isValidPassword = (password) => {
@@ -55,6 +72,10 @@ export default function PasswordChangeForm({ onSubmit }) {
       setPasswordTouched(true);
       return;
     }
+    // 현재 비밀번호가 일치하는지 확인
+    if (currentPasswordStatus !== 'match') {
+      return;
+    }
     // 비밀번호가 일치하고 모든 필드가 입력되어 있을 때만 모달 표시
     if (passwordMatchStatus === 'match' && currentPassword && newPassword && confirmPassword) {
       setIsModalOpen(true);
@@ -63,15 +84,27 @@ export default function PasswordChangeForm({ onSubmit }) {
 
   const handleConfirm = async () => {
     setIsModalOpen(false);
+
     if (onSubmit) {
       await onSubmit({ currentPassword, newPassword, confirmPassword });
-      // 비밀번호 변경 성공 시 저장된 비밀번호를 새 비밀번호로 업데이트
+      // 비밀번호 변경 성공 시 저장된 비밀번호를 새 비밀번호로 업데이트, 임시 비밀번호 플래그 해제
       if (user) {
-        setLogin(user, newPassword);
+        setLogin(user, newPassword, false);
       }
+
+      // 비밀번호 변경 완료 플래그 설정 (불일치 메시지만 숨김)
+      setIsPasswordChanged(true);
+
+      // 비밀번호 변경 성공 토스트 메시지 표시
+      if (showToast) {
+        showToast('비밀번호가 변경되었습니다.');
+      }
+
+      // 토스트 메시지가 표시된 후 마이페이지로 이동 (2초 후)
+      setTimeout(() => {
+        navigate('/mypage');
+      }, 2000);
     }
-    // 비밀번호 변경 후 마이페이지로 이동
-    navigate('/mypage');
   };
 
   const handleCancel = () => {
@@ -86,21 +119,40 @@ export default function PasswordChangeForm({ onSubmit }) {
           <PasswordInput
             label="현재 비밀번호"
             value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
+            onChange={(e) => {
+              setCurrentPassword(e.target.value);
+              // 입력 중에는 메시지 표시를 위해 touched 상태 초기화
+              if (isPasswordChanged) {
+                // 비밀번호 변경 후에는 메시지를 다시 표시하지 않음
+                return;
+              }
+              // 입력 중에는 항상 touched 상태를 false로 유지하여 메시지 표시
+              setCurrentPasswordTouched(false);
+            }}
+            onBlur={() => {
+              // blur 시에는 메시지를 숨기지 않음 (비밀번호 변경 버튼을 눌러도 메시지 유지)
+            }}
             placeholder="abc@1234"
             mb="mb-0"
             hideToggle={true}
           />
-          {currentPasswordStatus === 'match' && (
-            <div className="text-green-500 text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
+          {currentPasswordStatus === 'match' && !currentPasswordTouched && !isPasswordChanged && (
+            <div className="text-[#00A424] text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
               비밀번호가 일치합니다.
             </div>
           )}
-          {currentPasswordStatus === 'mismatch' && (
-            <div className="text-red-500 text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
-              비밀번호가 일치하지 않습니다.
+          {currentPasswordStatus === 'match' && isPasswordChanged && (
+            <div className="text-[#00A424] text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
+              비밀번호가 일치합니다.
             </div>
           )}
+          {currentPasswordStatus === 'mismatch' &&
+            !currentPasswordTouched &&
+            !isPasswordChanged && (
+              <div className="text-[#FF7D56] text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
+                비밀번호가 일치하지 않습니다.
+              </div>
+            )}
           {currentPasswordStatus === null && currentPassword && <div className="mb-4"></div>}
           {!currentPassword && <div className="mb-4"></div>}
         </div>
@@ -118,8 +170,8 @@ export default function PasswordChangeForm({ onSubmit }) {
             className={`text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1 break-words max-[375px]:whitespace-normal ${
               passwordTouched && newPassword
                 ? isValidPassword(newPassword)
-                  ? 'text-green-500'
-                  : 'text-red-500'
+                  ? 'text-[#00A424]'
+                  : 'text-[#FF7D56]'
                 : 'text-[#000000]'
             }`}
           >
@@ -136,14 +188,14 @@ export default function PasswordChangeForm({ onSubmit }) {
             hideToggle={true}
           />
           {passwordMatchStatus === 'mismatch' && (
-            <div className="text-red-500 text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
+            <div className="text-[#FF7D56] text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
               비밀번호가 일치하지 않습니다.
             </div>
           )}
           {passwordMatchStatus === 'match' &&
             isValidPassword(newPassword) &&
             newPassword === confirmPassword && (
-              <div className="text-green-500 text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
+              <div className="text-[#00A424] text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
                 비밀번호가 일치합니다.
               </div>
             )}
@@ -158,7 +210,8 @@ export default function PasswordChangeForm({ onSubmit }) {
             !newPassword ||
             !confirmPassword ||
             !isValidPassword(newPassword) ||
-            passwordMatchStatus !== 'match'
+            passwordMatchStatus !== 'match' ||
+            currentPasswordStatus !== 'match'
           }
         >
           비밀번호 변경

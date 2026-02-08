@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useOutletContext } from 'react-router';
 
 import { reissuePassword, requestEmailVerification } from '@/api/authApi';
 
@@ -15,6 +15,8 @@ export default function PasswordFindForm({ onSubmit }) {
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [countdown, setCountdown] = useState(0); // 초 단위
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
+  // @ts-ignore
+  const { showToast } = useOutletContext();
 
   const handleVerificationSend = async () => {
     try {
@@ -30,6 +32,9 @@ export default function PasswordFindForm({ onSubmit }) {
     } catch (error) {
       console.error('인증번호 전송 실패:', error);
       // TODO: 에러 처리 (토스트 메시지 등)
+      if (showToast) {
+        showToast('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
+      }
     }
   };
 
@@ -141,7 +146,7 @@ export default function PasswordFindForm({ onSubmit }) {
                 className="flex justify-between items-center"
                 style={{ transform: 'translateY(4px)' }}
               >
-                <div className="text-[#B0B0B0] text-sm text-left font-['Pretendard'] ml-0">
+                <div className="text-[#FF7D56] text-sm text-left font-['Pretendard'] ml-0">
                   {countdown === 0 && '입력 시간이 만료되었습니다.'}
                 </div>
                 <div className="text-[#B0B0B0] text-sm text-right font-['Pretendard'] ml-3">
@@ -159,7 +164,7 @@ export default function PasswordFindForm({ onSubmit }) {
             )}
             {verificationStatus === 'error' && countdown > 0 && (
               <div
-                className="text-[#B0B0B0] text-sm text-left font-['Pretendard'] ml-0"
+                className="text-[#FF7D56] text-sm text-left font-['Pretendard'] ml-0"
                 style={{ transform: 'translateY(-15px) translateX(4px)' }}
               >
                 잘못된 인증번호입니다. 다시 입력해주세요.

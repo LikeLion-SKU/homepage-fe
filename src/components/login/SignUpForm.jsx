@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router';
 
 import { confirmEmailVerification, register, requestEmailVerification } from '@/api/authApi';
 import CheckModal from '@/components/common/Modal/CheckModal';
@@ -13,6 +14,8 @@ import SignupLink from './SignUpLink';
 import VerificationButton from './VerificationButton';
 
 export default function SignUpForm({ onSubmit }) {
+  // @ts-ignore
+  const { showToast } = useOutletContext() || {};
   const [step, setStep] = useState(1); // 1: 인증번호 확인, 2: 회원정보 입력
   const [email, setEmail] = useState('');
 
@@ -233,8 +236,10 @@ export default function SignUpForm({ onSubmit }) {
       setVerificationStatus(null);
     } catch (error) {
       console.error('인증번호 전송 실패:', error);
-      setConfirmModalMessage('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
-      setShowConfirmModal(true);
+      // 토스트 메시지 표시
+      if (showToast) {
+        showToast('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
+      }
     }
   };
 
@@ -415,8 +420,8 @@ export default function SignUpForm({ onSubmit }) {
               className={`text-xs min-[761px]:text-base font-['Pretendard'] font-medium ${
                 passwordTouched && signupPassword
                   ? isValidPassword(signupPassword)
-                    ? 'text-green-500'
-                    : 'text-red-500'
+                    ? 'text-[#00A424]'
+                    : 'text-[#FF7D56]'
                   : 'text-[#1A1A1A]'
               }`}
             >
@@ -438,12 +443,12 @@ export default function SignUpForm({ onSubmit }) {
             {confirmPassword &&
               isValidPassword(signupPassword) &&
               signupPassword === confirmPassword && (
-                <p className="text-green-500 text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
+                <p className="text-[#00A424] text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
                   비밀번호가 일치합니다.
                 </p>
               )}
             {confirmPassword && signupPassword !== confirmPassword && (
-              <p className="text-red-500 text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
+              <p className="text-[#FF7D56] text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
                 비밀번호가 일치하지 않습니다.
               </p>
             )}

@@ -36,7 +36,7 @@ export default function PasswordInput({
       {!hideLabel && (
         <label className="text-black text-sm sm:text-base font-medium font-['Pretendard']">
           {label || '비밀번호'}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-[#FF7D56] ml-1">*</span>}
         </label>
       )}
       <div

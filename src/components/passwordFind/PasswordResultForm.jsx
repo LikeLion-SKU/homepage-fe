@@ -30,8 +30,8 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
         password: newPassword,
       });
 
-      // 로그인 성공 시 상태 저장 (비밀번호도 저장)
-      setLogin(response?.user || { email: fullEmail }, newPassword);
+      // 로그인 성공 시 상태 저장 (비밀번호도 저장, 임시 비밀번호 플래그 설정)
+      setLogin(response?.user || { email: fullEmail }, newPassword, true);
 
       // 비밀번호 변경 페이지로 이동
       setTimeout(() => {
