@@ -49,3 +49,14 @@ export const putAdminForm = async (applicationFormId, formData) => {
     return null;
   }
 };
+
+// 사용자 진행중 지원 일정 조회
+export const getSemester = async () => {
+  try {
+    const response = await APIService.public.get('v1/applications/current-forms');
+    return response.data || [];
+  } catch (error) {
+    console.log('진행중 지원 일정 조회', error);
+    throw error;
+  }
+};
