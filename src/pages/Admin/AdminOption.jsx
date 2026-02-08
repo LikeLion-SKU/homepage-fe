@@ -7,7 +7,7 @@ import OptionAdminTable from '@/components/admin/Option/OptionAdminTable';
 import OptionTitle from '@/components/admin/Option/OptionTitle';
 
 export default function AdminOption() {
-  const [semester, setSemester] = useState(['14기', '13기', '12기', '11기']);
+  const [semester, setSemester] = useState([]);
   const [projectType, setProjectType] = useState([
     '중앙해커톤',
     '아이디어톤',
@@ -26,7 +26,8 @@ export default function AdminOption() {
   useEffect(() => {
     const getOption = async () => {
       setSemester(await getSemester());
-      setProjectType(await getProjectType());
+      const projectTypeData = await getProjectType();
+      setProjectType([...projectTypeData.map((item) => item.projectTypeName)]);
     };
     getOption();
   }, []);
