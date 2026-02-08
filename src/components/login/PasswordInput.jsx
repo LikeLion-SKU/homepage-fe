@@ -47,7 +47,7 @@ export default function PasswordInput({
           style={maxWidthStyle}
         >
           <input
-            type={hideToggle ? 'text' : showPassword ? 'text' : 'password'}
+            type={hideToggle ? 'text' : showPassword ? 'password' : 'text'}
             value={value}
             onChange={onChange}
             onBlur={onBlur}
