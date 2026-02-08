@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { getCurrentForm } from '@/api/applicationForm';
+import { questionsLoader } from '@/api/applicationQuestionApi';
 import { getResult } from '@/api/applicationResult';
 import { basicInfoLoader } from '@/api/applyLoader';
 import { logoutAction } from '@/api/logoutAction';
@@ -74,7 +75,7 @@ const router = createBrowserRouter([
               { path: 'info', Component: ApplyBasicInfo },
               { path: 'common', Component: ApplyCommon },
               { path: 'track', Component: ApplyTrack },
-              { path: 'confirm', Component: FinalConfirm },
+              { path: 'confirm', Component: FinalConfirm, loader: questionsLoader },
             ],
           },
           { path: '/result/notice', Component: ResultNotice, loader: getCurrentForm },
