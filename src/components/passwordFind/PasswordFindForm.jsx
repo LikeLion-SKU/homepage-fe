@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import { reissuePassword, requestEmailVerification } from '@/api/authApi';
+
 import EmailInput from '../login/EmailInput';
-import LoginButton from '../login/LoginButton';
 import LoginTitle from '../login/LoginTitle';
 import PasswordInput from '../login/PasswordInput';
 import VerificationButton from '../login/VerificationButton';
@@ -14,46 +15,18 @@ export default function PasswordFindForm({ onSubmit }) {
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [countdown, setCountdown] = useState(0); // 초 단위
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
-  const [correctCode, setCorrectCode] = useState(''); // 실제 인증번호 (임시로 저장)
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // 인증이 성공한 경우에만 결과 페이지로 이동
-    if (verificationStatus === 'success') {
-      try {
-        // TODO: 실제 임시 비밀번호 발급 API 호출
-        // 엔드포인트 api/v1/auth/password/reissue
-        // const response = await APIService.public.post('api/v1/auth/password/reissue', { email, code: password });
-        // const tempPassword = response.data.tempPassword;
-
-        // 임시로 하드코딩된 임시 비밀번호
-        const tempPassword = 'temp1234';
-
-        if (onSubmit) {
-          onSubmit({ email, password });
-        }
-        navigate('/password/result', { state: { email, tempPassword } });
-      } catch (error) {
-        console.error('임시 비밀번호 발급 실패:', error);
-        // TODO: 에러 처리 (토스트 메시지 등)
-      }
-    }
-  };
 
   const handleVerificationSend = async () => {
     try {
-      // TODO: 비밀번호 찾기용 인증번호 전송 API 호출
-      // 엔드포인트 api/v1/auth/email/verify/request
-      // await APIService.public.post('api/v1/auth/email/verify/request', { email });
+      // 이메일 값에 @skuniv.ac.kr이 없으면 추가
+      const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
-      console.log('인증번호 전송 (비밀번호 찾기)');
+      // 인증번호 전송 API 호출
+      await requestEmailVerification({ email: finalEmail });
+
       setIsVerificationSent(true);
       setCountdown(300); // 5분 = 300초
-      // 임시로 인증번호 123456으로 테스트
-      const randomCode = '123456';
-      setCorrectCode(randomCode);
       setVerificationStatus(null); // 상태 초기화
-      console.log('인증번호:', randomCode); // 개발용
     } catch (error) {
       console.error('인증번호 전송 실패:', error);
       // TODO: 에러 처리 (토스트 메시지 등)
@@ -66,18 +39,35 @@ export default function PasswordFindForm({ onSubmit }) {
       return;
     }
 
-    try {
-      // TODO: 비밀번호 찾기용 인증번호 확인 API 호출
-      // 엔드포인트 api/v1/auth/password/reissue
-      // const response = await APIService.public.post('api/v1/auth/password/reissue', { email, code: password });
+    if (!password) {
+      return;
+    }
 
-      console.log('인증번호 확인 (비밀번호 찾기)');
-      // 임시로 하드코딩된 코드와 비교
-      if (password === correctCode) {
-        setVerificationStatus('success');
-      } else {
+    try {
+      // 이메일 값에 @skuniv.ac.kr이 없으면 추가
+      const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
+
+      // 비밀번호 재발급 API 호출 (인증번호 확인과 함께)
+      const response = await reissuePassword({ email: finalEmail, code: password });
+
+      // API 응답에서 임시 비밀번호 가져오기
+      // API 응답 구조: { success: true, code: 200, message: "...", data: { temporaryPassword: "..." } }
+      // reissuePassword는 .then((r) => r.data)를 반환하므로 response는 이미 r.data입니다
+      const tempPassword = response?.data?.temporaryPassword;
+
+      if (!tempPassword) {
+        console.error('API 응답에 temporaryPassword가 없습니다:', response);
         setVerificationStatus('error');
+        return;
       }
+
+      setVerificationStatus('success');
+
+      // 인증 성공 시 결과 페이지로 이동
+      if (onSubmit) {
+        onSubmit({ email: finalEmail, password });
+      }
+      navigate('/password/result', { state: { email: finalEmail, tempPassword } });
     } catch (error) {
       console.error('인증번호 확인 실패:', error);
       setVerificationStatus('error');
@@ -104,7 +94,7 @@ export default function PasswordFindForm({ onSubmit }) {
 
   return (
     <div className="w-full max-w-lg mx-auto px-4 sm:px-0">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <LoginTitle title="비밀번호 찾기" />
         <EmailInput
           value={email}
@@ -197,14 +187,6 @@ export default function PasswordFindForm({ onSubmit }) {
             skuofficial@likelion.org로 문의바랍니다.
           </p>
         </div>
-      </div>
-      <div className="w-full mt-20">
-        <LoginButton
-          onClick={handleSubmit}
-          disabled={!email || !password || verificationStatus !== 'success'}
-        >
-          비밀번호 찾기
-        </LoginButton>
       </div>
     </div>
   );

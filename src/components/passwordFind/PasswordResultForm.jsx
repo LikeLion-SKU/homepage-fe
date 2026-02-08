@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router';
 
 //@ts-ignore
@@ -13,14 +12,16 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
   const navigate = useNavigate();
   //@ts-ignore
   const { showToast } = useOutletContext();
-  const [newPassword] = useState(tempPassword);
+
+  // tempPassword prop을 직접 사용 (state로 저장하지 않음)
+  const newPassword = tempPassword || '';
 
   // 이메일 값에 @skuniv.ac.kr이 포함되어 있지 않으면 추가
   const fullEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
   const handleLoginClick = () => {
-    // 로그인 페이지로 이동
-    navigate('/login');
+    // 마이페이지(비밀번호 변경) 페이지로 이동
+    navigate('/mypage/password/change');
   };
 
   const handleCopyPassword = async () => {
@@ -101,7 +102,7 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
               </Button>
               <div className="flex-1 self-stretch h-12 px-4 py-3 outline bg-button-gray relative z-10">
                 <div className="flex justify-center items-center h-full mr-14 text-zinc-900 text-lg font-medium font-['Pretendard']">
-                  로그인
+                  비밀번호 변경
                 </div>
               </div>
             </div>
