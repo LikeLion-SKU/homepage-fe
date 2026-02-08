@@ -17,11 +17,49 @@ export default function AdminOption() {
       setProjectTypeId([...projectTypeData.map((item) => item.projectTypeId)]);
     };
     getOption();
-  }, [semester, projectType]);
+  }, []);
 
-  const deleteType = (projectTypeName) => {
-    const nameIndex = projectType.indexOf(projectTypeName);
-    deleteProjectType(projectTypeId[nameIndex]);
+  const plusSemester = async (semesterNum) => {
+    try {
+      await postSemester(semesterNum);
+    } catch (error) {
+      console.log('기수 추가 실패:', error);
+    } finally {
+      setSemester(await getSemester());
+    }
+  };
+  const deleteSemesterNum = async (semesterNum) => {
+    try {
+      await deleteSemester(semesterNum);
+    } catch (error) {
+      console.log('기수 삭제 실패:', error);
+      throw error;
+    } finally {
+      setSemester(await getSemester());
+    }
+  };
+  const plusType = async (typeName) => {
+    try {
+      await postProjectType(typeName);
+    } catch (error) {
+      console.log('프로젝트 타입 추가 실패:', error);
+    } finally {
+      const projectTypeData = await getProjectType();
+      setProjectType([...projectTypeData.map((item) => item.projectTypeName)]);
+      setProjectTypeId([...projectTypeData.map((item) => item.projectTypeId)]);
+    }
+  };
+  const deleteType = async (projectTypeName) => {
+    try {
+      const nameIndex = projectType.indexOf(projectTypeName);
+      await deleteProjectType(projectTypeId[nameIndex]);
+    } catch (error) {
+      console.log('프로젝트 타입 삭제 실패:', error);
+    } finally {
+      const projectTypeData = await getProjectType();
+      setProjectType([...projectTypeData.map((item) => item.projectTypeName)]);
+      setProjectTypeId([...projectTypeData.map((item) => item.projectTypeId)]);
+    }
   };
 
   return (
@@ -32,14 +70,14 @@ export default function AdminOption() {
           title="기수"
           optionData={semester}
           setOptionData={setSemester}
-          handlePlus={postSemester}
-          handleDelete={deleteSemester}
+          handlePlus={plusSemester}
+          handleDelete={deleteSemesterNum}
         />
         <OptionAdminTable
           title="대회명"
           optionData={projectType}
           setOptionData={setProjectType}
-          handlePlus={postProjectType}
+          handlePlus={plusType}
           handleDelete={deleteType}
         />
       </div>

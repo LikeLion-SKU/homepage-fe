@@ -15,7 +15,7 @@ export default function OptionAdminTable({
   //@ts-ignore
   const { openModal } = useOutletContext();
   const plusOptionData = (plusName) => {
-    setOptionData((prev) => [plusName, ...prev]);
+    setOptionData((prev) => [...prev, plusName]);
     setPlusName('');
     handlePlus(plusName);
   };
@@ -28,8 +28,6 @@ export default function OptionAdminTable({
         openModal('현재 사용 중인 데이터이므로 삭제할 수 없습니다.', () => {});
       }
     }
-
-    setOptionData((prev) => prev.filter((name) => name !== deleteName));
   };
   return (
     <div className="flex flex-col border pt-10 pl-33.5 gap-12 w-156 h-190">
@@ -61,7 +59,7 @@ export default function OptionAdminTable({
             • {name}
             <Trashcan
               onClick={() =>
-                openModal(`${name}을/를 삭제하시겠습니까?`, () => deleteOptionData(name))
+                openModal(`${name}(을/를) 삭제하시겠습니까?`, () => deleteOptionData(name))
               }
             />
           </div>
