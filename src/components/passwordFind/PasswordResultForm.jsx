@@ -1,15 +1,18 @@
 import { useNavigate, useOutletContext } from 'react-router';
 
+import { login } from '@/api/authApi';
 //@ts-ignore
 import CopyIcon from '@/assets/icons/copy_icon.svg?react';
 import Navy from '@/assets/icons/right_navy_icon.svg';
 import Button from '@/components/common/Button/Button';
+import useAuthStore from '@/store/useAuthStore';
 
 import LoginTitle from '../login/LoginTitle';
 import SignUpInput from '../login/SignUpInput';
 
 export default function PasswordResultForm({ email = '', tempPassword = '' }) {
   const navigate = useNavigate();
+  const setLogin = useAuthStore((state) => state.setLogin);
   //@ts-ignore
   const { showToast } = useOutletContext();
 
@@ -19,9 +22,27 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
   // 이메일 값에 @skuniv.ac.kr이 포함되어 있지 않으면 추가
   const fullEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
-  const handleLoginClick = () => {
-    // 마이페이지(비밀번호 변경) 페이지로 이동
-    navigate('/mypage/password/change');
+  const handleLoginClick = async () => {
+    try {
+      // 이메일과 임시 비밀번호로 자동 로그인
+      const response = await login({
+        email: fullEmail,
+        password: newPassword,
+      });
+
+      // 로그인 성공 시 상태 저장
+      setLogin(response?.user || { email: fullEmail });
+
+      // 비밀번호 변경 페이지로 이동
+      setTimeout(() => {
+        navigate('/mypage/password/change');
+      }, 500);
+    } catch (error) {
+      console.error('자동 로그인 실패:', error);
+      if (showToast) {
+        showToast('로그인에 실패했습니다. 다시 시도해주세요.');
+      }
+    }
   };
 
   const handleCopyPassword = async () => {
@@ -81,7 +102,7 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
                 위 비밀번호는 임시 비밀번호입니다.
               </p>
               <p className="text-black text-sm max-[480px]:text-xs font-['Pretendard'] mb-1">
-                로그인 후 "마이페이지"-&gt;"비밀번호 변경"에서
+                비밀번호 복사 후 아래 버튼을 클릭하여
               </p>
               <p className="text-black text-sm max-[480px]:text-xs font-['Pretendard'] mb-1">
                 반드시 비밀번호를 변경해주세요.
