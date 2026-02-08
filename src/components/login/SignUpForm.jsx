@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router';
 
 import { confirmEmailVerification, register, requestEmailVerification } from '@/api/authApi';
 import CheckModal from '@/components/common/Modal/CheckModal';
@@ -13,6 +14,8 @@ import SignupLink from './SignUpLink';
 import VerificationButton from './VerificationButton';
 
 export default function SignUpForm({ onSubmit }) {
+  // @ts-ignore
+  const { showToast } = useOutletContext() || {};
   const [step, setStep] = useState(1); // 1: 인증번호 확인, 2: 회원정보 입력
   const [email, setEmail] = useState('');
 
@@ -22,6 +25,7 @@ export default function SignUpForm({ onSubmit }) {
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [countdown, setCountdown] = useState(0); // 초 단위
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
+  const [isVerificationSending, setIsVerificationSending] = useState(false);
 
   // 두 번째 단계 입력 필드
   const [name, setName] = useState('');
@@ -221,6 +225,7 @@ export default function SignUpForm({ onSubmit }) {
   };
 
   const handleVerificationSend = async () => {
+    setIsVerificationSending(true);
     try {
       const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
@@ -233,8 +238,12 @@ export default function SignUpForm({ onSubmit }) {
       setVerificationStatus(null);
     } catch (error) {
       console.error('인증번호 전송 실패:', error);
-      setConfirmModalMessage('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
-      setShowConfirmModal(true);
+      // 토스트 메시지 표시
+      if (showToast) {
+        showToast('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
+      }
+    } finally {
+      setIsVerificationSending(false);
     }
   };
 
@@ -292,6 +301,7 @@ export default function SignUpForm({ onSubmit }) {
                   isActive={!!email}
                   isResend={isVerificationSent}
                   text={isVerificationSent ? '인증번호 재전송' : '인증번호 전송'}
+                  isLoading={isVerificationSending}
                 />
               }
             />
@@ -323,7 +333,7 @@ export default function SignUpForm({ onSubmit }) {
                     className="flex justify-between items-center"
                     style={{ transform: 'translateY(4px)' }}
                   >
-                    <div className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0">
+                    <div className="text-[#FF7D56] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0">
                       {countdown === 0 && '입력 시간이 만료되었습니다.'}
                     </div>
                     <div className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-right font-['Pretendard'] ml-3">
@@ -333,7 +343,7 @@ export default function SignUpForm({ onSubmit }) {
                 )}
                 {verificationStatus === 'success' && (
                   <div
-                    className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0"
+                    className="text-[#00A424] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0"
                     style={{ transform: 'translateY(-12px) translateX(4px)' }}
                   >
                     인증번호가 일치합니다.
@@ -341,7 +351,7 @@ export default function SignUpForm({ onSubmit }) {
                 )}
                 {verificationStatus === 'error' && countdown > 0 && (
                   <div
-                    className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0"
+                    className="text-[#FF7D56] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0"
                     style={{ transform: 'translateY(-12px) translateX(4px)' }}
                   >
                     잘못된 인증번호입니다. 다시 입력해주세요.
@@ -352,7 +362,7 @@ export default function SignUpForm({ onSubmit }) {
           </form>
 
           <div className="w-full mt-24">
-            <LoginButton onClick={handleNextStep} disabled={!verificationCode}>
+            <LoginButton onClick={handleNextStep} disabled={verificationStatus !== 'success'}>
               다음
             </LoginButton>
           </div>
@@ -415,8 +425,8 @@ export default function SignUpForm({ onSubmit }) {
               className={`text-xs min-[761px]:text-base font-['Pretendard'] font-medium ${
                 passwordTouched && signupPassword
                   ? isValidPassword(signupPassword)
-                    ? 'text-green-500'
-                    : 'text-red-500'
+                    ? 'text-[#00A424]'
+                    : 'text-[#FF7D56]'
                   : 'text-[#1A1A1A]'
               }`}
             >
@@ -438,12 +448,12 @@ export default function SignUpForm({ onSubmit }) {
             {confirmPassword &&
               isValidPassword(signupPassword) &&
               signupPassword === confirmPassword && (
-                <p className="text-green-500 text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
+                <p className="text-[#00A424] text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
                   비밀번호가 일치합니다.
                 </p>
               )}
             {confirmPassword && signupPassword !== confirmPassword && (
-              <p className="text-red-500 text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
+              <p className="text-[#FF7D56] text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
                 비밀번호가 일치하지 않습니다.
               </p>
             )}
@@ -500,7 +510,22 @@ export default function SignUpForm({ onSubmit }) {
         <AgreeForm onAgreeChange={setIsAgreed} required />
 
         <div className="w-full mt-8">
-          <LoginButton onClick={handleSubmit}>다음</LoginButton>
+          <LoginButton
+            onClick={handleSubmit}
+            disabled={
+              !name ||
+              !signupPassword ||
+              !confirmPassword ||
+              !phone ||
+              !major ||
+              !studentNumber ||
+              !isAgreed ||
+              !isValidPassword(signupPassword) ||
+              signupPassword !== confirmPassword
+            }
+          >
+            다음
+          </LoginButton>
         </div>
 
         <SignupLink
