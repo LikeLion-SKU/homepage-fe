@@ -1,9 +1,9 @@
 export default function ProjectPagenation({ props }) {
   const handlePage = (num) => {
     if (num == -1) {
-      if (props.pageOn - 1 > 0) props.setPageOn(props.pageOn - 1);
+      if (props.pageOn > 1) props.setPageOn(props.pageOn - 1);
     } else if (num == -2) {
-      if (props.pageOn + 1 < props.maxPage) props.setPageOn(props.pageOn + 1);
+      if (props.pageOn + 1 <= props.maxPage) props.setPageOn(props.pageOn + 1);
     } else {
       props.setPageOn(num);
     }
@@ -12,7 +12,7 @@ export default function ProjectPagenation({ props }) {
   const pageListChange = (isNext) => {
     if (isNext) {
       // 1. 다음 그룹의 첫 번째 페이지 계산 (현재 0~4라면 5, 5~9라면 10)
-      const nextGroupPage = Math.floor(props.pageOn / 5) * 5 + 5;
+      const nextGroupPage = Math.floor(props.pageOn - 1 / 5) * 5 + 6;
 
       if (nextGroupPage < props.maxPage) {
         // 다음 그룹으로 갈 수 있으면 이동
@@ -26,7 +26,7 @@ export default function ProjectPagenation({ props }) {
       }
     } else {
       // 이전 그룹으로 가는 로직 (0 미만으로 내려가지 않게 처리)
-      const prevGroupPage = Math.floor(props.pageOn / 5) * 5 - 1;
+      const prevGroupPage = Math.floor(props.pageOn - 1 / 5) * 5;
       if (prevGroupPage >= 0) {
         props.setPageOn(prevGroupPage);
       } else {
@@ -51,7 +51,7 @@ export default function ProjectPagenation({ props }) {
           onClick={() => handlePage(num)}
           className={`${props.pageOn == num ? 'font-bold' : 'font-medium'} w-7 h-7`}
         >
-          {num + 1}
+          {num}
         </button>
       ))}
       <button onClick={() => handlePage(-2)} className="w-7 h-7">

@@ -5,7 +5,7 @@ export const getProjectList = async (parameter) => {
   try {
     const res = await APIService.public.get('/v1/projects', {
       params: {
-        page: parameter.page || 0,
+        pageNum: parameter.pageNum || 0,
         semester: parameter.semester,
         projectTypeId: parameter.projectTypeId,
         search: parameter.search,
@@ -23,7 +23,7 @@ export const getFilterProjectList = async ({ request }) => {
 
   // URL에서 파라미터 추출 (?page=1&search=멋사 등)
   const params = {
-    page: url.searchParams.get('page') || 0,
+    pageNum: url.searchParams.get('pageNum') || 0,
     semester: url.searchParams.get('semester'),
     projectTypeId: url.searchParams.get('projectTypeId'),
     search: url.searchParams.get('search'),
