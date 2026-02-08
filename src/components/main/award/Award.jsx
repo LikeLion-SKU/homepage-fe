@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
 import awardBlahIcon from '@/assets/icons/main/award/winner-blah.svg';
-import Award6Image from '@/assets/images/artium.png';
-import Award1Image from '@/assets/images/danchu.png';
-import Award3Image from '@/assets/images/junglegym.png';
+import Award3Image from '@/assets/images/artium.png';
+import Award4Image from '@/assets/images/danchu.png';
 import Award2Image from '@/assets/images/livfit.png';
-import Award4Image from '@/assets/images/pickle.png';
+import Award1Image from '@/assets/images/pickle.png';
 import Award5Image from '@/assets/images/setbang.png';
+import Award6Image from '@/assets/images/setbang.png';
 import useScale from '@/components/main/hooks/useScale';
 import MainSectionLayout from '@/components/main/layout';
 import useMediaQuery from '@/hooks/useMediaQuery';
