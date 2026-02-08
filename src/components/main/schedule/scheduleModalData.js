@@ -26,7 +26,7 @@ export const scheduleMonthData = {
       contentImage: MarchImage2,
       contentTitle: '서경대만의 특별한 이벤트, 친해지길바래',
       contentDescription:
-        '5월 MT 전까지 친바조와 함께 빙고판을 채우며, MT에서 1등을 목표로 도전해보세요.',
+        '5월 MT 전까지 친바조와 함께 빙고판을 채우며, MT에서 1등을 <br/> 목표로 도전해보세요.',
     },
   ],
   '4월': [
@@ -49,14 +49,15 @@ export const scheduleMonthData = {
       title: '5월',
       contentImage: MayImage1,
       contentTitle: '아이디어톤',
-      contentDescription: '팀을 구성해 아이디어를 구체화하고, 서비스 기획의 첫 단계를 경험합니다.',
+      contentDescription:
+        '팀을 구성해 아이디어를 구체화하고, 서비스 기획의 첫 단계를 <br/> 경험합니다.',
     },
     {
       title: '5월',
       contentImage: MayImage2,
       contentTitle: '5월의 어느날 특별한 MT',
       contentDescription:
-        '서경대 멋쟁이사자처럼만의 특별한 MT를 통해 함께 웃고 즐기며 구성원 간의 교류와 팀워크를 다집니다.',
+        '서경대 멋쟁이사자처럼만의 특별한 MT를 통해 함께 웃고 즐기며<br/>구성원 간의 교류와 팀워크를 다집니다.',
     },
   ],
   '6월': [
@@ -90,17 +91,10 @@ export const scheduleMonthData = {
       contentImage: AugustImage1,
       contentTitle: '국내 최대 규모 중앙해커톤',
       contentDescription:
-        '중앙 멋쟁이사자첨이 주관하는 해커톤에 참여하여 아이디어를 실제 서비스로 구현하는 경험을 쌓습니다.<br/>매년 본선 진출팀을 배출하는 서경대 멋쟁이사자처럼의 주요 활동입니다.',
+        '중앙 멋쟁이사자처럼이 주관하는 해커톤에 참여하여 아이디어를 <br/> 실제 서비스로 구현하는 경험을 쌓습니다.<br/>매년 본선 진출팀을 배출하는 서경대 멋쟁이사자처럼의 주요 활동입니다.',
     },
   ],
   '9월': [
-    {
-      title: '9월',
-      contentImage: SeptemberImage1,
-      contentTitle: '교내 해커톤 SKTHON',
-      contentDescription:
-        '서경대학교 멋쟁이사자처럼이 주관하는 교내 해커톤으로, 무박 2일동안 아이디어를 팀 단위로 구체화하고 결과물로 완성합니다.',
-    },
     {
       title: '9월',
       contentImage: SeptemberImage2,
@@ -112,9 +106,10 @@ export const scheduleMonthData = {
   '10월': [
     {
       title: '10월',
-      contentImage: null,
-      contentTitle: '10월 일정',
-      contentDescription: '10월의 멋쟁이사자처럼 활동 내용입니다.',
+      contentImage: SeptemberImage1,
+      contentTitle: '교내 해커톤 SKTHON',
+      contentDescription:
+        '서경대학교 멋쟁이사자처럼이 주관하는 교내 해커톤으로, 무박 2일동안 아이디어를 팀 단위로 구체화하고 결과물로 완성합니다.',
     },
   ],
   '11월': [
@@ -123,7 +118,7 @@ export const scheduleMonthData = {
       contentImage: NovemberImage1,
       contentTitle: '4호선톤',
       contentDescription:
-        '4호선 라인 대학 구성원들과 함께 하는 연합 해커톤으로, 과정을 중시해 아이디어 구현을 통해 창업 연계를 목표로 하는 해커톤입니다.',
+        '4호선 라인 대학 구성원들과 함께 하는 연합 해커톤으로, 과정을 <br/> 중시해 아이디어 구현을 통해 창업 연계를 목표로 하는 해커톤입니다.',
     },
   ],
   '12월': [

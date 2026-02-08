@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 import labelBlah1Icon from '@/assets/icons/main/label-blah1.svg';
 import labelBlah2Icon from '@/assets/icons/main/label-blah2.svg';
-import projectIcon from '@/assets/icons/main/project-blah.svg';
+import projectsIcon from '@/assets/icons/main/projects-blah.svg';
 import skullionIcon from '@/assets/icons/main/skulions-blah.svg';
 import LabelAnimation from '@/components/animation/LabelAnimation';
 import SmallFrameBox from '@/components/layout/frame/Frame';
@@ -83,7 +83,7 @@ function Explain() {
           }}
         >
           <motion.img
-            src={projectIcon}
+            src={projectsIcon}
             alt="Project"
             className="object-contain"
             style={{

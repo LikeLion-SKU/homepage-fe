@@ -4,7 +4,7 @@ import { publicAPI } from '@/api/api';
 
 // auth 전용 (쿠키 포함)
 const authAPI = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_BASE_URL, // 중요: 환경변수 BASE_URL 쓰지 말기
+  baseURL: '/api', //import.meta.env.VITE_SERVER_BASE_URL, // 중요: 환경변수 BASE_URL 쓰지 말기
   withCredentials: true,
 });
 

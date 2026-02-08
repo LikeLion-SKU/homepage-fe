@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useOutletContext } from 'react-router';
 
 import { login } from '@/api/authApi';
 import LoginForm from '@/components/login/LoginForm';
@@ -7,6 +7,8 @@ import useAuthStore from '@/store/useAuthStore';
 export default function Login() {
   const navigate = useNavigate();
   const setLogin = useAuthStore((state) => state.setLogin);
+  // @ts-ignore
+  const { showToast } = useOutletContext() || {};
 
   const handleLogin = async (credentials) => {
     try {
@@ -23,8 +25,15 @@ export default function Login() {
       // 로그인 성공 시 상태 저장 (localStorage에 isLogin 저장)
       setLogin(response?.user || { email: finalEmail });
 
-      // 로그인 성공 시 메인 페이지로 이동
-      navigate('/');
+      // 로그인 성공 토스트 메시지 표시
+      if (showToast) {
+        showToast('로그인이 되었습니다.');
+      }
+
+      // 토스트 메시지가 표시된 후 메인 페이지로 이동 (1.5초 후)
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
     } catch (error) {
       console.error('로그인 실패:', error);
       // TODO: 에러 처리 (토스트 메시지 등)
