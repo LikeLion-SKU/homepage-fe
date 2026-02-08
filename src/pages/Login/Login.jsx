@@ -22,8 +22,8 @@ export default function Login() {
         password: credentials.password,
       });
 
-      // 로그인 성공 시 상태 저장 (localStorage에 isLogin 저장)
-      setLogin(response?.user || { email: finalEmail });
+      // 로그인 성공 시 상태 저장 (localStorage에 isLogin 저장, 비밀번호도 저장)
+      setLogin(response?.user || { email: finalEmail }, credentials.password);
 
       // 로그인 성공 토스트 메시지 표시
       if (showToast) {

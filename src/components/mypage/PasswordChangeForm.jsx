@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import Modal from '@/components/common/Modal/ConfirmModal';
+import useAuthStore from '@/store/useAuthStore';
 
 import LoginButton from '../login/LoginButton';
 import LoginTitle from '../login/LoginTitle';
@@ -9,11 +10,25 @@ import PasswordInput from '../login/PasswordInput';
 
 export default function PasswordChangeForm({ onSubmit }) {
   const navigate = useNavigate();
+  const currentPasswordFromStore = useAuthStore((state) => state.currentPassword);
+  const setLogin = useAuthStore((state) => state.setLogin);
+  const user = useAuthStore((state) => state.user);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
+
+  // 현재 비밀번호 일치 여부 확인
+  const currentPasswordStatus = useMemo(() => {
+    if (!currentPassword || !currentPasswordFromStore) {
+      return null;
+    }
+    if (currentPassword === currentPasswordFromStore) {
+      return 'match';
+    }
+    return 'mismatch';
+  }, [currentPassword, currentPasswordFromStore]);
 
   // 비밀번호 유효성 검사: 최소 영문자 1자, 숫자 1자, 특수문자 1자를 포함한 8~20자리
   const isValidPassword = (password) => {
@@ -50,6 +65,10 @@ export default function PasswordChangeForm({ onSubmit }) {
     setIsModalOpen(false);
     if (onSubmit) {
       await onSubmit({ currentPassword, newPassword, confirmPassword });
+      // 비밀번호 변경 성공 시 저장된 비밀번호를 새 비밀번호로 업데이트
+      if (user) {
+        setLogin(user, newPassword);
+      }
     }
     // 비밀번호 변경 후 마이페이지로 이동
     navigate('/mypage');
@@ -63,14 +82,28 @@ export default function PasswordChangeForm({ onSubmit }) {
     <div className="w-full max-w-lg mx-auto px-2 sm:px-0">
       <form onSubmit={handleSubmit}>
         <LoginTitle title="비밀번호 변경" />
-        <PasswordInput
-          label="현재 비밀번호"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          placeholder="abc@1234"
-          mb="mb-4"
-          hideToggle={true}
-        />
+        <div>
+          <PasswordInput
+            label="현재 비밀번호"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            placeholder="abc@1234"
+            mb="mb-0"
+            hideToggle={true}
+          />
+          {currentPasswordStatus === 'match' && (
+            <div className="text-green-500 text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
+              비밀번호가 일치합니다.
+            </div>
+          )}
+          {currentPasswordStatus === 'mismatch' && (
+            <div className="text-red-500 text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
+              비밀번호가 일치하지 않습니다.
+            </div>
+          )}
+          {currentPasswordStatus === null && currentPassword && <div className="mb-4"></div>}
+          {!currentPassword && <div className="mb-4"></div>}
+        </div>
         <div>
           <PasswordInput
             label="새 비밀번호"
