@@ -1,5 +1,6 @@
 import { APIService } from '@/api/api';
 
+// COMMON일떄, 트랙별 질문 불러오는 로더
 export const questionsLoader = async () => {
   // sessionStorage 에서 track 정보 빼서 질문 불러올때 파라미터로 이용
   const formData = JSON.parse(sessionStorage.getItem('apply_draft'));
