@@ -1,26 +1,47 @@
-import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router';
 
+import { login } from '@/api/authApi';
 //@ts-ignore
 import CopyIcon from '@/assets/icons/copy_icon.svg?react';
-import Navy from '@/assets/icons/right_navy_icon.svg';
-import Button from '@/components/common/Button/Button';
+import LoginButton from '@/components/login/LoginButton';
+import useAuthStore from '@/store/useAuthStore';
 
 import LoginTitle from '../login/LoginTitle';
 import SignUpInput from '../login/SignUpInput';
 
 export default function PasswordResultForm({ email = '', tempPassword = '' }) {
   const navigate = useNavigate();
+  const setLogin = useAuthStore((state) => state.setLogin);
   //@ts-ignore
   const { showToast } = useOutletContext();
-  const [newPassword] = useState(tempPassword);
+
+  // tempPassword prop을 직접 사용 (state로 저장하지 않음)
+  const newPassword = tempPassword || '';
 
   // 이메일 값에 @skuniv.ac.kr이 포함되어 있지 않으면 추가
   const fullEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
-  const handleLoginClick = () => {
-    // 로그인 페이지로 이동
-    navigate('/login');
+  const handleLoginClick = async () => {
+    try {
+      // 이메일과 임시 비밀번호로 자동 로그인
+      const response = await login({
+        email: fullEmail,
+        password: newPassword,
+      });
+
+      // 로그인 성공 시 상태 저장 (비밀번호도 저장, 임시 비밀번호 플래그 설정)
+      setLogin(response?.user || { email: fullEmail }, newPassword, true);
+
+      // 비밀번호 변경 페이지로 이동
+      setTimeout(() => {
+        navigate('/mypage/password/change');
+      }, 500);
+    } catch (error) {
+      console.error('자동 로그인 실패:', error);
+      if (showToast) {
+        showToast('로그인에 실패했습니다. 다시 시도해주세요.');
+      }
+    }
   };
 
   const handleCopyPassword = async () => {
@@ -80,7 +101,7 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
                 위 비밀번호는 임시 비밀번호입니다.
               </p>
               <p className="text-black text-sm max-[480px]:text-xs font-['Pretendard'] mb-1">
-                로그인 후 "마이페이지"-&gt;"비밀번호 변경"에서
+                비밀번호 복사 후 아래 버튼을 클릭하여
               </p>
               <p className="text-black text-sm max-[480px]:text-xs font-['Pretendard'] mb-1">
                 반드시 비밀번호를 변경해주세요.
@@ -88,24 +109,8 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
             </div>
           </div>
         </div>
-        <div className="w-full mt-20 flex justify-start">
-          <div className="w-full max-w-2xl">
-            <div className="flex justify-start items-center z-10">
-              <Button
-                onClick={handleLoginClick}
-                data-variant=""
-                data-size=""
-                className="w-12 h-12 bg-button-green hover:bg-button-hover px-3 py-3.5 outline flex-col justify-center items-center gap-2.5 flex-shrink-0"
-              >
-                <img src={Navy} className="w-6 h-5" alt="navy icon" />
-              </Button>
-              <div className="flex-1 self-stretch h-12 px-4 py-3 outline bg-button-gray relative z-10">
-                <div className="flex justify-center items-center h-full mr-14 text-zinc-900 text-lg font-medium font-['Pretendard']">
-                  로그인
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="w-full mt-20">
+          <LoginButton onClick={handleLoginClick}>비밀번호 변경</LoginButton>
         </div>
       </form>
     </div>
