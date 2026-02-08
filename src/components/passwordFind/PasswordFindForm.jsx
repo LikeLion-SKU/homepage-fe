@@ -15,10 +15,12 @@ export default function PasswordFindForm({ onSubmit }) {
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [countdown, setCountdown] = useState(0); // 초 단위
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
+  const [isVerificationSending, setIsVerificationSending] = useState(false);
   // @ts-ignore
   const { showToast } = useOutletContext();
 
   const handleVerificationSend = async () => {
+    setIsVerificationSending(true);
     try {
       // 이메일 값에 @skuniv.ac.kr이 없으면 추가
       const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
@@ -35,6 +37,8 @@ export default function PasswordFindForm({ onSubmit }) {
       if (showToast) {
         showToast('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
       }
+    } finally {
+      setIsVerificationSending(false);
     }
   };
 
@@ -114,6 +118,7 @@ export default function PasswordFindForm({ onSubmit }) {
               isActive={!!email}
               isResend={isVerificationSent}
               text={isVerificationSent ? '인증번호 재전송' : '인증번호 전송'}
+              isLoading={isVerificationSending}
             />
           }
         />

@@ -25,6 +25,7 @@ export default function SignUpForm({ onSubmit }) {
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [countdown, setCountdown] = useState(0); // 초 단위
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
+  const [isVerificationSending, setIsVerificationSending] = useState(false);
 
   // 두 번째 단계 입력 필드
   const [name, setName] = useState('');
@@ -224,6 +225,7 @@ export default function SignUpForm({ onSubmit }) {
   };
 
   const handleVerificationSend = async () => {
+    setIsVerificationSending(true);
     try {
       const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
@@ -240,6 +242,8 @@ export default function SignUpForm({ onSubmit }) {
       if (showToast) {
         showToast('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
       }
+    } finally {
+      setIsVerificationSending(false);
     }
   };
 
@@ -297,6 +301,7 @@ export default function SignUpForm({ onSubmit }) {
                   isActive={!!email}
                   isResend={isVerificationSent}
                   text={isVerificationSent ? '인증번호 재전송' : '인증번호 전송'}
+                  isLoading={isVerificationSending}
                 />
               }
             />
