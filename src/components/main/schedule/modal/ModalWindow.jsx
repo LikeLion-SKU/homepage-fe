@@ -98,7 +98,13 @@ function ModalWindow({
         </div>
 
         {/* 텍스트 비율 기반 높이 (scale에 따라 비례적으로 커짐) */}
-        <div style={{ height: `${textHeight}rem`, flexShrink: 0 }} className="overflow-auto">
+        <div
+          style={{
+            height: `${textHeight}rem`,
+            flexShrink: 0,
+            overflow: isMobile760 ? 'hidden' : 'auto',
+          }}
+        >
           <ModalTextContent
             title={contentTitle}
             description={contentDescription}
