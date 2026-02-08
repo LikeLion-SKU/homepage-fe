@@ -4,14 +4,33 @@ import { useOutletContext } from 'react-router';
 //@ts-ignore
 import Trashcan from '@/assets/icons/trashcan_icon.svg?react';
 
-export default function OptionAdminTable({ title, optionData, setOptionData }) {
+export default function OptionAdminTable({
+  title,
+  optionData,
+  setOptionData,
+  handlePlus,
+  handleDelete,
+}) {
   const [plusName, setPlusName] = useState('');
-  const handleOptionData = (plusName) => {
-    setOptionData((prev) => [plusName, ...prev]);
-    setPlusName('');
-  };
   //@ts-ignore
   const { openModal } = useOutletContext();
+  const plusOptionData = (plusName) => {
+    setOptionData((prev) => [plusName, ...prev]);
+    setPlusName('');
+    handlePlus(plusName);
+  };
+  const deleteOptionData = async (deleteName) => {
+    try {
+      await handleDelete(deleteName);
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        // 409 에러일 때 전용 모달 띄우기
+        openModal('현재 사용 중인 데이터이므로 삭제할 수 없습니다.', () => {});
+      }
+    }
+
+    setOptionData((prev) => prev.filter((name) => name !== deleteName));
+  };
   return (
     <div className="flex flex-col border pt-10 pl-33.5 gap-12 w-156 h-190">
       <p className="text-[1.6rem] font-semibold ml-30">{title} 관리</p>
@@ -22,13 +41,13 @@ export default function OptionAdminTable({ title, optionData, setOptionData }) {
             value={plusName}
             onChange={(e) => setPlusName(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key == 'Enter') handleOptionData(plusName);
+              if (e.key == 'Enter') plusOptionData(plusName);
             }}
             placeholder={`추가할 ${title == '기수' ? '기수를' : '대회명을'} 입력해주세요.`}
             className="w-67 focus:outline-none placeholder:text-[1.1rem] placeholder:text-black"
           />
           <button
-            onClick={() => handleOptionData(plusName)}
+            onClick={() => plusOptionData(plusName)}
             className="w-12 h-7.5 text-center items-center text-[1.1rem] border"
           >
             추가
@@ -42,9 +61,7 @@ export default function OptionAdminTable({ title, optionData, setOptionData }) {
             • {name}
             <Trashcan
               onClick={() =>
-                openModal(`삭제하시겠습니까?`, () =>
-                  setOptionData((prev) => prev.filter((_, idx) => idx !== index))
-                )
+                openModal(`${name}을/를 삭제하시겠습니까?`, () => deleteOptionData(name))
               }
             />
           </div>

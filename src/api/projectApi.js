@@ -66,3 +66,13 @@ export const postProjectType = async (projectTypeName) => {
     console.log('대회명 추가 실패:', error);
   }
 };
+
+export const deleteProjectType = async (projectTypeId) => {
+  try {
+    const res = await APIService.private.delete(`/v1/admin/project-types/${projectTypeId}`);
+
+    return res.data;
+  } catch (error) {
+    console.log('기수 삭제 실패:', error);
+  }
+};

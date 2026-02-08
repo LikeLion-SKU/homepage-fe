@@ -12,10 +12,23 @@ export const getSemester = async () => {
 
 export const postSemester = async (semester) => {
   try {
-    const res = await APIService.private.post('/v1/admin/semester', { semester: semester });
+    const res = await APIService.private.post('/v1/admin/semester', {
+      semester: parseInt(semester),
+    });
 
     return res.data;
   } catch (error) {
     console.log('기수 추가 실패:', error);
+  }
+};
+
+export const deleteSemester = async (semester) => {
+  try {
+    const res = await APIService.private.delete(`/v1/admin/semesters/${parseInt(semester)}`);
+
+    return res.data;
+  } catch (error) {
+    console.log('기수 삭제 실패:', error);
+    throw error;
   }
 };
