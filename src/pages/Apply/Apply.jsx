@@ -84,6 +84,7 @@ export default function Apply() {
   const formatAnswers = () => {
     const commonAnswers = [];
     const trackAnswers = [];
+    console.log('보낼 트랙 answers', trackAnswers);
 
     // 현재 사용자가 최종적으로 선택한 트랙
     const currentSelectedTrack = formData.track;
@@ -124,7 +125,7 @@ export default function Apply() {
         commonAnswers: commonAnswers,
         trackAnswers: trackAnswers,
       };
-      console.log('서버로 보내는 데이터 확인:', record);
+      console.log('임시저장 시 서버로 보내는 데이터 확인:', record);
 
       if (isFirst) {
         await APIService.private.post('/v1/applications/records/first-draft', record);
@@ -173,6 +174,7 @@ export default function Apply() {
           userInfoData,
           questions,
           recordAnswer,
+          formatAnswers,
           recordDraft,
           setFormData,
           updateFormData,

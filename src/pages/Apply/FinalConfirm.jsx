@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useLoaderData, useNavigate, useOutletContext } from 'react-router-dom';
 
+import { applicationSubmit } from '@/api/applicationRecordApi';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
 import ApplyStep from '@/components/common/apply/ApplyStep';
 import ApplyTitleSection from '@/components/common/apply/ApplyTitleSection';
-import { QUESTION_LIST } from '@/constants/QuestionData';
 
 export default function FinalConfirm() {
   const TRACK_NAMES = {
@@ -13,6 +13,8 @@ export default function FinalConfirm() {
     BACKEND: '백엔드',
     PO: 'PO',
   };
+  //@ts-ignore
+  const { formatAnswers } = useOutletContext();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { _track, commonQues, trackQues } = useLoaderData(); // 로더로 가져온 데이터
@@ -23,8 +25,20 @@ export default function FinalConfirm() {
     navigate('/apply/track'); // URL 이동
   };
 
-  const handleNext = () => {
-    navigate('/apply/complete');
+  // 지원서 제출 api에 요청하는 함수
+  const handleSubmit = async () => {
+    try {
+      const { track, commonAnswers, trackAnswers } = formatAnswers(); // trackAnswers를 못가져오는 중
+      const submitData = {
+        track: track,
+        commonAnswers: commonAnswers,
+        trackAnswers: trackAnswers,
+      };
+      await applicationSubmit(submitData);
+      navigate('/apply/complete');
+    } catch (error) {
+      console.error('지원서 제출 실패', error);
+    }
   };
   //@ts-ignore
   const { formData } = useOutletContext();
@@ -171,7 +185,7 @@ export default function FinalConfirm() {
           </div>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} cancel={() => setIsModalOpen(false)} confirm={handleNext}>
+      <Modal isOpen={isModalOpen} cancel={() => setIsModalOpen(false)} confirm={handleSubmit}>
         제출 후 수정은 불가합니다.
         <br />
         정말 제출하시겠습니까?
