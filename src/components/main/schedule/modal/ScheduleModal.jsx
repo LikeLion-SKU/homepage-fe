@@ -126,7 +126,7 @@ function ScheduleModal({
           flexWrap: 'nowrap',
           maxWidth: 'calc(100vw - 24px)',
           maxHeight: 'calc(100vh - 24px)',
-          overflow: 'auto',
+          overflow: isMobile ? 'hidden' : 'auto',
           padding: '12px',
         }}
       >
