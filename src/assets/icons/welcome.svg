@@ -1,36 +1,42 @@
 <svg width="503" height="192" viewBox="0 0 503 192" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="105" y="38.0508" width="316" height="8" fill="#1A1A1A"/>
-<rect x="105" y="138.051" width="143" height="8" fill="#1A1A1A"/>
-<rect x="278" y="138.051" width="143" height="8" fill="#1A1A1A"/>
-<rect x="437" y="54.0508" width="76" height="8" transform="rotate(90 437 54.0508)" fill="#1A1A1A"/>
-<rect width="76" height="8" transform="matrix(4.37114e-08 1 1 -4.37114e-08 89 54.0508)" fill="#1A1A1A"/>
-<rect x="421" y="46.0508" width="8" height="8" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 105 46.0508)" fill="#1A1A1A"/>
-<rect x="421" y="130.051" width="8" height="8" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 105 130.051)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 256 146.051)" fill="#1A1A1A"/>
-<rect width="14" height="8" transform="matrix(-1 0 0 1 270 154.051)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 278 146.051)" fill="#1A1A1A"/>
-<path d="M131.191 107.133V100.983H125.041V76.0548H131.519V100.655H137.341V82.2048H143.819V100.655H149.641V76.0548H156.119V100.983H149.969V107.133H131.191ZM163.559 107.133V76.0548H194.637V82.5328H170.037V88.3548H188.487V94.8328H170.037V100.655H194.637V107.133H163.559ZM200.194 107.133V76.0548H206.672V100.655H231.272V107.133H200.194ZM241.218 107.133V100.983H235.068V82.2048H241.218V76.0548H259.996V82.2048H266.146V88.6828H259.668V82.5328H241.546V100.655H259.668V94.5048H266.146V100.983H259.996V107.133H241.218ZM278.783 100.655H296.905V82.5328H278.783V100.655ZM278.455 107.133V100.983H272.305V82.2048H278.455V76.0548H297.233V82.2048H303.383V100.983H297.233V107.133H278.455ZM310.422 107.133V82.2048H316.572V76.0548H335.35V82.2048H341.5V107.133H335.022V82.5328H329.2V100.983H322.722V82.5328H316.9V107.133H310.422ZM348.939 107.133V76.0548H380.017V82.5328H355.417V88.3548H373.867V94.8328H355.417V100.655H380.017V107.133H348.939ZM385.575 94.8328V76.0548H392.053V94.8328H385.575ZM385.575 107.133V100.655H392.053V107.133H385.575Z" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 69 14)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 61 22)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 77 22)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 69 30)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 483 88)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 493 66)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 125 25)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 165 8)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 89 180)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 97 188)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 405 184)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 391 12)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 203 192)" fill="#1A1A1A"/>
-<rect width="8" height="16" transform="matrix(-1 0 0 1 27 98)" fill="#1A1A1A"/>
-<rect width="8" height="16" transform="matrix(-1 0 0 1 27 128)" fill="#1A1A1A"/>
-<rect width="8" height="16" transform="matrix(1.19249e-08 -1 -1 -1.19249e-08 46 125)" fill="#1A1A1A"/>
-<rect width="8" height="16" transform="matrix(1.19249e-08 -1 -1 -1.19249e-08 16 125)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 495 144)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 487 152)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 503 152)" fill="#1A1A1A"/>
-<rect width="8" height="8" transform="matrix(-1 0 0 1 495 160)" fill="#1A1A1A"/>
+<defs>
+<linearGradient id="welcomeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+<stop offset="0%" style="stop-color:#BCD800;stop-opacity:1" />
+<stop offset="100%" style="stop-color:#65C42A;stop-opacity:1" />
+</linearGradient>
+</defs>
+<rect x="105" y="38.0508" width="316" height="8" fill="url(#welcomeGradient)"/>
+<rect x="105" y="138.051" width="143" height="8" fill="url(#welcomeGradient)"/>
+<rect x="278" y="138.051" width="143" height="8" fill="url(#welcomeGradient)"/>
+<rect x="437" y="54.0508" width="76" height="8" transform="rotate(90 437 54.0508)" fill="url(#welcomeGradient)"/>
+<rect width="76" height="8" transform="matrix(4.37114e-08 1 1 -4.37114e-08 89 54.0508)" fill="url(#welcomeGradient)"/>
+<rect x="421" y="46.0508" width="8" height="8" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 105 46.0508)" fill="url(#welcomeGradient)"/>
+<rect x="421" y="130.051" width="8" height="8" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 105 130.051)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 256 146.051)" fill="url(#welcomeGradient)"/>
+<rect width="14" height="8" transform="matrix(-1 0 0 1 270 154.051)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 278 146.051)" fill="url(#welcomeGradient)"/>
+<path d="M131.191 107.133V100.983H125.041V76.0548H131.519V100.655H137.341V82.2048H143.819V100.655H149.641V76.0548H156.119V100.983H149.969V107.133H131.191ZM163.559 107.133V76.0548H194.637V82.5328H170.037V88.3548H188.487V94.8328H170.037V100.655H194.637V107.133H163.559ZM200.194 107.133V76.0548H206.672V100.655H231.272V107.133H200.194ZM241.218 107.133V100.983H235.068V82.2048H241.218V76.0548H259.996V82.2048H266.146V88.6828H259.668V82.5328H241.546V100.655H259.668V94.5048H266.146V100.983H259.996V107.133H241.218ZM278.783 100.655H296.905V82.5328H278.783V100.655ZM278.455 107.133V100.983H272.305V82.2048H278.455V76.0548H297.233V82.2048H303.383V100.983H297.233V107.133H278.455ZM310.422 107.133V82.2048H316.572V76.0548H335.35V82.2048H341.5V107.133H335.022V82.5328H329.2V100.983H322.722V82.5328H316.9V107.133H310.422ZM348.939 107.133V76.0548H380.017V82.5328H355.417V88.3548H373.867V94.8328H355.417V100.655H380.017V107.133H348.939ZM385.575 94.8328V76.0548H392.053V94.8328H385.575ZM385.575 107.133V100.655H392.053V107.133H385.575Z" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 69 14)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 61 22)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 77 22)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 69 30)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 483 88)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 493 66)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 125 25)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 165 8)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 89 180)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 97 188)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 405 184)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 391 12)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-2.3597e-08 -1 -1 2.3597e-08 203 192)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="16" transform="matrix(-1 0 0 1 27 98)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="16" transform="matrix(-1 0 0 1 27 128)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="16" transform="matrix(1.19249e-08 -1 -1 -1.19249e-08 46 125)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="16" transform="matrix(1.19249e-08 -1 -1 -1.19249e-08 16 125)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 495 144)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 487 152)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 503 152)" fill="url(#welcomeGradient)"/>
+<rect width="8" height="8" transform="matrix(-1 0 0 1 495 160)" fill="url(#welcomeGradient)"/>
 </svg>

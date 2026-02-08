@@ -33,7 +33,7 @@ export default function LoginForm({ onSubmit }) {
         <ForgotPasswordLink />
       </form>
       <div className="w-full">
-        <LoginButton onClick={handleSubmit} />
+        <LoginButton onClick={handleSubmit} disabled={!email || !password} />
       </div>
       <SignUpLink showNotice={!email && !password} />
     </div>
