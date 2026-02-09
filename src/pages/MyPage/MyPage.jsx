@@ -22,7 +22,7 @@ export default function MyPage() {
 
   // 둘다 true면 면접 스케줄 변경 가능, 면접 일정 변경 가능 여부만 false면 면접 일정 확인하기
   const interviewScheduleSubmitted = userData.interviewScheduleSubmitted; // 면접 일정 설정 완료 여부
-  const interviewScheduleChangable = userData.interviewScheduleChangable; // 면접 일정 변경 가능 여부
+  const interviewScheduleChangeable = userData.interviewScheduleChangeable; // 면접 일정 변경 가능 여부
 
   const fetcher = useFetcher();
 
@@ -185,7 +185,7 @@ export default function MyPage() {
             <div className="self-stretch">
               <Button
                 onClick={() => {
-                  if (interviewScheduleChangable) {
+                  if (interviewScheduleChangeable) {
                     navigate('/mypage/reschedule');
                   } else {
                     navigate('/mypage/schedule-check');
@@ -195,7 +195,7 @@ export default function MyPage() {
                 data-size=""
                 className={buttonStyle}
               >
-                {interviewScheduleChangable ? '면접 일정 수정하기' : '면접 일정 확인하기'}
+                {interviewScheduleChangeable ? '면접 일정 수정하기' : '면접 일정 확인하기'}
               </Button>
             </div>
           )}
