@@ -112,9 +112,7 @@ export default function AdminProjectEdit() {
     }
   };
   const saveProject = async () => {
-    if (projectData.projectImageResponses.length < 1) {
-      showToast('이미지를 1개 이상 첨부해주세요.');
-    } else if (!projectData.title) {
+    if (!projectData.title) {
       showToast('프로젝트명을 입력해주세요.');
     } else if (!projectData.projectTypeName) {
       showToast('대회명을 입력해주세요.');
@@ -122,14 +120,18 @@ export default function AdminProjectEdit() {
       showToast('기수를 입력해주세요.');
     } else if (!projectData.content) {
       showToast('설명을 입력해주세요.');
-    } else if (!projectData.projectMembers) {
-      showToast('멤버를 입력해주세요.');
     } else {
       try {
-        console.log('1. 데이터 가공 시작');
         const typeIndex = projectTypeOption.indexOf(projectData.projectTypeName);
         const { remainingProjectMemberIds, newProjectMembers } = processMemberData();
 
+        if (remainingProjectMemberIds.length < 1 && Object.keys(newProjectMembers).length < 1) {
+          showToast('멤버를 입력해주세요.');
+          return;
+        } else if (remainingImageIds.length < 1 && newFiles.length < 1) {
+          showToast('이미지를 1개 이상 첨부해주세요.');
+          return;
+        }
         // API 호출 (추가/수정에 따라 다른 함수 호출)
         if (isEdit) {
           const updateData = {
