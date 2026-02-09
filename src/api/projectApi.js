@@ -73,6 +73,68 @@ export const deleteProjectType = async (projectTypeId) => {
 
     return res.data;
   } catch (error) {
-    console.log('기수 삭제 실패:', error);
+    console.log('프로젝트 타입 삭제 실패:', error);
+  }
+};
+
+export const deleteProject = async (projectId) => {
+  try {
+    const res = await APIService.private.delete(`/v1/admin/projects/${projectId}`);
+
+    return res.data;
+  } catch (error) {
+    console.log('프로젝트 삭제 실패:', error);
+  }
+};
+
+export const putProject = async (projectId, updateData, files) => {
+  try {
+    const formData = new FormData();
+
+    // 1. 이미지 파일들을 FormData에 추가
+    if (files && files.length > 0) {
+      files.forEach((file) => {
+        formData.append('projectImages', file);
+      });
+    }
+    const blob = new Blob([JSON.stringify(updateData)], {
+      type: 'application/json',
+    });
+    formData.append('request', blob);
+    const res = await APIService.private.put(`/v1/admin/projects/${projectId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log('프로젝트 수정 실패:', error);
+  }
+};
+
+export const postProject = async (updateData, files) => {
+  try {
+    const formData = new FormData();
+
+    // 1. 이미지 파일들을 FormData에 추가
+    if (files && files.length > 0) {
+      files.forEach((file) => {
+        formData.append('projectImages', file);
+      });
+    }
+    const blob = new Blob([JSON.stringify(updateData)], {
+      type: 'application/json',
+    });
+    formData.append('request', blob);
+    const res = await APIService.private.post(`/v1/admin/projects`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log('프로젝트 수정 실패:', error);
   }
 };
