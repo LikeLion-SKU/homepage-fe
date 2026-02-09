@@ -3,40 +3,27 @@ import { useState } from 'react';
 import TrackOption from '@/components/admin/project/TrackOption';
 
 export default function AdminProjectMember({ optionData, selectedTrack, setSelectedTrack }) {
-  const [name, setName] = useState(['']);
+  const [name, setName] = useState({});
 
-  const handleInputChange = (index, value) => {
-    setName((prev) => {
-      const newNames = [...prev]; // 1. 배열 복사
-      newNames[index] = value; // 2. 특정 인덱스 수정
-      return newNames; // 3. 새 배열 반환
-    });
+  const handleInputChange = (track, value) => {
+    setName((prev) => ({ ...prev, [track]: value }));
   };
-  const inputName = (e, track, newName, index) => {
+  const inputName = (e, track) => {
+    const currentName = name[track] || '';
     if (e.key === 'Enter') {
-      if (newName.trim() === '') return;
-      handleInputChange(index, ''); // 해당 입력창만 비우기
+      if (currentName.trim() === '') return;
       setSelectedTrack((prev) => ({
         ...prev,
-        // 기존에 해당 트랙의 배열이 있으면 복사 후 추가, 없으면 새로 생성
-        [track]: prev[track] ? [...prev[track], newName] : [newName],
+        [track]: [...(prev[track] || []), currentName.trim()],
       }));
-    } else if (e.key === 'Backspace' && newName === '') {
-      setName((prev) => {
-        const newNames = [...prev]; // 1. 배열 복사
-        newNames[index] = selectedTrack[track][selectedTrack[track].length - 1]; // 2. 특정 인덱스 수정
-        return newNames; // 3. 새 배열 반환
-      });
+      setName((prev) => ({ ...prev, [track]: '' })); // 해당 트랙 입력창만 비우기
+    } else if (e.key === 'Backspace' && currentName === '') {
       setSelectedTrack((prev) => {
-        // 1. 해당 트랙에 지울 이름이 있는지 확인
-        if (prev[track] && prev[track].length > 0) {
-          return {
-            ...prev,
-            // 2. slice(0, -1)을 사용해 마지막 요소만 제거한 새 배열 생성
-            [track]: prev[track].slice(0, -1),
-          };
-        }
-        return prev; // 지울 게 없으면 그대로 반환
+        if (!prev[track] || prev[track].length === 0) return prev;
+        return {
+          ...prev,
+          [track]: prev[track].slice(0, -1),
+        };
       });
     }
   };
@@ -49,7 +36,7 @@ export default function AdminProjectMember({ optionData, selectedTrack, setSelec
         selectTrack={selectedTrack}
         setSelectTrack={setSelectedTrack}
       />
-      {optionData.map((track, index) => {
+      {optionData.map((track) => {
         if (track in selectedTrack) {
           return (
             <div key={track} className="flex w-75 text-[1rem] font-semibold">
@@ -64,9 +51,9 @@ export default function AdminProjectMember({ optionData, selectedTrack, setSelec
                 <input
                   placeholder="이름입력"
                   className="focus:outline-none w-16 text-[1rem]"
-                  value={name[index] || ''}
-                  onChange={(e) => handleInputChange(index, e.target.value)}
-                  onKeyDown={(e) => inputName(e, track, name[index], index)}
+                  value={name[track] || ''}
+                  onChange={(e) => handleInputChange(track, e.target.value)}
+                  onKeyDown={(e) => inputName(e, track)}
                 />
               </div>
             </div>

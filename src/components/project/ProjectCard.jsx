@@ -34,7 +34,7 @@ export default function ProjectCard({ props, isAdmin }) {
 
       <div className="absolute inset-0 bg-[rgba(137,137,137,0.62)] flex flex-col gap-2.5 items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         {isAdmin ? (
-          <AdminCardHover />
+          <AdminCardHover projectId={props.projectId} />
         ) : (
           <button className="flex bg-[#F8F8F8] border">
             <div className="flex justify-center items-center bg-[#C6E400] px-3 pad:p-2 web:p-3 border-r ">
