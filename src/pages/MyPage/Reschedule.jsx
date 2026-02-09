@@ -15,6 +15,7 @@ export default function Reschedule() {
   const pass = true;
   const [onModal, setOnModal] = useState(false);
   const [allChecked, setAllChecked] = useState([false, false]);
+  const [selectedTime, setSelectedTime] = useState({ date: '', scheduleId: 0 });
   const buttonClick = () => {
     if (pass) {
       setOnModal(true);
@@ -40,7 +41,12 @@ export default function Reschedule() {
   return (
     <GridSection>
       <div className="flex flex-col items-center gap-19 mb-60">
-        <InterviewTime setAllChecked={setAllChecked} hide={true} />
+        <InterviewTime
+          setAllChecked={setAllChecked}
+          hide={true}
+          selectedTime={selectedTime}
+          setSelectedTime={setSelectedTime}
+        />
         <CheckButton buttonName={'면접 날짜 제출하기'} onClick={() => buttonClick()} />
       </div>
       {onModal && (
