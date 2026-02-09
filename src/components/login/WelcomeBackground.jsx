@@ -18,9 +18,9 @@ function WelcomeBackground({ children }) {
           alt="cat"
           className="absolute"
           style={{
-            top: '85px',
-            left: '360px',
-            width: '200px',
+            top: '120px',
+            left: '395px',
+            width: '220px',
             height: 'auto',
             maxWidth: 'none',
             flexShrink: 0,
@@ -34,8 +34,8 @@ function WelcomeBackground({ children }) {
           className="absolute"
           style={{
             top: '35px',
-            left: '-26px',
-            width: '200px',
+            left: '-40px',
+            width: '240px',
             height: 'auto',
             maxWidth: 'none',
             flexShrink: 0,
@@ -48,9 +48,9 @@ function WelcomeBackground({ children }) {
           alt="bacteria"
           className="absolute"
           style={{
-            top: '365px',
-            left: '72px',
-            width: '220px',
+            top: '485px',
+            left: '5px',
+            width: '250px',
             height: 'auto',
             maxWidth: 'none',
             flexShrink: 0,
@@ -63,9 +63,9 @@ function WelcomeBackground({ children }) {
           alt="cursor"
           className="absolute"
           style={{
-            top: '520px',
-            left: '800px',
-            width: '200px',
+            bottom: '30px',
+            left: '945px',
+            width: '230px',
             height: 'auto',
             maxWidth: 'none',
             flexShrink: 0,
@@ -78,9 +78,9 @@ function WelcomeBackground({ children }) {
           alt="human"
           className="absolute"
           style={{
-            bottom: '-55px',
+            bottom: '-100px',
             left: '350px',
-            width: '170px',
+            width: '190px',
             height: 'auto',
             maxWidth: 'none',
             flexShrink: 0,
@@ -93,9 +93,9 @@ function WelcomeBackground({ children }) {
           alt="eye"
           className="absolute"
           style={{
-            bottom: '414px',
-            left: '905px',
-            width: '185px',
+            bottom: '534px',
+            left: '1105px',
+            width: '205px',
             height: 'auto',
             maxWidth: 'none',
             flexShrink: 0,
@@ -108,9 +108,9 @@ function WelcomeBackground({ children }) {
           alt="telephone"
           className="absolute"
           style={{
-            bottom: '557px',
-            left: '1351px',
-            width: '190px',
+            bottom: '697px',
+            left: '1651px',
+            width: '200px',
             height: 'auto',
             maxWidth: 'none',
             flexShrink: 0,
@@ -123,9 +123,9 @@ function WelcomeBackground({ children }) {
           alt="ninja"
           className="absolute"
           style={{
-            top: '400px',
-            left: '1306px',
-            width: '200px',
+            top: '590px',
+            left: '1590px',
+            width: '220px',
             height: 'auto',
             maxWidth: 'none',
             flexShrink: 0,
