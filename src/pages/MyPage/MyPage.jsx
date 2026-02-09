@@ -7,7 +7,7 @@ import { useFetcher } from 'react-router-dom';
 import { APIService } from '@/api/api';
 import Home from '@/assets/icons/4.svg';
 import Camera from '@/assets/icons/mdi-light_camera.svg';
-//import defaultProfileImage from '@/assets/images/lion.png';
+import defaultProfileImage from '@/assets/icons/profile_smile.svg';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
 
@@ -15,7 +15,6 @@ export default function MyPage() {
   const userData = useLoaderData(); // 데이터 가져오기
   //const revalidator = useRevalidator();
 
-  const defaultProfileImage = null; // 기본 이미지
   const navigate = useNavigate();
 
   const hasApplication = userData.documentSubmitted; // 지원서 제출 여부
@@ -34,6 +33,40 @@ export default function MyPage() {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
   const [isError, setIsError] = useState(false); // 이미지 로딩 실패
   const [preview, setPreview] = useState(null); // 이미지 미리보기
+
+  const renderProfileImage = () => {
+    if (isError) {
+      return (
+        <div className="w-full h-full bg-toggle-green flex items-center justify-center">
+          <img src={defaultProfileImage} className="w-16 h-16 pad:w-24 pad:h-24"></img>
+        </div>
+      );
+    }
+    if (preview) {
+      return (
+        <img
+          src={preview}
+          className="w-full h-full object-cover" // 미리보기 강조 스타일
+          alt="미리보기"
+        />
+      );
+    }
+    if (userData.profileImageUrl) {
+      return (
+        <img
+          src={userData.profileImageUrl}
+          onError={() => setIsError(true)}
+          className="w-full h-full object-cover"
+          alt="사용자 프로필"
+        />
+      );
+    }
+    return (
+      <div className="w-full h-full bg-toggle-green flex items-center justify-center">
+        <img src={defaultProfileImage} className="w-16 h-16 pad:w-24 pad:h-24"></img>
+      </div>
+    );
+  };
 
   const buttonStyle = `
     w-full h-10 pad:h-12 bg-white border border-black
@@ -82,29 +115,20 @@ export default function MyPage() {
     <div
       className={`w-full ${minHeight} relative flex flex-col items-center web:items-stretch justify-center bg-white isolate overflow-hidden"`}
     >
-      <div className="flex flex-col web:flex-row web:items-start items-center web:justify-between px-6 pad:px-20 web:px-36 gap-16">
+      <div className="flex flex-col web:flex-row items-center web:justify-between px-6 pad:px-20 web:px-36 gap-16">
         {/* 좌측 개인정보 부분 */}
         <div className="relative flex flex-col web:flex-row justify-start items-center gap-x-9 gap-y-14">
           <div className="w-40 h-40 pad:w-44 pad:h-44 relative">
             <div className="relative w-40 h-40 pad:w-44 pad:h-44 bg-zinc-300 border border-black group">
-              {/* 이 label을 누르면 input으로 입력받을 수 있게 */}
+              {renderProfileImage()}
               <label
                 htmlFor="profile-upload"
-                className="cursor-pointer w-full h-full flex items-center justify-center"
+                className="outline cursor-pointer w-full h-10 items-center justify-center flex flex-row gap-6 bg-button-green hover:bg-button-hover"
               >
-                <img
-                  src={
-                    isError
-                      ? defaultProfileImage
-                      : preview || userData.profileImageUrl || defaultProfileImage
-                  }
-                  onError={() => setIsError(true)}
-                  className="w-full h-full object-cover group-hover:brightness-75"
-                  alt="프로필"
-                ></img>{' '}
-                {/* 프로필 사진 */}
-                <div className="w-8 h-8 absolute overflow-hidden">
-                  <img src={Camera}></img> {/* 카메라 아이콘 */}
+                <div className="text-sm font-semibold pad:text-lg pad:font-bold">이미지 수정</div>
+                {/* 카메라 아이콘 */}
+                <div className="w-8 h-8">
+                  <img src={Camera}></img>
                 </div>
               </label>
               {/* 실제 프로필 사진 입력받는 부분 -> 가림 */}
@@ -114,7 +138,7 @@ export default function MyPage() {
                 accept=".jpg, .jpeg, .png, .webp"
                 className="hidden"
                 onChange={handleFileChange} // 파일 선택 시 실행될 함수
-              />
+              ></input>
             </div>
           </div>
           <div className="min-w-64 pad:min-w-72 web:max-w-80 flex flex-col items-center web:items-start text-center web:text-left gap-3">
