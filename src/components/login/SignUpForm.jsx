@@ -19,6 +19,14 @@ export default function SignUpForm({ onSubmit }) {
   const [step, setStep] = useState(1); // 1: 인증번호 확인, 2: 회원정보 입력
   const [email, setEmail] = useState('');
 
+  // 에러 메시지 매핑
+  const ERROR_MESSAGE_MAP = {
+    DUPLICATE_EMAIL: '이미 가입된 이메일입니다.',
+    DUPLICATE_PHONE: '이미 사용 중인 전화번호입니다.',
+    DUPLICATE_STUDENT_NUMBER: '이미 사용 중인 학번입니다.',
+    INVALID_VERIFICATION_CODE: '인증번호가 일치하지 않습니다.',
+  };
+
   // 인증번호
   const [verificationCode, setVerificationCode] = useState('');
 
@@ -117,7 +125,7 @@ export default function SignUpForm({ onSubmit }) {
     //  기존 로직은 인증번호 입력만 해도 모달이 뜰 수 있어서,
     // 최소한 error일 때만 잘못된 인증번호로 처리
     if (verificationStatus === 'error') {
-      setConfirmModalMessage('잘못된 인증번호입니다.');
+      setConfirmModalMessage(ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE);
       setShowConfirmModal(true);
     }
   };
@@ -219,7 +227,13 @@ export default function SignUpForm({ onSubmit }) {
       }
     } catch (error) {
       console.error('회원가입 실패:', error);
-      setConfirmModalMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
+      const errorResponse = error?.response?.data;
+      const errorMessage =
+        ERROR_MESSAGE_MAP[errorResponse?.code] ||
+        errorResponse?.message ||
+        '회원가입에 실패했습니다. 다시 시도해주세요.';
+
+      setConfirmModalMessage(errorMessage);
       setShowConfirmModal(true);
     }
   };
@@ -261,6 +275,12 @@ export default function SignUpForm({ onSubmit }) {
       setVerificationStatus('success');
     } catch (error) {
       console.error('인증번호 확인 실패:', error);
+      const errorResponse = error?.response?.data;
+      const errorMessage =
+        ERROR_MESSAGE_MAP[errorResponse?.code] || ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE;
+
+      setConfirmModalMessage(errorMessage);
+      setShowConfirmModal(true);
       setVerificationStatus('error');
     }
   };
@@ -310,14 +330,18 @@ export default function SignUpForm({ onSubmit }) {
                 label="인증번호"
                 value={verificationCode}
                 onChange={(e) => {
+                  // 인증 성공 후에는 인증번호 변경 불가
+                  if (verificationStatus === 'success') return;
                   setVerificationCode(e.target.value);
                   setVerificationStatus(null);
+                  setShowConfirmModal(false); // 입력 시 모달 닫기
                 }}
                 placeholder="인증번호를 입력해주세요"
                 hideLabel
                 hideToggle
                 mb="mb-0"
                 maxWidth="max-w-full sm:max-w-[600px]"
+                disabled={verificationStatus === 'success'}
                 rightButton={
                   <VerificationButton
                     onClick={handleVerificationCheck}
@@ -354,7 +378,7 @@ export default function SignUpForm({ onSubmit }) {
                     className="text-[#FF7D56] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0"
                     style={{ transform: 'translateY(-12px) translateX(4px)' }}
                   >
-                    잘못된 인증번호입니다. 다시 입력해주세요.
+                    {ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE}
                   </div>
                 )}
               </div>
@@ -379,7 +403,9 @@ export default function SignUpForm({ onSubmit }) {
           isOpen={showConfirmModal}
           cancel={() => setShowConfirmModal(false)}
           buttonColor={
-            confirmModalMessage === '잘못된 인증번호입니다.' ? 'bg-[#FF7D56]' : 'bg-button-green'
+            confirmModalMessage === ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE
+              ? 'bg-[#FF7D56]'
+              : 'bg-button-green'
           }
         >
           {confirmModalMessage}
