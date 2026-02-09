@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { getAwardList } from '@/api/projectApi';
 import awardBlahIcon from '@/assets/icons/main/award/winner-blah.svg';
 import Award3Image from '@/assets/images/artium.png';
 import Award4Image from '@/assets/images/danchu.png';
@@ -54,35 +55,42 @@ function Award() {
   const isMobile480 = useMediaQuery('(max-width: 480px)');
   const isMobile760 = useMediaQuery('(max-width: 760px)');
 
-  // TODO: API 호출로 수상작 카드 데이터 받아오기
-  // API 응답 예시 구조:
-  // {
-  //   id: number,
-  //   image: string (이미지 URL),
-  //   hasDragButton: boolean,
-  //   detailPath: string (예: '/project/123' 또는 '/project/viewDetail?id=123')
-  // }
-  const [awardCards, _setAwardCards] = useState(dummyAwardCards);
+  const [awardCards, setAwardCards] = useState(dummyAwardCards);
+  const hasFetchedRef = useRef(false);
 
   useEffect(() => {
-    // TODO: API 호출 구현
-    // 예시:
-    // const fetchAwardCards = async () => {
-    //   try {
-    //     const data = await APIService.public.get('/api/awards');
-    //     // API 응답을 카드 형식으로 변환
-    //     const cards = data.map((item) => ({
-    //       image: item.imageUrl,
-    //       hasDragButton: item.hasDragButton || false,
-    //       to: item.detailPath || `/project/${item.id}`,
-    //     }));
-    //     _setAwardCards(cards);
-    //   } catch (error) {
-    //     console.error('수상작 카드 데이터 로드 실패:', error);
-    //     // 에러 발생 시 더미 데이터 유지
-    //   }
-    // };
-    // fetchAwardCards();
+    // 중복 호출 방지
+    if (hasFetchedRef.current) return;
+    hasFetchedRef.current = true;
+
+    const fetchAwardCards = async () => {
+      try {
+        // 수상작 목록 조회
+        const response = await getAwardList();
+
+        if (response?.data && Array.isArray(response.data)) {
+          // API 응답을 카드 형식으로 변환
+          const cards = response.data.map((item) => ({
+            image: item.thumbnailUrl || item.imageUrl || Award1Image,
+            hasDragButton: item.hasDragButton || false,
+            to: '/project/viewDetail',
+            projectId: item.id, // getProjectDetail에 사용할 projectId
+            title: item.title,
+          }));
+
+          // 수상작이 있으면 API 데이터 사용, 없으면 더미 데이터 유지
+          if (cards.length > 0) {
+            setAwardCards(cards);
+          }
+        }
+      } catch (error) {
+        console.error('수상작 카드 데이터 로드 실패:', error);
+        // 에러 발생 시 더미 데이터 유지
+        hasFetchedRef.current = false; // 에러 시 재시도 가능하도록
+      }
+    };
+
+    fetchAwardCards();
   }, []);
 
   return (
