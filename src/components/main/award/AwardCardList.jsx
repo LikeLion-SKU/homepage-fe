@@ -39,7 +39,11 @@ function AwardCardList({ cards = [] }) {
           {cards.map((card, index) => (
             <div
               key={index}
-              onClick={() => navigate(card.to || '/project')}
+              onClick={() =>
+                navigate(card.to || '/project', {
+                  state: card.projectId ? { projectId: card.projectId } : undefined,
+                })
+              }
               style={{ display: 'block', cursor: 'pointer' }}
             >
               <AwardCard title={card.title} image={card.image} />
