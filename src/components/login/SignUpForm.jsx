@@ -228,10 +228,11 @@ export default function SignUpForm({ onSubmit }) {
       }
     } catch (error) {
       console.error('회원가입 실패:', error);
-      const errorResponse = error?.response?.data;
       const errorMessage =
-        ERROR_MESSAGE_MAP[errorResponse?.code] ||
-        errorResponse?.message ||
+        ERROR_MESSAGE_MAP.DUPLICATE_EMAIL ||
+        ERROR_MESSAGE_MAP.DUPLICATE_PHONE ||
+        ERROR_MESSAGE_MAP.DUPLICATE_STUDENT_NUMBER ||
+        ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE ||
         '회원가입에 실패했습니다. 다시 시도해주세요.';
 
       setConfirmModalMessage(errorMessage);
