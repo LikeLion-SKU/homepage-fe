@@ -1,13 +1,12 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useLoaderData } from 'react-router';
 
+import { getInterviewScheduleAdmin } from '@/api/interviewSchedule';
 //@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 //@ts-ignore
 import Calender from '@/assets/icons/calender_icon.svg?react';
-import {
-  interviewAddData,
-  interviewCheckData,
-} from '@/components/admin/Interview/InterviewDummyData';
+import { interviewCheckData } from '@/components/admin/Interview/InterviewDummyData';
 import TrackDateBox from '@/components/admin/Interview/TrackDateBox';
 import OptionBox from '@/components/common/Option/optionBox';
 
@@ -17,19 +16,36 @@ export default function DateAdminSection() {
   const formattedDate = today.toLocaleDateString('en-CA');
   const [selectedDate, setSelectedDate] = useState(formattedDate);
   const dateInputRef = useRef(null);
-  const semesterData = ['14기', '13기', '12기', '11기'];
+  const semesterData = useLoaderData();
+  const [selectedSemester, setSelectedSemester] = useState(semesterData[0]);
+  const [interviewSchedule, setInterviewSchedule] = useState({ semester: 0, tracks: [] });
+  //const [bookedSchedule,setBookedSchedule]=useState({semester:0,tracks:[]});
 
   // 버튼 클릭 시 숨겨진 input을 클릭하게 함
   const handleButtonClick = () => {
     dateInputRef.current?.showPicker(); // 최신 브라우저에서 달력을 바로 띄우는 메서드
   };
-
+  useEffect(() => {
+    const getInterviewData = async () => {
+      if (isDateAdd) {
+        setInterviewSchedule(await getInterviewScheduleAdmin(parseInt(selectedSemester)));
+      } else {
+        //setBookedSchedule()//예약된 면접 스케줄 api
+      }
+    };
+    getInterviewData();
+  }, [isDateAdd, selectedSemester]);
   return (
     <div className="flex flex-col gap-5">
       <div className="flex justify-between items-center">
         <div className="flex gap-2">
           <div>
-            <OptionBox initValue={semesterData[0]} optionData={semesterData} />
+            <OptionBox
+              initValue={semesterData[0]}
+              optionData={semesterData}
+              selectedNum={selectedSemester}
+              setSelectedNum={setSelectedSemester}
+            />
           </div>
           <button
             onClick={() => setIsDateAdd(true)}
@@ -75,7 +91,9 @@ export default function DateAdminSection() {
 
       <div className="flex gap-4">
         {isDateAdd
-          ? interviewAddData.map((data) => <TrackDateBox data={data} isDataAdd={isDateAdd} />)
+          ? interviewSchedule.tracks.map((data) => (
+              <TrackDateBox data={data} isDataAdd={isDateAdd} />
+            ))
           : interviewCheckData.map((data) => <TrackDateBox data={data} isDataAdd={isDateAdd} />)}
       </div>
     </div>

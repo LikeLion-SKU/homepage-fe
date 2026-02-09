@@ -9,6 +9,7 @@ import { getResult } from '@/api/applicationResult';
 import { basicInfoLoader } from '@/api/applyLoader';
 import { logoutAction } from '@/api/logoutAction';
 import { myPageLoader } from '@/api/myPageLoader';
+import { getSemester } from '@/api/semesterApi';
 import RootLayout from '@/layouts/RootLayout';
 import ServiceLayout from '@/layouts/ServiceLayout';
 import AdminApplication from '@/pages/Admin/AdminApplication';
@@ -113,7 +114,7 @@ const router = createBrowserRouter([
           { path: 'project', Component: AdminProject },
           { path: 'project/edit', Component: AdminProjectEdit },
           { path: 'notice', Component: AdminNotice },
-          { path: 'interview', Component: AdminInterview },
+          { path: 'interview', Component: AdminInterview, loader: getSemester },
           { path: 'application', Component: AdminApplication },
           { path: 'application/questions', Component: AdminQuestion },
           { path: 'application/questions/new', Component: AdminQuestionDetail },
