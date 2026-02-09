@@ -46,7 +46,7 @@ export default function Recruitment() {
   };
 
   // 마감일 지났는지 확인
-  const isExpired = checkExpired(semesterData?.semester);
+  const isExpired = checkExpired(semesterData?.closeAt);
 
   // 스크롤 시 지원하기 박스 고정 (body 스크롤에서도 동작하도록)
   const stickyBoxRef = useRef(null);
@@ -81,16 +81,6 @@ export default function Recruitment() {
       question: '비전공자도 참여 가능한가요?',
       answer:
         'A. 비전공자도 참여 가능합니다!\n멋쟁이사자처럼은 컴퓨터과학 비전공자들도 프로그래밍 기초 지식을 배워 자신만의 웹서비스를 만들어 이를 통해 꿈을 실현하는 것을 목표로 하는 코딩 연합 동아리입니다.',
-    },
-    {
-      question: '정기 세션은 언제 이루어지나요?',
-      answer:
-        'A. 서경대학교 멋쟁이사자처럼 정기 세션은 매주 월요일 18시 30분부터 2~3시간가량 오프라인으로 진행됩니다.\n시간표 구성 시 참고해주세요.',
-    },
-    {
-      question: '누가 참여할 수 있나요?',
-      answer:
-        'A. 1년 동안 진행되는 세션 및 해커톤 등의 행사에 성실하게 참여할 준비가 되어있는 서경대학교 재학생 및 휴학생이라면 누구나 환영합니다.',
     },
     {
       question: '나이 제한이 있나요?',
