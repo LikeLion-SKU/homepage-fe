@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
-import { getAdminForm, getAllAdminForms, putAdminForm } from '@/api/applicationForm';
+import {
+  deleteAdminForm,
+  getAdminForm,
+  getAllAdminForms,
+  putAdminForm,
+} from '@/api/applicationForm';
 
 import { convertToISOString, parseISODateTime } from './NoticeTime';
 
@@ -353,10 +358,31 @@ export default function NoticeTableData({ children }) {
     setEditingIndex(-1);
   };
 
-  const handleDelete = (index) => {
+  const handleDelete = async (index) => {
     setDeleteTargetIndex(index);
-    openModal('해당 공고를 삭제하시겠습니까?', () => {
+    openModal('해당 공고를 삭제하시겠습니까?', async () => {
       if (deleteTargetIndex !== -1) {
+        const targetRow = noticeData[deleteTargetIndex];
+        const applicationFormId = targetRow?.id;
+
+        // 서버에 저장된 공고인 경우에만 API 호출
+        if (applicationFormId) {
+          try {
+            const result = await deleteAdminForm(applicationFormId);
+            if (!result) {
+              showToast('삭제에 실패했습니다.');
+              setDeleteTargetIndex(-1);
+              return;
+            }
+          } catch (error) {
+            console.error('지원 일정 삭제 실패:', error);
+            showToast('삭제에 실패했습니다.');
+            setDeleteTargetIndex(-1);
+            return;
+          }
+        }
+
+        // 로컬 상태 업데이트
         setNoticeData((prev) => prev.filter((_, idx) => idx !== deleteTargetIndex));
         if (editingIndex === deleteTargetIndex) {
           setEditingIndex(-1);
@@ -364,8 +390,8 @@ export default function NoticeTableData({ children }) {
           setEditingIndex(editingIndex - 1);
         }
         setDeleteTargetIndex(-1);
+        showToast('삭제되었습니다.');
       }
-      showToast('삭제되었습니다.');
     });
   };
 
@@ -380,7 +406,24 @@ export default function NoticeTableData({ children }) {
     }
   };
 
-  const handleDeleteSelected = () => {
+  const handleDeleteSelected = async () => {
+    // 선택된 항목들의 ID 수집
+    const selectedRows = checkedList.map((idx) => noticeData[idx]);
+    const applicationFormIds = selectedRows
+      .map((row) => row?.id)
+      .filter((id) => id !== null && id !== undefined);
+
+    // 서버에 저장된 공고들 삭제 API 호출
+    if (applicationFormIds.length > 0) {
+      try {
+        await Promise.all(applicationFormIds.map((id) => deleteAdminForm(id)));
+      } catch (error) {
+        console.error('지원 일정 삭제 실패:', error);
+        showToast('삭제에 실패했습니다.');
+        return;
+      }
+    }
+
     // 선택된 항목들을 역순으로 정렬해서 삭제 (인덱스 변경 방지)
     const sortedIndexes = [...checkedList].sort((a, b) => b - a);
     sortedIndexes.forEach((idx) => {
