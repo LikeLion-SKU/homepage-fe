@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLoaderData } from 'react-router';
 
+import { getClubMemberAdmin } from '@/api/userApi';
 import AdminTitleSection from '@/components/admin/AdminTitleSection';
 import AdminMember from '@/components/admin/User/AdminMember';
 import AdminUserMember from '@/components/admin/User/AdminUserMember';
 import ButtonGroup from '@/components/admin/User/ButtonGroup';
 
 export default function AdminUser() {
-  const propsData = {
+  const rule1 = {
     title: '사용자 관리',
     explain: '게스트에게 구성원 권한을 부여하거나 구성원을 게스트 권한으로 변경하는 페이지입니다.',
     rule: [
@@ -15,19 +17,53 @@ export default function AdminUser() {
       '3. 권한 변경 완료',
     ],
   };
-  const propsData2 = {
+  const rule2 = {
     title: '사용자 관리',
     explain: '게스트에게 구성원 권한을 부여하거나 구성원을 게스트 권한으로 변경하는 페이지입니다.',
     rule: [],
   };
-  const semesterData = ['14기', '13기', '12기', '11기'];
-  const trackData = ['PO', 'PM', 'Design', 'Frontend', 'Backend'];
+  const semesterData = useLoaderData();
+  const trackData = ['PO', 'PM', 'DESIGN', 'FRONTEND', 'BACKEND'];
   const roleData = ['대표', '부대표', '운영진', '아기사자'];
+  const positionMap = {
+    대표: 'LEAD',
+    부대표: 'COLEAD',
+    운영진: 'COREMEMBER',
+    아기사자: 'BABYLION',
+  };
 
   const [isUser, setIsUser] = useState(true);
-  const [isNumber, setIsNumber] = useState(true);
-  const [isTrack, setIsTrack] = useState(true);
-  const [isRole, setIsRole] = useState(true);
+  const [selectedSemester, setSelectedSemester] = useState('');
+  const [selectedTrack, setSelectedIsTrack] = useState('');
+  const [selectedPosition, setSelectedPosition] = useState('');
+
+  const [memberData, setMemberData] = useState([]);
+  const [debouncedSearchName, setDebouncedSearch] = useState('');
+  const [trigger, setTrigger] = useState(true);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      if (isUser) {
+        //게스트 구성원 조회
+      } else {
+        const parameter = {
+          semester: parseInt(selectedSemester),
+          position: positionMap[selectedPosition],
+          track: selectedTrack,
+          keyword: debouncedSearchName,
+        };
+        const filteredParameter = Object.entries(parameter).reduce((acc, [key, value]) => {
+          // value가 존재할 때만(빈 문자열 아님, NaN 아님 등) 객체에 추가
+          if (value) {
+            acc[key] = value;
+          }
+          return acc;
+        }, {});
+        setMemberData(await getClubMemberAdmin(filteredParameter));
+      }
+    };
+    getUserData();
+  }, [isUser, trigger, selectedSemester, selectedPosition, selectedTrack, debouncedSearchName]);
 
   return (
     <div className="relative flex flex-col p-21 gap-14">
@@ -45,18 +81,40 @@ export default function AdminUser() {
           구성원 관리
         </div>
       </div>
-      <AdminTitleSection props={isUser ? propsData : propsData2}>
+      <AdminTitleSection props={isUser ? rule1 : rule2}>
         <div className="flex flex-col gap-5">
           {!isUser && (
             <>
-              <ButtonGroup buttonData={semesterData} isCheck={isNumber} setIsCheck={setIsNumber} />
-              <ButtonGroup buttonData={trackData} isCheck={isTrack} setIsCheck={setIsTrack} />
-              <ButtonGroup buttonData={roleData} isCheck={isRole} setIsCheck={setIsRole} />
+              <ButtonGroup
+                buttonData={semesterData}
+                isCheck={selectedSemester}
+                setIsCheck={setSelectedSemester}
+              />
+              <ButtonGroup
+                buttonData={trackData}
+                isCheck={selectedTrack}
+                setIsCheck={setSelectedIsTrack}
+              />
+              <ButtonGroup
+                buttonData={roleData}
+                isCheck={selectedPosition}
+                setIsCheck={setSelectedPosition}
+              />
             </>
           )}
         </div>
       </AdminTitleSection>
-      <div className="flex border-t">{isUser ? <AdminUserMember /> : <AdminMember />}</div>
+      <div className="flex border-t">
+        {isUser ? (
+          <AdminUserMember />
+        ) : (
+          <AdminMember
+            memberData={memberData}
+            setTrigger={setTrigger}
+            setDebouncedSearch={setDebouncedSearch}
+          />
+        )}
+      </div>
     </div>
   );
 }

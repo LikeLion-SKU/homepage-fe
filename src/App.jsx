@@ -109,7 +109,7 @@ const router = createBrowserRouter([
         /*Component: AdminRoute, */
         children: [
           { index: true, Component: AdminPage },
-          { path: 'user', Component: AdminUser },
+          { path: 'user', Component: AdminUser, loader: getSemester },
           { path: 'option', Component: AdminOption },
           { path: 'project', Component: AdminProject },
           { path: 'project/edit', Component: AdminProjectEdit },
