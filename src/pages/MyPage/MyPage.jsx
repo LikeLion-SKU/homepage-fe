@@ -13,13 +13,16 @@ import Modal from '@/components/common/Modal/ConfirmModal';
 
 export default function MyPage() {
   const userData = useLoaderData(); // 데이터 가져오기
-  //const revalidator = useRevalidator();
 
   const navigate = useNavigate();
 
   const hasApplication = userData.documentSubmitted; // 지원서 제출 여부
 
-  const canReschedule = userData.interviewScheduleSubmitted && userData.interviewScheduleChangable; // 면접 일정 변경 가능 여부
+  const documentActive = userData.documentActive; // 최종결과 전 모집 기간 여부 (최종 결과 나오면 false)
+
+  // 둘다 true면 면접 스케줄 변경 가능, 면접 일정 변경 가능 여부만 false면 면접 일정 확인하기
+  const interviewScheduleSubmitted = userData.interviewScheduleSubmitted; // 면접 일정 설정 완료 여부
+  const interviewScheduleChangable = userData.interviewScheduleChangable; // 면접 일정 변경 가능 여부
 
   const fetcher = useFetcher();
 
@@ -159,33 +162,40 @@ export default function MyPage() {
         {/* 오른쪽 부분 */}
         <div className="w-60 pad:w-full pad:max-w-120 web:max-w-96 pad:min-w-48 web:min-w-48 flex flex-col justify-start items-start gap-4">
           <div className="self-stretch">
-            <Button
-              onClick={() => {
-                if (hasApplication) {
-                  navigate('/application');
-                } else {
-                  navigate('/apply/info');
-                }
-              }}
-              data-variant=""
-              data-size=""
-              className={buttonStyle}
-            >
-              {hasApplication ? '내 지원서 보러가기' : '지원서 작성하기'}
-            </Button>
-          </div>
-          {/* 면접 예약 여부로 생겼다가 없어져야 하는 면접 일정 수정하기 버튼 -> 추후 어색하면 스켈레톤 넣자 */}
-          {canReschedule && (
-            <div className="self-stretch">
+            {/* 최종 결과가 나오면 지원서 관련 버튼은 없어져야 함 */}
+            {documentActive && (
               <Button
                 onClick={() => {
-                  navigate('/result');
+                  if (hasApplication) {
+                    navigate('/application');
+                  } else {
+                    navigate('/apply/info');
+                  }
                 }}
                 data-variant=""
                 data-size=""
                 className={buttonStyle}
               >
-                면접 일정 수정하기
+                {hasApplication ? '내 지원서 보러가기' : '지원서 작성하기'}
+              </Button>
+            )}
+          </div>
+          {/* 면접 예약 여부로 생겼다가 없어져야 하는 면접 일정 수정하기 버튼 -> 추후 어색하면 스켈레톤 넣자 */}
+          {interviewScheduleSubmitted && (
+            <div className="self-stretch">
+              <Button
+                onClick={() => {
+                  if (interviewScheduleChangable) {
+                    navigate('/mypage/reschedule');
+                  } else {
+                    navigate('/mypage/schedule-check');
+                  }
+                }}
+                data-variant=""
+                data-size=""
+                className={buttonStyle}
+              >
+                {interviewScheduleChangable ? '면접 일정 수정하기' : '면접 일정 확인하기'}
               </Button>
             </div>
           )}
