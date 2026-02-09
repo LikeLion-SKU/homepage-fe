@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useLoaderData } from 'react-router';
 
 import Toggle from '@/assets/icons/under_toggle.svg';
 import ApplyStickyBox from '@/components/animation/ApplyStickyBox';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
+import useSemesterStore from '@/store/useSemesterStore';
 import { checkExpired } from '@/utils/Date';
 import { formatDeadline } from '@/utils/Date';
 
@@ -12,10 +14,15 @@ export default function Recruitment() {
   // 열려있는 토글들의 인덱스 배열로 저장
   const [openToggle, setOpenToggle] = useState([]);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const { semesterData, fetchSemesterData } = useSemesterStore();
   const navigate = useNavigate();
-  const deadline = '2026-03-30T23:59:59';
   const [isLoggedIn, _setIsLoggedIn] = useState(true); // 임의로 로그인 여부
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const userData = useLoaderData();
+
+  useEffect(() => {
+    if (!semesterData) fetchSemesterData();
+  }, [fetchSemesterData, semesterData]);
 
   const handleToggle = (index) => {
     if (openToggle.includes(index)) {
@@ -24,10 +31,6 @@ export default function Recruitment() {
       setOpenToggle([...openToggle, index]); // 누른 토글이 닫혀있다면 -> 배열에 추가
     }
   };
-
-  // zustand 이용 시
-  // // 예시: Recoil이나 커스텀 Hook을 사용하는 경우
-  // const { isLoggedIn } = useAuth();
 
   const handleButtonClick = () => {
     if (!isLoggedIn) {
@@ -43,9 +46,7 @@ export default function Recruitment() {
   };
 
   // 마감일 지났는지 확인
-  const isExpired = checkExpired(deadline);
-  // 기수
-  const generation = '14';
+  const isExpired = checkExpired(semesterData?.semester);
 
   // 스크롤 시 지원하기 박스 고정 (body 스크롤에서도 동작하도록)
   const stickyBoxRef = useRef(null);
@@ -140,10 +141,10 @@ export default function Recruitment() {
           {/* 제목 부분 */}
           <div className="flex flex-col gap-7">
             <h1 className="text-black text-xl font-bold pad:text-4xl pad:font-extrabold">
-              {generation}기 아기사자 모집안내
+              {semesterData?.semester}기 아기사자 모집안내
             </h1>
             <p className="text-stone-900 text-sm font-semibold pad:text-lg pad:font-medium">
-              서경대학교 멋쟁이사자처럼 {generation}기 아기사자를 모집해요!
+              서경대학교 멋쟁이사자처럼 {semesterData?.semester}기 아기사자를 모집해요!
             </p>
           </div>
 
@@ -256,7 +257,7 @@ export default function Recruitment() {
             }
           >
             <ApplyStickyBox
-              deadline={formatDeadline(deadline)}
+              deadline={formatDeadline(semesterData?.closeAt)}
               onClickModal={handleButtonClick}
               isExpired={isExpired}
               buttonStyle={`${buttonStyle} ${isExpired ? disabledStyle : ''}`}
@@ -270,7 +271,7 @@ export default function Recruitment() {
         confirm={() => {
           setIsApplyModalOpen(false);
           // 백엔드 연결 전 임시 로직
-          const hasSubmitted = false; // 나중에 API 결과값으로 대체!!!!!!!!!!!!!!!!!!!!!
+          const hasSubmitted = userData.documentSubmitted; // 지원서 제출 여부
 
           if (hasSubmitted) {
             navigate('/apply/complete'); // 이미 제출했으면 완료 페이지로
