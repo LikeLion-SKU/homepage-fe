@@ -17,6 +17,7 @@ export default function PasswordFindForm({ onSubmit }) {
   const [countdown, setCountdown] = useState(0); // 초 단위
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
   const [isVerificationSending, setIsVerificationSending] = useState(false);
+  const [isVerificationChecking, setIsVerificationChecking] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalMessage, setConfirmModalMessage] = useState('');
   // @ts-ignore
@@ -70,6 +71,7 @@ export default function PasswordFindForm({ onSubmit }) {
       setVerificationStatus(null);
     }
 
+    setIsVerificationChecking(true);
     try {
       // 이메일 값에 @skuniv.ac.kr이 없으면 추가
       const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
@@ -104,6 +106,8 @@ export default function PasswordFindForm({ onSubmit }) {
       setVerificationStatus('error');
       setConfirmModalMessage(errorMessage);
       setShowConfirmModal(true);
+    } finally {
+      setIsVerificationChecking(false);
     }
   };
 
@@ -168,6 +172,7 @@ export default function PasswordFindForm({ onSubmit }) {
                 disabled={!password || !isVerificationSent || verificationStatus === 'success'}
                 text="인증번호 확인"
                 isActive={!!email && isVerificationSent && verificationStatus !== 'success'}
+                isLoading={isVerificationChecking}
               />
             }
           />
