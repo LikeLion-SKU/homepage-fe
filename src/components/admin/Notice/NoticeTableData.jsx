@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
-import { getAdminForm, getAllAdminForms, putAdminForm } from '@/api/applicationForm';
+import {
+  deleteAdminForm,
+  getAdminForm,
+  getAllAdminForms,
+  putAdminForm,
+} from '@/api/applicationForm';
 
 import { convertToISOString, parseISODateTime } from './NoticeTime';
 
@@ -353,10 +358,37 @@ export default function NoticeTableData({ children }) {
     setEditingIndex(-1);
   };
 
-  const handleDelete = (index) => {
+  // 삭제 API 호출 공통 함수
+  const deleteItems = async (applicationFormIds) => {
+    if (applicationFormIds.length === 0) return true;
+
+    try {
+      await Promise.all(applicationFormIds.map((id) => deleteAdminForm(id)));
+      return true;
+    } catch (error) {
+      console.error('지원 일정 삭제 실패:', error);
+      showToast('삭제에 실패했습니다.');
+      return false;
+    }
+  };
+
+  const handleDelete = async (index) => {
     setDeleteTargetIndex(index);
-    openModal('해당 공고를 삭제하시겠습니까?', () => {
+    openModal('해당 공고를 삭제하시겠습니까?', async () => {
       if (deleteTargetIndex !== -1) {
+        const targetRow = noticeData[deleteTargetIndex];
+        const applicationFormId = targetRow?.id;
+
+        // 서버에 저장된 공고인 경우에만 API 호출
+        if (applicationFormId) {
+          const success = await deleteItems([applicationFormId]);
+          if (!success) {
+            setDeleteTargetIndex(-1);
+            return;
+          }
+        }
+
+        // 로컬 상태 업데이트
         setNoticeData((prev) => prev.filter((_, idx) => idx !== deleteTargetIndex));
         if (editingIndex === deleteTargetIndex) {
           setEditingIndex(-1);
@@ -364,8 +396,8 @@ export default function NoticeTableData({ children }) {
           setEditingIndex(editingIndex - 1);
         }
         setDeleteTargetIndex(-1);
+        showToast('삭제되었습니다.');
       }
-      showToast('삭제되었습니다.');
     });
   };
 
@@ -380,8 +412,16 @@ export default function NoticeTableData({ children }) {
     }
   };
 
-  const handleDeleteSelected = () => {
-    // 선택된 항목들을 역순으로 정렬해서 삭제 (인덱스 변경 방지)
+  const handleDeleteSelected = async () => {
+    const applicationFormIds = checkedList
+      .map((idx) => noticeData[idx]?.id)
+      .filter((id) => id != null);
+
+    // 삭제 API 호출
+    const success = await deleteItems(applicationFormIds);
+    if (!success) return;
+
+    // 로컬 상태 업데이트
     const sortedIndexes = [...checkedList].sort((a, b) => b - a);
     sortedIndexes.forEach((idx) => {
       if (editingIndex === idx) {
