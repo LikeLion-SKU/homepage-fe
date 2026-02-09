@@ -12,3 +12,14 @@ export const applicationSubmit = async (submitData) => {
     throw error;
   }
 };
+
+// 최종 지원서 확인
+export const applicationLoader = async () => {
+  try {
+    const response = await APIService.private.get('v1/applications/records/submit');
+    return response.data || [];
+  } catch (error) {
+    console.error('지원서 조회 실패:', error);
+    throw error;
+  }
+};
