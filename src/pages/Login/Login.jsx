@@ -36,14 +36,17 @@ export default function Login() {
       }, 1500);
     } catch (error) {
       console.error('로그인 실패:', error);
-      // TODO: 에러 처리 (토스트 메시지 등)
+      // 로그인 실패 토스트 메시지 표시
+      if (showToast) {
+        showToast('로그인에 실패했습니다.');
+      }
     }
   };
 
   return (
     <div
       className="flex flex-col items-center justify-center px-4 flex-1"
-      style={{ paddingTop: '120px', paddingBottom: '120px', minHeight: 0, overflow: 'hidden' }}
+      style={{ paddingTop: '160px', paddingBottom: '120px', minHeight: 0, overflow: 'hidden' }}
     >
       <LoginForm onSubmit={handleLogin} />
     </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router';
 
 import { reissuePassword, requestEmailVerification } from '@/api/authApi';
+import CheckModal from '@/components/common/Modal/CheckModal';
 
 import EmailInput from '../login/EmailInput';
 import LoginTitle from '../login/LoginTitle';
@@ -16,8 +17,16 @@ export default function PasswordFindForm({ onSubmit }) {
   const [countdown, setCountdown] = useState(0); // 초 단위
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
   const [isVerificationSending, setIsVerificationSending] = useState(false);
+  const [isVerificationChecking, setIsVerificationChecking] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmModalMessage, setConfirmModalMessage] = useState('');
   // @ts-ignore
   const { showToast } = useOutletContext();
+
+  // 에러 메시지 매핑
+  const ERROR_MESSAGE_MAP = {
+    INVALID_VERIFICATION_CODE: '인증번호가 일치하지 않습니다.',
+  };
 
   const handleVerificationSend = async () => {
     setIsVerificationSending(true);
@@ -52,6 +61,17 @@ export default function PasswordFindForm({ onSubmit }) {
       return;
     }
 
+    // 인증 성공 후에는 재확인 불가
+    if (verificationStatus === 'success') {
+      return;
+    }
+
+    // 이전 에러 상태 초기화
+    if (verificationStatus === 'error') {
+      setVerificationStatus(null);
+    }
+
+    setIsVerificationChecking(true);
     try {
       // 이메일 값에 @skuniv.ac.kr이 없으면 추가
       const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
@@ -79,8 +99,15 @@ export default function PasswordFindForm({ onSubmit }) {
       navigate('/password/result', { state: { email: finalEmail, tempPassword } });
     } catch (error) {
       console.error('인증번호 확인 실패:', error);
+      const errorResponse = error?.response?.data;
+      const errorMessage =
+        ERROR_MESSAGE_MAP[errorResponse?.code] || ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE;
+
       setVerificationStatus('error');
-      // TODO: 에러 처리 (토스트 메시지 등)
+      setConfirmModalMessage(errorMessage);
+      setShowConfirmModal(true);
+    } finally {
+      setIsVerificationChecking(false);
     }
   };
 
@@ -127,21 +154,25 @@ export default function PasswordFindForm({ onSubmit }) {
             label="인증번호"
             value={password}
             onChange={(e) => {
+              // 인증 성공 후에는 인증번호 변경 불가
+              if (verificationStatus === 'success') return;
               setPassword(e.target.value);
               setVerificationStatus(null); // 입력 시 상태 초기화
+              setShowConfirmModal(false); // 입력 시 모달 닫기
             }}
             placeholder="인증번호를 입력해주세요"
             hideLabel
             hideToggle
             mb="mb-0"
             maxWidth="max-w-full sm:max-w-[600px]"
-            disabled={!isVerificationSent}
+            disabled={!isVerificationSent || verificationStatus === 'success'}
             rightButton={
               <VerificationButton
                 onClick={handleVerificationCheck}
-                disabled={!password || !isVerificationSent}
+                disabled={!password || !isVerificationSent || verificationStatus === 'success'}
                 text="인증번호 확인"
-                isActive={!!email && isVerificationSent}
+                isActive={!!email && isVerificationSent && verificationStatus !== 'success'}
+                isLoading={isVerificationChecking}
               />
             }
           />
@@ -161,7 +192,7 @@ export default function PasswordFindForm({ onSubmit }) {
             )}
             {verificationStatus === 'success' && (
               <div
-                className="text-[#B0B0B0] text-sm text-left font-['Pretendard'] ml-0"
+                className="text-[#00A424] text-sm text-left font-['Pretendard'] ml-0"
                 style={{ transform: 'translateY(-15px) translateX(4px)' }}
               >
                 인증번호가 일치합니다.
@@ -172,7 +203,7 @@ export default function PasswordFindForm({ onSubmit }) {
                 className="text-[#FF7D56] text-sm text-left font-['Pretendard'] ml-0"
                 style={{ transform: 'translateY(-15px) translateX(4px)' }}
               >
-                잘못된 인증번호입니다. 다시 입력해주세요.
+                {ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE}
               </div>
             )}
           </div>
@@ -198,6 +229,18 @@ export default function PasswordFindForm({ onSubmit }) {
           </p>
         </div>
       </div>
+
+      <CheckModal
+        isOpen={showConfirmModal}
+        cancel={() => setShowConfirmModal(false)}
+        buttonColor={
+          confirmModalMessage === ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE
+            ? 'bg-[#FF7D56]'
+            : 'bg-button-green'
+        }
+      >
+        {confirmModalMessage}
+      </CheckModal>
     </div>
   );
 }
