@@ -1,9 +1,10 @@
 import { useNavigate, useOutletContext } from 'react-router';
 
+import { deleteProject } from '@/api/projectApi';
 //@ts-ignore
 import Right from '@/assets/icons/right_icon.svg?react';
 
-export default function ProjectCardHover() {
+export default function ProjectCardHover({ projectId }) {
   const navigate = useNavigate();
   //@ts-ignore
   const { openModal } = useOutletContext();
@@ -14,16 +15,16 @@ export default function ProjectCardHover() {
           <Right />
         </div>
         <div
-          onClick={() => {
-            navigate('/admin/project/edit');
-          }}
+          onClick={() =>
+            navigate(`/admin/project/edit`, { state: { projectId: projectId, isEdit: true } })
+          }
           className="flex w-29 h-12 text-[1.1rem] justify-center items-center"
         >
           수정하기
         </div>
       </div>
       <div
-        onClick={() => openModal('프로젝트를 삭제하시겠습니까?', () => console.log('모달 닫기'))}
+        onClick={() => openModal('프로젝트를 삭제하시겠습니까?', () => deleteProject(projectId))}
         className="flex w-41 h-12 bg-[#F8F8F8]"
       >
         <div className="flex justify-center items-center bg-[#D9D9D9] w-12 h-12 border-r-[0.5px] border-[#8C8C8C]">
