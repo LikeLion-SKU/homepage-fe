@@ -169,7 +169,7 @@ export default function MyPage() {
                   if (hasApplication) {
                     navigate('/application');
                   } else {
-                    navigate('/apply/info');
+                    navigate('/recruit');
                   }
                 }}
                 data-variant=""

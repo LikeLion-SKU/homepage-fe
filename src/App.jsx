@@ -91,7 +91,7 @@ const router = createBrowserRouter([
         children: [
           { path: '/project', Component: ProjectList },
           { path: '/project/viewDetail', Component: ProjectViewDetail },
-          { path: '/recruit', Component: Recruitment },
+          { path: '/recruit', Component: Recruitment, loader: myPageLoader },
           { path: '/member', Component: Member },
           { path: '/login', Component: Login },
           { path: '/signup', Component: SignUp },
