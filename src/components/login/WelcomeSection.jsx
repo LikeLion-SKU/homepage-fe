@@ -28,10 +28,10 @@ export default function WelcomeSection() {
           {/* 타이틀 + 이미지 + 버튼을 레이아웃 기준으로 아래로 이동 */}
           <div className="flex flex-col items-center w-full max-w-[28rem] pt-[8vh] pb-[8vh] sm:pt-0 sm:pb-0 sm:-mt-[3vh] sm:mr-6">
             <div className="mb-4 sm:mb-6">
-              <p className="text-black text-[1.375rem] sm:text-[1.75rem] font-bold mb-2 sm:mb-3">
+              <p className="text-black text-[1.375rem] sm:text-[2.25rem] font-bold mb-2 sm:mb-3">
                 {name}님 안녕하세요!
               </p>
-              <p className="text-black text-sm sm:text-[1rem] font-medium px-2">
+              <p className="text-black text-sm sm:text-[1.13rem] font-medium px-2">
                 서경대학교 멋쟁이사자처럼 홈페이지 가입을 환영합니다!
               </p>
             </div>

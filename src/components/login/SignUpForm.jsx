@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router';
 
 import { confirmEmailVerification, register, requestEmailVerification } from '@/api/authApi';
 import CheckModal from '@/components/common/Modal/CheckModal';
@@ -13,8 +14,18 @@ import SignupLink from './SignUpLink';
 import VerificationButton from './VerificationButton';
 
 export default function SignUpForm({ onSubmit }) {
+  // @ts-ignore
+  const { showToast } = useOutletContext() || {};
   const [step, setStep] = useState(1); // 1: 인증번호 확인, 2: 회원정보 입력
   const [email, setEmail] = useState('');
+
+  // 에러 메시지 매핑
+  const ERROR_MESSAGE_MAP = {
+    DUPLICATE_EMAIL: '이미 가입된 이메일입니다.',
+    DUPLICATE_PHONE: '이미 사용 중인 전화번호입니다.',
+    DUPLICATE_STUDENT_NUMBER: '이미 사용 중인 학번입니다.',
+    INVALID_VERIFICATION_CODE: '인증번호가 일치하지 않습니다.',
+  };
 
   // 인증번호
   const [verificationCode, setVerificationCode] = useState('');
@@ -22,6 +33,8 @@ export default function SignUpForm({ onSubmit }) {
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [countdown, setCountdown] = useState(0); // 초 단위
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
+  const [isVerificationSending, setIsVerificationSending] = useState(false);
+  const [isVerificationChecking, setIsVerificationChecking] = useState(false);
 
   // 두 번째 단계 입력 필드
   const [name, setName] = useState('');
@@ -113,7 +126,7 @@ export default function SignUpForm({ onSubmit }) {
     //  기존 로직은 인증번호 입력만 해도 모달이 뜰 수 있어서,
     // 최소한 error일 때만 잘못된 인증번호로 처리
     if (verificationStatus === 'error') {
-      setConfirmModalMessage('잘못된 인증번호입니다.');
+      setConfirmModalMessage(ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE);
       setShowConfirmModal(true);
     }
   };
@@ -215,12 +228,20 @@ export default function SignUpForm({ onSubmit }) {
       }
     } catch (error) {
       console.error('회원가입 실패:', error);
-      setConfirmModalMessage('회원가입에 실패했습니다. 다시 시도해주세요.');
+      const errorMessage =
+        ERROR_MESSAGE_MAP.DUPLICATE_EMAIL ||
+        ERROR_MESSAGE_MAP.DUPLICATE_PHONE ||
+        ERROR_MESSAGE_MAP.DUPLICATE_STUDENT_NUMBER ||
+        ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE ||
+        '회원가입에 실패했습니다. 다시 시도해주세요.';
+
+      setConfirmModalMessage(errorMessage);
       setShowConfirmModal(true);
     }
   };
 
   const handleVerificationSend = async () => {
+    setIsVerificationSending(true);
     try {
       const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
@@ -233,8 +254,12 @@ export default function SignUpForm({ onSubmit }) {
       setVerificationStatus(null);
     } catch (error) {
       console.error('인증번호 전송 실패:', error);
-      setConfirmModalMessage('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
-      setShowConfirmModal(true);
+      // 토스트 메시지 표시
+      if (showToast) {
+        showToast('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
+      }
+    } finally {
+      setIsVerificationSending(false);
     }
   };
 
@@ -242,6 +267,7 @@ export default function SignUpForm({ onSubmit }) {
     if (countdown === 0) return;
     if (verificationStatus === 'success') return;
 
+    setIsVerificationChecking(true);
     try {
       const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
@@ -252,7 +278,15 @@ export default function SignUpForm({ onSubmit }) {
       setVerificationStatus('success');
     } catch (error) {
       console.error('인증번호 확인 실패:', error);
+      const errorResponse = error?.response?.data;
+      const errorMessage =
+        ERROR_MESSAGE_MAP[errorResponse?.code] || ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE;
+
+      setConfirmModalMessage(errorMessage);
+      setShowConfirmModal(true);
       setVerificationStatus('error');
+    } finally {
+      setIsVerificationChecking(false);
     }
   };
 
@@ -292,6 +326,7 @@ export default function SignUpForm({ onSubmit }) {
                   isActive={!!email}
                   isResend={isVerificationSent}
                   text={isVerificationSent ? '인증번호 재전송' : '인증번호 전송'}
+                  isLoading={isVerificationSending}
                 />
               }
             />
@@ -300,20 +335,25 @@ export default function SignUpForm({ onSubmit }) {
                 label="인증번호"
                 value={verificationCode}
                 onChange={(e) => {
+                  // 인증 성공 후에는 인증번호 변경 불가
+                  if (verificationStatus === 'success') return;
                   setVerificationCode(e.target.value);
                   setVerificationStatus(null);
+                  setShowConfirmModal(false); // 입력 시 모달 닫기
                 }}
                 placeholder="인증번호를 입력해주세요"
                 hideLabel
                 hideToggle
                 mb="mb-0"
                 maxWidth="max-w-full sm:max-w-[600px]"
+                disabled={verificationStatus === 'success'}
                 rightButton={
                   <VerificationButton
                     onClick={handleVerificationCheck}
                     disabled={!verificationCode || verificationStatus === 'success'}
                     text="인증번호 확인"
                     isActive={!!email && verificationStatus !== 'success'}
+                    isLoading={isVerificationChecking}
                   />
                 }
               />
@@ -323,7 +363,7 @@ export default function SignUpForm({ onSubmit }) {
                     className="flex justify-between items-center"
                     style={{ transform: 'translateY(4px)' }}
                   >
-                    <div className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0">
+                    <div className="text-[#FF7D56] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0">
                       {countdown === 0 && '입력 시간이 만료되었습니다.'}
                     </div>
                     <div className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-right font-['Pretendard'] ml-3">
@@ -333,7 +373,7 @@ export default function SignUpForm({ onSubmit }) {
                 )}
                 {verificationStatus === 'success' && (
                   <div
-                    className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0"
+                    className="text-[#00A424] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0"
                     style={{ transform: 'translateY(-12px) translateX(4px)' }}
                   >
                     인증번호가 일치합니다.
@@ -341,10 +381,10 @@ export default function SignUpForm({ onSubmit }) {
                 )}
                 {verificationStatus === 'error' && countdown > 0 && (
                   <div
-                    className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0"
+                    className="text-[#FF7D56] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0"
                     style={{ transform: 'translateY(-12px) translateX(4px)' }}
                   >
-                    잘못된 인증번호입니다. 다시 입력해주세요.
+                    {ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE}
                   </div>
                 )}
               </div>
@@ -352,7 +392,7 @@ export default function SignUpForm({ onSubmit }) {
           </form>
 
           <div className="w-full mt-24">
-            <LoginButton onClick={handleNextStep} disabled={!verificationCode}>
+            <LoginButton onClick={handleNextStep} disabled={verificationStatus !== 'success'}>
               다음
             </LoginButton>
           </div>
@@ -369,7 +409,9 @@ export default function SignUpForm({ onSubmit }) {
           isOpen={showConfirmModal}
           cancel={() => setShowConfirmModal(false)}
           buttonColor={
-            confirmModalMessage === '잘못된 인증번호입니다.' ? 'bg-[#FF7D56]' : 'bg-button-green'
+            confirmModalMessage === ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE
+              ? 'bg-[#FF7D56]'
+              : 'bg-button-green'
           }
         >
           {confirmModalMessage}
@@ -415,8 +457,8 @@ export default function SignUpForm({ onSubmit }) {
               className={`text-xs min-[761px]:text-base font-['Pretendard'] font-medium ${
                 passwordTouched && signupPassword
                   ? isValidPassword(signupPassword)
-                    ? 'text-green-500'
-                    : 'text-red-500'
+                    ? 'text-[#00A424]'
+                    : 'text-[#FF7D56]'
                   : 'text-[#1A1A1A]'
               }`}
             >
@@ -438,12 +480,12 @@ export default function SignUpForm({ onSubmit }) {
             {confirmPassword &&
               isValidPassword(signupPassword) &&
               signupPassword === confirmPassword && (
-                <p className="text-green-500 text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
+                <p className="text-[#00A424] text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
                   비밀번호가 일치합니다.
                 </p>
               )}
             {confirmPassword && signupPassword !== confirmPassword && (
-              <p className="text-red-500 text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
+              <p className="text-[#FF7D56] text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
                 비밀번호가 일치하지 않습니다.
               </p>
             )}
@@ -500,7 +542,22 @@ export default function SignUpForm({ onSubmit }) {
         <AgreeForm onAgreeChange={setIsAgreed} required />
 
         <div className="w-full mt-8">
-          <LoginButton onClick={handleSubmit}>다음</LoginButton>
+          <LoginButton
+            onClick={handleSubmit}
+            disabled={
+              !name ||
+              !signupPassword ||
+              !confirmPassword ||
+              !phone ||
+              !major ||
+              !studentNumber ||
+              !isAgreed ||
+              !isValidPassword(signupPassword) ||
+              signupPassword !== confirmPassword
+            }
+          >
+            다음
+          </LoginButton>
         </div>
 
         <SignupLink

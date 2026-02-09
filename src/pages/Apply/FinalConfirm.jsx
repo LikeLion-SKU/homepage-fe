@@ -1,27 +1,44 @@
 import { useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useLoaderData, useNavigate, useOutletContext } from 'react-router-dom';
 
+import { applicationSubmit } from '@/api/applicationRecordApi';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
 import ApplyStep from '@/components/common/apply/ApplyStep';
 import ApplyTitleSection from '@/components/common/apply/ApplyTitleSection';
-import { QUESTION_LIST } from '@/constants/QuestionData';
 
 export default function FinalConfirm() {
   const TRACK_NAMES = {
-    fe: '프론트엔드',
-    be: '백엔드',
-    po: 'PO',
+    FRONTEND: '프론트엔드',
+    BACKEND: '백엔드',
+    PO: 'PO',
   };
+  //@ts-ignore
+  const { formatAnswers } = useOutletContext();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { _track, commonQues, trackQues } = useLoaderData(); // 로더로 가져온 데이터
+
+  console.log('로더에서 온 공통질문 데이터:', commonQues);
 
   const handlePrevious = () => {
     navigate('/apply/track'); // URL 이동
   };
 
-  const handleNext = () => {
-    navigate('/apply/complete');
+  // 지원서 제출 api에 요청하는 함수
+  const handleSubmit = async () => {
+    try {
+      const { track, commonAnswers, trackAnswers } = formatAnswers(); // trackAnswers를 못가져오는 중
+      const submitData = {
+        track: track,
+        commonAnswers: commonAnswers,
+        trackAnswers: trackAnswers,
+      };
+      await applicationSubmit(submitData);
+      navigate('/apply/complete');
+    } catch (error) {
+      console.error('지원서 제출 실패', error);
+    }
   };
   //@ts-ignore
   const { formData } = useOutletContext();
@@ -67,26 +84,26 @@ export default function FinalConfirm() {
                   <div className="web:flex-1 flex flex-col gap-6 pad:gap-11">
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">이름</label>
-                      <div className="text-xs pad:text-base">{formData.name || '-'}</div>
+                      <div className="text-xs pad:text-base">{formData?.name || '-'}</div>
                     </div>
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">학과</label>
-                      <div className="text-xs pad:text-base">{formData.major || '-'}</div>
+                      <div className="text-xs pad:text-base">{formData?.department || '-'}</div>
                     </div>
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">학번</label>
-                      <div className="text-xs pad:text-base">{formData.studentId || '-'}</div>
+                      <div className="text-xs pad:text-base">{formData?.studentNumber || '-'}</div>
                     </div>
                   </div>
                   {/* 오른쪽 전화번호, 이메일, 지원파트 */}
                   <div className="web:flex-1 flex flex-col gap-6 pad:gap-11">
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">전화번호</label>
-                      <div className="text-xs pad:text-base">{formData.phone || '-'}</div>
+                      <div className="text-xs pad:text-base">{formData?.phoneNumber || '-'}</div>
                     </div>
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">이메일</label>
-                      <div className="text-xs pad:text-base">{formData.email || '-'}</div>
+                      <div className="text-xs pad:text-base">{formData?.email || '-'}</div>
                     </div>
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">지원트랙</label>
@@ -105,18 +122,18 @@ export default function FinalConfirm() {
             {/* 공통질문 상자 */}
             <div className="flex flex-col px-6 py-7 pad:px-10 web:px-20 pad:py-18 web:py-18.5 border bg-button-gray gap-15">
               {/* 공통질문 내용 */}
-              {QUESTION_LIST.filter((item) => item.track === 'COMMON').map(
+              {commonQues.map(
                 (
                   item // 공통질문만 map 돌면서 보여주기
                 ) => (
-                  <div key={item.id} className="flex flex-col gap-4">
+                  <div key={item.questionId} className="flex flex-col gap-4">
                     {/* 질문 제목 */}
                     <div className="text-sm pad:text-lg font-semibold text-zinc-800">
-                      {item.order_number}. {item.question}
+                      {item.orderNumber}. {item.content}
                     </div>
                     {/* 답변 부분 */}
                     <div className="w-full min-h-32 p-5 text-xs pad:text-base font-medium text-zinc-700 whitespace-pre-wrap">
-                      {formData.answers?.[item.id] || '작성된 내용이 없습니다.'}
+                      {formData?.answers?.[item.questionId]?.content || '작성된 내용이 없습니다.'}
                     </div>
                   </div>
                 )
@@ -129,16 +146,16 @@ export default function FinalConfirm() {
             {/* 트랙별 질문 상자 */}
             <div className="flex flex-col px-6 py-7 pad:px-10 web:px-20 pad:py-18 web:py-18.5 border bg-button-gray gap-15">
               {/* formData의 track에 따라 필터링하여 답변 보여주기 */}
-              {QUESTION_LIST.filter((item) => item.track === formData.track).map((item) => (
-                <div key={item.id} className="flex flex-col gap-4">
+              {trackQues.map((item) => (
+                <div key={item.questionId} className="flex flex-col gap-4">
                   {/* 질문 제목 */}
                   <div className="text-sm pad:text-lg font-semibold text-zinc-800">
-                    {item.order_number}. {item.question}
+                    {item.orderNumber}. {item.content}
                   </div>
 
                   {/* 줄바꿈 유지하도록*/}
                   <div className="w-full min-h-32 p-5 text-xs pad:text-base font-medium text-zinc-700 whitespace-pre-wrap">
-                    {formData.answers?.[item.id] || '작성된 내용이 없습니다.'}
+                    {formData?.answers?.[item.questionId]?.content || '작성된 내용이 없습니다.'}
                   </div>
                 </div>
               ))}
@@ -168,7 +185,7 @@ export default function FinalConfirm() {
           </div>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} cancel={() => setIsModalOpen(false)} confirm={handleNext}>
+      <Modal isOpen={isModalOpen} cancel={() => setIsModalOpen(false)} confirm={handleSubmit}>
         제출 후 수정은 불가합니다.
         <br />
         정말 제출하시겠습니까?

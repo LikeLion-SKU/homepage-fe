@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useOutletContext } from 'react-router';
+
+import { reissuePassword, requestEmailVerification } from '@/api/authApi';
+import CheckModal from '@/components/common/Modal/CheckModal';
 
 import EmailInput from '../login/EmailInput';
-import LoginButton from '../login/LoginButton';
 import LoginTitle from '../login/LoginTitle';
 import PasswordInput from '../login/PasswordInput';
 import VerificationButton from '../login/VerificationButton';
@@ -14,49 +16,38 @@ export default function PasswordFindForm({ onSubmit }) {
   const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [countdown, setCountdown] = useState(0); // 초 단위
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
-  const [correctCode, setCorrectCode] = useState(''); // 실제 인증번호 (임시로 저장)
+  const [isVerificationSending, setIsVerificationSending] = useState(false);
+  const [isVerificationChecking, setIsVerificationChecking] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmModalMessage, setConfirmModalMessage] = useState('');
+  // @ts-ignore
+  const { showToast } = useOutletContext();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // 인증이 성공한 경우에만 결과 페이지로 이동
-    if (verificationStatus === 'success') {
-      try {
-        // TODO: 실제 임시 비밀번호 발급 API 호출
-        // 엔드포인트 api/v1/auth/password/reissue
-        // const response = await APIService.public.post('api/v1/auth/password/reissue', { email, code: password });
-        // const tempPassword = response.data.tempPassword;
-
-        // 임시로 하드코딩된 임시 비밀번호
-        const tempPassword = 'temp1234';
-
-        if (onSubmit) {
-          onSubmit({ email, password });
-        }
-        navigate('/password/result', { state: { email, tempPassword } });
-      } catch (error) {
-        console.error('임시 비밀번호 발급 실패:', error);
-        // TODO: 에러 처리 (토스트 메시지 등)
-      }
-    }
+  // 에러 메시지 매핑
+  const ERROR_MESSAGE_MAP = {
+    INVALID_VERIFICATION_CODE: '인증번호가 일치하지 않습니다.',
   };
 
   const handleVerificationSend = async () => {
+    setIsVerificationSending(true);
     try {
-      // TODO: 비밀번호 찾기용 인증번호 전송 API 호출
-      // 엔드포인트 api/v1/auth/email/verify/request
-      // await APIService.public.post('api/v1/auth/email/verify/request', { email });
+      // 이메일 값에 @skuniv.ac.kr이 없으면 추가
+      const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
-      console.log('인증번호 전송 (비밀번호 찾기)');
+      // 인증번호 전송 API 호출
+      await requestEmailVerification({ email: finalEmail });
+
       setIsVerificationSent(true);
       setCountdown(300); // 5분 = 300초
-      // 임시로 인증번호 123456으로 테스트
-      const randomCode = '123456';
-      setCorrectCode(randomCode);
       setVerificationStatus(null); // 상태 초기화
-      console.log('인증번호:', randomCode); // 개발용
     } catch (error) {
       console.error('인증번호 전송 실패:', error);
       // TODO: 에러 처리 (토스트 메시지 등)
+      if (showToast) {
+        showToast('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
+      }
+    } finally {
+      setIsVerificationSending(false);
     }
   };
 
@@ -66,22 +57,57 @@ export default function PasswordFindForm({ onSubmit }) {
       return;
     }
 
-    try {
-      // TODO: 비밀번호 찾기용 인증번호 확인 API 호출
-      // 엔드포인트 api/v1/auth/password/reissue
-      // const response = await APIService.public.post('api/v1/auth/password/reissue', { email, code: password });
+    if (!password) {
+      return;
+    }
 
-      console.log('인증번호 확인 (비밀번호 찾기)');
-      // 임시로 하드코딩된 코드와 비교
-      if (password === correctCode) {
-        setVerificationStatus('success');
-      } else {
+    // 인증 성공 후에는 재확인 불가
+    if (verificationStatus === 'success') {
+      return;
+    }
+
+    // 이전 에러 상태 초기화
+    if (verificationStatus === 'error') {
+      setVerificationStatus(null);
+    }
+
+    setIsVerificationChecking(true);
+    try {
+      // 이메일 값에 @skuniv.ac.kr이 없으면 추가
+      const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
+
+      // 비밀번호 재발급 API 호출 (인증번호 확인과 함께)
+      const response = await reissuePassword({ email: finalEmail, code: password });
+
+      // API 응답에서 임시 비밀번호 가져오기
+      // API 응답 구조: { success: true, code: 200, message: "...", data: { temporaryPassword: "..." } }
+      // reissuePassword는 .then((r) => r.data)를 반환하므로 response는 이미 r.data입니다
+      const tempPassword = response?.data?.temporaryPassword;
+
+      if (!tempPassword) {
+        console.error('API 응답에 temporaryPassword가 없습니다:', response);
         setVerificationStatus('error');
+        return;
       }
+
+      setVerificationStatus('success');
+
+      // 인증 성공 시 결과 페이지로 이동
+      if (onSubmit) {
+        onSubmit({ email: finalEmail, password });
+      }
+      navigate('/password/result', { state: { email: finalEmail, tempPassword } });
     } catch (error) {
       console.error('인증번호 확인 실패:', error);
+      const errorResponse = error?.response?.data;
+      const errorMessage =
+        ERROR_MESSAGE_MAP[errorResponse?.code] || ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE;
+
       setVerificationStatus('error');
-      // TODO: 에러 처리 (토스트 메시지 등)
+      setConfirmModalMessage(errorMessage);
+      setShowConfirmModal(true);
+    } finally {
+      setIsVerificationChecking(false);
     }
   };
 
@@ -104,7 +130,7 @@ export default function PasswordFindForm({ onSubmit }) {
 
   return (
     <div className="w-full max-w-lg mx-auto px-4 sm:px-0">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <LoginTitle title="비밀번호 찾기" />
         <EmailInput
           value={email}
@@ -119,6 +145,7 @@ export default function PasswordFindForm({ onSubmit }) {
               isActive={!!email}
               isResend={isVerificationSent}
               text={isVerificationSent ? '인증번호 재전송' : '인증번호 전송'}
+              isLoading={isVerificationSending}
             />
           }
         />
@@ -127,21 +154,25 @@ export default function PasswordFindForm({ onSubmit }) {
             label="인증번호"
             value={password}
             onChange={(e) => {
+              // 인증 성공 후에는 인증번호 변경 불가
+              if (verificationStatus === 'success') return;
               setPassword(e.target.value);
               setVerificationStatus(null); // 입력 시 상태 초기화
+              setShowConfirmModal(false); // 입력 시 모달 닫기
             }}
             placeholder="인증번호를 입력해주세요"
             hideLabel
             hideToggle
             mb="mb-0"
             maxWidth="max-w-full sm:max-w-[600px]"
-            disabled={!isVerificationSent}
+            disabled={!isVerificationSent || verificationStatus === 'success'}
             rightButton={
               <VerificationButton
                 onClick={handleVerificationCheck}
-                disabled={!password || !isVerificationSent}
+                disabled={!password || !isVerificationSent || verificationStatus === 'success'}
                 text="인증번호 확인"
-                isActive={!!email && isVerificationSent}
+                isActive={!!email && isVerificationSent && verificationStatus !== 'success'}
+                isLoading={isVerificationChecking}
               />
             }
           />
@@ -151,7 +182,7 @@ export default function PasswordFindForm({ onSubmit }) {
                 className="flex justify-between items-center"
                 style={{ transform: 'translateY(4px)' }}
               >
-                <div className="text-[#B0B0B0] text-sm text-left font-['Pretendard'] ml-0">
+                <div className="text-[#FF7D56] text-sm text-left font-['Pretendard'] ml-0">
                   {countdown === 0 && '입력 시간이 만료되었습니다.'}
                 </div>
                 <div className="text-[#B0B0B0] text-sm text-right font-['Pretendard'] ml-3">
@@ -161,7 +192,7 @@ export default function PasswordFindForm({ onSubmit }) {
             )}
             {verificationStatus === 'success' && (
               <div
-                className="text-[#B0B0B0] text-sm text-left font-['Pretendard'] ml-0"
+                className="text-[#00A424] text-sm text-left font-['Pretendard'] ml-0"
                 style={{ transform: 'translateY(-15px) translateX(4px)' }}
               >
                 인증번호가 일치합니다.
@@ -169,10 +200,10 @@ export default function PasswordFindForm({ onSubmit }) {
             )}
             {verificationStatus === 'error' && countdown > 0 && (
               <div
-                className="text-[#B0B0B0] text-sm text-left font-['Pretendard'] ml-0"
+                className="text-[#FF7D56] text-sm text-left font-['Pretendard'] ml-0"
                 style={{ transform: 'translateY(-15px) translateX(4px)' }}
               >
-                잘못된 인증번호입니다. 다시 입력해주세요.
+                {ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE}
               </div>
             )}
           </div>
@@ -198,14 +229,18 @@ export default function PasswordFindForm({ onSubmit }) {
           </p>
         </div>
       </div>
-      <div className="w-full mt-20">
-        <LoginButton
-          onClick={handleSubmit}
-          disabled={!email || !password || verificationStatus !== 'success'}
-        >
-          비밀번호 찾기
-        </LoginButton>
-      </div>
+
+      <CheckModal
+        isOpen={showConfirmModal}
+        cancel={() => setShowConfirmModal(false)}
+        buttonColor={
+          confirmModalMessage === ERROR_MESSAGE_MAP.INVALID_VERIFICATION_CODE
+            ? 'bg-[#FF7D56]'
+            : 'bg-button-green'
+        }
+      >
+        {confirmModalMessage}
+      </CheckModal>
     </div>
   );
 }

@@ -50,8 +50,9 @@ export default function Apply() {
           // 백에서 불러온 트랙별 질문과 답변 정보의 track을 type으로 직접 주입
           const typedNewAnswers = Object.entries(formattedAnswers).reduce(
             (acc, [questionId, content]) => {
+              const existingContent = prev.answers?.[questionId]?.content; // sessionStorage의 내용 prev.answers?.[questionId]이 없으면 원래 api 원본 데이터로
               acc[questionId] = {
-                content: content || '',
+                content: existingContent !== undefined ? existingContent : content || '',
                 type: track, // 여기서 API 응답의 track 정보를 사용
               };
               return acc;
@@ -83,6 +84,7 @@ export default function Apply() {
   const formatAnswers = () => {
     const commonAnswers = [];
     const trackAnswers = [];
+    console.log('보낼 트랙 answers', trackAnswers);
 
     // 현재 사용자가 최종적으로 선택한 트랙
     const currentSelectedTrack = formData.track;
@@ -123,7 +125,7 @@ export default function Apply() {
         commonAnswers: commonAnswers,
         trackAnswers: trackAnswers,
       };
-      console.log('서버로 보내는 데이터 확인:', record);
+      console.log('임시저장 시 서버로 보내는 데이터 확인:', record);
 
       if (isFirst) {
         await APIService.private.post('/v1/applications/records/first-draft', record);
@@ -172,6 +174,7 @@ export default function Apply() {
           userInfoData,
           questions,
           recordAnswer,
+          formatAnswers,
           recordDraft,
           setFormData,
           updateFormData,
