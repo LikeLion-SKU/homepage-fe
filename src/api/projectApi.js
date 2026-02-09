@@ -138,3 +138,14 @@ export const postProject = async (updateData, files) => {
     console.log('프로젝트 수정 실패:', error);
   }
 };
+
+export const getAwardList = async () => {
+  // 수상작 목록 조회
+  try {
+    const res = await APIService.public.get('/v1/projects/awards');
+    return res.data;
+  } catch (error) {
+    console.error('수상작 목록 조회 실패:', error);
+    throw error;
+  }
+};
