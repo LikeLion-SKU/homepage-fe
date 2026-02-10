@@ -5,13 +5,7 @@ import { useOutletContext } from 'react-router';
 import Search from '@/assets/icons/Search_icon.svg?react';
 import UserTableCard from '@/components/admin/User/UserTableCard';
 
-export default function UserTable({
-  option,
-  cardData,
-  setCardData,
-  setOtherData,
-  onDelete = true,
-}) {
+export default function UserTable({ option, cardData, onDelete = true }) {
   const [checkedList, setCheckedList] = useState([]);
   const handleAllCheck = () => {
     if (checkedList.length > 0) {
@@ -27,14 +21,11 @@ export default function UserTable({
   //@ts-ignore
   const { openModal, showToast } = useOutletContext();
   const handleMove = () => {
-    const movePerson = cardData.filter((_, index) => checkedList.includes(index));
-
-    setCardData((prev) => prev.filter((_, index) => !checkedList.includes(index)));
-    setOtherData((prev) => [...prev, ...movePerson]);
+    //이동 api
     setCheckedList([]);
   };
   const handleDelete = () => {
-    setCardData((prev) => prev.filter((_, index) => !checkedList.includes(index)));
+    //삭제 api
     setCheckedList([]);
   };
   return (
