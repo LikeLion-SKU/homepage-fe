@@ -131,3 +131,25 @@ export const deleteGuest = async (userIds) => {
     console.log('게스트 삭제 실패:', error);
   }
 };
+
+export const postToClubMember = async (userIds) => {
+  try {
+    const res = await APIService.private.post('/v1/admin/club-members/bulk', { userIds: userIds });
+
+    return res.data;
+  } catch (error) {
+    console.log('게스트->구성원 이동 실패:', error);
+  }
+};
+
+export const deleteToGuest = async (userIds) => {
+  try {
+    const res = await APIService.private.delete('/v1/admin/users/club-members/bulk', {
+      data: { userIds: userIds },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log('구성원->게스트 이동 실패:', error);
+  }
+};

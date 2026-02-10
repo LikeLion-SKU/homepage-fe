@@ -15,6 +15,7 @@ export default function AdminUser() {
       '1. 권한 변경하고 싶은 게스트 / 구성원 선택',
       '2. 구성원이동 / 게스트 이동 클릭',
       '3. 권한 변경 완료',
+      '4. 게스트 삭제시 새로고침 필수',
     ],
   };
   const rule2 = {
@@ -83,21 +84,25 @@ export default function AdminUser() {
             return acc;
           }, {});
           const newData = await getGuest(filteredParameter);
-          setGuestData((prev) => [
-            {
-              ...prev[0],
-              userInformationList: {
-                ...prev[0].userInformationList,
-                hasNext: newData.userInformationList.hasNext,
-                lastCursor: newData.userInformationList.lastCursor,
-                content: [
-                  ...prev[0].userInformationList.content,
-                  ...newData.userInformationList.content,
-                ],
+
+          setGuestData((prev) => {
+            const existingIds = prev[0].userInformationList.content.map((user) => user.userId);
+            const uniqueNewContent = newData.userInformationList.content.filter(
+              (newUser) => !existingIds.includes(newUser.userId)
+            );
+            return [
+              {
+                ...prev[0],
+                userInformationList: {
+                  ...prev[0].userInformationList,
+                  hasNext: newData.userInformationList.hasNext,
+                  lastCursor: newData.userInformationList.lastCursor,
+                  content: [...prev[0].userInformationList.content, ...uniqueNewContent],
+                },
               },
-            },
-            prev[1],
-          ]);
+              prev[1],
+            ];
+          });
         }
         if (isGetGuest[1]) {
           const parameter = {
@@ -115,21 +120,24 @@ export default function AdminUser() {
             return acc;
           }, {});
           const newData = await getGuest(filteredParameter);
-          setGuestData((prev) => [
-            prev[0],
-            {
-              ...prev[1],
-              userInformationList: {
-                ...prev[1].userInformationList,
-                hasNext: newData.userInformationList.hasNext,
-                lastCursor: newData.userInformationList.lastCursor,
-                content: [
-                  ...prev[1].userInformationList.content,
-                  ...newData.userInformationList.content,
-                ],
+          setGuestData((prev) => {
+            const existingIds = prev[1].userInformationList.content.map((user) => user.userId);
+            const uniqueNewContent = newData.userInformationList.content.filter(
+              (newUser) => !existingIds.includes(newUser.userId)
+            );
+            return [
+              prev[0],
+              {
+                ...prev[1],
+                userInformationList: {
+                  ...prev[1].userInformationList,
+                  hasNext: newData.userInformationList.hasNext,
+                  lastCursor: newData.userInformationList.lastCursor,
+                  content: [...prev[1].userInformationList.content, ...uniqueNewContent],
+                },
               },
-            },
-          ]);
+            ];
+          });
           setIsGetGuest((prev) => [prev[0], false]);
         }
       } else {
@@ -151,6 +159,38 @@ export default function AdminUser() {
     };
     getUserData();
   }, [isUser, trigger, selectedSemester, selectedPosition, selectedTrack, debouncedSearchName]);
+
+  const handleGuestData = async (guestOnly) => {
+    if (guestOnly) {
+      let parameter = {
+        isGuest: true,
+        size: 10,
+      };
+
+      let newData = await getGuest(parameter);
+
+      setGuestData((prev) => [newData, prev[1]]);
+      setIsGetGuest((prev) => [false, prev[1]]);
+    } else {
+      let parameter = {
+        isGuest: true,
+        size: 10,
+      };
+
+      let newData = await getGuest(parameter);
+
+      setGuestData((prev) => [newData, prev[1]]);
+
+      parameter = {
+        isGuest: false,
+        size: 10,
+      };
+
+      newData = await getGuest(parameter);
+      setGuestData((prev) => [prev[0], newData]);
+      setIsGetGuest([false, false]);
+    }
+  };
 
   return (
     <div className="relative flex flex-col p-21 gap-14">
@@ -198,6 +238,7 @@ export default function AdminUser() {
             memberData={guestData[1]}
             setIsGetGuest={setIsGetGuest}
             setTrigger={setTrigger}
+            handleGuestData={handleGuestData}
           />
         ) : (
           <AdminMember

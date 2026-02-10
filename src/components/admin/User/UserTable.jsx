@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router';
 
-import { deleteGuest } from '@/api/userApi';
+import { deleteGuest, deleteToGuest, postToClubMember } from '@/api/userApi';
 //@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 import UserTableCard from '@/components/admin/User/UserTableCard';
@@ -12,6 +12,7 @@ export default function UserTable({
   onDelete = true,
   setIsGetGuest,
   setTrigger,
+  handleGuestData,
 }) {
   const [checkedList, setCheckedList] = useState([]);
   const observerRef = useRef(null);
@@ -30,9 +31,18 @@ export default function UserTable({
   };
   const handleMove = async () => {
     //이동 api
-
-    setCheckedList([]);
-    setTrigger((prev) => !prev);
+    try {
+      if (cardData.guest) {
+        await postToClubMember(checkedList);
+      } else {
+        await deleteToGuest(checkedList);
+      }
+    } catch (error) {
+      console.log('이동 실패:', error);
+    } finally {
+      setCheckedList([]);
+      handleGuestData(false);
+    }
   };
   const handleDelete = async () => {
     try {
@@ -41,7 +51,7 @@ export default function UserTable({
     } catch (error) {
       console.log('게스트 삭제 실패:', error);
     } finally {
-      setTrigger((prev) => !prev);
+      handleGuestData(true);
     }
   };
   useEffect(() => {

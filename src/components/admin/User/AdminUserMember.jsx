@@ -1,6 +1,12 @@
 import UserTable from '@/components/admin/User/UserTable';
 
-export default function AdminUserMember({ guestData, memberData, setIsGetGuest, setTrigger }) {
+export default function AdminUserMember({
+  guestData,
+  memberData,
+  setIsGetGuest,
+  setTrigger,
+  handleGuestData,
+}) {
   const optionData = ['이름', '학과', '학번'];
   return (
     <div className="flex ">
@@ -11,6 +17,7 @@ export default function AdminUserMember({ guestData, memberData, setIsGetGuest, 
           cardData={guestData}
           setIsGetGuest={(is) => setIsGetGuest((prev) => [is, prev[1]])}
           setTrigger={setTrigger}
+          handleGuestData={handleGuestData}
         />
       </div>
       <div className="flex flex-col gap-12 py-15 w-158 px-8.5 bg-white">
@@ -21,6 +28,7 @@ export default function AdminUserMember({ guestData, memberData, setIsGetGuest, 
           onDelete={false}
           setIsGetGuest={(is) => setIsGetGuest((prev) => [prev[0], is])}
           setTrigger={setTrigger}
+          handleGuestData={handleGuestData}
         />
       </div>
     </div>
