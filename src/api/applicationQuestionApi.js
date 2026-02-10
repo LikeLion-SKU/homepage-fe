@@ -24,6 +24,6 @@ export const questionsLoader = async () => {
     };
   } catch (error) {
     console.error('최종확인 용 트랙별 질문 로드 실패: ', error);
-    return { track: trackId, commonQues: [], trackQues: [] };
+    return [];
   }
 };

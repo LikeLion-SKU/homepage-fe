@@ -7,6 +7,6 @@ export const basicInfoLoader = async () => {
     return { userInfoData: response.data || {} }; // const{userInfoData} = useLoaderData(); 라고 가져오려면 키를 지정해야함
   } catch (error) {
     console.log('기본 인적사항 정보 조회 실패:', error);
-    return { userInfoData: {} }; // 에러 시에도 구조는 유지
+    return [];
   }
 };

@@ -16,6 +16,7 @@ export default function Reschedule() {
   const [selectedTime, setSelectedTime] = useState({ date: '', scheduleId: 0 });
   const { myInterviews } = useInterviewStore();
   const [isToast, setIsToast] = useState(false);
+  const [isErrorToast, setIsErrorToast] = useState(false);
 
   const buttonClick = async () => {
     // 날짜 선택 여부 확인 (allChecked[0]이 true여야 함)
@@ -40,7 +41,7 @@ export default function Reschedule() {
       setOnModal(true);
     } catch (error) {
       console.error('면접 일정 변경 중 오류 발생:', error);
-      alert('일정 변경에 실패했습니다. 다시 시도해주세요.');
+      setIsErrorToast(true);
     }
   };
 
@@ -85,6 +86,7 @@ export default function Reschedule() {
         </ConfirmModal>
       )}
       {isToast && <Toast isToast={setIsToast} message="수정되었습니다!"></Toast>}
+      {isErrorToast && <Toast isToast={setIsErrorToast} message="일정 변경에 실패했습니다." />}
     </GridSection>
   );
 }
