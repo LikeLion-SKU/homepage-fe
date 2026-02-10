@@ -16,46 +16,12 @@ import AwardButton from './AwardButton';
 import AwardCardList from './AwardCardList';
 import AwardText from './AwardText';
 
-// 더미 데이터 (나중에 API 호출로 교체 예정)
-const dummyAwardCards = [
-  {
-    image: Award1Image,
-    hasDragButton: false,
-    to: '/project', // 단추 상세보기
-  },
-  {
-    image: Award2Image,
-    hasDragButton: true,
-    to: '/project/viewDetail', // 임시로 단추 상세보기
-  },
-  {
-    image: Award3Image,
-    hasDragButton: false,
-    to: '/project', // 예시
-  },
-  {
-    image: Award4Image,
-    hasDragButton: false,
-    to: '/project/viewDetail', // 예시
-  },
-  {
-    image: Award5Image,
-    hasDragButton: false,
-    to: '/project', // 예시
-  },
-  {
-    image: Award6Image,
-    hasDragButton: false,
-    to: '/project/viewDetail', // 예시
-  },
-];
-
 function Award() {
   const scale = useScale();
   const isMobile480 = useMediaQuery('(max-width: 480px)');
   const isMobile760 = useMediaQuery('(max-width: 760px)');
 
-  const [awardCards, setAwardCards] = useState(dummyAwardCards);
+  const [awardCards, setAwardCards] = useState([]);
   const hasFetchedRef = useRef(false);
 
   useEffect(() => {
@@ -67,16 +33,39 @@ function Award() {
       try {
         // 수상작 목록 조회
         const response = await getAwardList();
+        console.log('API 응답 전체:', response);
 
-        if (response?.data && Array.isArray(response.data)) {
-          // API 응답을 카드 형식으로 변환
-          const cards = response.data.map((item) => ({
-            image: item.thumbnailUrl || item.imageUrl || Award1Image,
-            hasDragButton: item.hasDragButton || false,
-            to: '/project/viewDetail',
-            projectId: item.id, // getProjectDetail에 사용할 projectId
-            title: item.title,
-          }));
+        // API 응답 구조 확인: response.content 또는 response.data.content 또는 response.data
+        const awardList = response?.content || response?.data?.content || response?.data || [];
+        console.log('수상작 목록:', awardList);
+
+        if (Array.isArray(awardList) && awardList.length > 0) {
+          // data.content의 projectId를 순서대로 카드 형식으로 변환
+          // API 응답의 thumbnailUrl을 카드 이미지로 사용
+          const cards = awardList
+            .filter((item) => {
+              const hasProjectId = !!item.projectId;
+              if (!hasProjectId) {
+                console.warn('projectId가 없는 항목:', item);
+              }
+              return hasProjectId;
+            })
+            .map((item) => {
+              // thumbnailUrl이 문자열인지 확인하고 사용
+              const imageUrl = item.thumbnailUrl || item.imageUrl;
+              console.log(`프로젝트 ${item.projectId} 이미지 URL:`, imageUrl);
+
+              return {
+                image: imageUrl || Award1Image, // API 응답의 thumbnailUrl 사용
+                hasDragButton: item.hasDragButton || false,
+                to: '/project/viewDetail',
+                projectId: item.projectId, // 각 카드 클릭 시 해당 projectId로 viewDetail 이동
+                title: item.title || '',
+              };
+            });
+
+          console.log('생성된 카드 개수:', cards.length);
+          console.log('카드 데이터:', cards);
 
           // 수상작이 있으면 API 데이터 사용, 없으면 더미 데이터 유지
           if (cards.length > 0) {
