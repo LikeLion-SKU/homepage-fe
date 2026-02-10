@@ -3,9 +3,10 @@ export default function TimeBox({
   selectedTime,
   setSelectedTime,
   data = { date: '', startTime: '', endTime: '', booked: false, scheduleId: 0 },
+  disabled = false, // 기본값 일정 버튼 클릭 가능
 }) {
   const handleCheck = () => {
-    if (data.booked) return;
+    if (data.booked || disabled) return;
     setSelectedTime({ date: data.date, scheduleId: data.scheduleId });
     setAllChecked((prev) => prev.map((item, index) => (index === 0 ? true : item)));
   };
@@ -20,7 +21,7 @@ export default function TimeBox({
   return (
     <button
       onClick={() => handleCheck()}
-      disabled={data.booked}
+      disabled={data.booked || disabled}
       className={`flex w-37 h-9 pad:w-41 pad:h-13 text-center justify-center items-center font-semibold pad:font-medium
         border text-[0.9rem] pad:text-[1.1rem] ${getAvailable()} `}
     >

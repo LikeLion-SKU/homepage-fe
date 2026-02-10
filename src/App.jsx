@@ -42,6 +42,7 @@ import Application from '@/pages/MyPage/Application';
 import MyPage from '@/pages/MyPage/MyPage';
 import PasswordChange from '@/pages/MyPage/PasswordChange';
 import Reschedule from '@/pages/MyPage/Reschedule';
+import ScheduleCheck from '@/pages/MyPage/ScheduleCheck';
 import PasswordFind from '@/pages/PasswordFind/PasswordFind';
 import PasswordResult from '@/pages/PasswordFind/PasswordResult';
 import ProjectList from '@/pages/Project/ProjectList';
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
         children: [
           { path: '/mypage', Component: MyPage, loader: myPageLoader },
           { path: '/mypage/reschedule', Component: Reschedule },
+          { path: '/mypage/schedule-check', Component: ScheduleCheck },
           { path: '/mypage/password/change', Component: PasswordChange },
           { path: '/welcome', Component: Welcome },
           { path: '/apply/complete', Component: ApplyComplete },
@@ -90,7 +92,7 @@ const router = createBrowserRouter([
         children: [
           { path: '/project', Component: ProjectList },
           { path: '/project/viewDetail', Component: ProjectViewDetail },
-          { path: '/recruit', Component: Recruitment },
+          { path: '/recruit', Component: Recruitment, loader: myPageLoader },
           { path: '/member', Component: Member },
           { path: '/login', Component: Login },
           { path: '/signup', Component: SignUp },

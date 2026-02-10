@@ -17,8 +17,8 @@ export default function InterviewTime({
   const { interviews, setInterviewSchdule, setMyInterview } = useInterviewStore();
   useEffect(() => {
     const getInterview = async () => {
-      setInterviewSchdule(await getInterviewSchedule());
-      const bookingData = await getInterviewBooking();
+      setInterviewSchdule(await getInterviewSchedule()); // 전체 면접 스케줄
+      const bookingData = await getInterviewBooking(); // 사용자가 예약한 면접 스케줄
       setSelectedTime(
         bookingData.booking.scheduleId
           ? { date: bookingData.booking.date, scheduleId: bookingData.booking.scheduleId }
