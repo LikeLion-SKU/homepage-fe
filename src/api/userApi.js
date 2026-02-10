@@ -35,3 +35,87 @@ export const getUserRole = async () => {
     console.log('권한 조회 실패:', error);
   }
 };
+
+export const getClubMemberAdmin = async (parameter = {}) => {
+  try {
+    const res = await APIService.private.get('/v1/admin/club-members', {
+      params: {
+        semester: parameter.semester,
+        position: parameter.position,
+        track: parameter.track,
+        keyword: parameter.keyword,
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log('구성원 관리자 조회 실패:', error);
+  }
+};
+
+export const deleteClubMember = async (clubMemberIds) => {
+  try {
+    const res = await APIService.private.delete('/v1/admin/club-members/bulk', {
+      data: { clubMemberIds: clubMemberIds },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log('구성원 삭제 실패:', error);
+  }
+};
+
+export const postCopyClubMember = async (parameter = {}) => {
+  try {
+    const res = await APIService.private.post(
+      `/v1/admin/users/${parameter.userId}/club-members`,
+      null,
+      {
+        params: {
+          semester: parameter.semester,
+          position: parameter.position,
+          track: parameter.track,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log('구성원 복사 실패:', error);
+  }
+};
+
+export const patchClubMember = async (parameter) => {
+  try {
+    const res = await APIService.private.patch(
+      `/v1/admin/club-members/${parameter.clubMemberId}`,
+      null,
+      {
+        params: {
+          semester: parameter.semester,
+          position: parameter.position,
+          track: parameter.track,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log('구성원 정보 수정 실패:', error);
+  }
+};
+
+export const getGuest = async (parameter) => {
+  try {
+    const res = await APIService.private.get('/v1/admin/users', {
+      params: {
+        'is-guest': parameter.isGuest,
+        'last-user-id': parameter.lastUserId,
+        size: parameter.size,
+        keword: parameter.keword,
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log('게스트 조회 실패:', error);
+  }
+};
