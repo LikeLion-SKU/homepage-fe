@@ -1,12 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router';
 
 //@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 import UserTableCard from '@/components/admin/User/UserTableCard';
 
-export default function UserTable({ option, cardData, onDelete = true }) {
+export default function UserTable({
+  option,
+  cardData,
+  onDelete = true,
+  setIsGetGuest,
+  setTrigger,
+}) {
   const [checkedList, setCheckedList] = useState([]);
+  const observerRef = useRef(null);
+  //@ts-ignore
+  const { openModal, showToast } = useOutletContext();
   const handleAllCheck = () => {
     if (checkedList.length > 0) {
       // 하나라도 체크되어 있다면 -> '선택 취소' 동작 (리스트 비우기)
@@ -18,8 +27,6 @@ export default function UserTable({ option, cardData, onDelete = true }) {
       setCheckedList(allIndexes);
     }
   };
-  //@ts-ignore
-  const { openModal, showToast } = useOutletContext();
   const handleMove = () => {
     //이동 api
     setCheckedList([]);
@@ -28,6 +35,22 @@ export default function UserTable({ option, cardData, onDelete = true }) {
     //삭제 api
     setCheckedList([]);
   };
+  useEffect(() => {
+    if (!cardData.userInformationList.hasNext) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsGetGuest(true); // 바닥에 닿으면 추가 로드 호출
+          setTrigger((prev) => !prev);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerRef.current) observer.observe(observerRef.current);
+    return () => observer.disconnect();
+  }, [cardData.userInformationList.hasNext]);
   return (
     <div className="flex flex-col gap-5.5">
       <div className="flex justify-between">
@@ -74,9 +97,9 @@ export default function UserTable({ option, cardData, onDelete = true }) {
             <p>{name}</p>
           ))}
         </div>
-        <div className="flex flex-col ">
-          {cardData.length > 0 &&
-            cardData.map((data, index) => (
+        <div className="flex flex-col overflow-y-auto max-h-100 no-scrollbar">
+          {cardData.userInformationList.content.length > 0 &&
+            cardData.userInformationList.content.map((data, index) => (
               <UserTableCard
                 index={index}
                 cardData={data}
@@ -84,6 +107,9 @@ export default function UserTable({ option, cardData, onDelete = true }) {
                 setCheckedList={setCheckedList}
               />
             ))}
+          <div ref={observerRef} className="h-10 w-full flex justify-center items-center">
+            {cardData.userInformationList.hasNext && <div className="h-10 w-full" />}
+          </div>
         </div>
       </div>
     </div>
