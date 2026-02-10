@@ -50,6 +50,19 @@ export const putAdminForm = async (applicationFormId, formData) => {
   }
 };
 
+//관리자용 지원 일정 삭제
+export const deleteAdminForm = async (applicationFormId) => {
+  try {
+    const res = await APIService.private.delete(
+      `/v1/admin/applications/forms/${applicationFormId}`
+    );
+    return res.data;
+  } catch (error) {
+    console.log('지원 일정 삭제 실패', error);
+    return null;
+  }
+};
+
 // 사용자 진행중 지원 일정 조회
 export const getSemester = async () => {
   try {
