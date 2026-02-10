@@ -102,3 +102,20 @@ export const patchClubMember = async (parameter) => {
     console.log('구성원 정보 수정 실패:', error);
   }
 };
+
+export const getGuest = async (parameter) => {
+  try {
+    const res = await APIService.private.get('/v1/admin/users', {
+      params: {
+        'is-guest': parameter.isGuest,
+        'last-user-id': parameter.lastUserId,
+        size: parameter.size,
+        keword: parameter.keword,
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log('게스트 조회 실패:', error);
+  }
+};

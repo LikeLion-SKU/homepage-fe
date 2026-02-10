@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router';
 
-import { getClubMemberAdmin } from '@/api/userApi';
+import { getClubMemberAdmin, getGuest } from '@/api/userApi';
 import AdminTitleSection from '@/components/admin/AdminTitleSection';
 import AdminMember from '@/components/admin/User/AdminMember';
 import AdminUserMember from '@/components/admin/User/AdminUserMember';
@@ -37,6 +37,8 @@ export default function AdminUser() {
   const [selectedTrack, setSelectedIsTrack] = useState('');
   const [selectedPosition, setSelectedPosition] = useState('');
 
+  const [guestData, setGuestData] = useState([{}, {}]);
+  const [isGetGuset, setIsGetGUest] = useState([true, true]);
   const [memberData, setMemberData] = useState([]);
   const [debouncedSearchName, setDebouncedSearch] = useState('');
   const [trigger, setTrigger] = useState(true);
@@ -44,7 +46,72 @@ export default function AdminUser() {
   useEffect(() => {
     const getUserData = async () => {
       if (isUser) {
+        setIsGetGUest;
         //게스트 구성원 조회
+        if (isGetGuset[0]) {
+          const parameter = {
+            isGuest: true,
+            lastUserId: guestData[0].lastCursor,
+            size: 6,
+            keyword: '',
+          };
+
+          const filteredParameter = Object.entries(parameter).reduce((acc, [key, value]) => {
+            // value가 존재할 때만(빈 문자열 아님, NaN 아님 등) 객체에 추가
+            if (value) {
+              acc[key] = value;
+            }
+            return acc;
+          }, {});
+          const newData = await getGuest(filteredParameter);
+          setGuestData([
+            (prev) => ({
+              ...prev,
+              userInformationList: {
+                ...prev.userInformationList,
+                hasNext: newData.userInformationList.hasNext,
+                lastCursor: newData.userInformationList.lastCursor,
+                content: [
+                  ...prev.userInformationList.content,
+                  ...newData.userInformationList.content,
+                ],
+              },
+            }),
+            (prev) => prev,
+          ]);
+        }
+        if (isGetGuset[1]) {
+          const parameter = {
+            isGuest: false,
+            lastUserId: guestData[1].lastCursor,
+            size: 6,
+            keyword: '',
+          };
+
+          const filteredParameter = Object.entries(parameter).reduce((acc, [key, value]) => {
+            // value가 존재할 때만(빈 문자열 아님, NaN 아님 등) 객체에 추가
+            if (value) {
+              acc[key] = value;
+            }
+            return acc;
+          }, {});
+          const newData = await getGuest(filteredParameter);
+          setGuestData([
+            (prev) => prev,
+            (prev) => ({
+              ...prev,
+              userInformationList: {
+                ...prev.userInformationList,
+                hasNext: newData.userInformationList.hasNext,
+                lastCursor: newData.userInformationList.lastCursor,
+                content: [
+                  ...prev.userInformationList.content,
+                  ...newData.userInformationList.content,
+                ],
+              },
+            }),
+          ]);
+        }
       } else {
         const parameter = {
           semester: parseInt(selectedSemester),
@@ -106,7 +173,7 @@ export default function AdminUser() {
       </AdminTitleSection>
       <div className="flex border-t">
         {isUser ? (
-          <AdminUserMember />
+          <AdminUserMember guestData={guestData[0]} memberData={guestData[1]} />
         ) : (
           <AdminMember
             memberData={memberData}
