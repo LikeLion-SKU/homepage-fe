@@ -46,7 +46,7 @@ export default function Reschedule() {
 
   const getModalMessage = () => {
     if (allChecked[0]) {
-      return '면접 일정이 확정되었습니다.';
+      return '면접 날짜를 변경하시겠습니까?';
     } else {
       return '면접 날짜를 선택해주세요.';
     }
