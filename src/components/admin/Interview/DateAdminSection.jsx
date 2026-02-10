@@ -9,6 +9,7 @@ import Calender from '@/assets/icons/calender_icon.svg?react';
 import { interviewCheckData } from '@/components/admin/Interview/InterviewDummyData';
 import TrackDateBox from '@/components/admin/Interview/TrackDateBox';
 import OptionBox from '@/components/common/Option/optionBox';
+import useAdminInterviewStore from '@/store/useAdminInterviewStore';
 
 export default function DateAdminSection() {
   const [isDateAdd, setIsDateAdd] = useState(true);
@@ -18,7 +19,7 @@ export default function DateAdminSection() {
   const dateInputRef = useRef(null);
   const semesterData = useLoaderData();
   const [selectedSemester, setSelectedSemester] = useState(semesterData[0]);
-  const [interviewSchedule, setInterviewSchedule] = useState({ semester: 0, tracks: [] });
+  const { interviews, setInterviewSchedule } = useAdminInterviewStore();
   //const [bookedSchedule,setBookedSchedule]=useState({semester:0,tracks:[]});
 
   // 버튼 클릭 시 숨겨진 input을 클릭하게 함
@@ -28,7 +29,8 @@ export default function DateAdminSection() {
   useEffect(() => {
     const getInterviewData = async () => {
       if (isDateAdd) {
-        setInterviewSchedule(await getInterviewScheduleAdmin(parseInt(selectedSemester)));
+        const parameter = { semester: parseInt(selectedSemester) };
+        setInterviewSchedule(await getInterviewScheduleAdmin(parameter));
       } else {
         //setBookedSchedule()//예약된 면접 스케줄 api
       }
@@ -91,9 +93,7 @@ export default function DateAdminSection() {
 
       <div className="flex gap-4">
         {isDateAdd
-          ? interviewSchedule.tracks.map((data) => (
-              <TrackDateBox data={data} isDataAdd={isDateAdd} />
-            ))
+          ? interviews.tracks.map((data) => <TrackDateBox data={data} isDataAdd={isDateAdd} />)
           : interviewCheckData.map((data) => <TrackDateBox data={data} isDataAdd={isDateAdd} />)}
       </div>
     </div>

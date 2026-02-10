@@ -1,9 +1,25 @@
 import { useState } from 'react';
+import { useOutletContext } from 'react-router';
 
+import { postInterviewSchedule } from '@/api/interviewSchedule';
 import DateAddCard from '@/components/admin/Interview/DateAddCard';
+import useAdminInterviewStore from '@/store/useAdminInterviewStore';
 
-export default function InterviewDataAdd({ dateData }) {
+export default function InterviewDataAdd({ dateData, track }) {
   const [inputData, setInputData] = useState({ date: '', startTime: '', endTime: '' });
+  const { interviews } = useAdminInterviewStore();
+  //@ts-ignore
+  const { showToast } = useOutletContext();
+  const formatDate = (dateStr) => {
+    // '26.03.20' -> ['26', '03', '20']
+    const [yy, mm, dd] = dateStr.split('.');
+    return `20${yy}-${mm}-${dd}`;
+  };
+
+  const formatTime = (timeStr) => {
+    // '19:00' -> '19:00:00'
+    return `${timeStr}:00`;
+  };
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -13,15 +29,27 @@ export default function InterviewDataAdd({ dateData }) {
     });
   };
 
-  const addDate = (e) => {
-    if (
-      e.key == 'Enter' &&
-      inputData.date !== '' &&
-      inputData.startTime !== '' &&
-      inputData.endTime !== ''
-    ) {
-      //실제 추가 로직
-      setInputData({ date: '', startTime: '', endTime: '' });
+  const addDate = async (e) => {
+    try {
+      if (
+        e.key == 'Enter' &&
+        inputData.date !== '' &&
+        inputData.startTime !== '' &&
+        inputData.endTime !== ''
+      ) {
+        const dateData = {
+          date: formatDate(inputData.date),
+          startTime: formatTime(inputData.startTime),
+          endTime: formatTime(inputData.endTime),
+        };
+        const parameter = { semester: interviews.semester, track: track };
+        console.log(dateData);
+        await postInterviewSchedule(parameter, dateData);
+        setInputData({ date: '', startTime: '', endTime: '' });
+      }
+    } catch (error) {
+      console.log('일정 추가 실패:', error);
+      showToast('일정 형식을 다시 한번 확인해주세요');
     }
   };
 
@@ -57,7 +85,7 @@ export default function InterviewDataAdd({ dateData }) {
       {dateData.length > 0 && dateData ? (
         <div className="flex flex-col gap-9">
           {dateData.map((data) => (
-            <DateAddCard data={data} />
+            <DateAddCard data={data} track={track} />
           ))}
         </div>
       ) : (

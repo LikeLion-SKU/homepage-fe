@@ -6,7 +6,7 @@ export default function TrackDateBox({ data, isDataAdd }) {
     <div className="flex flex-col border w-103 py-7 items-center gap-12">
       <p className="text-[1.6rem] font-semibold">{data.track}</p>
       {isDataAdd ? (
-        <InterviewDataAdd dateData={data.dates} />
+        <InterviewDataAdd dateData={data.dates} track={data.track} />
       ) : (
         <InterviewDataCheck dateData={data.dates} />
       )}
