@@ -1,7 +1,13 @@
 import TimeBox from '@/components/result/TimeBox';
 import useInterviewStore from '@/store/useInterviewStore';
 
-export default function TimeBar({ setAllChecked, data, selectedTime, setSelectedTime }) {
+export default function TimeBar({
+  setAllChecked,
+  data,
+  selectedTime,
+  setSelectedTime,
+  disabled = false,
+}) {
   const date = new Date(data.date);
   const month = date.getMonth();
   const day = date.getDate();
@@ -24,6 +30,7 @@ export default function TimeBar({ setAllChecked, data, selectedTime, setSelected
               setAllChecked={setAllChecked}
               selectedTime={selectedTime}
               setSelectedTime={setSelectedTime}
+              disabled={disabled}
               data={{
                 date: data.date,
                 startTime: time.startTime,
