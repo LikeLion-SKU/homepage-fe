@@ -5,12 +5,12 @@ import useAuthStore from '@/store/useAuthStore';
 
 // 공용 API 인스턴스 (토큰이 필요 없는 경우)
 const publicAPI = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_BASE_URL, //import.meta.env.VITE_SERVER_BASE_URL, // 중요: 환경변수 BASE_URL 쓰지 말기
+  baseURL: import.meta.env.VITE_SERVER_BASE_URL, // 중요: 환경변수 BASE_URL 쓰지 말기
 });
 
 // 인증 API 인스턴스 (쿠키 기반 인증)
 const privateAPI = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_BASE_URL, //import.meta.env.VITE_SERVER_BASE_URL, // 중요: 환경변수 BASE_URL 쓰지 말기
+  baseURL: import.meta.env.VITE_SERVER_BASE_URL, // 중요: 환경변수 BASE_URL 쓰지 말기
   withCredentials: true, // 쿠키 전송 활성화
 });
 
@@ -25,6 +25,7 @@ privateAPI.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const status = error.response?.status;
 
     // 401 에러이고, 아직 재시도하지 않은 요청인 경우
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -43,14 +44,21 @@ privateAPI.interceptors.response.use(
         isRefreshing = false;
         return privateAPI(originalRequest);
       } catch (refreshError) {
-        // refresh 실패 (401/403) 시 상태 초기화하고 alert 표시
+        // refresh 실패 401시 상태 초기화하고 alert 표시
         isRefreshing = false;
         useAuthStore.getState().setLogout();
-        window.location.href = '/401';
+        window.location.href = 'error/401';
         return Promise.reject(refreshError);
       }
     }
-
+    if (status === 403) {
+      window.location.href = '/error/403';
+      return Promise.reject(error);
+    }
+    if (status >= 500) {
+      window.location.href = '/error/500';
+      return Promise.reject(error);
+    }
     return Promise.reject(error);
   }
 );

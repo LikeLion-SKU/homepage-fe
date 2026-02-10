@@ -28,9 +28,10 @@ import ApplyCommon from '@/pages/Apply/ApplyCommon';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
 import ApplyTrack from '@/pages/Apply/ApplyTrack';
 import FinalConfirm from '@/pages/Apply/FinalConfirm';
-import Error401 from '@/pages/Error/Error401';
+import Error400 from '@/pages/Error/Error400';
 import Error403 from '@/pages/Error/Error403';
 import Error404 from '@/pages/Error/Error404';
+import ErrorBoundary from '@/pages/Error/ErrorBoundary';
 import LoginRequired from '@/pages/Error/LoginRequired';
 import ServerError from '@/pages/Error/ServerError';
 import Login from '@/pages/Login/Login';
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
   {
     Component: RootLayout,
     loader: showResultButton,
+    errorElement: <ErrorBoundary />,
     children: [
       { index: true, Component: Main }, //경로가 /일 때 보여줄 페이지
 
@@ -98,11 +100,11 @@ const router = createBrowserRouter([
           { path: '/signup', Component: SignUp },
           { path: '/password/find', Component: PasswordFind },
           { path: '/password/result', Component: PasswordResult },
-          { path: '/require', Component: LoginRequired },
-          { path: '/error', Component: ServerError },
-          { path: '/404', Component: Error404 },
-          { path: '/403', Component: Error403 },
-          { path: '/401', Component: Error401 },
+          { path: '/error/400', Component: Error400 },
+          { path: '/error/401', Component: LoginRequired },
+          { path: '/error/403', Component: Error403 },
+          { path: '*', Component: Error404 },
+          { path: '/error/500', Component: ServerError },
           { path: 'logout', action: logoutAction }, // 페이지는 없지만 action 등록용
         ],
       },

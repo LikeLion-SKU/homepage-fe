@@ -5,7 +5,7 @@ import StatusMessage from '@/components/common/StatusMessage';
 import GridSection from '@/components/layout/background/GridSection';
 
 export default function Error403() {
-  const title = 'ERROR 403';
+  const title = '403 ERROR';
   const content =
     '접근 권한이 없습니다.\n해당 페이지를 이용할 수 없습니다.\n이용에 불편을 드려 죄송합니다.';
   const buttonName = '홈으로 돌아가기';

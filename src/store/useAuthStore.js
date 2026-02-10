@@ -2,9 +2,11 @@ import { create } from 'zustand';
 
 const useAuthStore = create((set) => ({
   isLoggedIn: localStorage.getItem('isLogin') === 'true', // 로컬 스토리지에 있을떄
+  isLoggingOut: false,
   user: null,
   currentPassword: null, // 로그인 시 저장된 현재 비밀번호
   isTemporaryPassword: false, // 임시 비밀번호로 로그인했는지 여부
+  startLogout: () => set({ isLoggingOut: true }), // 로그아웃 시작 상태
   setLogin: (userData, password, isTemporary = false) => {
     localStorage.setItem('isLogin', 'true');
     set({
@@ -16,7 +18,13 @@ const useAuthStore = create((set) => ({
   },
   setLogout: () => {
     localStorage.removeItem('isLogin');
-    set({ isLoggedIn: false, user: null, currentPassword: null, isTemporaryPassword: false });
+    set({
+      isLoggedIn: false,
+      user: null,
+      currentPassword: null,
+      isTemporaryPassword: false,
+      isLoggingOut: false,
+    });
   },
   clearPassword: () => {
     set({ currentPassword: null, isTemporaryPassword: false });

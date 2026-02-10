@@ -70,6 +70,6 @@ export const getSemester = async () => {
     return response.data || [];
   } catch (error) {
     console.log('진행중 지원 일정 조회', error);
-    throw error;
+    return [];
   }
 };
