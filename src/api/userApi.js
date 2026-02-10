@@ -110,7 +110,7 @@ export const getGuest = async (parameter) => {
         'is-guest': parameter.isGuest,
         'last-user-id': parameter.lastUserId,
         size: parameter.size,
-        keword: parameter.keword,
+        keyword: parameter.keyword,
       },
     });
 

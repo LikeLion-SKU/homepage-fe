@@ -6,6 +6,7 @@ export default function AdminUserMember({
   setIsGetGuest,
   setTrigger,
   handleGuestData,
+  setDebouncedGuestName,
 }) {
   const optionData = ['이름', '학과', '학번'];
   return (
@@ -18,6 +19,9 @@ export default function AdminUserMember({
           setIsGetGuest={(is) => setIsGetGuest((prev) => [is, prev[1]])}
           setTrigger={setTrigger}
           handleGuestData={handleGuestData}
+          setDebouncedGuestName={(searchName) =>
+            setDebouncedGuestName((prev) => [searchName, prev[1]])
+          }
         />
       </div>
       <div className="flex flex-col gap-12 py-15 w-158 px-8.5 bg-white">
@@ -29,6 +33,9 @@ export default function AdminUserMember({
           setIsGetGuest={(is) => setIsGetGuest((prev) => [prev[0], is])}
           setTrigger={setTrigger}
           handleGuestData={handleGuestData}
+          setDebouncedGuestName={(searchName) =>
+            setDebouncedGuestName((prev) => [prev[0], searchName])
+          }
         />
       </div>
     </div>

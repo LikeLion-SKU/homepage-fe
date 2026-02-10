@@ -59,6 +59,8 @@ export default function AdminUser() {
     },
   ]);
   const [isGetGuest, setIsGetGuest] = useState([true, true]);
+  const [debouncedGuestName, setDebouncedGuestName] = useState(['', '']);
+
   const [memberData, setMemberData] = useState([]);
   const [debouncedSearchName, setDebouncedSearch] = useState('');
   const [trigger, setTrigger] = useState(true);
@@ -160,8 +162,8 @@ export default function AdminUser() {
     getUserData();
   }, [isUser, trigger, selectedSemester, selectedPosition, selectedTrack, debouncedSearchName]);
 
-  const handleGuestData = async (guestOnly) => {
-    if (guestOnly) {
+  const handleGuestData = async (getDataNum) => {
+    if (getDataNum == 0) {
       let parameter = {
         isGuest: true,
         size: 10,
@@ -171,7 +173,17 @@ export default function AdminUser() {
 
       setGuestData((prev) => [newData, prev[1]]);
       setIsGetGuest((prev) => [false, prev[1]]);
-    } else {
+    } else if (getDataNum == 1) {
+      let parameter = {
+        isGuest: false,
+        size: 10,
+      };
+
+      let newData = await getGuest(parameter);
+
+      setGuestData((prev) => [prev[0], newData]);
+      setIsGetGuest((prev) => [prev[0], false]);
+    } else if (getDataNum == 2) {
       let parameter = {
         isGuest: true,
         size: 10,
@@ -191,6 +203,40 @@ export default function AdminUser() {
       setIsGetGuest([false, false]);
     }
   };
+
+  useEffect(() => {
+    const getSearchName = async () => {
+      if (debouncedGuestName[0] !== '') {
+        const parameter = {
+          isGuest: true,
+          size: 10,
+          keyword: debouncedGuestName[0],
+        };
+
+        let newData = await getGuest(parameter);
+
+        setGuestData((prev) => [newData, prev[1]]);
+        setIsGetGuest((prev) => [false, prev[1]]);
+      } else {
+        handleGuestData(0);
+      }
+      if (debouncedGuestName[1] !== '') {
+        const parameter = {
+          isGuest: false,
+          size: 10,
+          keyword: debouncedGuestName[1],
+        };
+
+        let newData = await getGuest(parameter);
+
+        setGuestData((prev) => [prev[0], newData]);
+        setIsGetGuest((prev) => [prev[0], false]);
+      } else {
+        handleGuestData(1);
+      }
+    };
+    getSearchName();
+  }, [debouncedGuestName]);
 
   return (
     <div className="relative flex flex-col p-21 gap-14">
@@ -239,6 +285,7 @@ export default function AdminUser() {
             setIsGetGuest={setIsGetGuest}
             setTrigger={setTrigger}
             handleGuestData={handleGuestData}
+            setDebouncedGuestName={setDebouncedGuestName}
           />
         ) : (
           <AdminMember

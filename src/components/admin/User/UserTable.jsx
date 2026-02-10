@@ -13,9 +13,11 @@ export default function UserTable({
   setIsGetGuest,
   setTrigger,
   handleGuestData,
+  setDebouncedGuestName,
 }) {
   const [checkedList, setCheckedList] = useState([]);
   const observerRef = useRef(null);
+  const [searchName, setSearchName] = useState('');
   //@ts-ignore
   const { openModal, showToast } = useOutletContext();
   const handleAllCheck = () => {
@@ -41,7 +43,7 @@ export default function UserTable({
       console.log('이동 실패:', error);
     } finally {
       setCheckedList([]);
-      handleGuestData(false);
+      handleGuestData(2);
     }
   };
   const handleDelete = async () => {
@@ -51,7 +53,7 @@ export default function UserTable({
     } catch (error) {
       console.log('게스트 삭제 실패:', error);
     } finally {
-      handleGuestData(true);
+      handleGuestData(0);
     }
   };
   useEffect(() => {
@@ -70,6 +72,10 @@ export default function UserTable({
     if (observerRef.current) observer.observe(observerRef.current);
     return () => observer.disconnect();
   }, [cardData.userInformationList.hasNext]);
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedGuestName(searchName), 800);
+    return () => clearTimeout(t);
+  }, [searchName]);
   return (
     <div className="flex flex-col gap-5.5">
       <div className="flex justify-between">
@@ -107,7 +113,12 @@ export default function UserTable({
         </div>
         <div className="flex w-66 h-10 border items-center px-5 gap-7">
           <Search className="shrink-0 w-5 h-5" />
-          <input placeholder="검색하기" className="focus:outline-none placeholder:text-[1rem]" />
+          <input
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            placeholder="검색하기"
+            className="focus:outline-none placeholder:text-[1rem]"
+          />
         </div>
       </div>
       <div className="flex flex-col border">
