@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useOutletContext } from 'react-router';
 
-import { postCopyClubMember } from '@/api/userApi';
+import { patchClubMember, postCopyClubMember } from '@/api/userApi';
 //@ts-ignore
 import Check from '@/assets/icons/checkBox_icon.svg?react';
 //@ts-ignore
@@ -21,6 +22,9 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
   const { openModal, showToast } = useOutletContext();
   const isChecked = cardCheckData.checkedList.includes(cardData.clubMemberId);
   const isEditingThisCard = cardCheckData.isEdit === index;
+  const [selectedSemester, setSelectedSemester] = useState(cardData.semester);
+  const [selectedPosition, setSelectedPosition] = useState(positionMap[cardData.position]);
+  const [selectedTrack, setSelectedTrack] = useState(cardData.track);
   const handleToggle = () => {
     if (isChecked) {
       // 이미 있으면 제외 (하나 빼기)
@@ -35,7 +39,15 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
   const handleEdit = () => {
     if (isEditingThisCard) {
       // 수정 완료 시
-      openModal('선택한 구성원을 수정하시겠습니까?', () => {
+      openModal('선택한 구성원을 수정하시겠습니까?', async () => {
+        const parameter = {
+          clubMemberId: cardData.clubMemberId,
+          semester: parseInt(selectedSemester),
+          position: Object.keys(positionMap).find((key) => positionMap[key] === selectedPosition),
+          track: selectedTrack,
+        };
+        await patchClubMember(parameter);
+        cardCheckData.setTrigger((prev) => !prev);
         cardCheckData.setIsEdit(-1);
         showToast('수정완료 되었습니다.');
       });
@@ -73,13 +85,23 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
       )}
       <div className="flex w-300 items-center">
         {isEditingThisCard ? (
-          <OptionBox initValue={cardData.semester} optionData={semesterOption} />
+          <OptionBox
+            initValue={cardData.semester}
+            optionData={semesterOption}
+            selectedNum={selectedSemester}
+            setSelectedNum={setSelectedSemester}
+          />
         ) : (
           <p className="w-28 text-center ml-2">{cardData.semester}</p>
         )}
         {isEditingThisCard ? (
           <div className="ml-10">
-            <OptionBox initValue={positionMap[cardData.position]} optionData={roleOption} />
+            <OptionBox
+              initValue={positionMap[cardData.position]}
+              optionData={roleOption}
+              selectedNum={selectedPosition}
+              setSelectedNum={setSelectedPosition}
+            />
           </div>
         ) : (
           <p className="w-28 text-center shrink-0 ml-8.5">{positionMap[cardData.position]}</p>
@@ -87,7 +109,12 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
         <p className="ml-16 shrink-0">{cardData.name}</p>
         {isEditingThisCard ? (
           <div className="ml-17">
-            <OptionBox initValue={cardData.track} optionData={trackOption} />
+            <OptionBox
+              initValue={cardData.track}
+              optionData={trackOption}
+              selectedNum={selectedTrack}
+              setSelectedNum={setSelectedTrack}
+            />
           </div>
         ) : (
           <p className="w-28 text-center shrink-0 ml-16">{cardData.track}</p>

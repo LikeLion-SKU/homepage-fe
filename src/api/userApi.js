@@ -83,3 +83,22 @@ export const postCopyClubMember = async (parameter = {}) => {
     console.log('구성원 복사 실패:', error);
   }
 };
+
+export const patchClubMember = async (parameter) => {
+  try {
+    const res = await APIService.private.patch(
+      `/v1/admin/club-members/${parameter.clubMemberId}`,
+      null,
+      {
+        params: {
+          semester: parameter.semester,
+          position: parameter.position,
+          track: parameter.track,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log('구성원 정보 수정 실패:', error);
+  }
+};
