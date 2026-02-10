@@ -27,7 +27,7 @@ import ApplyCommon from '@/pages/Apply/ApplyCommon';
 import ApplyComplete from '@/pages/Apply/ApplyComplete';
 import ApplyTrack from '@/pages/Apply/ApplyTrack';
 import FinalConfirm from '@/pages/Apply/FinalConfirm';
-import Error401 from '@/pages/Error/Error401';
+import Error400 from '@/pages/Error/Error400';
 import Error403 from '@/pages/Error/Error403';
 import Error404 from '@/pages/Error/Error404';
 import LoginRequired from '@/pages/Error/LoginRequired';
@@ -101,7 +101,7 @@ const router = createBrowserRouter([
           { path: '/error', Component: ServerError },
           { path: '/404', Component: Error404 },
           { path: '/403', Component: Error403 },
-          { path: '/401', Component: Error401 },
+          { path: '/400', Component: Error400 },
           { path: 'logout', action: logoutAction }, // 페이지는 없지만 action 등록용
         ],
       },
