@@ -102,7 +102,7 @@ function ModalWindow({
           style={{
             height: `${textHeight}rem`,
             flexShrink: 0,
-            overflow: isMobile760 ? 'hidden' : 'auto',
+            overflow: 'hidden',
           }}
         >
           <ModalTextContent
