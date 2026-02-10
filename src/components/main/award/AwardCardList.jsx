@@ -39,11 +39,16 @@ function AwardCardList({ cards = [] }) {
           {cards.map((card, index) => (
             <div
               key={index}
-              onClick={() =>
-                navigate(card.to || '/project', {
-                  state: card.projectId ? { projectId: card.projectId } : undefined,
-                })
-              }
+              onClick={() => {
+                if (card.projectId) {
+                  // 해당 projectId로 viewDetail 페이지로 이동
+                  navigate('/project/viewDetail', {
+                    state: { projectId: card.projectId },
+                  });
+                } else {
+                  console.error('projectId가 없습니다:', card);
+                }
+              }}
               style={{ display: 'block', cursor: 'pointer' }}
             >
               <AwardCard title={card.title} image={card.image} />
