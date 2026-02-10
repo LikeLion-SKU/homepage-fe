@@ -30,6 +30,7 @@ import FinalConfirm from '@/pages/Apply/FinalConfirm';
 import Error400 from '@/pages/Error/Error400';
 import Error403 from '@/pages/Error/Error403';
 import Error404 from '@/pages/Error/Error404';
+import ErrorBoundary from '@/pages/Error/ErrorBoundary';
 import LoginRequired from '@/pages/Error/LoginRequired';
 import ServerError from '@/pages/Error/ServerError';
 import Login from '@/pages/Login/Login';
@@ -56,6 +57,7 @@ const router = createBrowserRouter([
   {
     Component: RootLayout,
     loader: showResultButton,
+    errorElement: <ErrorBoundary />,
     children: [
       { index: true, Component: Main }, //경로가 /일 때 보여줄 페이지
 
