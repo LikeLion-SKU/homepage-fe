@@ -119,3 +119,15 @@ export const getGuest = async (parameter) => {
     console.log('게스트 조회 실패:', error);
   }
 };
+
+export const deleteGuest = async (userIds) => {
+  try {
+    const res = await APIService.private.delete('/v1/admin/users/bulk', {
+      data: { userIds: userIds },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log('게스트 삭제 실패:', error);
+  }
+};

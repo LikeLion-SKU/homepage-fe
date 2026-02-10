@@ -1,15 +1,15 @@
 //@ts-ignore
 import Check from '@/assets/icons/checkBox_icon.svg?react';
 
-export default function UserTableCard({ index, cardData, checkedList, setCheckedList }) {
-  const isChecked = checkedList.includes(index);
+export default function UserTableCard({ cardData, checkedList, setCheckedList }) {
+  const isChecked = checkedList.includes(cardData.userId);
   const handleToggle = () => {
     if (isChecked) {
       // 이미 있으면 제외 (하나 빼기)
-      setCheckedList(checkedList.filter((item) => item !== index));
+      setCheckedList(checkedList.filter((item) => item !== cardData.userId));
     } else {
       // 없으면 추가 (하나 넣기)
-      setCheckedList((prev) => [...prev, index]);
+      setCheckedList((prev) => [...prev, cardData.userId]);
     }
   };
   return (

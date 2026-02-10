@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router';
 
+import { deleteGuest } from '@/api/userApi';
 //@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 import UserTableCard from '@/components/admin/User/UserTableCard';
@@ -23,17 +24,25 @@ export default function UserTable({
     } else {
       // 아무것도 체크되어 있지 않다면 -> '전체 선택' 동작
       // 전체 데이터(memberList라고 가정)의 모든 index를 배열로 넣음
-      const allIndexes = cardData.map((_, i) => i);
+      const allIndexes = cardData.userInformationList.content.map((data) => data.userId);
       setCheckedList(allIndexes);
     }
   };
-  const handleMove = () => {
+  const handleMove = async () => {
     //이동 api
+
     setCheckedList([]);
+    setTrigger((prev) => !prev);
   };
-  const handleDelete = () => {
-    //삭제 api
-    setCheckedList([]);
+  const handleDelete = async () => {
+    try {
+      await deleteGuest(checkedList);
+      setCheckedList([]);
+    } catch (error) {
+      console.log('게스트 삭제 실패:', error);
+    } finally {
+      setTrigger((prev) => !prev);
+    }
   };
   useEffect(() => {
     if (!cardData.userInformationList.hasNext) return;
@@ -99,9 +108,8 @@ export default function UserTable({
         </div>
         <div className="flex flex-col overflow-y-auto max-h-100 no-scrollbar">
           {cardData.userInformationList.content.length > 0 &&
-            cardData.userInformationList.content.map((data, index) => (
+            cardData.userInformationList.content.map((data) => (
               <UserTableCard
-                index={index}
                 cardData={data}
                 checkedList={checkedList}
                 setCheckedList={setCheckedList}
