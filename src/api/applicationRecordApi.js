@@ -9,7 +9,7 @@ export const applicationSubmit = async (submitData) => {
     return response;
   } catch (error) {
     console.error('제출 실패:', error);
-    throw error;
+    return [];
   }
 };
 
@@ -20,6 +20,6 @@ export const applicationLoader = async () => {
     return response.data || [];
   } catch (error) {
     console.error('지원서 조회 실패:', error);
-    throw error;
+    return [];
   }
 };

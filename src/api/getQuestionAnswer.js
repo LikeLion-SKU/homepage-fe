@@ -20,6 +20,6 @@ export const getQuesAndAnswerByTrack = async (trackId) => {
     return { track, questions, formattedAnswers };
   } catch (error) {
     console.error('트랙별 질문, 답변 데이터 로드 실패: ', error);
-    return { track: trackId, questions: [], answers: {} };
+    return {};
   }
 };
