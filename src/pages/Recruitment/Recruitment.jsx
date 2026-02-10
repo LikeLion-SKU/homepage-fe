@@ -46,7 +46,7 @@ export default function Recruitment() {
   };
 
   // 마감일 지났는지 확인
-  const isExpired = checkExpired(semesterData?.semester);
+  const isExpired = checkExpired(semesterData?.closeAt);
 
   // 스크롤 시 지원하기 박스 고정 (body 스크롤에서도 동작하도록)
   const stickyBoxRef = useRef(null);
