@@ -25,6 +25,7 @@ privateAPI.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const status = error.response?.status;
 
     // 401 에러이고, 아직 재시도하지 않은 요청인 경우
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -43,14 +44,21 @@ privateAPI.interceptors.response.use(
         isRefreshing = false;
         return privateAPI(originalRequest);
       } catch (refreshError) {
-        // refresh 실패 (401/403) 시 상태 초기화하고 alert 표시
+        // refresh 실패 401시 상태 초기화하고 alert 표시
         isRefreshing = false;
         useAuthStore.getState().setLogout();
-        window.location.href = '/401';
+        window.location.href = 'error/401';
         return Promise.reject(refreshError);
       }
     }
-
+    if (status === 403) {
+      window.location.href = '/error/403';
+      return Promise.reject(error);
+    }
+    if (status >= 500) {
+      window.location.href = '/error/500';
+      return Promise.reject(error);
+    }
     return Promise.reject(error);
   }
 );
