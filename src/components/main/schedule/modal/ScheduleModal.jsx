@@ -78,10 +78,10 @@ function ScheduleModal({
         w = h / R;
       }
 
-      // 760px 이하 2개일 때만 높이를 늘려서 텍스트가 다 보이게
+      // 모바일 사이즈일 때 모달창 2개인 경우에만 높이를 세로로 늘림
       if (isMobile && count === 2) {
         const maxH = vh - 24; // 뷰포트 상단/하단 여백
-        h = Math.min(h * 1.4, maxH); // 40% 정도 (텍스트가 다 보이도록)
+        h = Math.min(h * 1.5, maxH); // 50% 정도 높이 증가 (텍스트가 다 보이도록)
       }
 
       // 내부 요소 스케일은 폭 기준
@@ -126,7 +126,7 @@ function ScheduleModal({
           flexWrap: 'nowrap',
           maxWidth: 'calc(100vw - 24px)',
           maxHeight: 'calc(100vh - 24px)',
-          overflow: isMobile ? 'hidden' : 'auto',
+          overflow: 'hidden',
           padding: '12px',
         }}
       >
