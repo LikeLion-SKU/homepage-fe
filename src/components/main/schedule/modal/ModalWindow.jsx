@@ -41,8 +41,8 @@ function ModalWindow({
   // 이미지 영역 최소 높이 보장 (작은 화면에서도 보이도록)
   const MIN_IMAGE_HEIGHT = isMobile760 && variantCount === 2 ? '140px' : '180px';
 
-  // 760px 이하 2개일 때만 모달 높이를 늘려서 텍스트가 다 보이게
-  const heightMultiplier = isMobile760 && variantCount === 2 ? 1.1 : 1;
+  // 모바일 사이즈일 때 모달창 2개인 경우에만 높이를 세로로 늘림
+  const heightMultiplier = isMobile760 && variantCount === 2 ? 1.2 : 1;
 
   // 텍스트 영역 높이 계산 (모달 전체 높이의 비율로)
   const modalHeight = (552 / 16) * scale * heightMultiplier;
@@ -102,7 +102,7 @@ function ModalWindow({
           style={{
             height: `${textHeight}rem`,
             flexShrink: 0,
-            overflow: isMobile760 ? 'hidden' : 'auto',
+            overflow: 'hidden',
           }}
         >
           <ModalTextContent

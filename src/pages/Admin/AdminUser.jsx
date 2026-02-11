@@ -37,8 +37,29 @@ export default function AdminUser() {
   const [selectedTrack, setSelectedIsTrack] = useState('');
   const [selectedPosition, setSelectedPosition] = useState('');
 
-  const [guestData, setGuestData] = useState([{}, {}]);
-  const [isGetGuset, setIsGetGUest] = useState([true, true]);
+  const [guestData, setGuestData] = useState([
+    {
+      guest: true,
+      userInformationList: {
+        content: [],
+        lastCursor: 0,
+        hasNext: false,
+        size: 6,
+      },
+    },
+    {
+      guest: false,
+      userInformationList: {
+        content: [],
+        lastCursor: 0,
+        hasNext: false,
+        size: 6,
+      },
+    },
+  ]);
+  const [isGetGuest, setIsGetGuest] = useState([true, true]);
+  const [debouncedGuestName, setDebouncedGuestName] = useState(['', '']);
+
   const [memberData, setMemberData] = useState([]);
   const [debouncedSearchName, setDebouncedSearch] = useState('');
   const [trigger, setTrigger] = useState(true);
@@ -46,71 +67,79 @@ export default function AdminUser() {
   useEffect(() => {
     const getUserData = async () => {
       if (isUser) {
-        setIsGetGUest;
         //게스트 구성원 조회
-        if (isGetGuset[0]) {
+        if (isGetGuest[0]) {
+          setIsGetGuest((prev) => [false, prev[1]]);
           const parameter = {
             isGuest: true,
-            lastUserId: guestData[0].lastCursor,
-            size: 6,
+            lastUserId: guestData[0].userInformationList.lastCursor,
+            size: 10,
             keyword: '',
           };
 
           const filteredParameter = Object.entries(parameter).reduce((acc, [key, value]) => {
-            // value가 존재할 때만(빈 문자열 아님, NaN 아님 등) 객체에 추가
-            if (value) {
+            // value가 null이나 undefined가 아닐 때만 추가 (0이나 false는 포함됨)
+            if (value !== null && value !== undefined && value !== '' && value !== 0) {
               acc[key] = value;
             }
             return acc;
           }, {});
           const newData = await getGuest(filteredParameter);
-          setGuestData([
-            (prev) => ({
-              ...prev,
-              userInformationList: {
-                ...prev.userInformationList,
-                hasNext: newData.userInformationList.hasNext,
-                lastCursor: newData.userInformationList.lastCursor,
-                content: [
-                  ...prev.userInformationList.content,
-                  ...newData.userInformationList.content,
-                ],
+
+          setGuestData((prev) => {
+            const existingIds = prev[0].userInformationList.content.map((user) => user.userId);
+            const uniqueNewContent = newData.userInformationList.content.filter(
+              (newUser) => !existingIds.includes(newUser.userId)
+            );
+            return [
+              {
+                ...prev[0],
+                userInformationList: {
+                  ...prev[0].userInformationList,
+                  hasNext: newData.userInformationList.hasNext,
+                  lastCursor: newData.userInformationList.lastCursor,
+                  content: [...prev[0].userInformationList.content, ...uniqueNewContent],
+                },
               },
-            }),
-            (prev) => prev,
-          ]);
+              prev[1],
+            ];
+          });
         }
-        if (isGetGuset[1]) {
+        if (isGetGuest[1]) {
           const parameter = {
             isGuest: false,
-            lastUserId: guestData[1].lastCursor,
+            lastUserId: guestData[1].userInformationList.lastCursor,
             size: 6,
             keyword: '',
           };
 
           const filteredParameter = Object.entries(parameter).reduce((acc, [key, value]) => {
-            // value가 존재할 때만(빈 문자열 아님, NaN 아님 등) 객체에 추가
-            if (value) {
+            // value가 null이나 undefined가 아닐 때만 추가 (0이나 false는 포함됨)
+            if (value !== null && value !== undefined && value !== '' && value !== 0) {
               acc[key] = value;
             }
             return acc;
           }, {});
           const newData = await getGuest(filteredParameter);
-          setGuestData([
-            (prev) => prev,
-            (prev) => ({
-              ...prev,
-              userInformationList: {
-                ...prev.userInformationList,
-                hasNext: newData.userInformationList.hasNext,
-                lastCursor: newData.userInformationList.lastCursor,
-                content: [
-                  ...prev.userInformationList.content,
-                  ...newData.userInformationList.content,
-                ],
+          setGuestData((prev) => {
+            const existingIds = prev[1].userInformationList.content.map((user) => user.userId);
+            const uniqueNewContent = newData.userInformationList.content.filter(
+              (newUser) => !existingIds.includes(newUser.userId)
+            );
+            return [
+              prev[0],
+              {
+                ...prev[1],
+                userInformationList: {
+                  ...prev[1].userInformationList,
+                  hasNext: newData.userInformationList.hasNext,
+                  lastCursor: newData.userInformationList.lastCursor,
+                  content: [...prev[1].userInformationList.content, ...uniqueNewContent],
+                },
               },
-            }),
-          ]);
+            ];
+          });
+          setIsGetGuest((prev) => [prev[0], false]);
         }
       } else {
         const parameter = {
@@ -131,6 +160,82 @@ export default function AdminUser() {
     };
     getUserData();
   }, [isUser, trigger, selectedSemester, selectedPosition, selectedTrack, debouncedSearchName]);
+
+  const handleGuestData = async (getDataNum) => {
+    if (getDataNum == 0) {
+      let parameter = {
+        isGuest: true,
+        size: 10,
+      };
+
+      let newData = await getGuest(parameter);
+
+      setGuestData((prev) => [newData, prev[1]]);
+      setIsGetGuest((prev) => [false, prev[1]]);
+    } else if (getDataNum == 1) {
+      let parameter = {
+        isGuest: false,
+        size: 10,
+      };
+
+      let newData = await getGuest(parameter);
+
+      setGuestData((prev) => [prev[0], newData]);
+      setIsGetGuest((prev) => [prev[0], false]);
+    } else if (getDataNum == 2) {
+      let parameter = {
+        isGuest: true,
+        size: 10,
+      };
+
+      let newData = await getGuest(parameter);
+
+      setGuestData((prev) => [newData, prev[1]]);
+
+      parameter = {
+        isGuest: false,
+        size: 10,
+      };
+
+      newData = await getGuest(parameter);
+      setGuestData((prev) => [prev[0], newData]);
+      setIsGetGuest([false, false]);
+    }
+  };
+
+  useEffect(() => {
+    const getSearchName = async () => {
+      if (debouncedGuestName[0] !== '') {
+        const parameter = {
+          isGuest: true,
+          size: 10,
+          keyword: debouncedGuestName[0],
+        };
+
+        let newData = await getGuest(parameter);
+
+        setGuestData((prev) => [newData, prev[1]]);
+        setIsGetGuest((prev) => [false, prev[1]]);
+      } else {
+        handleGuestData(0);
+      }
+      if (debouncedGuestName[1] !== '') {
+        const parameter = {
+          isGuest: false,
+          size: 10,
+          keyword: debouncedGuestName[1],
+        };
+
+        let newData = await getGuest(parameter);
+
+        setGuestData((prev) => [prev[0], newData]);
+        setIsGetGuest((prev) => [prev[0], false]);
+      } else {
+        handleGuestData(1);
+      }
+    };
+    getSearchName();
+  }, [debouncedGuestName]);
 
   return (
     <div className="relative flex flex-col p-21 gap-14">
@@ -173,7 +278,14 @@ export default function AdminUser() {
       </AdminTitleSection>
       <div className="flex border-t">
         {isUser ? (
-          <AdminUserMember guestData={guestData[0]} memberData={guestData[1]} />
+          <AdminUserMember
+            guestData={guestData[0]}
+            memberData={guestData[1]}
+            setIsGetGuest={setIsGetGuest}
+            setTrigger={setTrigger}
+            handleGuestData={handleGuestData}
+            setDebouncedGuestName={setDebouncedGuestName}
+          />
         ) : (
           <AdminMember
             memberData={memberData}

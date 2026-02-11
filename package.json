@@ -13,8 +13,10 @@
   "dependencies": {
     "@tanstack/react-query": "^5.90.18",
     "axios": "^1.13.2",
+    "dayjs": "^1.11.19",
     "framer-motion": "^12.29.2",
     "react": "^19.2.0",
+    "react-calendar": "^6.0.0",
     "react-dom": "^19.2.0",
     "react-loader-spinner": "^8.0.2",
     "react-router": "^7.12.0",

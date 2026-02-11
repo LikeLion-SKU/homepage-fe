@@ -23,3 +23,29 @@ export const applicationLoader = async () => {
     return [];
   }
 };
+
+// 기수별 트랙별 검색어별 지원자 목록 무한 스크롤 조회
+export const getApplicationsLoader = async (semester, track, search, lastCursor, size = 10) => {
+  try {
+    const response = await APIService.private.get('v1/admin/applications/records', {
+      params: { semester, track, search, lastCursor, size },
+    });
+    return response.data || [];
+  } catch (error) {
+    console.error('기수별 트랙별 검색어별 제출 지원서 조회 실패:', error);
+    return [];
+  }
+};
+
+//특정 지원자 지원서 조회
+export const getApplicationUser = async (applicationRecordId) => {
+  try {
+    const res = await APIService.private.get(
+      `/v1/admin/applications/records/${applicationRecordId}`
+    );
+
+    return res.data;
+  } catch (error) {
+    console.log('지원자 지원서 조회 실패:', error);
+  }
+};
