@@ -1,13 +1,27 @@
-import { useEffect } from 'react';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
+import { applicationLoader, getApplicationUser } from '@/api/applicationRecordApi';
 import Navy from '@/assets/icons/navy-left.svg';
 import Button from '@/components/common/Button/Button';
 import useSemesterStore from '@/store/useSemesterStore';
 
 export default function Application() {
-  /** @type {any} */
-  const { userInfo, commonQuestions, trackQuestions } = useLoaderData();
+  const [recordData, setRecordData] = useState({
+    meta: {},
+    userInfo: {
+      name: '',
+      phoneNumber: '',
+      department: '',
+      studentNumber: '',
+      email: '',
+      track: '',
+    },
+    commonQuestions: [{}],
+    trackQuestions: [{}],
+  });
+  const location = useLocation();
+  const applicationRecordId = location.state?.applicationRecordId;
   const { semesterData, fetchSemesterData } = useSemesterStore();
   const navigate = useNavigate();
   const TRACK_NAMES = {
@@ -19,6 +33,20 @@ export default function Application() {
   useEffect(() => {
     if (!semesterData) fetchSemesterData();
   }, [fetchSemesterData, semesterData]);
+
+  useEffect(() => {
+    const getRecordData = async () => {
+      console.log('지원서 페이지 진입');
+      if (applicationRecordId) {
+        console.log('특정 지원서');
+        setRecordData(await getApplicationUser(applicationRecordId));
+      } else {
+        console.log('내 지원서');
+        setRecordData(await applicationLoader());
+      }
+    };
+    getRecordData();
+  }, [applicationRecordId]);
 
   return (
     <div className="pb-35">
@@ -47,7 +75,9 @@ export default function Application() {
           {/* 개인 정보 부분 */}
           <div className="flex flex-col gap-4 pad:gap-6">
             <div className="flex items-end gap-2">
-              <div className="text-xl pad:text-4xl font-bold">{userInfo.name || '-'}</div>
+              <div className="text-xl pad:text-4xl font-bold">
+                {recordData.userInfo.name || '-'}
+              </div>
               <div className="text-lg pad:text-3xl font-semibold text-gray-800">님의 지원서</div>
             </div>
             <div className="text-sm pad:text-lg font-medium ">
@@ -66,31 +96,39 @@ export default function Application() {
                   <div className="web:flex-1 flex flex-col gap-6 pad:gap-11">
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">이름</label>
-                      <div className="text-xs pad:text-base">{userInfo.name || '-'}</div>
+                      <div className="text-xs pad:text-base">{recordData.userInfo.name || '-'}</div>
                     </div>
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">학과</label>
-                      <div className="text-xs pad:text-base">{userInfo.department || '-'}</div>
+                      <div className="text-xs pad:text-base">
+                        {recordData.userInfo.department || '-'}
+                      </div>
                     </div>
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">학번</label>
-                      <div className="text-xs pad:text-base">{userInfo.studentNumber || '-'}</div>
+                      <div className="text-xs pad:text-base">
+                        {recordData.userInfo.studentNumber || '-'}
+                      </div>
                     </div>
                   </div>
                   {/* 오른쪽 전화번호, 이메일, 지원파트 */}
                   <div className="web:flex-1 flex flex-col gap-6 pad:gap-11">
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">전화번호</label>
-                      <div className="text-xs pad:text-base">{userInfo.phoneNumber || '-'}</div>
+                      <div className="text-xs pad:text-base">
+                        {recordData.userInfo.phoneNumber || '-'}
+                      </div>
                     </div>
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">이메일</label>
-                      <div className="text-xs pad:text-base">{userInfo.email || '-'}</div>
+                      <div className="text-xs pad:text-base">
+                        {recordData.userInfo.email || '-'}
+                      </div>
                     </div>
                     <div className="flex flex-col gap-4">
                       <label className="text-sm pad:text-lg font-semibold">지원트랙</label>
                       <div className="h-7 pad:h-11 web:h-12 min-w-14 pad:w-31 web:w-32 outline flex items-center justify-center text-sm pad:text-lg font-semibold transition-all bg-button-green text-black">
-                        {TRACK_NAMES[userInfo.track] || '미선택'}
+                        {TRACK_NAMES[recordData.userInfo.track] || '미선택'}
                       </div>
                     </div>
                   </div>
@@ -104,7 +142,7 @@ export default function Application() {
             {/* 공통질문 상자 */}
             <div className="flex flex-col px-6 py-7 pad:px-10 web:px-20 pad:py-18 web:py-18.5 border bg-button-gray gap-15">
               {/* 공통질문 내용 */}
-              {commonQuestions.map(
+              {recordData.commonQuestions.map(
                 (
                   item // 공통질문만 map 돌면서 보여주기
                 ) => (
@@ -128,7 +166,7 @@ export default function Application() {
             {/* 트랙별 질문 상자 */}
             <div className="flex flex-col px-6 py-7 pad:px-10 web:px-20 pad:py-18 web:py-18.5 border bg-button-gray gap-15">
               {/* formData의 track에 따라 필터링하여 답변 보여주기 */}
-              {trackQuestions.map((item) => (
+              {recordData.trackQuestions.map((item) => (
                 <div key={item.questionId} className="flex flex-col gap-4">
                   {/* 질문 제목 */}
                   <div className="text-sm pad:text-lg font-bold text-zinc-800">
