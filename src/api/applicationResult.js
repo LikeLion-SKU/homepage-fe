@@ -56,3 +56,18 @@ export const getInterviewResult = async () => {
     console.log('면접 결과 조회 실패:', error);
   }
 };
+
+// 관리자 - 서류합격 여부 수정 (초깃값: null)
+export const patchDocumentResult = async (applicationRecordId, newResult) => {
+  try {
+    const isDocumentPassed = newResult === '합격'; // 합격만 true, 불합격은 false
+    const response = await APIService.private.patch(
+      `/v1/admin/applications/${applicationRecordId}/document-result`,
+      { isDocumentPassed: isDocumentPassed }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('서류 합격 여부 수정 실패', error);
+    throw error;
+  }
+};
