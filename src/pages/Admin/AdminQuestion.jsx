@@ -1,22 +1,32 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useLoaderData } from 'react-router';
 
+import { deleteResume } from '@/api/applicationQuestionApi';
 import Navy from '@/assets/icons/navy-left.svg';
 import ApplicationItem from '@/components/admin/Application/ApplicationItem';
 import Button from '@/components/common/Button/Button';
 
 export default function AdminQuestion() {
   const navigate = useNavigate();
+  const applicationData = useLoaderData();
 
-  // 임시 데이터 (나중에 서버에서 받아오시면 됩니다)
-  const applicationData = [
-    { id: 1, title: '14기 아기사자 모집 지원서', deadline: '2026-03-20', isExpired: false },
-    { id: 2, title: '13기 아기사자 모집 지원서 (마감)', deadline: '2025-03-20', isExpired: true },
-    { id: 3, title: '13기 아기사자 모집 지원서 (마감)', deadline: '2025-03-20', isExpired: true },
-  ];
+  // 진행 중인 것과 완료된 것을 분리 (loader는 response.data를 반환하므로 applicationData가 이미 API 응답 본문)
+  const [ongoingList, setOngoingList] = useState(applicationData?.inProgress ?? []);
+  const [completedList, setCompletedList] = useState(applicationData?.completed ?? []);
 
-  // 진행 중인 것과 완료된 것을 분리
-  const ongoingList = applicationData.filter((item) => !item.isExpired);
-  const completedList = applicationData.filter((item) => item.isExpired);
+  // 지원서 삭제 핸들러
+  const handleDeleteResume = async (applicationFormId) => {
+    const isDeleted = await deleteResume(applicationFormId);
+
+    if (isDeleted) {
+      const matchId = (item) => (item.applicationFormId ?? item.id) === applicationFormId;
+      setOngoingList((prev) => prev.filter((item) => !matchId(item)));
+      setCompletedList((prev) => prev.filter((item) => !matchId(item)));
+    }
+  };
+
+  const getItemId = (item) => item.applicationFormId ?? item.id;
 
   return (
     <div className="pb-35">
@@ -48,7 +58,7 @@ export default function AdminQuestion() {
             <div className="self-stretch h-8 text-2xl font-bold ">지원서 관리</div>
             <button
               onClick={() => {
-                navigate('/admin/application/questions/new');
+                navigate('/admin/resume/new');
               }}
               className="flex w-30 h-10 justify-center items-center text-[1rem] border bg-white hover:bg-stone-50 transition-all px-"
             >
@@ -62,7 +72,11 @@ export default function AdminQuestion() {
               <h2 className="text-xl font-bold">진행 중인 지원서</h2>
               <div className="flex flex-col gap-3">
                 {ongoingList.map((item) => (
-                  <ApplicationItem key={item.id} item={item} />
+                  <ApplicationItem
+                    key={getItemId(item)}
+                    item={item}
+                    onClickDelete={() => handleDeleteResume(getItemId(item))}
+                  />
                 ))}
               </div>
             </section>
@@ -72,7 +86,11 @@ export default function AdminQuestion() {
               <h2 className="text-xl font-bold">진행 완료 지원서</h2>
               <div className="flex flex-col gap-3">
                 {completedList.map((item) => (
-                  <ApplicationItem key={item.id} item={item} />
+                  <ApplicationItem
+                    key={getItemId(item)}
+                    item={item}
+                    onClickDelete={() => handleDeleteResume(getItemId(item))}
+                  />
                 ))}
               </div>
             </section>
