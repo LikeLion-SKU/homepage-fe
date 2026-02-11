@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { patchDocumentResult } from '@/api/applicationResult';
 //@ts-ignore
 import Check from '@/assets/icons/checkBox_icon.svg?react';
 import OptionBox from '@/components/common/Option/optionBox';
@@ -14,9 +15,10 @@ const TRACK_LABEL = {
 };
 
 export default function ApplicantsTableCard({ index, cardData, cardCheckData }) {
-  const applicationResult = ['합격', '불합격'];
-  const interviewResult = ['합격', '불합격'];
-  const [docResult, setDocResult] = useState(null);
+  const applicationOption = ['합격', '불합격'];
+  const interviewOption = ['합격', '불합격'];
+  const [applicationResult, setApplicationResult] = useState(null); // 서류 결과 상태 관리
+  const [interviewResult, _setInterviewResult] = useState(null); // 면접 결과 상태 관리
 
   const isChecked = cardCheckData.checkedList.includes(index);
   const isEditingThisCard = cardCheckData.isEdit === index;
@@ -56,6 +58,18 @@ export default function ApplicantsTableCard({ index, cardData, cardCheckData }) 
         ? '불합격'
         : null;
 
+  // 서류 결과 변경 시
+  const handleDocumentResultChange = async (newResult) => {
+    try {
+      const response = await patchDocumentResult(cardData.applicationRecordId, newResult);
+      setApplicationResult(newResult); // 성공 시에만 화면 상태 변경
+      console.log('서류 결과 수정 성공');
+      return response.data;
+    } catch (error) {
+      console.error('서류 결과 수정 실패', error);
+    }
+  };
+
   return (
     <div
       className={`w-314 h-21 flex items-center pl-11 pr-5 text-[1.1rem] font-semibold gap-10 ${getBgColor()}`}
@@ -73,16 +87,16 @@ export default function ApplicantsTableCard({ index, cardData, cardCheckData }) 
         {/* 서류 결과 선택 */}
         <OptionBox
           initValue={docPassDisplay}
-          optionData={applicationResult}
-          selectedNum={docResult}
-          setSelectedNum={setDocResult}
+          optionData={applicationOption}
+          selectedNum={applicationResult}
+          setSelectedNum={handleDocumentResultChange}
         />
         {cardData.isDocumentPassed && (
           <OptionBox
             initValue={interviewPassDisplay}
-            optionData={interviewResult}
-            selectedNum={docResult}
-            setSelectedNum={setDocResult}
+            optionData={interviewOption}
+            selectedNum={interviewResult}
+            setSelectedNum={() => {}}
           />
         )}
         {/* 추후 해당 지원자의 지원서 확인 페이지로 리다이렉트 */}
