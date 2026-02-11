@@ -74,6 +74,14 @@ export const TAB_TO_TRACK = {
   백엔드: 'BACKEND',
 };
 
+// API track -> UI 탭명
+export const TRACK_TO_TAB = {
+  COMMON: '공통질문',
+  PO: 'PO',
+  FRONTEND: '프론트엔드',
+  BACKEND: '백엔드',
+};
+
 // 관리자 - 지원서 질문 등록 api 함수
 // semester: forms/summaries에서 받은 지원서의 semester
 // body: { groups: [{ track, questions: [{ orderNumber, content }] }] }
@@ -86,6 +94,34 @@ export const postResumeQuestions = async (semester, body) => {
     return response;
   } catch (error) {
     console.error('지원서 질문 등록 실패:', error);
+    throw error;
+  }
+};
+
+// 관리자 - 특정 기수 질문 전체 조회 api 함수
+// response.data: { applicationFormId, semester, groups: [{ track, questions: [{ questionId, orderNumber, content }] }] }
+export const getSemesterQuestion = async (semester) => {
+  try {
+    const response = await APIService.private.get(`/v1/applications/questions/${semester}`);
+    const data = response?.data ?? response;
+    return data;
+  } catch (error) {
+    console.error('특정 기수 지원서 질문 전체 조회 실패:', error);
+    throw error;
+  }
+};
+
+// 관리자 - 특정 기수 지원서 질문 수정 api 함수
+// body: { groups: [{ track, questions: [{ orderNumber, content }] }] }
+export const putSemesterQuestion = async (applicationFormId, body) => {
+  try {
+    const response = await APIService.private.put(
+      `/v1/admin/applications/forms/${applicationFormId}/questions`,
+      body
+    );
+    return response;
+  } catch (error) {
+    console.error('특정 기수 지원서 질문 수정 실패:', error);
     throw error;
   }
 };
