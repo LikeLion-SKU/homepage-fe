@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { patchDocumentResult } from '@/api/applicationResult';
+import { patchDocumentResult, postInterviewResult } from '@/api/applicationResult';
 //@ts-ignore
 import Check from '@/assets/icons/checkBox_icon.svg?react';
 import OptionBox from '@/components/common/Option/optionBox';
@@ -18,7 +18,7 @@ export default function ApplicantsTableCard({ index, cardData, cardCheckData }) 
   const applicationOption = ['합격', '불합격'];
   const interviewOption = ['합격', '불합격'];
   const [applicationResult, setApplicationResult] = useState(null); // 서류 결과 상태 관리
-  const [interviewResult, _setInterviewResult] = useState(null); // 면접 결과 상태 관리
+  const [interviewResult, setInterviewResult] = useState(null); // 면접 결과 상태 관리
 
   const isChecked = cardCheckData.checkedList.includes(index);
   const isEditingThisCard = cardCheckData.isEdit === index;
@@ -50,33 +50,40 @@ export default function ApplicantsTableCard({ index, cardData, cardCheckData }) 
         ? '불합격'
         : '선택';
 
-  // 면접 합/불 표시값
+  // 면접 합/불 표시값 -> 서류 결과 변경도 고려
   const interviewPassDisplay = useMemo(() => {
-    if (applicationResult === null) {
+    if (applicationResult === '합격' || (applicationResult === null && cardData.isDocumentPassed)) {
+      // 면접 결과가 이미 DB에 있으면 해당 값 표시
       if (cardData.isInterviewPassed === true) return '합격';
       if (cardData.isInterviewPassed === false) return '불합격';
-      return null;
-    }
-    if (applicationResult === '합격') {
-      // 이미 면접 결과 데이터가 있다면 그걸 보여주고, 없다면 '선택' 표시
-      return cardData.isInterviewPassed !== null // 면접 결과 데이터 있을때
-        ? cardData.isInterviewPassed
-          ? '합격'
-          : '불합격'
-        : '선택';
+
+      // 서류는 합격인데 면접 결과 데이터가 없으면 '선택' 표시
+      return '선택';
     }
     return null;
-  }, [applicationResult, cardData.isInterviewPassed]);
+  }, [applicationResult, cardData.isDocumentPassed, cardData.isInterviewPassed]);
 
   // 서류 결과 변경 시
   const handleDocumentResultChange = async (newResult) => {
     try {
       const response = await patchDocumentResult(cardData.applicationRecordId, newResult);
-      setApplicationResult(newResult); // 성공 시에만 화면 상태 변경
+      setApplicationResult(newResult); // 화면 상의 서류 결과 상태 변경
       console.log('서류 결과 수정 성공');
       return response.data;
     } catch (error) {
       console.error('서류 결과 수정 실패', error);
+    }
+  };
+
+  // 면접 결과 선택 시  -> 변경 X
+  const handleInterviewResultChange = async (result) => {
+    try {
+      const response = await postInterviewResult(cardData.applicationRecordId, result);
+      setInterviewResult(result); // 화면 상의 면접 결과 상태 관리
+      console.log('면접 결과 수정 성공');
+      return response.data;
+    } catch (error) {
+      console.error('면접 결과 수정 실패', error);
     }
   };
 
@@ -107,7 +114,7 @@ export default function ApplicantsTableCard({ index, cardData, cardCheckData }) 
             initValue={interviewPassDisplay}
             optionData={interviewOption}
             selectedNum={interviewResult}
-            setSelectedNum={() => {}}
+            setSelectedNum={handleInterviewResultChange}
           />
         )}
         {/* 추후 해당 지원자의 지원서 확인 페이지로 리다이렉트 */}
