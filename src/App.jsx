@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { getCurrentForm } from '@/api/applicationForm';
 import { questionsLoader } from '@/api/applicationQuestionApi';
+import { getApplicationsLoader } from '@/api/applicationRecordApi';
 import { getResult } from '@/api/applicationResult';
 import { basicInfoLoader } from '@/api/applyLoader';
 import { logoutAction } from '@/api/logoutAction';
@@ -118,10 +119,22 @@ const router = createBrowserRouter([
           { path: 'project/edit', Component: AdminProjectEdit },
           { path: 'notice', Component: AdminNotice },
           { path: 'interview', Component: AdminInterview, loader: getSemester },
-          { path: 'application', Component: AdminApplication },
-          { path: 'application/questions', Component: AdminQuestion },
-          { path: 'application/questions/new', Component: AdminQuestionDetail },
-          { path: 'application/questions/:id', Component: AdminQuestionDetail },
+          {
+            path: 'application',
+            Component: AdminApplication,
+            loader: ({ request }) => {
+              const url = new URL(request.url);
+              const semester = url.searchParams.get('semester');
+              const track = url.searchParams.get('track');
+              const search = url.searchParams.get('search');
+
+              // 첫 페이지를 불러오기 위해 호출 (lastCursor는 처음엔 null)
+              return getApplicationsLoader(semester, track, search, null, 10);
+            },
+          },
+          { path: 'resume', Component: AdminQuestion },
+          { path: 'resume/new', Component: AdminQuestionDetail },
+          { path: 'resume/:id', Component: AdminQuestionDetail },
 
           //{path: '', Component: },
         ],

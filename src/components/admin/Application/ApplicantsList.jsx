@@ -1,78 +1,61 @@
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router';
 
 //@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 import ApplicantsTableCard from '@/components/admin/Application/ApplicantsTableCard';
-import MemberTableCard from '@/components/admin/User/MemberTableCard';
 
-export default function ApplicantsList() {
+export default function ApplicantsList({
+  applicants,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  search,
+  onSearch,
+}) {
   const optionData = ['이름', '학과', '학번', '지원트랙', '지원서 합/불', '면접 합/불'];
-  const [allCardData, setAllCardData] = useState([
-    {
-      name: '고윤정',
-      major: '컴퓨터공학과',
-      stdNum: '20220000',
-      track: '프론트엔드',
-      isApplicationPass: null,
-      isInterviewPass: null,
-    },
-    {
-      name: '신시아',
-      major: '컴퓨터공학과',
-      stdNum: '20220000',
-      track: '프론트엔드',
-      isApplicationPass: null,
-      isInterviewPass: null,
-    },
-    {
-      name: '조이현',
-      major: '컴퓨터공학과',
-      stdNum: '20220000',
-      track: '프론트엔드',
-      isApplicationPass: null,
-      isInterviewPass: null,
-    },
-    {
-      name: '신예은',
-      major: '컴퓨터공학과',
-      stdNum: '20220000',
-      track: '프론트엔드',
-      isApplicationPass: null,
-      isInterviewPass: null,
-    },
-    {
-      name: '문가영',
-      major: '컴퓨터공학과',
-      stdNum: '20220000',
-      track: '프론트엔드',
-      isApplicationPass: null,
-      isInterviewPass: null,
-    },
-  ]);
   const [checkedList, setCheckedList] = useState([]);
   const [isEdit, setIsEdit] = useState(-1);
   const [isCopy, setIsCopy] = useState(-1);
   //@ts-ignore
   const { openModal, showToast } = useOutletContext();
+
+  const [searchInput, setSearchInput] = useState(search || '');
+
+  // 무한 스크롤 IntersectionObserver
+  const observerRef = useRef(null);
+  const loadMoreRef = useCallback(
+    (node) => {
+      if (isFetchingNextPage) return;
+      if (observerRef.current) observerRef.current.disconnect();
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      });
+      if (node) observerRef.current.observe(node);
+    },
+    [isFetchingNextPage, hasNextPage, fetchNextPage]
+  );
+
   const handleCheck = () => {
     if (checkedList.length > 0) {
-      // 하나라도 체크되어 있다면 -> '선택 취소' 동작 (리스트 비우기)
       setCheckedList([]);
     } else {
-      // 아무것도 체크되어 있지 않다면 -> '전체 선택' 동작
-      // 전체 데이터(memberList라고 가정)의 모든 index를 배열로 넣음
-      const allIndexes = allCardData.map((_, i) => i);
+      const allIndexes = applicants.map((_, i) => i);
       setCheckedList(allIndexes);
     }
   };
+
   const deleteData = () => {
     showToast('삭제되었습니다.');
-    setAllCardData((prev) => {
-      // 현재 인덱스(i)가 checkedList에 포함되지 않은 것만 필터링
-      return prev.filter((_, i) => !checkedList.includes(i));
-    });
     setCheckedList([]);
+  };
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      onSearch(searchInput);
+    }
   };
 
   const cardCheckData = {
@@ -80,13 +63,12 @@ export default function ApplicantsList() {
     setCheckedList,
     isEdit,
     setIsEdit,
-    setAllCardData,
     isCopy,
     setIsCopy,
   };
 
   return (
-    <div className="flex flex-col gap-5.5 mt-14">
+    <div className="flex flex-col gap-5.5 mt-14 w-full">
       <div className="flex justify-between">
         <div className="flex gap-2">
           <button
@@ -97,7 +79,7 @@ export default function ApplicantsList() {
           </button>
           {checkedList.length > 0 && (
             <button
-              onClick={() => openModal(`구성원 정보를 삭제하시겠습니까?`, () => deleteData())}
+              onClick={() => openModal('구성원 정보를 삭제하시겠습니까?', () => deleteData())}
               className="w-20 h-10 border text-center items-center bg-white"
             >
               삭제({checkedList.length})
@@ -106,20 +88,43 @@ export default function ApplicantsList() {
         </div>
         <div className="flex w-66 h-10 border items-center px-5 gap-7">
           <Search className="shrink-0 w-5 h-5" />
-          <input placeholder="검색하기" className="focus:outline-none placeholder:text-[1rem]" />
+          <input
+            placeholder="검색하기"
+            className="focus:outline-none placeholder:text-[1rem]"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onKeyDown={handleSearchKeyDown}
+          />
         </div>
       </div>
       <div className="flex flex-col border">
         <div className="flex pl-35 pr-55 w-314 h-20 justify-between items-center font-semibold border-b">
-          {/* 표 이름 */}
           {optionData.map((name) => (
-            <p>{name}</p>
+            <p key={name}>{name}</p>
           ))}
         </div>
-        <div className="flex flex-col ">
-          {allCardData.map((data, index) => (
-            <ApplicantsTableCard index={index} cardData={data} cardCheckData={cardCheckData} />
+        <div className="flex flex-col">
+          {applicants.map((data, index) => (
+            <ApplicantsTableCard
+              key={data.applicationRecordId}
+              index={index}
+              cardData={data}
+              cardCheckData={cardCheckData}
+            />
           ))}
+          {/* 무한 스크롤 트리거 */}
+          <div ref={loadMoreRef} className="h-1" />
+          {isFetchingNextPage && (
+            <div className="flex justify-center py-4 text-gray-500 text-sm">
+              지원자 불러오는 중...
+            </div>
+          )}
+          {!hasNextPage && applicants.length > 0 && (
+            <div className="flex justify-center py-4 text-gray-400 text-sm">지원자 끄읕!!!</div>
+          )}
+          {!isFetchingNextPage && applicants.length === 0 && (
+            <div className="flex justify-center py-8 text-gray-400 text-sm">지원자가 없다</div>
+          )}
         </div>
       </div>
     </div>

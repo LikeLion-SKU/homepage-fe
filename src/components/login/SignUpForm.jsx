@@ -35,6 +35,7 @@ export default function SignUpForm({ onSubmit }) {
   const [verificationStatus, setVerificationStatus] = useState(null); // null, 'success', 'error'
   const [isVerificationSending, setIsVerificationSending] = useState(false);
   const [isVerificationChecking, setIsVerificationChecking] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 두 번째 단계 입력 필드
   const [name, setName] = useState('');
@@ -202,6 +203,7 @@ export default function SignUpForm({ onSubmit }) {
       return;
     }
 
+    setIsSubmitting(true);
     try {
       const finalEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
@@ -237,6 +239,8 @@ export default function SignUpForm({ onSubmit }) {
 
       setConfirmModalMessage(errorMessage);
       setShowConfirmModal(true);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -553,8 +557,10 @@ export default function SignUpForm({ onSubmit }) {
               !studentNumber ||
               !isAgreed ||
               !isValidPassword(signupPassword) ||
-              signupPassword !== confirmPassword
+              signupPassword !== confirmPassword ||
+              isSubmitting
             }
+            isLoading={isSubmitting}
           >
             다음
           </LoginButton>
