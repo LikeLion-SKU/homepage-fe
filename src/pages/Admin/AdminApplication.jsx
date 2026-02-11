@@ -30,7 +30,7 @@ export default function AdminApplication() {
     ],
     button: (
       <button
-        onClick={() => navigate('/admin/application/questions')}
+        onClick={() => navigate('/admin/resume')}
         className="flex w-40 h-10 justify-center items-center text-[1rem] border bg-white hover:bg-stone-50 transition-all"
       >
         지원서 추가&수정
