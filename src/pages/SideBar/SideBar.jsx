@@ -5,34 +5,39 @@ import instagram from '@/assets/icons/instagram_logo_icon.svg';
 import kakao from '@/assets/icons/kakaotalk_logo_icon.svg';
 import MenuButton from '@/components/sideBar/MenuButton';
 import OutLinkButton from '@/components/sideBar/OutLinkButton';
+import useAuthStore from '@/store/useAuthStore';
 
 export default function SideBar({ handleSideBar }) {
   const showResult = useLoaderData();
-  const token = true;
+  const isLogin = useAuthStore((state) => state.isLoggedIn);
   const getLastMenu = () => {
-    if (token) {
+    if (isLogin) {
       return { name: '마이페이지', path: '/mypage' };
     } else {
       return { name: '로그인 / 회원가입', path: '/login' };
     }
   };
+  const getResultMenu = () => {
+    if (showResult) {
+      return { name: '지원결과', path: '/result/notice' };
+    } else {
+      return { name: '지원하기', path: '/recruit' };
+    }
+  };
   const menuName = [
-    { name: '지원하기', path: '/recruit' },
+    getResultMenu(),
     { name: '프로젝트', path: '/project' },
     { name: '구성원', path: '/member' },
     getLastMenu(),
   ];
   const outLinkName = [
-    { name: 'kakao talk', imgUrl: kakao, link: 'http://pf.kakao.com/_SpMTn' },
+    { name: 'kakao talk', imgUrl: kakao, link: 'http://pf.kakao.com/_hCEzX' },
     { name: 'instaram', imgUrl: instagram, link: 'https://www.instagram.com/likelion_skuniv/' },
     { name: 'github', imgUrl: github, link: 'https://github.com/LikeLion-SKU' },
   ];
   return (
     <div className="flex flex-col h-full pt-15 gap-16.5 pb-34 pad:pb-72 bg-[#FAFBF8]">
       <div className="border-y divide-y divide-black">
-        {showResult && (
-          <MenuButton name="지원결과" path="/result/notice" handleSideBar={handleSideBar} />
-        )}
         {menuName.map((data) => (
           <MenuButton
             key={data.name}
