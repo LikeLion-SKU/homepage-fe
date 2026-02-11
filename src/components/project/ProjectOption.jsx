@@ -73,7 +73,7 @@ export default function ProjectOption({ handleSemester, handleProjectType }) {
       <OptionBox
         initValue="기수별"
         optionData={semesters}
-        bgColor="#E9E9E9"
+        bgColor="#F8FBE7"
         selectedNum={selectSemester}
         setSelectedNum={setSelectSemester}
       />
@@ -81,7 +81,7 @@ export default function ProjectOption({ handleSemester, handleProjectType }) {
         <OptionBox
           initValue="대회별"
           optionData={projectTypeName}
-          bgColor="#E9E9E9"
+          bgColor="#F8FBE7"
           selectedNum={selectProjectType}
           setSelectedNum={setSelectProjectType}
         />

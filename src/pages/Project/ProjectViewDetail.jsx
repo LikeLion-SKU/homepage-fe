@@ -65,7 +65,7 @@ export default function ProjectViewDetail() {
 
   return (
     <GridSection>
-      <div className="flex px-8 pad:px-10 web:px-15 pt-18 pb-41">
+      <div className="flex px-8 pad:px-10 web:px-15 pt-18 pb-41 justify-center">
         <div className="flex flex-col ">
           <button
             onClick={() => handleProjectId(-1)}

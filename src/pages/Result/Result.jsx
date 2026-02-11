@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+
+import { getCurrentForm } from '@/api/applicationForm';
 import { interviewBooking, putInterviewChange } from '@/api/interviewBooking';
 import CheckModal from '@/components/common/Modal/CheckModal';
 import GridSection from '@/components/layout/background/GridSection';
@@ -10,7 +14,10 @@ import ResultSection from '@/components/result/ResultSection';
 import useInterviewStore from '@/store/useInterviewStore';
 import { availbleChangeInterview } from '@/utils/availableChangeInterview';
 
+// 한국어 로캘 불러오기
+
 export default function Result() {
+  dayjs.locale('ko');
   const navigate = useNavigate();
   const [onModal, setOnModal] = useState(false);
   const [allChecked, setAllChecked] = useState([false, false]);
@@ -18,9 +25,11 @@ export default function Result() {
   const [interviewDate, setInterviewDate] = useState(true);
   const [selectedTime, setSelectedTime] = useState({ date: '', scheduleId: 0 });
   const { myInterviews } = useInterviewStore();
+  const [resultDate, setResultData] = useState({ finalResultAt: '' });
   useEffect(() => {
     const getInterviewDate = async () => {
       setInterviewDate(await availbleChangeInterview());
+      setResultData(await getCurrentForm());
     };
     getInterviewDate();
   }, []);
@@ -62,6 +71,11 @@ export default function Result() {
     <GridSection>
       <div className="flex flex-col items-center gap-19 mb-60">
         <ResultSection pass={resultData} />
+        {resultData.test === 'document' && resultData.result && interviewDate && (
+          <div className="w-78 pad:w-104 h-13 bg-[#C6E400] flex justify-center items-center font-semibold text-[0.9rem] pad:text-[1.1rem] drop-shadow-[3px_4px_0px_rgba(212,212,212,1)]">
+            최종 결과 발표일: {dayjs(resultDate.finalResultAt).format('M월 D일(ddd) HH:mm')}
+          </div>
+        )}
         {resultData.test === 'document' && resultData.result && interviewDate && (
           <InterviewTime
             setAllChecked={setAllChecked}
