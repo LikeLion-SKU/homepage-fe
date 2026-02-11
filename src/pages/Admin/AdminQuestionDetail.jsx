@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
+import { getResumeForm } from '@/api/applicationQuestionApi';
 import Navy from '@/assets/icons/navy-left.svg';
 import ApplicationScheduleSection from '@/components/admin/Application/ApplicationScheduleSection';
 import QuestionManager from '@/components/admin/Application/QuestionManager';
@@ -20,22 +21,25 @@ export default function AdminQuestion() {
   // 지원서 데이터를 관리할 상태
   const [title, setTitle] = useState('');
 
+  // 질문 미등록 모집 공고 목록 (지원 일정 불러오기용)
+  const [resumeForms, setResumeForms] = useState([]);
+
   useEffect(() => {
     if (isEditMode) {
       const timer = setTimeout(() => {
-        // 일단 에러안나게 임시로
         setTitle(`${id}번 기존 지원서 제목`);
       }, 0);
       return () => clearTimeout(timer);
     }
   }, [id, isEditMode]);
 
-  // 더미 데이터
-  const _applicationData = [
-    { id: 1, title: '14기 아기사자 모집 지원서', deadline: '2026-03-20', isExpired: false },
-    { id: 2, title: '13기 아기사자 모집 지원서 (마감)', deadline: '2025-03-20', isExpired: true },
-    { id: 3, title: '13기 아기사자 모집 지원서 (마감)', deadline: '2025-03-20', isExpired: true },
-  ];
+  useEffect(() => {
+    const fetchResumeForms = async () => {
+      const data = await getResumeForm();
+      setResumeForms(Array.isArray(data) ? data : (data?.content ?? []));
+    };
+    if (!isEditMode) fetchResumeForms();
+  }, [isEditMode]);
 
   return (
     <div className="pb-35">
@@ -78,7 +82,7 @@ export default function AdminQuestion() {
               <div className="h-12 flex items-center text-2xl font-bold mb-5">{title}</div>
             ) : (
               /* 생성 모드 -> 기존 드롭다운 섹션 표시 */
-              <ApplicationScheduleSection />
+              <ApplicationScheduleSection resumeForms={resumeForms} />
             )}
             {/* 질문 분류 탭 */}
             <div className="flex items-center gap-4 mt-5">

@@ -1,16 +1,14 @@
 import { useState } from 'react';
 
-export default function ApplicationScheduleSection() {
+export default function ApplicationScheduleSection({ resumeForms = [] }) {
   const [isImportOpen, setIsImportOpen] = useState(false);
-  // 1. 선택된 값을 저장할 상태 추가 (기본값은 null 또는 빈 문자열)
   const [selectedImport, setSelectedImport] = useState(null);
 
-  const importOptions = [
-    '14기 아기사자 모집 지원서',
-    '13기 아기사자 모집 지원서',
-    '12기 아기사자 모집 지원서',
-    '11기 아기사자 모집 지원서',
-  ];
+  // getResumeForm API에서 받은 질문 미등록 모집 공고 목록
+  const importOptions = resumeForms.map((form) => ({
+    id: form.applicationFormId ?? form.id,
+    label: form.title ?? form.semester ?? `${form.applicationFormId ?? form.id}번 지원서`,
+  }));
 
   return (
     // ... 상단 생략
@@ -23,26 +21,28 @@ export default function ApplicationScheduleSection() {
           {/* 화살표 방향 제어 */}
           <span className={`transition-transform ${isImportOpen ? 'rotate-180' : ''}`}>⌵</span>
 
-          {/* 2. 조건부 텍스트: 선택된 값이 있으면 그 값을, 없으면 기본 문구를 출력 */}
-          <span>{selectedImport ? selectedImport : '지원 일정 불러오기'}</span>
+          <span>{selectedImport ? selectedImport.label : '지원 일정 불러오기'}</span>
         </div>
       </button>
 
       {isImportOpen && (
         <ul className="absolute top-12 left-0 w-full bg-white border z-20 shadow-lg">
-          {importOptions.map((option) => (
-            <li
-              key={option}
-              onClick={() => {
-                // 3. 클릭 시 선택된 값 저장하고 드롭다운 닫기
-                setSelectedImport(option);
-                setIsImportOpen(false);
-              }}
-              className="p-4 border-b last:border-b-0 hover:bg-gray-50 cursor-pointer font-semibold"
-            >
-              {option}
-            </li>
-          ))}
+          {importOptions.length > 0 ? (
+            importOptions.map((option) => (
+              <li
+                key={option.id}
+                onClick={() => {
+                  setSelectedImport(option);
+                  setIsImportOpen(false);
+                }}
+                className="p-4 border-b last:border-b-0 hover:bg-gray-50 cursor-pointer font-semibold"
+              >
+                {option.label}
+              </li>
+            ))
+          ) : (
+            <li className="p-4 text-stone-500">불러올 지원 일정이 없습니다</li>
+          )}
         </ul>
       )}
     </div>
