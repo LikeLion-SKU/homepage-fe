@@ -27,3 +27,25 @@ export const questionsLoader = async () => {
     return [];
   }
 };
+
+// 관리자 - 지원서 목록 조회 api 함수
+export const getResumeListLoader = async () => {
+  try {
+    const response = await APIService.private.get('v1/admin/applications/questions/summaries');
+    return response.data || [];
+  } catch (error) {
+    console.error('지원서 전체 목록 조회 실패:', error);
+    return {};
+  }
+};
+
+// 관리자 - 지원서 삭제 api 함수
+export const deleteResume = async (applicationFormId) => {
+  try {
+    await APIService.private.delete(`v1/admin/applications/forms/${applicationFormId}/questions`);
+    return true;
+  } catch (error) {
+    console.error('지원서 삭제 실패:', error);
+    return false;
+  }
+};
