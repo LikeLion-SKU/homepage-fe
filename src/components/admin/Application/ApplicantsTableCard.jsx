@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { patchDocumentResult } from '@/api/applicationResult';
 //@ts-ignore
@@ -51,12 +51,22 @@ export default function ApplicantsTableCard({ index, cardData, cardCheckData }) 
         : '선택';
 
   // 면접 합/불 표시값
-  const interviewPassDisplay =
-    cardData.isInterviewPassed === true
-      ? '합격'
-      : cardData.isInterviewPassed === false
-        ? '불합격'
-        : null;
+  const interviewPassDisplay = useMemo(() => {
+    if (applicationResult === null) {
+      if (cardData.isInterviewPassed === true) return '합격';
+      if (cardData.isInterviewPassed === false) return '불합격';
+      return null;
+    }
+    if (applicationResult === '합격') {
+      // 이미 면접 결과 데이터가 있다면 그걸 보여주고, 없다면 '선택' 표시
+      return cardData.isInterviewPassed !== null // 면접 결과 데이터 있을때
+        ? cardData.isInterviewPassed
+          ? '합격'
+          : '불합격'
+        : '선택';
+    }
+    return null;
+  }, [applicationResult, cardData.isInterviewPassed]);
 
   // 서류 결과 변경 시
   const handleDocumentResultChange = async (newResult) => {
@@ -91,7 +101,8 @@ export default function ApplicantsTableCard({ index, cardData, cardCheckData }) 
           selectedNum={applicationResult}
           setSelectedNum={handleDocumentResultChange}
         />
-        {cardData.isDocumentPassed && (
+        {(applicationResult === '합격' ||
+          (applicationResult === null && cardData.isDocumentPassed)) && (
           <OptionBox
             initValue={interviewPassDisplay}
             optionData={interviewOption}
