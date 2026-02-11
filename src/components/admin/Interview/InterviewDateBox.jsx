@@ -19,7 +19,8 @@ export default function InterviewDateBox({ track, date, startTime, endTime, pers
         date: date,
         track: track,
       };
-      setTrackBookingSchedule(await getInterviewBookingAdmin(parameter));
+      const data = await getInterviewBookingAdmin(parameter);
+      setTrackBookingSchedule(data.tracks[0].track, data.tracks[0].dates);
       showToast('삭제되었습니다!');
     }
   };

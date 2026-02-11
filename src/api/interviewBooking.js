@@ -50,7 +50,7 @@ export const getInterviewBookingAdmin = async (parameter) => {
 
 export const deleteBookingInterview = async (bookingId) => {
   try {
-    const res = await APIService.private.delete(`/api/v1/admin/interviews/bookings/${bookingId}`);
+    const res = await APIService.private.delete(`/v1/admin/interviews/bookings/${bookingId}`);
 
     return res.data;
   } catch (error) {

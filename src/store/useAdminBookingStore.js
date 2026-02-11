@@ -34,7 +34,7 @@ const useAdminBookingStore = create((set) => ({
 
   setBookingSchedule: (schedules) => set({ bookingInterviews: schedules }),
 
-  setTrackBookingSchedule: (targetTrack, targetDate, newTimes) =>
+  setTrackBookingSchedule: (targetTrack, newDate) =>
     set((state) => ({
       bookingInterviews: {
         ...state.bookingInterviews,
@@ -43,12 +43,7 @@ const useAdminBookingStore = create((set) => ({
             trackItem.track === targetTrack
               ? {
                   ...trackItem,
-                  dates: trackItem.dates.map(
-                    (dateItem) =>
-                      dateItem.date === targetDate
-                        ? { ...dateItem, times: newTimes } // 날짜가 일치하면 times만 교체
-                        : dateItem // 아니면 유지
-                  ),
+                  dates: newDate,
                 }
               : trackItem // 트랙 불일치 시 유지
         ),
