@@ -47,3 +47,13 @@ export const getInterviewBookingAdmin = async (parameter) => {
     console.log('예약된 면접 일정 조회 실패:', error);
   }
 };
+
+export const deleteBookingInterview = async (bookingId) => {
+  try {
+    const res = await APIService.private.delete(`/api/v1/admin/interviews/bookings/${bookingId}`);
+
+    return res.data;
+  } catch (error) {
+    console.log('예약된 면접 일정 삭제 실패:', error);
+  }
+};

@@ -8,7 +8,7 @@ export default function TrackDateBox({ data, isDataAdd }) {
       {isDataAdd ? (
         <InterviewDataAdd dateData={data.dates} track={data.track} />
       ) : (
-        <InterviewDataCheck dateData={data.dates} />
+        <InterviewDataCheck dateData={data.dates} track={data.track} />
       )}
     </div>
   );

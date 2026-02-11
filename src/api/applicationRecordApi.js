@@ -23,3 +23,16 @@ export const applicationLoader = async () => {
     return [];
   }
 };
+
+//특정 지원자 지원서 조회
+export const getApplicationUser = async (applicationRecordId) => {
+  try {
+    const res = await APIService.private.get(
+      `/v1/admin/applications/records/${applicationRecordId}`
+    );
+
+    return res.data;
+  } catch (error) {
+    console.log('지원자 지원서 조회 실패:', error);
+  }
+};

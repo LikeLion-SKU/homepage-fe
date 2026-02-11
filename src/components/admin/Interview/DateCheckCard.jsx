@@ -1,6 +1,6 @@
 import InterviewDateBox from '@/components/admin/Interview/InterviewDateBox';
 
-export default function DateCheckCard({ data }) {
+export default function DateCheckCard({ track, data }) {
   return (
     <div className="flex justify-between px-5 gap-5">
       <p className="text-[1.1rem] font-bold">{data.date.replaceAll('-', '.')}</p>
@@ -9,6 +9,8 @@ export default function DateCheckCard({ data }) {
           data.times.map((interviewData) => (
             <InterviewDateBox
               key={interviewData.scheduleId}
+              track={track}
+              date={data.date}
               startTime={interviewData.startTime}
               endTime={interviewData.endTime}
               personalData={interviewData.bookingInfo}

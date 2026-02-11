@@ -1,12 +1,12 @@
 import DateCheckCard from '@/components/admin/Interview/DateCheckCard';
 
-export default function InterviewDataCheck({ dateData }) {
+export default function InterviewDataCheck({ dateData, track }) {
   return (
     <div className="flex flex-col gap-12">
       {dateData.length > 0 && dateData ? (
         <div className="flex flex-col gap-9">
           {dateData.map((data) => (
-            <DateCheckCard data={data} />
+            <DateCheckCard data={data} track={track} />
           ))}
         </div>
       ) : (
