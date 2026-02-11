@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLoaderData } from 'react-router';
 
+import { getInterviewBookingAdmin } from '@/api/interviewBooking';
 import { getInterviewScheduleAdmin } from '@/api/interviewSchedule';
 //@ts-ignore
 import Search from '@/assets/icons/Search_icon.svg?react';
 //@ts-ignore
 import Calender from '@/assets/icons/calender_icon.svg?react';
-import { interviewCheckData } from '@/components/admin/Interview/InterviewDummyData';
 import TrackDateBox from '@/components/admin/Interview/TrackDateBox';
 import OptionBox from '@/components/common/Option/optionBox';
+import useAdminBookingStore from '@/store/useAdminBookingStore';
+import useAdminInterviewStore from '@/store/useAdminInterviewStore';
 
 export default function DateAdminSection() {
   const [isDateAdd, setIsDateAdd] = useState(true);
@@ -18,23 +20,41 @@ export default function DateAdminSection() {
   const dateInputRef = useRef(null);
   const semesterData = useLoaderData();
   const [selectedSemester, setSelectedSemester] = useState(semesterData[0]);
-  const [interviewSchedule, setInterviewSchedule] = useState({ semester: 0, tracks: [] });
-  //const [bookedSchedule,setBookedSchedule]=useState({semester:0,tracks:[]});
+  const { interviews, setInterviewSchedule } = useAdminInterviewStore();
+  const { bookingInterviews, setBookingSchedule } = useAdminBookingStore();
+  const [searchName, setSearchName] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
   // 버튼 클릭 시 숨겨진 input을 클릭하게 함
   const handleButtonClick = () => {
     dateInputRef.current?.showPicker(); // 최신 브라우저에서 달력을 바로 띄우는 메서드
   };
   useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(searchName), 800);
+    return () => clearTimeout(t);
+  }, [searchName]);
+  useEffect(() => {
     const getInterviewData = async () => {
       if (isDateAdd) {
-        setInterviewSchedule(await getInterviewScheduleAdmin(parseInt(selectedSemester)));
+        const parameter = { semester: parseInt(selectedSemester) };
+        setInterviewSchedule(await getInterviewScheduleAdmin(parameter));
       } else {
-        //setBookedSchedule()//예약된 면접 스케줄 api
+        let parameter;
+        if (debouncedSearch === '') {
+          parameter = { semester: parseInt(selectedSemester), date: selectedDate };
+        } else {
+          parameter = {
+            semester: parseInt(selectedSemester),
+            date: selectedDate,
+            search: debouncedSearch,
+          };
+        }
+        setBookingSchedule(await getInterviewBookingAdmin(parameter)); //예약된 면접 스케줄 api
       }
     };
     getInterviewData();
-  }, [isDateAdd, selectedSemester]);
+  }, [isDateAdd, selectedSemester, selectedDate, debouncedSearch]);
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex justify-between items-center">
@@ -83,7 +103,12 @@ export default function DateAdminSection() {
 
             <div className="flex border w-83 h-10 items-center justify-center gap-7">
               <Search />
-              <input placeholder="검색하기" className="w-60 placeholder:text-black" />
+              <input
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                placeholder="검색하기"
+                className="w-60 placeholder:text-black"
+              />
             </div>
           </div>
         )}
@@ -91,10 +116,10 @@ export default function DateAdminSection() {
 
       <div className="flex gap-4">
         {isDateAdd
-          ? interviewSchedule.tracks.map((data) => (
+          ? interviews.tracks.map((data) => <TrackDateBox data={data} isDataAdd={isDateAdd} />)
+          : bookingInterviews.tracks.map((data) => (
               <TrackDateBox data={data} isDataAdd={isDateAdd} />
-            ))
-          : interviewCheckData.map((data) => <TrackDateBox data={data} isDataAdd={isDateAdd} />)}
+            ))}
       </div>
     </div>
   );
