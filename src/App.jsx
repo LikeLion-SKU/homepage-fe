@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { getCurrentForm } from '@/api/applicationForm';
+import { getResumeListLoader } from '@/api/applicationQuestionApi';
 import { questionsLoader } from '@/api/applicationQuestionApi';
 import { getApplicationsLoader } from '@/api/applicationRecordApi';
 import { getResult } from '@/api/applicationResult';
@@ -132,7 +133,7 @@ const router = createBrowserRouter([
               return getApplicationsLoader(semester, track, search, null, 10);
             },
           },
-          { path: 'resume', Component: AdminQuestion },
+          { path: 'resume', Component: AdminQuestion, loader: getResumeListLoader },
           { path: 'resume/new', Component: AdminQuestionDetail },
           { path: 'resume/:id', Component: AdminQuestionDetail },
 
