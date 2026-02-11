@@ -65,3 +65,27 @@ export const getResumeForm = async () => {
     return [];
   }
 };
+
+// UI 탭명 -> API track 매핑
+export const TAB_TO_TRACK = {
+  공통질문: 'COMMON',
+  PO: 'PO',
+  프론트엔드: 'FRONTEND',
+  백엔드: 'BACKEND',
+};
+
+// 관리자 - 지원서 질문 등록 api 함수
+// semester: forms/summaries에서 받은 지원서의 semester
+// body: { groups: [{ track, questions: [{ orderNumber, content }] }] }
+export const postResumeQuestions = async (semester, body) => {
+  try {
+    const response = await APIService.private.post(
+      `/v1/admin/applications/questions/${semester}`,
+      body
+    );
+    return response;
+  } catch (error) {
+    console.error('지원서 질문 등록 실패:', error);
+    throw error;
+  }
+};
