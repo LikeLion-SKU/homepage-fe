@@ -5,13 +5,13 @@ export default function DateCheckCard({ data }) {
     <div className="flex justify-between px-5 gap-5">
       <p className="text-[1.1rem] font-bold">{data.date.replaceAll('-', '.')}</p>
       <div className="flex flex-col gap-4">
-        {data.slots.length > 0 ? (
-          data.slots.map((interviewData, index) => (
+        {data.times.length > 0 ? (
+          data.times.map((interviewData) => (
             <InterviewDateBox
-              key={index}
+              key={interviewData.scheduleId}
               startTime={interviewData.startTime}
               endTime={interviewData.endTime}
-              personalData={interviewData.person}
+              personalData={interviewData.bookingInfo}
             />
           ))
         ) : (

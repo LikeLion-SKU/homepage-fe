@@ -11,12 +11,12 @@ export default function InterviewDateBox({ startTime, endTime, personalData }) {
       </p>
       <div className="flex gap-4">
         <p className="font-bold">{personalData.name}</p>
-        <p className="text-[0.9rem]">{personalData.major}</p>
+        <p className="text-[0.9rem]">{personalData.department}</p>
       </div>
       <div className="flex gap-10">
         <div>
-          <p>{personalData.stdNum}</p>
-          <p>{personalData.phoneNum}</p>
+          <p>{personalData.studentNumber}</p>
+          <p>{personalData.phone.replaceAll('-', '')}</p>
         </div>
         <div className="flex flex-col gap-2">
           <button
