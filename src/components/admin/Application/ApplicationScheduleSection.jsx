@@ -1,27 +1,30 @@
 import { useState } from 'react';
 
-export default function ApplicationScheduleSection({ resumeForms = [] }) {
+export default function ApplicationScheduleSection({ resumeForms = [], selectedForm, onSelect }) {
   const [isImportOpen, setIsImportOpen] = useState(false);
-  const [selectedImport, setSelectedImport] = useState(null);
 
-  // getResumeForm API에서 받은 질문 미등록 모집 공고 목록
+  // forms/summaries API에서 받은 질문 미등록 모집 공고 목록 (semester 사용)
   const importOptions = resumeForms.map((form) => ({
+    ...form,
     id: form.applicationFormId ?? form.id,
-    label: form.title ?? form.semester ?? `${form.applicationFormId ?? form.id}번 지원서`,
+    label: form.title ?? form.semester ?? `${form.semester}기 지원서`,
   }));
 
+  const selectedOption = importOptions.find(
+    (opt) =>
+      selectedForm &&
+      (String(opt.id) === String(selectedForm.id) || opt.semester === selectedForm.semester)
+  );
+
   return (
-    // ... 상단 생략
     <div className="relative w-150">
       <button
         onClick={() => setIsImportOpen(!isImportOpen)}
         className="w-full h-12 border bg-white flex items-center px-4 justify-between font-bold text-lg"
       >
         <div className="flex items-center gap-2">
-          {/* 화살표 방향 제어 */}
           <span className={`transition-transform ${isImportOpen ? 'rotate-180' : ''}`}>⌵</span>
-
-          <span>{selectedImport ? selectedImport.label : '지원 일정 불러오기'}</span>
+          <span>{selectedOption ? selectedOption.label : '지원 일정 불러오기'}</span>
         </div>
       </button>
 
@@ -32,8 +35,8 @@ export default function ApplicationScheduleSection({ resumeForms = [] }) {
               <li
                 key={option.id}
                 onClick={() => {
-                  setSelectedImport(option);
                   setIsImportOpen(false);
+                  onSelect?.(option);
                 }}
                 className="p-4 border-b last:border-b-0 hover:bg-gray-50 cursor-pointer font-semibold"
               >

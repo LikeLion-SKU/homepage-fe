@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-import { getResumeForm } from '@/api/applicationQuestionApi';
+import { TAB_TO_TRACK, getResumeForm, postResumeQuestions } from '@/api/applicationQuestionApi';
 import Navy from '@/assets/icons/navy-left.svg';
 import ApplicationScheduleSection from '@/components/admin/Application/ApplicationScheduleSection';
 import QuestionManager from '@/components/admin/Application/QuestionManager';
@@ -12,17 +12,64 @@ export default function AdminQuestion() {
   const { id } = useParams();
   const isEditMode = Boolean(id); // id 존재 여부에 따라 모드 결정
 
-  const [selectedTab, setSelectedTab] = useState('공통질문');
-
-  const [questions, setQuestions] = useState(() => [{ id: Date.now(), text: '' }]);
-
   const tabs = ['공통질문', 'PO', '프론트엔드', '백엔드'];
+  const [selectedTab, setSelectedTab] = useState(tabs[0]);
+
+  // 탭별로 질문 상태 분리 (탭 전환 시 기존 작성 내용 유지)
+  const [questionsByTab, setQuestionsByTab] = useState(() => {
+    const base = Date.now();
+    return Object.fromEntries(tabs.map((tab, i) => [tab, [{ id: base + i, text: '' }]]));
+  });
+
+  const currentQuestions = questionsByTab[selectedTab] ?? [];
+  const setCurrentTabQuestions = (valueOrUpdater) => {
+    setQuestionsByTab((prev) => {
+      const base = prev[selectedTab] ?? [{ id: crypto.randomUUID(), text: '' }];
+      const newQuestions =
+        typeof valueOrUpdater === 'function' ? valueOrUpdater(base) : valueOrUpdater;
+      return { ...prev, [selectedTab]: newQuestions };
+    });
+  };
 
   // 지원서 데이터를 관리할 상태
   const [title, setTitle] = useState('');
 
   // 질문 미등록 모집 공고 목록 (지원 일정 불러오기용)
   const [resumeForms, setResumeForms] = useState([]);
+
+  // 생성 모드: forms/summaries에서 선택한 지원서 (semester 사용)
+  const [selectedForm, setSelectedForm] = useState(null);
+
+  const handleSave = async () => {
+    const semester = isEditMode ? id : selectedForm?.semester;
+    if (!semester) {
+      alert('저장할 지원 일정을 선택해주세요.');
+      return;
+    }
+
+    const groups = tabs
+      .map((tab) => {
+        const track = TAB_TO_TRACK[tab];
+        const questions = (questionsByTab[tab] ?? [])
+          .filter((q) => q.text?.trim())
+          .map((q, i) => ({ orderNumber: i + 1, content: q.text.trim() }));
+        return { track, questions };
+      })
+      .filter((g) => g.questions.length > 0);
+
+    if (groups.length === 0) {
+      alert('저장할 질문이 없습니다.');
+      return;
+    }
+
+    try {
+      await postResumeQuestions(semester, { groups });
+      alert('저장되었습니다.');
+      navigate('/admin/resume');
+    } catch {
+      alert('저장에 실패했습니다.');
+    }
+  };
 
   useEffect(() => {
     if (isEditMode) {
@@ -36,7 +83,12 @@ export default function AdminQuestion() {
   useEffect(() => {
     const fetchResumeForms = async () => {
       const data = await getResumeForm();
-      setResumeForms(Array.isArray(data) ? data : (data?.content ?? []));
+      const forms = Array.isArray(data) ? data : (data?.content ?? []);
+      setResumeForms(forms);
+      // 지원 일정이 1개뿐이면 자동 선택
+      if (forms.length === 1) {
+        setSelectedForm(forms[0]);
+      }
     };
     if (!isEditMode) fetchResumeForms();
   }, [isEditMode]);
@@ -69,7 +121,7 @@ export default function AdminQuestion() {
         <div className="flex flex-col gap-10">
           <div className="flex justify-end">
             <button
-              onClick={() => {}}
+              onClick={handleSave}
               className="flex w-30 h-10 justify-center items-center text-[1rem] border bg-white hover:bg-stone-50 transition-all px-"
             >
               저장
@@ -82,7 +134,11 @@ export default function AdminQuestion() {
               <div className="h-12 flex items-center text-2xl font-bold mb-5">{title}</div>
             ) : (
               /* 생성 모드 -> 기존 드롭다운 섹션 표시 */
-              <ApplicationScheduleSection resumeForms={resumeForms} />
+              <ApplicationScheduleSection
+                resumeForms={resumeForms}
+                selectedForm={selectedForm}
+                onSelect={setSelectedForm}
+              />
             )}
             {/* 질문 분류 탭 */}
             <div className="flex items-center gap-4 mt-5">
@@ -106,7 +162,7 @@ export default function AdminQuestion() {
           <div className="flex flex-col px-20 py-18 border bg-button-gray gap-15">
             {/* 질문 리스트 상자 */}
 
-            <QuestionManager questions={questions} setQuestions={setQuestions} />
+            <QuestionManager questions={currentQuestions} setQuestions={setCurrentTabQuestions} />
           </div>
         </div>
       </div>
