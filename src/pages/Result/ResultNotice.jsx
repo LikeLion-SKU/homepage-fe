@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 
 //@ts-ignore
 import Heart from '@/assets/icons/green_heart_icon.svg?react';
+//@ts-ignore
+import NotCheck from '@/assets/icons/uncheck_button.svg?react';
 import PageTitle from '@/components/common/PageTitle';
 import GridSection from '@/components/layout/background/GridSection';
 import CheckButton from '@/components/result/CheckButton';
@@ -92,9 +94,13 @@ export default function ResultNotice() {
             <p className="text-[1.1rem]">결과를 확인해주세요.</p>
           </div>
           <div className="w-78 pad:w-104 h-13 bg-[#C6E400] flex justify-center items-center font-semibold text-[0.9rem] pad:text-[1.1rem] drop-shadow-[3px_4px_0px_rgba(212,212,212,1)]">
-            결과 조회 기간: {result.date}
+            조회 가능 기간: {result.date}
           </div>
-          <CheckButton buttonName="확인하러가기" onClick={() => handleCheckClick()} />
+          {canClick ? (
+            <CheckButton buttonName="확인하러가기" onClick={() => handleCheckClick()} />
+          ) : (
+            <NotCheck onClick={() => handleCheckClick()} />
+          )}
         </div>
       </GridSection>
     </div>
