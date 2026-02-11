@@ -71,3 +71,18 @@ export const patchDocumentResult = async (applicationRecordId, newResult) => {
     throw error;
   }
 };
+
+// 관리자 - 면접합격 여부 결정
+export const postInterviewResult = async (applicationRecordId, result) => {
+  try {
+    const passed = result === '합격'; // 합격만 true, 불합격은 false
+    const response = await APIService.private.post(
+      `/v1/admin/applications/${applicationRecordId}/application-result`,
+      { passed: passed }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('면접 합격 여부 수정 실패', error);
+    throw error;
+  }
+};
