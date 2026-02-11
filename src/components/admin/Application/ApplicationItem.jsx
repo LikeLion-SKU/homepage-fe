@@ -33,7 +33,8 @@ export default function ApplicationItem({ item, onClickDelete }) {
         <div className="absolute -right-15 top-0  bg-white border flex flex-col z-30 shadow-sm">
           <button
             onClick={() => {
-              navigate(`/admin/resume/${item.id ?? item.applicationFormId}`);
+              // getSemesterQuestion(semester) 사용을 위해 semester로 이동
+              navigate(`/admin/resume/${item.semester ?? item.id ?? item.applicationFormId}`);
               setIsMenuOpen(false);
             }}
             className=" px-3 py-2 border-b flex justify-center items-center hover:bg-gray-50"

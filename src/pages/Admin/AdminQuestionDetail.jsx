@@ -1,24 +1,32 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-import { TAB_TO_TRACK, getResumeForm, postResumeQuestions } from '@/api/applicationQuestionApi';
+import {
+  TAB_TO_TRACK,
+  TRACK_TO_TAB,
+  getResumeForm,
+  getSemesterQuestion,
+  postResumeQuestions,
+  putSemesterQuestion,
+} from '@/api/applicationQuestionApi';
 import Navy from '@/assets/icons/navy-left.svg';
 import ApplicationScheduleSection from '@/components/admin/Application/ApplicationScheduleSection';
 import QuestionManager from '@/components/admin/Application/QuestionManager';
 import Button from '@/components/common/Button/Button';
+
+const TABS = ['공통질문', 'PO', '프론트엔드', '백엔드'];
 
 export default function AdminQuestion() {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditMode = Boolean(id); // id 존재 여부에 따라 모드 결정
 
-  const tabs = ['공통질문', 'PO', '프론트엔드', '백엔드'];
-  const [selectedTab, setSelectedTab] = useState(tabs[0]);
+  const [selectedTab, setSelectedTab] = useState(TABS[0]);
 
   // 탭별로 질문 상태 분리 (탭 전환 시 기존 작성 내용 유지)
   const [questionsByTab, setQuestionsByTab] = useState(() => {
     const base = Date.now();
-    return Object.fromEntries(tabs.map((tab, i) => [tab, [{ id: base + i, text: '' }]]));
+    return Object.fromEntries(TABS.map((tab, i) => [tab, [{ id: base + i, text: '' }]]));
   });
 
   const currentQuestions = questionsByTab[selectedTab] ?? [];
@@ -40,22 +48,17 @@ export default function AdminQuestion() {
   // 생성 모드: forms/summaries에서 선택한 지원서 (semester 사용)
   const [selectedForm, setSelectedForm] = useState(null);
 
-  const handleSave = async () => {
-    const semester = isEditMode ? id : selectedForm?.semester;
-    if (!semester) {
-      alert('저장할 지원 일정을 선택해주세요.');
-      return;
-    }
+  // 수정 모드: getSemesterQuestion 응답의 applicationFormId (putSemesterQuestion 파라미터용)
+  const [applicationFormId, setApplicationFormId] = useState(null);
 
-    const groups = tabs
-      .map((tab) => {
-        const track = TAB_TO_TRACK[tab];
-        const questions = (questionsByTab[tab] ?? [])
-          .filter((q) => q.text?.trim())
-          .map((q, i) => ({ orderNumber: i + 1, content: q.text.trim() }));
-        return { track, questions };
-      })
-      .filter((g) => g.questions.length > 0);
+  const handleSave = async () => {
+    const groups = TABS.map((tab) => {
+      const track = TAB_TO_TRACK[tab];
+      const questions = (questionsByTab[tab] ?? [])
+        .filter((q) => q.text?.trim())
+        .map((q, i) => ({ orderNumber: i + 1, content: q.text.trim() }));
+      return { track, questions };
+    }).filter((g) => g.questions.length > 0);
 
     if (groups.length === 0) {
       alert('저장할 질문이 없습니다.');
@@ -63,7 +66,20 @@ export default function AdminQuestion() {
     }
 
     try {
-      await postResumeQuestions(semester, { groups });
+      if (isEditMode) {
+        if (!applicationFormId) {
+          alert('지원서 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+          return;
+        }
+        await putSemesterQuestion(applicationFormId, { groups });
+      } else {
+        const semester = selectedForm?.semester;
+        if (!semester) {
+          alert('저장할 지원 일정을 선택해주세요.');
+          return;
+        }
+        await postResumeQuestions(semester, { groups });
+      }
       alert('저장되었습니다.');
       navigate('/admin/resume');
     } catch {
@@ -72,12 +88,32 @@ export default function AdminQuestion() {
   };
 
   useEffect(() => {
-    if (isEditMode) {
-      const timer = setTimeout(() => {
-        setTitle(`${id}번 기존 지원서 제목`);
-      }, 0);
-      return () => clearTimeout(timer);
-    }
+    const fetchSemesterQuestions = async () => {
+      try {
+        const data = await getSemesterQuestion(id);
+        setTitle(`${data?.semester ?? id}기 지원서`);
+        if (data?.applicationFormId) setApplicationFormId(data.applicationFormId);
+        if (data?.groups) {
+          const next = Object.fromEntries(
+            TABS.map((tab) => [tab, [{ id: Date.now() + Math.random(), text: '' }]])
+          );
+          data.groups.forEach((group) => {
+            const tab = TRACK_TO_TAB[group.track];
+            if (tab) {
+              const questions = (group.questions ?? []).map((q) => ({
+                id: q.questionId ?? q.orderNumber ?? Math.random(),
+                text: q.content ?? '',
+              }));
+              next[tab] = questions.length > 0 ? questions : [{ id: Math.random(), text: '' }];
+            }
+          });
+          setQuestionsByTab(next);
+        }
+      } catch {
+        setTitle(`${id}기 지원서`);
+      }
+    };
+    if (isEditMode && id) fetchSemesterQuestions();
   }, [id, isEditMode]);
 
   useEffect(() => {
@@ -144,7 +180,7 @@ export default function AdminQuestion() {
             <div className="flex items-center gap-4 mt-5">
               <span className="font-bold text-lg">질문 분류</span>
               <div className="flex border">
-                {tabs.map((tab) => (
+                {TABS.map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setSelectedTab(tab)}
