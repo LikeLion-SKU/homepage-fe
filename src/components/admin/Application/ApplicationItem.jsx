@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router';
 
 import Calender from '@/assets/icons/calender_icon.svg';
 
-export default function ApplicationItem({ item }) {
+export default function ApplicationItem({ item, onClickDelete }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+
   return (
     <div className="flex items-center gap-2 w-full relative">
       {/* 제목 박스 */}
@@ -16,7 +17,7 @@ export default function ApplicationItem({ item }) {
       {/* 마감일 박스 */}
       <div className="flex items-center border bg-white h-12 px-4 gap-4">
         <span className="font-bold text-sm">마감일</span>
-        <span className="text-stone-400 text-sm">{item.deadline}</span>
+        <span className="text-stone-400 text-sm">{item.closeAt}</span>
         <img className="text-lg" src={Calender}></img>
       </div>
 
@@ -32,7 +33,8 @@ export default function ApplicationItem({ item }) {
         <div className="absolute -right-15 top-0  bg-white border flex flex-col z-30 shadow-sm">
           <button
             onClick={() => {
-              /* 수정 로직 */ navigate(`/admin/application/questions/${item.id}`);
+              // getSemesterQuestion(semester) 사용을 위해 semester로 이동
+              navigate(`/admin/resume/${item.semester ?? item.id ?? item.applicationFormId}`);
               setIsMenuOpen(false);
             }}
             className=" px-3 py-2 border-b flex justify-center items-center hover:bg-gray-50"
@@ -41,7 +43,8 @@ export default function ApplicationItem({ item }) {
           </button>
           <button
             onClick={() => {
-              /* 삭제 로직 */ setIsMenuOpen(false);
+              onClickDelete();
+              setIsMenuOpen(false);
             }}
             className=" px-3 py-2 flex justify-center items-center hover:bg-gray-50 "
           >
