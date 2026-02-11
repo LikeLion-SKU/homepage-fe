@@ -49,3 +49,19 @@ export const deleteResume = async (applicationFormId) => {
     return false;
   }
 };
+
+// 관리자 - 질문 미등록 모집 공고 목록 조회 api 함수
+export const getResumeForm = async () => {
+  try {
+    const response = await APIService.private.get('/v1/admin/applications/forms/summaries');
+    // API가 { success, data } 형태로 반환하는 경우 처리
+    if (response?.success === false) {
+      return [];
+    }
+    const data = response?.data ?? response;
+    return Array.isArray(data) ? data : (data?.content ?? []);
+  } catch (error) {
+    console.error('질문 미등록 모집 공고 목록 조회 실패:', error);
+    return [];
+  }
+};
