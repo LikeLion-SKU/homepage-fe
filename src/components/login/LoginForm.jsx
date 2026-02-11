@@ -7,13 +7,13 @@ import LoginTitle from './LoginTitle';
 import PasswordInput from './PasswordInput';
 import SignUpLink from './SignUpLink';
 
-export default function LoginForm({ onSubmit }) {
+export default function LoginForm({ onSubmit, isLoading = false }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onSubmit) {
+    if (onSubmit && !isLoading) {
       onSubmit({ email, password });
     }
   };
@@ -33,7 +33,11 @@ export default function LoginForm({ onSubmit }) {
         <ForgotPasswordLink />
       </form>
       <div className="w-full">
-        <LoginButton onClick={handleSubmit} disabled={!email || !password} />
+        <LoginButton
+          onClick={handleSubmit}
+          disabled={!email || !password || isLoading}
+          isLoading={isLoading}
+        />
       </div>
       <SignUpLink showNotice={!email && !password} />
     </div>

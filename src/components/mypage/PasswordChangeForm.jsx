@@ -8,7 +8,7 @@ import LoginButton from '../login/LoginButton';
 import LoginTitle from '../login/LoginTitle';
 import PasswordInput from '../login/PasswordInput';
 
-export default function PasswordChangeForm({ onSubmit }) {
+export default function PasswordChangeForm({ onSubmit, isLoading = false }) {
   const navigate = useNavigate();
   // @ts-ignore
   const { showToast } = useOutletContext() || {};
@@ -85,25 +85,32 @@ export default function PasswordChangeForm({ onSubmit }) {
   const handleConfirm = async () => {
     setIsModalOpen(false);
 
-    if (onSubmit) {
-      await onSubmit({ currentPassword, newPassword, confirmPassword });
-      // 비밀번호 변경 성공 시 저장된 비밀번호를 새 비밀번호로 업데이트, 임시 비밀번호 플래그 해제
-      if (user) {
-        setLogin(user, newPassword, false);
+    if (onSubmit && !isLoading) {
+      try {
+        await onSubmit({ currentPassword, newPassword, confirmPassword });
+        // 비밀번호 변경 성공 시 저장된 비밀번호를 새 비밀번호로 업데이트, 임시 비밀번호 플래그 해제
+        if (user) {
+          setLogin(user, newPassword, false);
+        }
+
+        // 비밀번호 변경 완료 플래그 설정 (불일치 메시지만 숨김)
+        setIsPasswordChanged(true);
+
+        // 비밀번호 변경 성공 토스트 메시지 표시
+        if (showToast) {
+          showToast('비밀번호가 변경되었습니다.');
+        }
+
+        // 토스트 메시지가 표시된 후 마이페이지로 이동 (2초 후)
+        setTimeout(() => {
+          navigate('/mypage');
+        }, 2000);
+      } catch {
+        // 에러 처리 (토스트 메시지 등)
+        if (showToast) {
+          showToast('비밀번호 변경에 실패했습니다.');
+        }
       }
-
-      // 비밀번호 변경 완료 플래그 설정 (불일치 메시지만 숨김)
-      setIsPasswordChanged(true);
-
-      // 비밀번호 변경 성공 토스트 메시지 표시
-      if (showToast) {
-        showToast('비밀번호가 변경되었습니다.');
-      }
-
-      // 토스트 메시지가 표시된 후 마이페이지로 이동 (2초 후)
-      setTimeout(() => {
-        navigate('/mypage');
-      }, 2000);
     }
   };
 
@@ -211,8 +218,10 @@ export default function PasswordChangeForm({ onSubmit }) {
             !confirmPassword ||
             !isValidPassword(newPassword) ||
             passwordMatchStatus !== 'match' ||
-            currentPasswordStatus !== 'match'
+            currentPasswordStatus !== 'match' ||
+            isLoading
           }
+          isLoading={isLoading}
         >
           비밀번호 변경
         </LoginButton>

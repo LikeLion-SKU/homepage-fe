@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router';
 
 import { login } from '@/api/authApi';
@@ -12,6 +13,7 @@ import SignUpInput from '../login/SignUpInput';
 export default function PasswordResultForm({ email = '', tempPassword = '' }) {
   const navigate = useNavigate();
   const setLogin = useAuthStore((state) => state.setLogin);
+  const [isLoading, setIsLoading] = useState(false);
   //@ts-ignore
   const { showToast } = useOutletContext();
 
@@ -22,6 +24,7 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
   const fullEmail = email.includes('@skuniv.ac.kr') ? email : `${email}@skuniv.ac.kr`;
 
   const handleLoginClick = async () => {
+    setIsLoading(true);
     try {
       // 이메일과 임시 비밀번호로 자동 로그인
       const response = await login({
@@ -41,6 +44,8 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
       if (showToast) {
         showToast('로그인에 실패했습니다. 다시 시도해주세요.');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -110,7 +115,9 @@ export default function PasswordResultForm({ email = '', tempPassword = '' }) {
           </div>
         </div>
         <div className="w-full mt-20">
-          <LoginButton onClick={handleLoginClick}>비밀번호 변경</LoginButton>
+          <LoginButton onClick={handleLoginClick} disabled={isLoading} isLoading={isLoading}>
+            비밀번호 변경
+          </LoginButton>
         </div>
       </form>
     </div>
