@@ -6,7 +6,7 @@ export default function MemberOption({ optionData, selectedOption, setSelectedOp
           onClick={() => setSelectedOption(name)}
           key={index}
           className={`w-19 h-9 pad:w-23 pad:h-11 border text-center items-center text-[1.1rem] 
-        ${selectedOption == name ? 'bg-[#D8D8D8]' : 'bg-white'}`}
+        ${selectedOption == name ? 'bg-[#C6E400] border-2' : 'bg-white'}`}
         >
           {name}
         </button>
