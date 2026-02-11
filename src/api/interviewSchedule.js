@@ -52,5 +52,6 @@ export const postInterviewSchedule = async (parameter, dateData) => {
     return res.data;
   } catch (error) {
     console.log('면접 일정 추가 실패:', error);
+    throw error;
   }
 };

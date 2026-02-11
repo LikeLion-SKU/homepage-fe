@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useOutletContext } from 'react-router';
 
-import { postInterviewSchedule } from '@/api/interviewSchedule';
+import { getInterviewScheduleAdmin, postInterviewSchedule } from '@/api/interviewSchedule';
 import DateAddCard from '@/components/admin/Interview/DateAddCard';
 import useAdminInterviewStore from '@/store/useAdminInterviewStore';
 
 export default function InterviewDataAdd({ dateData, track }) {
   const [inputData, setInputData] = useState({ date: '', startTime: '', endTime: '' });
-  const { interviews } = useAdminInterviewStore();
+  const { interviews, setTrackInterviewSchedule } = useAdminInterviewStore();
   //@ts-ignore
   const { showToast } = useOutletContext();
   const formatDate = (dateStr) => {
@@ -15,28 +15,51 @@ export default function InterviewDataAdd({ dateData, track }) {
     const [yy, mm, dd] = dateStr.split('.');
     return `20${yy}-${mm}-${dd}`;
   };
-
   const formatTime = (timeStr) => {
     // '19:00' -> '19:00:00'
     return `${timeStr}:00`;
   };
-
   const handleInput = (e) => {
     const { name, value } = e.target;
+    let formattedValue = value;
+
+    // 1. 날짜 (date) 자동 포맷팅: YY.MM.DD
+    if (name === 'date') {
+      const rawValue = value.replace(/\D/g, ''); // 숫자만 남김
+      if (rawValue.length <= 2) {
+        formattedValue = rawValue;
+      } else if (rawValue.length <= 4) {
+        formattedValue = `${rawValue.slice(0, 2)}.${rawValue.slice(2)}`;
+      } else {
+        formattedValue = `${rawValue.slice(0, 2)}.${rawValue.slice(2, 4)}.${rawValue.slice(4, 6)}`;
+      }
+    }
+
+    // 2. 시간 (endTime) 자동 포맷팅: 00:00
+    if (name === 'startTime' || name === 'endTime') {
+      const rawValue = value.replace(/\D/g, ''); // 숫자만 남김
+      if (rawValue.length <= 2) {
+        formattedValue = rawValue;
+      } else {
+        formattedValue = `${rawValue.slice(0, 2)}:${rawValue.slice(2, 4)}`;
+      }
+    }
+
+    // 최종 상태 업데이트
     setInputData({
-      ...inputData, // 기존 값 복사
-      [name]: value, // 해당 name을 가진 키만 수정
+      ...inputData,
+      [name]: formattedValue,
     });
   };
 
   const addDate = async (e) => {
-    try {
-      if (
-        e.key == 'Enter' &&
-        inputData.date !== '' &&
-        inputData.startTime !== '' &&
-        inputData.endTime !== ''
-      ) {
+    if (
+      e.key == 'Enter' &&
+      inputData.date !== '' &&
+      inputData.startTime !== '' &&
+      inputData.endTime !== ''
+    ) {
+      try {
         const dateData = {
           date: formatDate(inputData.date),
           startTime: formatTime(inputData.startTime),
@@ -46,10 +69,14 @@ export default function InterviewDataAdd({ dateData, track }) {
         console.log(dateData);
         await postInterviewSchedule(parameter, dateData);
         setInputData({ date: '', startTime: '', endTime: '' });
+      } catch (error) {
+        console.log('일정 추가 실패:', error);
+        showToast('일정 형식을 다시 한번 확인해주세요');
+      } finally {
+        const parameter = { semester: interviews.semester, track: track };
+        const newSchedule = await getInterviewScheduleAdmin(parameter);
+        setTrackInterviewSchedule(newSchedule.tracks[0].track, newSchedule.tracks[0].dates);
       }
-    } catch (error) {
-      console.log('일정 추가 실패:', error);
-      showToast('일정 형식을 다시 한번 확인해주세요');
     }
   };
 
