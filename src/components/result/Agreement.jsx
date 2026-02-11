@@ -8,20 +8,20 @@ export default function Agreement({ setAllChecked, hide }) {
   console.log('현재 hide 값:', hide); // 브라우저 콘솔에서 확인
   const money = `멋쟁이사자처럼 12기 부원들께서는 
   장소 대관, 행사 운영 등을 위해
-  5만원(회비 45000원 + 보증금 5000원)의
+  6만원(회비 45000원 + 보증금 5000원)의
   운영비를 납부하셔야 합니다.
 
   운영비 사용 내역은 투명하게 공개됩니다.
 
   보증금은 1년이 지난 후 돌려드리며 ( 세션 참석 장려용 )
-  세션 3회 불참 시 보증금은 돌려드리지 않습니다.`;
-  const contents = `매주 월요일 18시30분~20시30분 세션 필참
+  수료 조건 미충족 시 보증금은 돌려드리지 않습니다.`;
+  const contents = `트랙별 주 1회 18시30분~20시30분 세션 필수 참여
 
-  3월 21일(목) 18시 : 전체 OT 참여 권장
+  3월 18일(수) 18시 : 전체 OT 참여 권rh
 
-  3월 11일(월) 교내 OT 필참
-  5월 중 진행될 아이디어톤 필참
-  8월 중 진행될 중앙해커톤 필참
+  3월 16일(월) 교내 OT 필수 참여
+  5월 중 진행 되는 중앙아이디어톤 필수 참여
+  8월 중 진행 되는 중앙해커톤 필수 참여
 
   위 활동 불참 시 불이익이 있을 수 있습니다.`;
 
@@ -53,7 +53,9 @@ export default function Agreement({ setAllChecked, hide }) {
             <p className="text-[1rem] pad:text-[1.5rem] font-bold text-start">
               회비 및 보증금 제도 동의 여부
             </p>
-            <div className="flex text-start text-[0.7rem] pad:text-[1rem] pad:mr-20">{money}</div>
+            <div className="flex font-medium text-start text-[0.7rem] pad:text-[1rem] pad:mr-20">
+              {money}
+            </div>
             <button onClick={() => isAllCheck(1)} className="flex items-center gap-3 h-10">
               <div className="flex w-4 h-4 pad:w-5 pad:h-5 border items-center justify-center">
                 {isCheck[0] && <Check className="w-2 h-2 pad:w-3 pad:h-3" />}
@@ -67,14 +69,14 @@ export default function Agreement({ setAllChecked, hide }) {
             <p className="text-[1rem] pad:text-[1.5rem] font-bold text-start">
               회비 및 보증금 제도 동의 여부
             </p>
-            <div className="flex text-start text-[0.7rem] pad:text-[1rem] pad:mr-20">
+            <div className="flex font-medium text-start text-[0.7rem] pad:text-[1rem] pad:mr-20">
               {contents}
             </div>
             <button onClick={() => isAllCheck(2)} className="flex items-center gap-3 h-10">
               <div className="flex w-4 h-4 pad:w-5 pad:h-5 border items-center justify-center">
                 {isCheck[1] && <Check className="w-2 h-2 pad:w-3 pad:h-3" />}
               </div>
-              <p className="text-[0.8rem] pad:text-[1.1rem]">회비 및 보증금 제도에 동의합니다.</p>
+              <p className="text-[0.8rem] pad:text-[1.1rem]">위 내용에 동의합니다.</p>
             </button>
           </div>
         </TextTile>

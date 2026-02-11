@@ -20,19 +20,19 @@ export default function ProjectPagenation({ props }) {
       } else {
         // 다음 그룹이 없다면, 전체의 마지막 페이지로 이동 (maxPage - 1)
         // 현재 페이지가 이미 마지막 페이지가 아닐 때만 실행하는 것이 효율적
-        if (props.pageOn < props.maxPage - 1) {
-          props.setPageOn(props.maxPage - 1);
+        if (props.pageOn < props.maxPage) {
+          props.setPageOn(props.maxPage);
         }
       }
     } else {
       // 이전 그룹으로 가는 로직 (0 미만으로 내려가지 않게 처리)
-      const prevGroupPage = Math.floor(props.pageOn - 1 / 5) * 5;
+      const prevGroupPage = Math.floor((props.pageOn - 5) / 5) * 5 + 1;
       if (prevGroupPage >= 0) {
         props.setPageOn(prevGroupPage);
       } else {
         // 이전 그룹이 없다면 첫 페이지(0)로 이동
         if (props.pageOn > 0) {
-          props.setPageOn(0);
+          props.setPageOn(1);
         }
       }
     }

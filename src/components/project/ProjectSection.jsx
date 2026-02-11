@@ -4,17 +4,30 @@ import { useLocation, useNavigate } from 'react-router';
 import Plus from '@/assets/icons/plus_icon.svg?react';
 import ProjectCard from '@/components/project/ProjectCard';
 import ProjectSkeleton from '@/components/project/ProjectSkeleton';
+import { useIsDesktop } from '@/hooks/useIsDesktop';
+import { useIsPhone } from '@/hooks/useIsPhone';
 
 export default function ProjectSection({ data, isLoading }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const isAdmin = pathname.startsWith('/admin');
+  const isPhone = useIsPhone();
+  const isDesktop = useIsDesktop();
+  const getLength = () => {
+    if (isPhone) {
+      return 1;
+    } else if (isDesktop) {
+      return 6;
+    } else {
+      return 2;
+    }
+  };
 
   return (
     <>
       {isLoading ? (
         <div className="flex flex-wrap gap-7 mt-12 justify-center">
-          {Array.from({ length: 6 }).map(() => (
+          {Array.from({ length: getLength() }).map(() => (
             <ProjectSkeleton />
           ))}
         </div>

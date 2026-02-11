@@ -7,6 +7,7 @@ import BackgroundImg2 from '@/assets/images/member_background2.svg';
 import BackgroundImg3 from '@/assets/images/member_background3.svg';
 import MemberOption from '@/components/Member/MemberOption';
 import MemberSection from '@/components/Member/MemberSection';
+import MemberSkeleton from '@/components/Member/MemberSkeleton';
 import TitleSection from '@/components/common/TitleSection';
 
 export default function Member() {
@@ -99,6 +100,15 @@ export default function Member() {
       </TitleSection>
       <div className="flex flex-col gap-32 pad:pl-3.25 web:pl-7 pt-20">
         <MemberSection title="운영진" data={members.filter((m) => m.position !== 'BABYLION')} />
+        {loading && (
+          <div className="flex flex-col gap-20">
+            <div className="flex gap-5">
+              <MemberSkeleton />
+              <MemberSkeleton />
+            </div>
+            <MemberSkeleton />
+          </div>
+        )}
         {members.filter((m) => m.position === 'BABYLION').length > 0 && (
           <MemberSection title="아기사자" data={members.filter((m) => m.position === 'BABYLION')} />
         )}

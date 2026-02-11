@@ -1,7 +1,7 @@
 export default function ProjectSkeleton() {
   return (
     <div className="border animate-pulse bg-[#F9F9F9]">
-      <div className="h-23 pad:h-46 web:h-55 w-41 pad:w-82 web:w-101 bg-[#B0B0B0]" />
+      <div className="h-55 pad:h-46 web:h-55 w-101 pad:w-82 web:w-101 bg-[#B0B0B0]" />
 
       <div className="flex flex-col p-2 pad:px-5 pad:py-6 web:py-6.5 gap-0.5 pad:gap-2 web:gap-3">
         <div className="flex justify-between items-center">
