@@ -36,7 +36,7 @@ export default function ProjectDetailCard({ data }) {
   const handleLeft = `${(imgNum / imgCount) * 100}%`;
 
   return (
-    <div className="relative w-full z-2 flex flex-col bg-[#F9F9F9] py-7 pad:py-7 web:py-10 px-5 pad:px-5 web:px-8 gap-10 rounded-3xl shadow-[0_0_9px_0_rgba(0,0,0,0.25)]">
+    <div className="relative w-full max-w-285 z-2 flex flex-col bg-[#F9F9F9] py-7 pad:py-7 web:py-10 px-5 pad:px-5 web:px-8 gap-10 rounded-3xl shadow-[0_0_9px_0_rgba(0,0,0,0.25)]">
       <img src={imgUrl} className="h-40 pad:h-84 web:h-151 bg-[#D9D9D9]" />
 
       <div className="flex flex-col gap-3">
