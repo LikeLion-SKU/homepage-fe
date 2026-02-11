@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import { patchDocumentResult, postInterviewResult } from '@/api/applicationResult';
 //@ts-ignore
@@ -15,6 +16,7 @@ const TRACK_LABEL = {
 };
 
 export default function ApplicantsTableCard({ index, cardData, cardCheckData }) {
+  const navigate = useNavigate();
   const applicationOption = ['합격', '불합격'];
   const interviewOption = ['합격', '불합격'];
   const [applicationResult, setApplicationResult] = useState(null); // 서류 결과 상태 관리
@@ -117,8 +119,14 @@ export default function ApplicantsTableCard({ index, cardData, cardCheckData }) 
             setSelectedNum={handleInterviewResultChange}
           />
         )}
-        {/* 추후 해당 지원자의 지원서 확인 페이지로 리다이렉트 */}
-        <button onClick={() => {}} className="px-2 py-2 border ml-auto text-base">
+        <button
+          onClick={() =>
+            navigate('/application', {
+              state: { applicationRecordId: cardData.applicationRecordId },
+            })
+          }
+          className="px-2 py-2 border ml-auto text-base"
+        >
           지원서 보러가기
         </button>
       </div>
