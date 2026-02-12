@@ -8,10 +8,17 @@ import Check from '@/assets/icons/checkBox_icon.svg?react';
 import Copy from '@/assets/icons/copy_icon.svg?react';
 import OptionBox from '@/components/common/Option/optionBox';
 
-export default function MemberTableCard({ index, cardData, cardCheckData }) {
-  const semesterOption = ['14기', '13기', '12기', '11기'];
-  const roleOption = ['회장', '부회장', '운영진', '아기사자', '게스트'];
-  const trackOption = ['PO', '프론트엔드', '백엔드', 'PM', 'Design', 'PM&Design'];
+export default function MemberTableCard({ cardData, cardCheckData, semesterOtption }) {
+  const positionOption = ['회장', '부회장', '운영진', '아기사자'];
+  const trackOption = ['PO', 'PM', 'Design', 'PM&Design', 'Frontend', 'Backend'];
+  const trackMap = {
+    PO: 'PO',
+    PM: 'PM',
+    Design: 'DESIGN',
+    'PM&Design': 'PMDESIGN',
+    Frontend: 'FRONTEND',
+    Backend: 'BACKEND',
+  };
   const positionMap = {
     LEAD: '대표',
     COLEAD: '부대표',
@@ -21,7 +28,7 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
   //@ts-ignore
   const { openModal, showToast } = useOutletContext();
   const isChecked = cardCheckData.checkedList.includes(cardData.clubMemberId);
-  const isEditingThisCard = cardCheckData.isEdit === index;
+  const isEditingThisCard = cardCheckData.isEdit === cardData.clubMemberId;
   const [selectedSemester, setSelectedSemester] = useState(cardData.semester);
   const [selectedPosition, setSelectedPosition] = useState(positionMap[cardData.position]);
   const [selectedTrack, setSelectedTrack] = useState(cardData.track);
@@ -44,7 +51,7 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
           clubMemberId: cardData.clubMemberId,
           semester: parseInt(selectedSemester),
           position: Object.keys(positionMap).find((key) => positionMap[key] === selectedPosition),
-          track: selectedTrack,
+          track: trackMap[selectedTrack],
         };
         await patchClubMember(parameter);
         cardCheckData.setTrigger((prev) => !prev);
@@ -53,7 +60,7 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
       });
     } else if (cardCheckData.isEdit === -1) {
       // 수정 시작 시
-      cardCheckData.setIsEdit(index);
+      cardCheckData.setIsEdit(cardData.clubMemberId);
     } else {
       showToast('한 번에 한 명의 수정만 가능합니다. 수정 완료를 눌러주세요.');
     }
@@ -87,7 +94,7 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
         {isEditingThisCard ? (
           <OptionBox
             initValue={cardData.semester}
-            optionData={semesterOption}
+            optionData={semesterOtption}
             selectedNum={selectedSemester}
             setSelectedNum={setSelectedSemester}
           />
@@ -98,7 +105,7 @@ export default function MemberTableCard({ index, cardData, cardCheckData }) {
           <div className="ml-10">
             <OptionBox
               initValue={positionMap[cardData.position]}
-              optionData={roleOption}
+              optionData={positionOption}
               selectedNum={selectedPosition}
               setSelectedNum={setSelectedPosition}
             />
