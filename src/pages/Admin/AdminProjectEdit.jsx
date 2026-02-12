@@ -36,7 +36,15 @@ export default function AdminProjectEdit() {
   const prizeOption = ['수상O', '수상X'];
   const [projectTypeOption, setProjectTypeOption] = useState([]);
   const [projectTypeId, setProjectTypeId] = useState([]);
-  const trackOption = ['PO', 'PM', 'DESIGN', 'FRONTEND', 'BACKEND'];
+  const trackOption = ['PO', 'PM', 'Design', 'PM&Design', 'Frontend', 'Backend'];
+  const trackMap = {
+    PO: 'PO',
+    PM: 'PM',
+    Design: 'DESIGN',
+    'PM&Design': 'PMDESIGN',
+    Frontend: 'FRONTEND',
+    Backend: 'BACKEND',
+  };
 
   const [imgNum, setImgNum] = useState(0); //현재 이미지 값
 
@@ -167,10 +175,18 @@ export default function AdminProjectEdit() {
   };
   const formatMembersByTrack = (members) => {
     const grouped = {};
+    const reverseTrackMap = {
+      PO: 'PO',
+      PM: 'PM',
+      DESIGN: 'Design',
+      PMDESIGN: 'PM&Design',
+      FRONTEND: 'Frontend',
+      BACKEND: 'Backend',
+    };
     members.forEach((m) => {
-      const track = m.track; // 'PM', 'DESIGN' 등
-      if (!grouped[track]) grouped[track] = [];
-      grouped[track].push(m.projectMemberName);
+      const uiTrackKey = reverseTrackMap[m.track] || m.track;
+      if (!grouped[uiTrackKey]) grouped[uiTrackKey] = [];
+      grouped[uiTrackKey].push(m.projectMemberName);
     });
     return grouped;
   };
@@ -183,6 +199,8 @@ export default function AdminProjectEdit() {
       // names가 배열이 아니면 건너뜀
       if (!Array.isArray(names)) return;
 
+      const mappedKey = trackMap[track] || track;
+
       names.forEach((name) => {
         // 1. 수정 모드일 때만 원본 배열과 비교하여 기존 멤버를 찾음
         if (isEdit) {
@@ -191,7 +209,7 @@ export default function AdminProjectEdit() {
             : [];
 
           const existingMember = originalMemberArray.find(
-            (m) => m.track === track && m.projectMemberName === name
+            (m) => (m.track === track || m.track === mappedKey) && m.projectMemberName === name
           );
 
           if (existingMember) {
@@ -202,10 +220,10 @@ export default function AdminProjectEdit() {
         }
 
         // 2. 수정 모드가 아니거나, 수정 모드여도 기존 멤버 리스트에 없는 경우 (새 멤버)
-        if (!newProjectMembers[track]) {
-          newProjectMembers[track] = [];
+        if (!newProjectMembers[mappedKey]) {
+          newProjectMembers[mappedKey] = [];
         }
-        newProjectMembers[track].push(name);
+        newProjectMembers[mappedKey].push(name);
       });
     });
 
@@ -254,7 +272,12 @@ export default function AdminProjectEdit() {
             이미지 삭제
           </button>
         )}
-        <img src={showImage[imgNum]} className="w-269 h-151 bg-[#D9D9D9]" />
+        <div className="relative">
+          <img src={showImage[imgNum]} className="w-269 h-151 bg-[#D9D9D9]" />
+          <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-sm">
+            {imgNum + 1} / {showImage.length}
+          </div>
+        </div>
         <div className="flex justify-between">
           <div className="flex flex-col gap-8 w-164">
             <input

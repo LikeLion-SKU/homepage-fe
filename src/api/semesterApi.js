@@ -13,7 +13,7 @@ export const getSemester = async () => {
 
 export const postSemester = async (semester) => {
   try {
-    const res = await APIService.private.post('/v1/admin/semester', {
+    const res = await APIService.private.post('/v1/admin/semesters', {
       semester: parseInt(semester),
     });
 
@@ -31,6 +31,6 @@ export const deleteSemester = async (semester) => {
     return res.data;
   } catch (error) {
     console.log('기수 삭제 실패:', error);
-    return [];
+    throw error;
   }
 };

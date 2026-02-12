@@ -40,7 +40,29 @@ export default function LoginForm({ onSubmit, isLoading = false }) {
           />
         </div>
       </form>
-      <SignUpLink showNotice={!email && !password} />
+      <div className="mt-4">
+        <SignUpLink />
+      </div>
+      <div className="w-full mb-6 text-center mt-6">
+        <div
+          className="border border-gray-300 rounded px-4 py-5 max-[480px]:px-3 max-[480px]:py-4 bg-[#FAFBF8]"
+          style={{ transform: 'translateY(0px)' }}
+        >
+          <p className="text-black text-xm max-[480px]:text-xs font-['Pretendard'] mb-1">
+            아이디는 학교 이메일이며,
+          </p>
+          <p className="text-black text-xm max-[480px]:text-xs font-['Pretendard'] mb-1">
+            첫 로그인 시 회원가입이 필요합니다.
+          </p>
+          <p className="text-black text-xm max-[480px]:text-xs font-['Pretendard'] mb-1">
+            로그인이 어려운 경우
+          </p>
+          <p className="text-black text-xm max-[480px]:text-xs font-['Pretendard'] mb-1">
+            {' '}
+            skuofficial@likelion.org로 문의바랍니다.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -85,16 +85,6 @@ export default function AdminPage() {
             지원자/지원서 관리
           </Button>
         </div>
-        <div className="self-stretch">
-          <Button
-            onClick={() => {
-              setIsPasswordModalOpen(true);
-            }}
-            className={buttonStyle}
-          >
-            로그아웃
-          </Button>
-        </div>
       </div>
       <Modal
         isOpen={isPasswordModalOpen}

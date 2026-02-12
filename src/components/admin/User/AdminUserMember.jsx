@@ -22,6 +22,7 @@ export default function AdminUserMember({
           setDebouncedGuestName={(searchName) =>
             setDebouncedGuestName((prev) => [searchName, prev[1]])
           }
+          isGuest={true}
         />
       </div>
       <div className="flex flex-col gap-12 py-15 w-158 px-8.5 bg-white">
@@ -36,6 +37,7 @@ export default function AdminUserMember({
           setDebouncedGuestName={(searchName) =>
             setDebouncedGuestName((prev) => [prev[0], searchName])
           }
+          isGuest={false}
         />
       </div>
     </div>

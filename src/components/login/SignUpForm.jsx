@@ -400,13 +400,10 @@ export default function SignUpForm({ onSubmit }) {
               다음
             </LoginButton>
           </div>
+        </div>
 
-          <SignupLink
-            questionText="이미 계정이 있으신가요?"
-            linkText="로그인"
-            linkPath="/login"
-            showNotice={false}
-          />
+        <div className="mt-3">
+          <SignupLink questionText="이미 계정이 있으신가요?" linkText="로그인" linkPath="/login" />
         </div>
 
         <CheckModal
@@ -569,14 +566,11 @@ export default function SignUpForm({ onSubmit }) {
             다음
           </LoginButton>
         </div>
-
-        <SignupLink
-          questionText="이미 계정이 있으신가요?"
-          linkText="로그인"
-          linkPath="/login"
-          showNotice={false}
-        />
       </form>
+
+      <div className="mt-4">
+        <SignupLink questionText="이미 계정이 있으신가요?" linkText="로그인" linkPath="/login" />
+      </div>
 
       <CheckModal
         isOpen={showConfirmModal}

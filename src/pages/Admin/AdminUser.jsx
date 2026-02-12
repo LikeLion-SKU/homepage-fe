@@ -204,6 +204,7 @@ export default function AdminUser() {
   };
 
   useEffect(() => {
+    if (debouncedGuestName[0] === '' && debouncedGuestName[1] === '') return;
     const getSearchName = async () => {
       if (debouncedGuestName[0] !== '') {
         const parameter = {
@@ -291,6 +292,7 @@ export default function AdminUser() {
             memberData={memberData}
             setTrigger={setTrigger}
             setDebouncedSearch={setDebouncedSearch}
+            semesterData={semesterData}
           />
         )}
       </div>

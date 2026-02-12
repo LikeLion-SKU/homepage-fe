@@ -24,6 +24,9 @@ export default function InterviewTime({
           ? { date: bookingData.booking.date, scheduleId: bookingData.booking.scheduleId }
           : { date: '', scheduleId: 0 }
       );
+      if (bookingData.booking.scheduleId) {
+        setAllChecked((prev) => prev.map((item, index) => (index === 0 ? true : item)));
+      }
       setMyInterview(bookingData);
     };
     getInterview();
