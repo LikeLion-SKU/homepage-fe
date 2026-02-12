@@ -49,7 +49,7 @@ export default function ResultNotice() {
       now.isBefore(finalResultDisplayStart)
     ) {
       return {
-        date: `${formatDate(date.applicationResultAt)} ~ ${formatDate(date.applicationResultAt)}`,
+        date: `${formatDate(date.applicationResultAt)} ~ ${formatDate(finalResultDisplayStart)}`,
         test: '서류 결과 확인하기',
       };
     }
