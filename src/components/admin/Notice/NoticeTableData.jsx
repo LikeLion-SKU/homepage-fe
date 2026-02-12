@@ -367,7 +367,12 @@ export default function NoticeTableData({ children }) {
       return true;
     } catch (error) {
       console.error('지원 일정 삭제 실패:', error);
-      showToast('삭제에 실패했습니다.');
+      const errorStatus = error?.response?.status;
+      if (errorStatus === 409) {
+        showToast('등록된 지원서 질문이 있는 모집 공고는 삭제할 수 없습니다.');
+      } else {
+        showToast('삭제에 실패했습니다.');
+      }
       return false;
     }
   };

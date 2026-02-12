@@ -29,6 +29,7 @@ export default function OptionBox({
       >
         {optionData.map((num) => (
           <li
+            key={num}
             onClick={() => {
               setIsOpen(false);
               setSelectedNum(num);

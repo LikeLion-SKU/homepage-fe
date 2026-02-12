@@ -8,7 +8,7 @@ export default function ButtonGroup({ buttonData, isCheck, setIsCheck }) {
   };
   return (
     <div className="flex gap-3">
-      {buttonData.map((name, index) => (
+      {buttonData?.map((name, index) => (
         <button
           key={index}
           onClick={() => handleCheck(name)}
