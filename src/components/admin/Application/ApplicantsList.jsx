@@ -97,11 +97,16 @@ export default function ApplicantsList({
           />
         </div>
       </div>
-      <div className="flex flex-col border">
-        <div className="flex pl-35 pr-55 w-314 h-20 justify-between items-center font-semibold border-b">
-          {optionData.map((name) => (
-            <p key={name}>{name}</p>
-          ))}
+      <div className="flex flex-col border w-full">
+        <div className="grid grid-cols-[80px_140px_190px_170px_160px_180px_200px_minmax(120px,1fr)] gap-4 h-20 px-4 items-center font-semibold border-b">
+          <div />
+          <div>{optionData[0]}</div>
+          <div>{optionData[1]}</div>
+          <div>{optionData[2]}</div>
+          <div>{optionData[3]}</div>
+          <div>{optionData[4]}</div>
+          <div>{optionData[5]}</div>
+          <div className="text-left">지원서</div>
         </div>
         <div className="flex flex-col">
           {applicants.map((data, index) => (
