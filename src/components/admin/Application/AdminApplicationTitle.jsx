@@ -13,7 +13,9 @@ export default function AdminApplicationTitle({ props, children = null }) {
       {props.rule.length > 0 && (
         <div className="flex flex-col justify-center pl-5 w-92 h-26 bg-[#F9F9F9] border">
           {props.rule.map((string) => (
-            <p className="text-[1rem] font-semibold">{string}</p>
+            <p key={string} className="text-[1rem] font-semibold">
+              {string}
+            </p>
           ))}
         </div>
       )}
