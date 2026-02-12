@@ -3,7 +3,7 @@ import { useLoaderData, useNavigate } from 'react-router';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { getApplicationsLoader } from '@/api/applicationRecordApi';
+import { getApplicationsLoader } from '@/api/applicationRecord';
 import AdminApplicationTitle from '@/components/admin/Application/AdminApplicationTitle';
 import ApplicantsList from '@/components/admin/Application/ApplicantsList';
 import ButtonGroup from '@/components/admin/User/ButtonGroup';

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useLoaderData } from 'react-router';
 
-import { deleteResume } from '@/api/applicationQuestionApi';
+import { deleteResume } from '@/api/applicationQuestion';
 import Navy from '@/assets/icons/navy-left.svg';
 import ApplicationItem from '@/components/admin/Application/ApplicationItem';
 import Button from '@/components/common/Button/Button';
