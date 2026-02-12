@@ -169,7 +169,7 @@ export default function SignUpForm({ onSubmit }) {
 
     if (!isValidPassword(signupPassword)) {
       setConfirmModalMessage(
-        '비밀번호는 영문자, 숫자, 특수문자를 각각 최소 1자 이상 포함한 8~20자리여야 합니다.'
+        '비밀번호는 영문자, 숫자, 특수문자(!@#$%^&*)를 각각 최소 1자 이상 포함한 8~20자리여야 합니다.'
       );
       setShowConfirmModal(true);
       setPasswordTouched(true);
@@ -460,7 +460,7 @@ export default function SignUpForm({ onSubmit }) {
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
             <p
-              className={`text-xs min-[761px]:text-base font-['Pretendard'] font-medium ${
+              className={`text-xs min-[761px]:text-sm font-['Pretendard'] font-medium ${
                 passwordTouched && signupPassword
                   ? isValidPassword(signupPassword)
                     ? 'text-[#00A424]'
@@ -468,7 +468,8 @@ export default function SignUpForm({ onSubmit }) {
                   : 'text-[#1A1A1A]'
               }`}
             >
-              비밀번호는 영문자, 숫자, 특수문자를 각각 최소 1자 이상 포함한 8~20자리여야 합니다.
+              비밀번호는 영문자, 숫자, 특수문자(!@#$%^&*)를 각각 최소 1자 이상 포함한 8~20자리여야
+              합니다.
             </p>
           </div>
         </div>

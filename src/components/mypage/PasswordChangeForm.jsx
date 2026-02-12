@@ -181,7 +181,7 @@ export default function PasswordChangeForm({ onSubmit, isLoading = false }) {
             defaultShowPassword={false}
           />
           <div
-            className={`text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1 break-words max-[375px]:whitespace-normal ${
+            className={`text-xs min-[761px]:text-[13px] text-left font-['Pretendard'] mb-4 mt-1 break-words max-[375px]:whitespace-normal ${
               passwordTouched && newPassword
                 ? isValidPassword(newPassword)
                   ? 'text-[#00A424]'
@@ -189,7 +189,8 @@ export default function PasswordChangeForm({ onSubmit, isLoading = false }) {
                 : 'text-[#000000]'
             }`}
           >
-            비밀번호는 영문자, 숫자, 특수문자를 각각 최소 1자 이상 포함한 8~20자리여야 합니다.
+            비밀번호는 영문자, 숫자, 특수문자(!@#$%^&*)를 각각 최소 1자 이상 포함한 8~20자리여야
+            합니다.
           </div>
         </div>
         <div>
