@@ -142,7 +142,11 @@ export const postProject = async (updateData, files) => {
 export const getAwardList = async () => {
   // 수상작 목록 조회
   try {
-    const res = await APIService.public.get('/v1/projects/awards');
+    const res = await APIService.public.get('/v1/projects/awards', {
+      params: {
+        size: 10, // 모든 수상작을 가져오기 위해 큰 값 설정
+      },
+    });
     return res.data;
   } catch (error) {
     console.error('수상작 목록 조회 실패:', error);
