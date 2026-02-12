@@ -3,9 +3,9 @@ import { RouterProvider, createBrowserRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { getCurrentForm } from '@/api/applicationForm';
-import { getResumeListLoader } from '@/api/applicationQuestionApi';
-import { questionsLoader } from '@/api/applicationQuestionApi';
-import { getApplicationsLoader } from '@/api/applicationRecordApi';
+import { getResumeListLoader } from '@/api/applicationQuestion';
+import { questionsLoader } from '@/api/applicationQuestion';
+import { getApplicationsLoader } from '@/api/applicationRecord';
 import { getResult } from '@/api/applicationResult';
 import { basicInfoLoader } from '@/api/applyLoader';
 import { logoutAction } from '@/api/logoutAction';

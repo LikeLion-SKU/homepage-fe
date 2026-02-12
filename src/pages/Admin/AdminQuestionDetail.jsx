@@ -8,7 +8,7 @@ import {
   getSemesterQuestion,
   postResumeQuestions,
   putSemesterQuestion,
-} from '@/api/applicationQuestionApi';
+} from '@/api/applicationQuestion';
 import Navy from '@/assets/icons/navy-left.svg';
 import ApplicationScheduleSection from '@/components/admin/Application/ApplicationScheduleSection';
 import QuestionManager from '@/components/admin/Application/QuestionManager';
