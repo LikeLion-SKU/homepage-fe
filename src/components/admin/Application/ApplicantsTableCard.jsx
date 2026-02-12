@@ -91,25 +91,28 @@ export default function ApplicantsTableCard({ index, cardData, cardCheckData }) 
 
   return (
     <div
-      className={`w-314 h-21 flex items-center pl-11 pr-5 text-[1.1rem] font-semibold gap-10 ${getBgColor()}`}
+      className={`grid grid-cols-[60px_120px_190px_205px_150px_160px_80px_minmax(120px,1fr)] gap-4 h-21 px-4 items-center text-[1.1rem] font-semibold w-full border-b border-black/10 ${getBgColor()}`}
     >
       {isChecked ? (
-        <Check onClick={() => handleToggle()} />
+        <Check onClick={() => handleToggle()} className="cursor-pointer" />
       ) : (
-        <button onClick={() => handleToggle()} className="w-7 h-6.25 border-2" />
+        <button onClick={() => handleToggle()} className="w-7 h-6.25 border-2 shrink-0" />
       )}
-      <div className="flex w-full gap-15 items-center">
-        <p className="mr-1 ml-5">{cardData.name}</p>
-        <p>{cardData.department}</p>
-        <p>{cardData.studentNumber}</p>
-        <p className="ml-2 mr-7">{TRACK_LABEL[cardData.track] || cardData.track}</p>
-        {/* 서류 결과 선택 */}
+      <div className="min-w-0 overflow-hidden text-ellipsis">{cardData.name}</div>
+      <div className="min-w-0 overflow-hidden text-ellipsis">{cardData.department}</div>
+      <div className="min-w-0 overflow-hidden text-ellipsis">{cardData.studentNumber}</div>
+      <div className="min-w-0 overflow-hidden text-ellipsis">
+        {TRACK_LABEL[cardData.track] || cardData.track}
+      </div>
+      <div className="shrink-0 pr-10">
         <OptionBox
           initValue={docPassDisplay}
           optionData={applicationOption}
           selectedNum={applicationResult}
           setSelectedNum={handleDocumentResultChange}
         />
+      </div>
+      <div className="shrink-0 pl-4">
         {(applicationResult === '합격' ||
           (applicationResult === null && cardData.isDocumentPassed)) && (
           <OptionBox
@@ -119,13 +122,15 @@ export default function ApplicantsTableCard({ index, cardData, cardCheckData }) 
             setSelectedNum={handleInterviewResultChange}
           />
         )}
+      </div>
+      <div className="flex justify-end">
         <button
           onClick={() =>
             navigate('/application', {
               state: { applicationRecordId: cardData.applicationRecordId },
             })
           }
-          className="px-2 py-2 border ml-auto text-base"
+          className="px-2 py-2 border text-base shrink-0"
         >
           지원서 보러가기
         </button>

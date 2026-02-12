@@ -108,7 +108,12 @@ export default function PasswordChangeForm({ onSubmit, isLoading = false }) {
       } catch {
         // 에러 처리 (토스트 메시지 등)
         if (showToast) {
-          showToast('비밀번호 변경에 실패했습니다.');
+          // 현재 비밀번호와 새 비밀번호가 같은지 확인
+          if (currentPassword === newPassword) {
+            showToast('현재 비밀번호와 동일한 새 비밀번호를 입력했습니다.');
+          } else {
+            showToast('비밀번호 변경에 실패했습니다.');
+          }
         }
       }
     }
@@ -141,7 +146,8 @@ export default function PasswordChangeForm({ onSubmit, isLoading = false }) {
             }}
             placeholder="abc@1234"
             mb="mb-0"
-            hideToggle={true}
+            hideToggle={false}
+            defaultShowPassword={false}
           />
           {currentPasswordStatus === 'match' && !currentPasswordTouched && !isPasswordChanged && (
             <div className="text-[#00A424] text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
@@ -171,10 +177,11 @@ export default function PasswordChangeForm({ onSubmit, isLoading = false }) {
             onBlur={() => setPasswordTouched(true)}
             placeholder="abcd@1234"
             mb="mb-0"
-            hideToggle={true}
+            hideToggle={false}
+            defaultShowPassword={false}
           />
           <div
-            className={`text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1 break-words max-[375px]:whitespace-normal ${
+            className={`text-xs min-[761px]:text-[13px] text-left font-['Pretendard'] mb-4 mt-1 break-words max-[375px]:whitespace-normal ${
               passwordTouched && newPassword
                 ? isValidPassword(newPassword)
                   ? 'text-[#00A424]'
@@ -182,7 +189,8 @@ export default function PasswordChangeForm({ onSubmit, isLoading = false }) {
                 : 'text-[#000000]'
             }`}
           >
-            비밀번호는 영문자, 숫자, 특수문자를 각각 최소 1자 이상 포함한 8~20자리여야 합니다.
+            비밀번호는 영문자, 숫자, 특수문자(!@#$%^&*)를 각각 최소 1자 이상 포함한 8~20자리여야
+            합니다.
           </div>
         </div>
         <div>
@@ -192,7 +200,8 @@ export default function PasswordChangeForm({ onSubmit, isLoading = false }) {
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="새 비밀번호를 다시 입력해주세요"
             mb="mb-0"
-            hideToggle={true}
+            hideToggle={false}
+            defaultShowPassword={false}
           />
           {passwordMatchStatus === 'mismatch' && (
             <div className="text-[#FF7D56] text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">

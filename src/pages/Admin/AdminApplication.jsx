@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -7,6 +7,7 @@ import { getApplicationsLoader } from '@/api/applicationRecord';
 import AdminApplicationTitle from '@/components/admin/Application/AdminApplicationTitle';
 import ApplicantsList from '@/components/admin/Application/ApplicantsList';
 import ButtonGroup from '@/components/admin/User/ButtonGroup';
+import useSemesterListStore from '@/store/useSemesterListStore';
 
 const TRACK_API_MAP = {
   PO: 'PO',
@@ -19,6 +20,10 @@ const TRACK_API_MAP = {
 
 export default function AdminApplication() {
   const navigate = useNavigate();
+  const { semesterData, fetchSemesters } = useSemesterListStore();
+  useEffect(() => {
+    fetchSemesters();
+  }, [fetchSemesters]);
 
   const propsData = {
     title: '지원서/지원자 관리',
@@ -38,7 +43,6 @@ export default function AdminApplication() {
     ),
   };
 
-  const semesterData = ['14기', '13기', '12기', '11기'];
   const trackData = ['PO', 'PM', 'Design', 'PM & Design', 'Frontend', 'Backend'];
 
   const [selectedSemester, setSelectedSemester] = useState('');

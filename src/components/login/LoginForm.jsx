@@ -29,16 +29,17 @@ export default function LoginForm({ onSubmit, isLoading = false }) {
           onChange={(e) => setPassword(e.target.value)}
           placeholder=""
           mb="mb-2"
+          defaultShowPassword={false}
         />
         <ForgotPasswordLink />
+        <div className="w-full">
+          <LoginButton
+            onClick={handleSubmit}
+            disabled={!email || !password || isLoading}
+            isLoading={isLoading}
+          />
+        </div>
       </form>
-      <div className="w-full">
-        <LoginButton
-          onClick={handleSubmit}
-          disabled={!email || !password || isLoading}
-          isLoading={isLoading}
-        />
-      </div>
       <SignUpLink showNotice={!email && !password} />
     </div>
   );
