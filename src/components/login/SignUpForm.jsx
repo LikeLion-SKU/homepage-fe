@@ -454,7 +454,9 @@ export default function SignUpForm({ onSubmit }) {
             onBlur={() => setPasswordTouched(true)}
             placeholder="abcd@1234"
             mb="mb-0"
-            required
+            required={true}
+            hideToggle={false}
+            defaultShowPassword={false}
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
             <p
@@ -479,6 +481,7 @@ export default function SignUpForm({ onSubmit }) {
             placeholder="비밀번호를 다시 입력해주세요"
             mb="mb-0"
             required
+            defaultShowPassword={false}
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
             {confirmPassword &&
