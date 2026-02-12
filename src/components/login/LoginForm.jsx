@@ -31,14 +31,14 @@ export default function LoginForm({ onSubmit, isLoading = false }) {
           mb="mb-2"
         />
         <ForgotPasswordLink />
+        <div className="w-full">
+          <LoginButton
+            onClick={handleSubmit}
+            disabled={!email || !password || isLoading}
+            isLoading={isLoading}
+          />
+        </div>
       </form>
-      <div className="w-full">
-        <LoginButton
-          onClick={handleSubmit}
-          disabled={!email || !password || isLoading}
-          isLoading={isLoading}
-        />
-      </div>
       <SignUpLink showNotice={!email && !password} />
     </div>
   );
