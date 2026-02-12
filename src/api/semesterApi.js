@@ -31,6 +31,6 @@ export const deleteSemester = async (semester) => {
     return res.data;
   } catch (error) {
     console.log('기수 삭제 실패:', error);
-    return [];
+    throw error;
   }
 };

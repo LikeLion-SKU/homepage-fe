@@ -23,10 +23,7 @@ export default function OptionAdminTable({
     try {
       await handleDelete(deleteName);
     } catch (error) {
-      if (error.response && error.response.status === 409) {
-        // 409 에러일 때 전용 모달 띄우기
-        openModal('현재 사용 중인 데이터이므로 삭제할 수 없습니다.', () => {});
-      }
+      console.log('삭제 실패:', error);
     }
   };
   return (
