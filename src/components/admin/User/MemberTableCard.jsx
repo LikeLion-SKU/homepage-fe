@@ -124,7 +124,9 @@ export default function MemberTableCard({ cardData, cardCheckData, semesterOtpti
             />
           </div>
         ) : (
-          <p className="w-28 text-center shrink-0 ml-16">{cardData.track}</p>
+          <p className="w-28 text-center shrink-0 ml-16">
+            {Object.keys(trackMap).find((key) => trackMap[key] === cardData.track)}
+          </p>
         )}
         <p className="w-40 shrink-0 text-center ml-2">{cardData.department}</p>
         <p className="ml-3">{cardData.studentNumber}</p>
