@@ -54,7 +54,11 @@ export default function Result() {
   };
   const getModalMessage = () => {
     if (allChecked[0] && allChecked[1]) {
-      return '면접 일정이 확정되었습니다.';
+      if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
+        return '면접 일정이 확정되었습니다.';
+      } else {
+        return '이전 일정을 유지합니다.';
+      }
     } else if (!allChecked[0]) {
       return '면접 날짜를 선택해주세요.';
     } else if (!allChecked[1]) {

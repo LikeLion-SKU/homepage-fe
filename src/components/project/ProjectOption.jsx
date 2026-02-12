@@ -16,6 +16,24 @@ export default function ProjectOption({ handleSemester, handleProjectType }) {
   const isPhone = useIsPhone();
   let isMountProject = useRef(false);
   let isMountSemester = useRef(false);
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const onWheelAction = (e) => {
+      // 세로 스크롤이 발생할 때만 가로로 전환하고 기본 동작 방지
+      if (e.deltaY === 0) return;
+      e.preventDefault();
+      el.scrollLeft += e.deltaY;
+    };
+
+    // passive: false로 설정해야 preventDefault가 작동함
+    el.addEventListener('wheel', onWheelAction, { passive: false });
+
+    return () => el.removeEventListener('wheel', onWheelAction);
+  }, [projectTypeName]); // 데이터가 로드되어 영역이 생길 때 다시 등록
 
   useEffect(() => {
     const getOptionData = async () => {
@@ -86,7 +104,10 @@ export default function ProjectOption({ handleSemester, handleProjectType }) {
           setSelectedNum={setSelectProjectType}
         />
       ) : (
-        <div className="flex flex-1 min-w-0 h-10 text-[1rem] pad:gap-5 items-center overflow-x-auto no-scrollbar border-r">
+        <div
+          ref={scrollRef}
+          className="flex flex-1 min-w-0 h-10 text-[1rem] pad:gap-5 items-center overflow-x-auto no-scrollbar border-r"
+        >
           {projectTypeName.map((name) => (
             <div
               key={name}

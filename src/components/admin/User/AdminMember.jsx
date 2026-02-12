@@ -6,7 +6,7 @@ import { deleteClubMember } from '@/api/userApi';
 import Search from '@/assets/icons/Search_icon.svg?react';
 import MemberTableCard from '@/components/admin/User/MemberTableCard';
 
-export default function AdminMember({ memberData, setTrigger, setDebouncedSearch }) {
+export default function AdminMember({ memberData, setTrigger, setDebouncedSearch, semesterData }) {
   const optionData = ['기수', '역할', '이름', '트랙', '학과', '학번', '수정', '복사'];
   const [checkedList, setCheckedList] = useState([]);
   const [isEdit, setIsEdit] = useState(-1);
@@ -83,8 +83,13 @@ export default function AdminMember({ memberData, setTrigger, setDebouncedSearch
           ))}
         </div>
         <div className="flex flex-col max-h-150 overflow-y-auto">
-          {memberData.map((data, index) => (
-            <MemberTableCard index={index} cardData={data} cardCheckData={cardCheckData} />
+          {memberData.map((data) => (
+            <MemberTableCard
+              key={data.clubMemberId}
+              cardData={data}
+              cardCheckData={cardCheckData}
+              semesterOtption={semesterData}
+            />
           ))}
         </div>
       </div>

@@ -14,6 +14,7 @@ export default function UserTable({
   setTrigger,
   handleGuestData,
   setDebouncedGuestName,
+  isGuest,
 }) {
   const [checkedList, setCheckedList] = useState([]);
   const observerRef = useRef(null);
@@ -94,16 +95,19 @@ export default function UserTable({
               }}
               className="w-25 h-10 border text-center items-center bg-white"
             >
-              구성원 이동
+              {isGuest ? '게스트 이동' : '구성원 이동'}
             </button>
           )}
           {onDelete && checkedList.length > 0 && (
             <button
               onClick={() =>
-                openModal('구성원 정보를 삭제하시겠습니까?', () => {
-                  handleDelete();
-                  showToast('삭제되었습니다!');
-                })
+                openModal(
+                  isGuest ? '게스트 정보를 삭제하시겠습니까?' : '구성원 정보를 삭제하시겠습니까?',
+                  () => {
+                    handleDelete();
+                    showToast('삭제되었습니다!');
+                  }
+                )
               }
               className="w-20 h-10 border text-center items-center bg-white"
             >

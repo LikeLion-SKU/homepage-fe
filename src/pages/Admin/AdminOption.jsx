@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router';
 
 import { deleteProjectType, getProjectType, postProjectType } from '@/api/projectApi';
 import { deleteSemester, getSemester, postSemester } from '@/api/semesterApi';
@@ -9,6 +10,8 @@ export default function AdminOption() {
   const [semester, setSemester] = useState([]);
   const [projectType, setProjectType] = useState([]);
   const [projectTypeId, setProjectTypeId] = useState([]);
+  //@ts-ignore
+  const { showToast } = useOutletContext();
   useEffect(() => {
     const getOption = async () => {
       setSemester(await getSemester());
@@ -33,6 +36,11 @@ export default function AdminOption() {
       await deleteSemester(semesterNum);
     } catch (error) {
       console.log('기수 삭제 실패:', error);
+      if (error.response && error.response.status === 409) {
+        showToast('해당 기수를 사용 중인 데이터가 있어 삭제할 수 없습니다.');
+      } else {
+        showToast('기수 삭제 중 오류가 발생했습니다.');
+      }
       throw error;
     } finally {
       setSemester(await getSemester());
