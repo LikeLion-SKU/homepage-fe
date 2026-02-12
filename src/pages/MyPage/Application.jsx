@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { applicationLoader, getApplicationUser } from '@/api/applicationRecordApi';
+import { applicationLoader, getApplicationUser } from '@/api/applicationRecord';
 import Navy from '@/assets/icons/navy-left.svg';
 import Button from '@/components/common/Button/Button';
 import useSemesterStore from '@/store/useSemesterStore';
