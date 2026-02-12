@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLoaderData, useNavigate, useOutletContext } from 'react-router-dom';
 
-import { applicationSubmit } from '@/api/applicationRecordApi';
+import { applicationSubmit } from '@/api/applicationRecord';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
 import ApplyStep from '@/components/common/apply/ApplyStep';
