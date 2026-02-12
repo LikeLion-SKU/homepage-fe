@@ -13,7 +13,7 @@ export const getSemester = async () => {
 
 export const postSemester = async (semester) => {
   try {
-    const res = await APIService.private.post('/v1/admin/semester', {
+    const res = await APIService.private.post('/v1/admin/semesters', {
       semester: parseInt(semester),
     });
 
