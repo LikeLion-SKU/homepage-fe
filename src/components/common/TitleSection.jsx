@@ -12,9 +12,10 @@ export default function TitleSection({
   searchApi = (value) => {
     console.log(value);
   },
+  initSearch,
 }) {
-  const [searchName, setSearchName] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [searchName, setSearchName] = useState(initSearch);
+  const [debouncedSearch, setDebouncedSearch] = useState(initSearch);
   let isMount = useRef(false);
 
   /* 1) 검색어 디바운싱 */
