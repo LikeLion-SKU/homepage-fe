@@ -10,6 +10,7 @@ export default function NoticeButton({
   checkedCount = 0,
   className = '',
   isConfirmMode = false,
+  isCreateMode = false,
 }) {
   // 전체 선택 버튼
   if (type === 'selectAll') {
@@ -49,7 +50,7 @@ export default function NoticeButton({
         onClick={onClick}
         className={`${buttonWidth} h-10 border text-center items-center ${bgColor} text-[1.1rem] font-semibold text-black ${className}`}
       >
-        {isConfirmMode ? '수정완료' : '수정'}
+        {isConfirmMode ? (isCreateMode ? '생성완료' : '수정완료') : '수정'}
       </button>
     );
   }
