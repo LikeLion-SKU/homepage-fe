@@ -9,7 +9,7 @@ import Copy from '@/assets/icons/copy_icon.svg?react';
 import OptionBox from '@/components/common/Option/optionBox';
 
 export default function MemberTableCard({ cardData, cardCheckData, semesterOtption }) {
-  const positionOption = ['회장', '부회장', '운영진', '아기사자'];
+  const positionOption = ['대표', '부대표', '운영진', '아기사자'];
   const trackOption = ['PO', 'PM', 'Design', 'PM&Design', 'Frontend', 'Backend'];
   const trackMap = {
     PO: 'PO',

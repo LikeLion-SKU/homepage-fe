@@ -95,7 +95,7 @@ export default function UserTable({
               }}
               className="w-25 h-10 border text-center items-center bg-white"
             >
-              {isGuest ? '게스트 이동' : '구성원 이동'}
+              {isGuest ? '구성원 이동' : '게스트 이동'}
             </button>
           )}
           {onDelete && checkedList.length > 0 && (
