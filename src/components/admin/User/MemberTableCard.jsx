@@ -31,7 +31,9 @@ export default function MemberTableCard({ cardData, cardCheckData, semesterOtpti
   const isEditingThisCard = cardCheckData.isEdit === cardData.clubMemberId;
   const [selectedSemester, setSelectedSemester] = useState(cardData.semester);
   const [selectedPosition, setSelectedPosition] = useState(positionMap[cardData.position]);
-  const [selectedTrack, setSelectedTrack] = useState(cardData.track);
+  const [selectedTrack, setSelectedTrack] = useState(
+    Object.keys(trackMap).find((key) => trackMap[key] === cardData.track)
+  );
   const handleToggle = () => {
     if (isChecked) {
       // 이미 있으면 제외 (하나 빼기)
