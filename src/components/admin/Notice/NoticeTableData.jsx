@@ -10,152 +10,6 @@ import {
 
 import { convertToISOString, parseISODateTime } from './NoticeTime';
 
-// 날짜 문자열(YYYY.MM.DD)과 시간 문자열(HH:MM)을 Date 객체로 변환
-const parseDateTimeToDate = (dateStr, timeStr) => {
-  if (!dateStr) return null;
-
-  try {
-    const [year, month, day] = dateStr.split('.').map((v) => parseInt(v, 10));
-    let hour = 9;
-    let minute = 0;
-
-    if (timeStr) {
-      const [h, m] = timeStr.split(':').map((v) => parseInt(v, 10));
-      if (!Number.isNaN(h)) hour = h;
-      if (!Number.isNaN(m)) minute = m;
-    }
-
-    if (Number.isNaN(year) || Number.isNaN(month) || Number.isNaN(day)) {
-      return null;
-    }
-
-    return new Date(year, month - 1, day, hour, minute);
-  } catch {
-    return null;
-  }
-};
-
-// 기간 겹침 검증 함수
-// 두 기간이 겹치는지 확인: (시작일1 ~ 최종발표일1)과 (시작일2 ~ 최종발표일2)
-const isOverlapping = (start1, end1, start2, end2) => {
-  // 기간이 겹치지 않으려면: end1 < start2 또는 end2 < start1
-  // 겹치려면: !(end1 < start2 || end2 < start1) = end1 >= start2 && end2 >= start1
-  return end1 >= start2 && end2 >= start1;
-};
-
-// 기본값 생성 함수 (기수 14기 고정, 현재 시간부터 +1일씩 순차)
-// 날짜 순서 제약: openAt < closeAt ≤ applicationResultAt ≤ interviewScheduleConfirmedAt ≤ finalResultAt
-// 기존 공고의 기간과 겹치지 않도록 새 공고 시작
-const generateDefaultFormData = (existingData) => {
-  // 기존 데이터에서 가장 늦은 최종 발표일과 시작일 찾기
-  let latestFinalDate = null;
-  let latestStartDate = null;
-
-  existingData.forEach((row) => {
-    if (row.finalDate) {
-      const finalDate = parseDateTimeToDate(row.finalDate, row.finalTime);
-      if (finalDate && (!latestFinalDate || finalDate > latestFinalDate)) {
-        latestFinalDate = finalDate;
-      }
-    }
-    if (row.publicDate) {
-      const startDate = parseDateTimeToDate(row.publicDate, row.publicTime);
-      if (startDate && (!latestStartDate || startDate > latestStartDate)) {
-        latestStartDate = startDate;
-      }
-    }
-  });
-
-  // 기존 공고의 최종 발표일 이후로 새 공고 시작 (최소 1일 후)
-  let startDate;
-  if (latestFinalDate) {
-    startDate = new Date(latestFinalDate);
-    startDate.setDate(startDate.getDate() + 1); // 최종 발표일 다음날
-    startDate.setHours(9, 0, 0, 0); // 09:00으로 설정
-  } else {
-    // 기존 공고가 없으면 현재 시간부터 시작
-    startDate = new Date();
-    startDate.setHours(9, 0, 0, 0);
-  }
-
-  // openAt: 시작 날짜 (모집 시작 일시)
-  const openAt = new Date(startDate);
-
-  // closeAt: openAt + 1일 (openAt < closeAt 보장)
-  const closeAt = new Date(openAt);
-  closeAt.setDate(closeAt.getDate() + 1);
-
-  // applicationResultAt: closeAt + 1일 (closeAt ≤ applicationResultAt 보장)
-  const applicationResultAt = new Date(closeAt);
-  applicationResultAt.setDate(applicationResultAt.getDate() + 1);
-
-  // interviewScheduleConfirmedAt: applicationResultAt + 1일 (applicationResultAt ≤ interviewScheduleConfirmedAt 보장)
-  const interviewScheduleConfirmedAt = new Date(applicationResultAt);
-  interviewScheduleConfirmedAt.setDate(interviewScheduleConfirmedAt.getDate() + 1);
-
-  // finalResultAt: interviewScheduleConfirmedAt + 1일 (interviewScheduleConfirmedAt ≤ finalResultAt 보장)
-  const finalResultAt = new Date(interviewScheduleConfirmedAt);
-  finalResultAt.setDate(finalResultAt.getDate() + 1);
-
-  // 기존 공고와의 기간 겹침 검증
-  if (existingData.length > 0) {
-    for (const row of existingData) {
-      if (row.publicDate && row.finalDate) {
-        const existingStart = parseDateTimeToDate(row.publicDate, row.publicTime);
-        const existingEnd = parseDateTimeToDate(row.finalDate, row.finalTime);
-
-        if (existingStart && existingEnd) {
-          if (isOverlapping(openAt, finalResultAt, existingStart, existingEnd)) {
-            // 겹치는 경우, 기존 공고의 최종 발표일 이후로 새 공고 시작일 조정
-            const adjustedStart = new Date(existingEnd);
-            adjustedStart.setDate(adjustedStart.getDate() + 1);
-            adjustedStart.setHours(9, 0, 0, 0);
-
-            // 조정된 시작일로 다시 계산
-            const newOpenAt = new Date(adjustedStart);
-            const newCloseAt = new Date(newOpenAt);
-            newCloseAt.setDate(newCloseAt.getDate() + 1);
-            const newApplicationResultAt = new Date(newCloseAt);
-            newApplicationResultAt.setDate(newApplicationResultAt.getDate() + 1);
-            const newInterviewScheduleConfirmedAt = new Date(newApplicationResultAt);
-            newInterviewScheduleConfirmedAt.setDate(newInterviewScheduleConfirmedAt.getDate() + 1);
-            const newFinalResultAt = new Date(newInterviewScheduleConfirmedAt);
-            newFinalResultAt.setDate(newFinalResultAt.getDate() + 1);
-
-            return {
-              semester: 14,
-              openAt: newOpenAt.toISOString(),
-              closeAt: newCloseAt.toISOString(),
-              applicationResultAt: newApplicationResultAt.toISOString(),
-              interviewScheduleConfirmedAt: newInterviewScheduleConfirmedAt.toISOString(),
-              finalResultAt: newFinalResultAt.toISOString(),
-            };
-          }
-        }
-      }
-    }
-  }
-
-  // 날짜 순서 검증
-  if (
-    openAt >= closeAt ||
-    closeAt > applicationResultAt ||
-    applicationResultAt > interviewScheduleConfirmedAt ||
-    interviewScheduleConfirmedAt > finalResultAt
-  ) {
-    console.error('날짜 순서 제약 조건 위반');
-  }
-
-  return {
-    semester: 14, // 기수 14기로 고정
-    openAt: openAt.toISOString(),
-    closeAt: closeAt.toISOString(),
-    applicationResultAt: applicationResultAt.toISOString(),
-    interviewScheduleConfirmedAt: interviewScheduleConfirmedAt.toISOString(),
-    finalResultAt: finalResultAt.toISOString(),
-  };
-};
-
 // 프론트엔드 rowData를 서버 요청 형식으로 변환
 const convertRowDataToServerFormat = (rowData) => {
   // ordinalNum에서 숫자만 추출 (예: "14기" -> 14)
@@ -248,38 +102,27 @@ export default function NoticeTableData({ children }) {
     fetchNoticeData();
   }, []);
 
-  const handleAddRow = async () => {
-    try {
-      // 서버에서 기존 공고 목록 가져오기
-      const existingForms = await getAllAdminForms();
+  const handleAddRow = () => {
+    // 빈 행 추가 (모든 값이 비어있음)
+    const emptyRow = {
+      id: null,
+      ordinalNum: '',
+      publicDate: '',
+      publicTime: '',
+      deadline: '',
+      deadlineTime: '',
+      documentDate: '',
+      documentTime: '',
+      interviewDate: '',
+      interviewTime: '',
+      finalDate: '',
+      finalTime: '',
+    };
 
-      // 서버 응답을 프론트엔드 형식으로 변환
-      const existingDataForComparison = existingForms.map((form) =>
-        convertServerResponseToRowData(form)
-      );
-
-      // 기본값 생성 (기수 14기 고정, 기존 공고의 최종 발표일 이후로 시작)
-      const defaultFormData = generateDefaultFormData(existingDataForComparison);
-
-      // API 호출로 새 지원 일정 폼 생성
-      const serverData = await getAdminForm(defaultFormData);
-
-      if (!serverData) {
-        showToast('지원 일정 생성에 실패했습니다.');
-        return;
-      }
-
-      // 서버 응답을 프론트엔드 형식으로 변환
-      const newRow = convertServerResponseToRowData(serverData);
-
-      setNoticeData((prev) => [newRow, ...prev]);
-      // 생성 후에는 읽기 전용 상태로 유지 (수정 버튼을 눌러야 수정 가능)
-      setEditingIndex(-1);
-      showToast('새 지원 일정이 생성되었습니다.');
-    } catch (err) {
-      console.error('지원 일정 생성 실패:', err);
-      showToast('지원 일정 생성에 실패했습니다.');
-    }
+    setNoticeData((prev) => [emptyRow, ...prev]);
+    // 새 행을 수정 모드로 설정하고 생성 완료 모드로 설정
+    setEditingIndex(0);
+    setConfirmModeIndex(0);
   };
 
   const handleEdit = (index) => {
@@ -315,14 +158,46 @@ export default function NoticeTableData({ children }) {
     const applicationFormId = currentRow?.id;
 
     if (!applicationFormId) {
-      // ID가 없으면 새로 생성된 공고이므로 수정 API 호출 불필요
-      setNoticeData((prev) => {
-        const newData = [...prev];
-        newData[index] = editData;
-        return newData;
-      });
-      setEditingIndex(-1);
-      showToast('수정이 완료되었습니다.');
+      // ID가 없으면 새로 생성할 공고이므로 생성 API 호출
+      const serverFormData = convertRowDataToServerFormat(editData);
+
+      try {
+        // POST API 호출로 새 지원 일정 폼 생성
+        const serverData = await getAdminForm(serverFormData);
+
+        if (!serverData) {
+          showToast('지원 일정 생성에 실패했습니다.');
+          return;
+        }
+
+        // 입력한 값을 그대로 사용 (백엔드 응답의 시간 변환 없이)
+        // 백엔드 응답에서 ID만 가져와서 입력한 값과 병합
+        const newRow = {
+          ...editData,
+          id: serverData.id || serverData.applicationFormId || null,
+        };
+
+        setNoticeData((prev) => {
+          const newData = [...prev];
+          newData[index] = newRow;
+          return newData;
+        });
+        setEditingIndex(-1);
+        setConfirmModeIndex(-1);
+        showToast('새 지원 일정이 생성되었습니다.');
+      } catch (err) {
+        console.error('지원 일정 생성 실패:', err);
+        const errorMessage =
+          err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          err?.message ||
+          '지원 일정 생성에 실패했습니다.';
+
+        showToast(errorMessage);
+        // 에러 발생 시 생성 완료 버튼 유지 (setConfirmModeIndex 호출하지 않음)
+        // 에러를 throw하여 NoticeTableRow에서 감지할 수 있도록 함
+        throw err;
+      }
       return;
     }
 
@@ -338,8 +213,12 @@ export default function NoticeTableData({ children }) {
         return;
       }
 
-      // 서버 응답을 프론트엔드 형식으로 변환
-      const updatedRow = convertServerResponseToRowData(serverData);
+      // 입력한 값을 그대로 사용 (백엔드 응답의 시간 변환 없이)
+      // 백엔드 응답에서 ID만 가져와서 입력한 값과 병합
+      const updatedRow = {
+        ...editData,
+        id: serverData.id || serverData.applicationFormId || applicationFormId,
+      };
 
       setNoticeData((prev) => {
         const newData = [...prev];
@@ -347,10 +226,20 @@ export default function NoticeTableData({ children }) {
         return newData;
       });
       setEditingIndex(-1);
+      setConfirmModeIndex(-1);
       showToast('수정이 완료되었습니다.');
     } catch (err) {
       console.error('지원 일정 수정 실패:', err);
-      showToast('지원 일정 수정에 실패했습니다.');
+      const errorMessage =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.message ||
+        '지원 일정 수정에 실패했습니다.';
+
+      showToast(errorMessage);
+      // 에러 발생 시 수정 완료 버튼 유지 (setConfirmModeIndex 호출하지 않음)
+      // 에러를 throw하여 NoticeTableRow에서 감지할 수 있도록 함
+      throw err;
     }
   };
 
