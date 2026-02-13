@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
@@ -10,8 +10,7 @@ import Right from '@/assets/icons/right_yellowgreen_icon.svg?react';
 import ProjectCategory from '@/components/project/ProjectCategory';
 import ProjectMember from '@/components/project/ProjectMember';
 
-export default function ProjectDetailCard({ data }) {
-  const [imgNum, setImgNum] = useState(0);
+export default function ProjectDetailCard({ data, imgNum, setImgNum }) {
   // 데이터 보호: 이미지가 없으면 빈 배열로 처리
   const images = data?.projectImageResponses || [];
   const imgCount = images.length > 0 ? images.length : 1; // 0으로 나누기 방지

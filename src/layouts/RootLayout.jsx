@@ -22,7 +22,7 @@ export default function RootLayout() {
   });
   const [onSideBar, setOnSideBar] = useState(false);
   const { fetchSemesters } = useSemesterListStore();
-  const showResult = showResultButton();
+  const [showResult, setShowResult] = useState(false);
 
   const openModal = (message, onConfirm) => {
     setModalData({
@@ -52,6 +52,7 @@ export default function RootLayout() {
   useEffect(() => {
     const getSettingData = async () => {
       await fetchSemesters();
+      setShowResult(await showResultButton());
     };
     getSettingData();
   }, []);
