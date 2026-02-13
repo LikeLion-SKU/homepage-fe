@@ -26,6 +26,16 @@ export default function AdminProject() {
   const search = filterParams.get('search');
   const { setProjectIdList } = useProjectListStore();
 
+  const maxPage = projectListData?.totalPages || 1;
+
+  const pageArray = useMemo(() => {
+    if (maxPage === 0) return [1];
+    const startPage = Math.floor((pageOn - 1) / 5) * 5 + 1;
+    console.log(maxPage);
+    // startPage부터 5개를 생성하되, maxPage를 넘지 않는 것만 필터링
+    return Array.from({ length: 5 }, (_, i) => startPage + i).filter((num) => num <= maxPage);
+  }, [pageOn, maxPage]);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true); // 로딩 시작
@@ -49,16 +59,6 @@ export default function AdminProject() {
     fetchData();
     // 의존성 배열에 파라미터들을 넣어주어 값이 바뀔 때마다 실행되게 함
   }, [pageOn, semester, projectTypeId, search]);
-
-  const maxPage = projectListData?.totalPages || 1;
-
-  const pageArray = useMemo(() => {
-    if (maxPage === 0) return [1];
-    const startPage = Math.floor((pageOn - 1) / 5) * 5 + 1;
-    console.log(maxPage);
-    // startPage부터 5개를 생성하되, maxPage를 넘지 않는 것만 필터링
-    return Array.from({ length: 5 }, (_, i) => startPage + i).filter((num) => num <= maxPage);
-  }, [pageOn, maxPage]);
 
   // 페이지 변경 함수: URL의 쿼리 파라미터를 변경함
   const handlePageChange = useCallback(

@@ -9,6 +9,7 @@ export default function AdminProjectMember({ optionData, selectedTrack, setSelec
     setName((prev) => ({ ...prev, [track]: value }));
   };
   const inputName = (e, track) => {
+    if (e.nativeEvent.isComposing) return;
     const currentName = name[track] || '';
     if (e.key === 'Enter') {
       if (currentName.trim() === '') return;
