@@ -7,6 +7,7 @@ export default function ProjectMember({ memberData }) {
     PM: 'PM',
     DESIGN: 'Design',
     PO: 'PO',
+    PMDESIGN: 'PM&Design',
   };
   // 컴포넌트 내부에서 데이터를 가공합니다.
   const member = useMemo(() => {
