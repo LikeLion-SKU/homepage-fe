@@ -25,29 +25,17 @@ export const getAllAdminForms = async () => {
 
 // 관리자용 지원 일정 생성
 export const getAdminForm = async (formData) => {
-  try {
-    const res = await APIService.private.post('/v1/admin/applications/forms', formData);
-
-    return res.data;
-  } catch (error) {
-    console.log('지원 일정 생성 실패', error);
-    return null;
-  }
+  const res = await APIService.private.post('/v1/admin/applications/forms', formData);
+  return res.data;
 };
 
 // 관리자용 지원 일정 수정
 export const putAdminForm = async (applicationFormId, formData) => {
-  try {
-    const res = await APIService.private.put(
-      `/v1/admin/applications/forms/${applicationFormId}`,
-      formData
-    );
-
-    return res.data;
-  } catch (error) {
-    console.log('지원 일정 수정 실패', error);
-    return null;
-  }
+  const res = await APIService.private.put(
+    `/v1/admin/applications/forms/${applicationFormId}`,
+    formData
+  );
+  return res.data;
 };
 
 //관리자용 지원 일정 삭제
