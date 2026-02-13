@@ -67,7 +67,7 @@ export default function NoticeTableRow({
   const [isTimeOrderError, setIsTimeOrderError] = useState(false);
   const [isEmptyFieldError, setIsEmptyFieldError] = useState(false);
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     if (isEditing && isConfirmMode) {
       // 수정완료 버튼 클릭 - 유효성 검사 후 저장
       // 공란 체크 - 모든 필수 필드가 채워져 있는지 확인
@@ -189,9 +189,16 @@ export default function NoticeTableRow({
         interviewDate: formatDateForSave(editData.interviewDate),
         interviewTime: formatTimeForSave(editData.interviewTime),
       };
-      onSave(index, formattedData);
-      if (setConfirmMode) {
-        setConfirmMode(index, false);
+
+      try {
+        await onSave(index, formattedData);
+        // 성공 시에만 생성 완료 모드 해제
+        if (setConfirmMode) {
+          setConfirmMode(index, false);
+        }
+      } catch (error) {
+        // 에러 발생 시 생성 완료 버튼 유지 (setConfirmMode 호출하지 않음)
+        console.error('저장 실패:', error);
       }
     } else {
       // 수정 시작 - 확인 모달 표시
@@ -288,7 +295,7 @@ export default function NoticeTableRow({
                   setEditData({ ...editData, publicDate: date, publicTime: time });
                 }}
                 className="w-40 h-10 border text-center focus:outline-none"
-                placeholder="공개일 YYYY.MM.DD HH:MM"
+                placeholder="YYYY.MM.DD HH:MM"
               />
             </div>
             <div className="flex gap-2 items-center w-40">
@@ -302,7 +309,7 @@ export default function NoticeTableRow({
                   setEditData({ ...editData, deadline: date, deadlineTime: time });
                 }}
                 className="w-40 h-10 border text-center focus:outline-none"
-                placeholder="마감일 YYYY.MM.DD HH:MM"
+                placeholder="YYYY.MM.DD HH:MM"
               />
             </div>
             <div className="flex gap-2 items-center w-40">
@@ -316,7 +323,7 @@ export default function NoticeTableRow({
                   setEditData({ ...editData, documentDate: date, documentTime: time });
                 }}
                 className="w-40 h-10 border text-center focus:outline-none"
-                placeholder="서류 발표일 YYYY.MM.DD HH:MM"
+                placeholder="YYYY.MM.DD HH:MM"
               />
             </div>
             <div className="flex gap-2 items-center w-40">
@@ -330,7 +337,7 @@ export default function NoticeTableRow({
                   setEditData({ ...editData, interviewDate: date, interviewTime: time });
                 }}
                 className="w-40 h-10 border text-center focus:outline-none"
-                placeholder="면접 일정 확정일 YYYY.MM.DD HH:MM"
+                placeholder="YYYY.MM.DD HH:MM"
               />
             </div>
             <div className="flex gap-2 items-center w-40">
@@ -344,13 +351,14 @@ export default function NoticeTableRow({
                   setEditData({ ...editData, finalDate: date, finalTime: time });
                 }}
                 className="w-40 h-10 border text-center focus:outline-none"
-                placeholder="최종 발표일 YYYY.MM.DD HH:MM"
+                placeholder="YYYY.MM.DD HH:MM"
               />
             </div>
             <NoticeButton
               type="edit"
               onClick={handleEdit}
               isConfirmMode={isConfirmMode}
+              isCreateMode={rowData.id === null}
               className={isChecked ? 'bg-[#E7E7E7]' : ''}
             />
           </>
