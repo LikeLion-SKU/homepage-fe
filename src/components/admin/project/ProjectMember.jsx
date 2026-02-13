@@ -9,7 +9,8 @@ export default function AdminProjectMember({ optionData, selectedTrack, setSelec
     setName((prev) => ({ ...prev, [track]: value }));
   };
   const inputName = (e, track) => {
-    if (e.nativeEvent.isComposing) return;
+    // 1. 맥 환경에서 한글 조합 중 엔터를 누를 때 발생하는 229번 코드를 차단합니다.
+    if (e.nativeEvent.isComposing || e.keyCode === 229) return;
     const currentName = name[track] || '';
     if (e.key === 'Enter') {
       if (currentName.trim() === '') return;
