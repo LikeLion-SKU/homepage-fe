@@ -30,7 +30,7 @@ export default function Login() {
 
       // 로그인 성공 토스트 메시지 표시
       if (showToast) {
-        showToast('로그인이 되었습니다.');
+        showToast('로그인에 성공하였습니다.');
       }
 
       // 토스트 메시지가 표시된 후 메인 페이지로 이동 (1.5초 후)
