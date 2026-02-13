@@ -4,18 +4,11 @@ import { useOutletContext } from 'react-router';
 //@ts-ignore
 import Trashcan from '@/assets/icons/trashcan_icon.svg?react';
 
-export default function OptionAdminTable({
-  title,
-  optionData,
-  setOptionData,
-  handlePlus,
-  handleDelete,
-}) {
+export default function OptionAdminTable({ title, optionData, handlePlus, handleDelete }) {
   const [plusName, setPlusName] = useState('');
   //@ts-ignore
   const { openModal } = useOutletContext();
   const plusOptionData = (plusName) => {
-    setOptionData((prev) => [...prev, plusName]);
     setPlusName('');
     handlePlus(plusName);
   };

@@ -1,5 +1,3 @@
-import { useLoaderData } from 'react-router';
-
 import github from '@/assets/icons/github_logo_icon.svg';
 import instagram from '@/assets/icons/instagram_logo_icon.svg';
 import kakao from '@/assets/icons/kakaotalk_logo_icon.svg';
@@ -7,8 +5,7 @@ import MenuButton from '@/components/sideBar/MenuButton';
 import OutLinkButton from '@/components/sideBar/OutLinkButton';
 import useAuthStore from '@/store/useAuthStore';
 
-export default function SideBar({ handleSideBar }) {
-  const showResult = useLoaderData();
+export default function SideBar({ handleSideBar, showResult }) {
   const isLogin = useAuthStore((state) => state.isLoggedIn);
   const getLastMenu = () => {
     if (isLogin) {

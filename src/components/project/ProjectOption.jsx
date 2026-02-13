@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { getProjectType } from '@/api/projectApi';
-import { getSemester } from '@/api/semesterApi';
 import OptionBox from '@/components/common/Option/optionBox';
 import { useIsPhone } from '@/hooks/useIsPhone';
+import useSemesterListStore from '@/store/useSemesterListStore';
 
 export default function ProjectOption({ handleSemester, handleProjectType }) {
   const [semesters, setSemesters] = useState([]);
@@ -17,6 +17,7 @@ export default function ProjectOption({ handleSemester, handleProjectType }) {
   let isMountProject = useRef(false);
   let isMountSemester = useRef(false);
   const scrollRef = useRef(null);
+  const { semesterData } = useSemesterListStore();
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -38,8 +39,8 @@ export default function ProjectOption({ handleSemester, handleProjectType }) {
   useEffect(() => {
     const getOptionData = async () => {
       try {
-        const semesterData = ['전체', ...(await getSemester())];
-        setSemesters(semesterData);
+        const semesterList = ['전체', ...semesterData];
+        setSemesters(semesterList);
 
         const projectTypeData = await getProjectType();
         setProjectTypeName(['전체', ...projectTypeData.map((item) => item.projectTypeName)]);

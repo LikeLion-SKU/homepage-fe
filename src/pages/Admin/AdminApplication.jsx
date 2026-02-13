@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -20,10 +20,7 @@ const TRACK_API_MAP = {
 
 export default function AdminApplication() {
   const navigate = useNavigate();
-  const { semesterData, fetchSemesters } = useSemesterListStore();
-  useEffect(() => {
-    fetchSemesters();
-  }, [fetchSemesters]);
+  const { semesterData } = useSemesterListStore();
 
   const propsData = {
     title: '지원서/지원자 관리',
