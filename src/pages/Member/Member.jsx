@@ -79,6 +79,7 @@ export default function Member() {
         title="구성원"
         pageExplanation="서경대학교 멋쟁이사자처럼의 구성원들을 살펴보세요."
         onSearch={false}
+        initSearch=""
       >
         <MemberOption
           optionData={semesterData}

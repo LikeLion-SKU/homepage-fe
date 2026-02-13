@@ -12,9 +12,10 @@ export default function TitleSection({
   searchApi = (value) => {
     console.log(value);
   },
+  initSearch,
 }) {
-  const [searchName, setSearchName] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [searchName, setSearchName] = useState(initSearch);
+  const [debouncedSearch, setDebouncedSearch] = useState(initSearch);
   let isMount = useRef(false);
 
   /* 1) 검색어 디바운싱 */
@@ -48,8 +49,8 @@ export default function TitleSection({
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
               placeholder="검색하기"
-              className="w-full focus:outline-none placeholder:text-[0.7rem] pad:placeholder:text-[1rem] 
-              text-[0.7rem] pad:text-[1rem] placeholder:font-bold placeholder:text-black"
+              className="w-full max-w-7xl focus:outline-none placeholder:text-[0.7rem] pad:placeholder:text-[1rem] 
+              text-[0.7rem] pad:text-[1rem] placeholder:font-medium placeholder:text-[#3C3C3C] focus:placeholder-transparent"
             />
           </div>
         )}
