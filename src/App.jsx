@@ -52,13 +52,11 @@ import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
 import Recruitment from '@/pages/Recruitment/Recruitment';
 import Result from '@/pages/Result/Result';
 import ResultNotice from '@/pages/Result/ResultNotice';
-import { showResultButton } from '@/utils/showResultButton';
 
 const router = createBrowserRouter([
   // 일반 서비스 브랜치 (RootLayout 사용)
   {
     Component: RootLayout,
-    loader: showResultButton,
     errorElement: <ErrorBoundary />,
     children: [
       { index: true, Component: Main }, //경로가 /일 때 보여줄 페이지

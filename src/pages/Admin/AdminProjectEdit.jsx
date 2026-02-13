@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useOutletContext } from 'react-router';
 
 import { getProjectDetail, getProjectType, postProject, putProject } from '@/api/projectApi';
-import { getSemester } from '@/api/semesterApi';
 //@ts-ignore
 import Left from '@/assets/icons/left_image_icon.svg?react';
 //@ts-ignore
@@ -10,6 +9,7 @@ import Right from '@/assets/icons/right_image_icon.svg?react';
 import ProjectEditRule from '@/components/admin/project/ProjectEditRule';
 import AdminProjectMember from '@/components/admin/project/ProjectMember';
 import OptionBox from '@/components/common/Option/optionBox';
+import useSemesterListStore from '@/store/useSemesterListStore';
 
 export default function AdminProjectEdit() {
   const [projectData, setProjectData] = useState({
@@ -32,7 +32,7 @@ export default function AdminProjectEdit() {
   const [showImage, setShowImage] = useState([]); //보여주기용 이미지 배열
   const [showMember, setShowMember] = useState({});
 
-  const [semesterOption, setSemesterOption] = useState([]);
+  const { semesterData } = useSemesterListStore();
   const prizeOption = ['수상O', '수상X'];
   const [projectTypeOption, setProjectTypeOption] = useState([]);
   const [projectTypeId, setProjectTypeId] = useState([]);
@@ -233,7 +233,6 @@ export default function AdminProjectEdit() {
   //옵션 데이터 얻어오기
   useEffect(() => {
     const getOption = async () => {
-      setSemesterOption(await getSemester());
       const typeData = await getProjectType();
       setProjectTypeOption(typeData.map((data) => data.projectTypeName));
       setProjectTypeId(typeData.map((data) => data.projectTypeId));
@@ -289,7 +288,7 @@ export default function AdminProjectEdit() {
             <div className="flex gap-2.5">
               <OptionBox
                 initValue={projectData.semester ? projectData.semester : '기수선택'}
-                optionData={semesterOption}
+                optionData={semesterData}
                 selectedNum={projectData.semester}
                 setSelectedNum={(val) => setProjectData((prev) => ({ ...prev, semester: val }))} //수정필요
                 bgColor="#D9D9D9"

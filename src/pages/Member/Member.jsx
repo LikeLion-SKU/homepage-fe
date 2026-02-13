@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { getSemester } from '@/api/semesterApi';
 import { getClubMember } from '@/api/userApi';
 import BackgroundImg1 from '@/assets/images/member_background1.svg';
 import BackgroundImg2 from '@/assets/images/member_background2.svg';
@@ -9,28 +8,17 @@ import MemberOption from '@/components/Member/MemberOption';
 import MemberSection from '@/components/Member/MemberSection';
 import MemberSkeleton from '@/components/Member/MemberSkeleton';
 import TitleSection from '@/components/common/TitleSection';
+import useSemesterListStore from '@/store/useSemesterListStore';
 
 export default function Member() {
-  const [semesters, setSemesters] = useState([]);
-  const [selectSemester, setSelectSemester] = useState('12기');
+  const { semesterData } = useSemesterListStore();
+  const [selectSemester, setSelectSemester] = useState(semesterData[0]);
   const [members, setMembers] = useState([]);
   const [cursor, setCursor] = useState({ position: 'LEAD', track: null });
   const [hasNext, setHasNext] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const observerRef = useRef(null); // 바닥을 감지할 요소의 참조
-  useEffect(() => {
-    const getSemesterData = async () => {
-      try {
-        const data = await getSemester();
-        setSemesters(data);
-        //if (data.length > 0) setSelectSemester(`${data[0]}기`);//14아직 조회 불가라 초기값 설정 막기
-      } catch (error) {
-        console.log('기수 데이터 조회 실패:', error);
-      }
-    };
-    getSemesterData();
-  }, []);
 
   const fetchMembers = useCallback(
     async (isInitial = false) => {
@@ -93,7 +81,7 @@ export default function Member() {
         onSearch={false}
       >
         <MemberOption
-          optionData={semesters}
+          optionData={semesterData}
           selectedOption={selectSemester}
           setSelectedOption={setSelectSemester}
         />

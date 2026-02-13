@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLoaderData, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
@@ -12,11 +12,10 @@ import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { useIsPhone } from '@/hooks/useIsPhone';
 import useAuthStore from '@/store/useAuthStore';
 
-export default function Header({ handleSideBar }) {
+export default function Header({ handleSideBar, showResult }) {
   const navigate = useNavigate();
   const isDesktop = useIsDesktop();
   const isPhone = useIsPhone();
-  const showResult = useLoaderData();
   const isLogin = useAuthStore((state) => state.isLoggedIn);
   const [isAdmin, setIsAdmin] = useState(false);
 
