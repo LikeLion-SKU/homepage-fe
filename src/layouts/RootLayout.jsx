@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, ScrollRestoration } from 'react-router';
 
 import CustomCursor from '@/components/common/CustomCursor';
@@ -7,6 +7,8 @@ import Toast from '@/components/common/Toast/Toast';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import SideBar from '@/pages/SideBar/SideBar';
+import useSemesterListStore from '@/store/useSemesterListStore';
+import { showResultButton } from '@/utils/showResultButton';
 
 export default function RootLayout() {
   const [toastData, setToastData] = useState({
@@ -19,6 +21,8 @@ export default function RootLayout() {
     onConfirm: () => {},
   });
   const [onSideBar, setOnSideBar] = useState(false);
+  const { fetchSemesters } = useSemesterListStore();
+  const showResult = showResultButton();
 
   const openModal = (message, onConfirm) => {
     setModalData({
@@ -45,10 +49,17 @@ export default function RootLayout() {
     setOnSideBar(!onSideBar);
   };
 
+  useEffect(() => {
+    const getSettingData = async () => {
+      await fetchSemesters();
+    };
+    getSettingData();
+  }, []);
+
   return (
     <main className="flex flex-col w-full min-h-screen overflow-y-hidden overflow-x-hidden no-scrollbar">
       <CustomCursor />
-      <Header handleSideBar={() => handleSideBar()} />
+      <Header handleSideBar={() => handleSideBar()} showResult={showResult} />
       <div className="relative flex-1 min-h-fit bg-[#FAFBF8] isolate">
         <div
           className={`transition-opacity duration-500 ease-out ${
@@ -67,7 +78,7 @@ export default function RootLayout() {
           className={`w-full h-fit transform transition-transform 
             duration-500 ease-out ${onSideBar ? 'relative translate-x-0' : 'absolute top-0 translate-x-full overflow-hidden'}`}
         >
-          <SideBar handleSideBar={handleSideBar} />
+          <SideBar handleSideBar={handleSideBar} showResult={showResult} />
         </div>
       </div>
       <ScrollRestoration />
