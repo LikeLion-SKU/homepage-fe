@@ -31,6 +31,7 @@ export default function ProjectViewDetail() {
   const location = useLocation();
   const projectId = location.state.projectId;
   const { allProjectIdsByFilters } = useProjectListStore();
+  const [imgNum, setImgNum] = useState(0);
 
   const handleProjectId = async (value) => {
     const nextIndex = allProjectIdsByFilters.indexOf(projectData.id) + value;
@@ -42,7 +43,7 @@ export default function ProjectViewDetail() {
     } else {
       try {
         const data = await getProjectDetail(newId);
-
+        setImgNum(0);
         if (data) {
           setProjectData(data);
         }
@@ -77,7 +78,7 @@ export default function ProjectViewDetail() {
             이전 프로젝트 보기
           </p>
         </div>
-        <ProjectDetailCard data={projectData} />
+        <ProjectDetailCard data={projectData} imgNum={imgNum} setImgNum={setImgNum} />
         <div className="flex flex-col ">
           <button
             onClick={() => handleProjectId(1)}
