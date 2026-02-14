@@ -25,6 +25,8 @@ body {
   --color-yellow-shadow: #cfd6a9;
   --color-expired-gray-button: #d3d3d3;
   --color-yellow-shadow-rgb: 207, 214, 169;
+  --color-button-blue: #00156a;
+  --color-shadow-blue: #00114d;
 }
 /* 프리텐다드 정의 */
 @font-face {
