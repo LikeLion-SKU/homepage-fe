@@ -25,6 +25,8 @@ body {
   --color-yellow-shadow: #cfd6a9;
   --color-expired-gray-button: #d3d3d3;
   --color-yellow-shadow-rgb: 207, 214, 169;
+  --color-button-blue: #00156a;
+  --color-shadow-blue: #00114d;
 }
 /* 프리텐다드 정의 */
 @font-face {
@@ -317,4 +319,44 @@ select {
 @theme {
   --breakpoint-pad: 768px;
   --breakpoint-web: 1024px;
+}
+
+/* blah-line 전광판 애니메이션 */
+@keyframes blah-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes blah-marquee-offset {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes blah-marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.blah-marquee-content {
+  animation: blah-marquee 20s linear infinite;
+}
+
+.blah-marquee-content-offset {
+  animation: blah-marquee-offset 20s linear infinite;
+}
+
+.blah-marquee-content-reverse {
+  animation: blah-marquee-reverse 20s linear infinite;
 }

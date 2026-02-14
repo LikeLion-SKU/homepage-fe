@@ -1,16 +1,14 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
-import labelBlah1Icon from '@/assets/icons/main/label-blah1.svg';
-import labelBlah2Icon from '@/assets/icons/main/label-blah2.svg';
 import projectsIcon from '@/assets/icons/main/projects-blah.svg';
 import skullionIcon from '@/assets/icons/main/skulions-blah.svg';
-import LabelAnimation from '@/components/animation/LabelAnimation';
 import SmallFrameBox from '@/components/layout/frame/Frame';
 import ExplainBackground from '@/components/main/explain/background/ExplainBackground';
 import useScale from '@/components/main/hooks/useScale';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
+import LabelBlahMarquee from './LabelBlahMarquee';
 import ExplainText from './text/ExplainText';
 import Number from './text/Number';
 
@@ -137,55 +135,31 @@ function Explain() {
         </motion.div>
 
         {/* Label BLAH 1 + 2 (같이 이동) */}
-        <motion.div
+        <div
           style={{
             marginTop: `${(370 / 16) * scale}rem`, // ← 여기 값만 조절
           }}
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, amount: 0.1, margin: '-100px' }}
-          transition={{ duration: 1.5, ease: 'easeOut' }}
         >
           {/* Label BLAH 1 */}
-          <div className="flex justify-start mb-3" style={{ transform: 'translateY(-40%)' }}>
-            <LabelAnimation direction="right" maxOffset={200} startX={160}>
-              <img
-                src={labelBlah1Icon}
-                alt="Label BLAH 1"
-                className="object-contain"
-                style={{
-                  width: `${(1220 / 16) * scale}rem`,
-                  height: `${(140 / 16) * scale}rem`,
-                  minWidth: `${(1220 / 16) * scale}rem`,
-                  minHeight: `${(140 / 16) * scale}rem`,
-                  marginLeft: `${(100 / 16) * scale}rem`,
-                  imageRendering: 'crisp-edges',
-                  display: 'block',
-                }}
-              />
-            </LabelAnimation>
+          <div
+            className="flex justify-start"
+            style={{
+              transform: 'translateY(-35%)',
+              marginBottom: `${(40 / 16) * scale}rem`,
+              marginLeft: `${(75 / 16) * scale}rem`,
+            }}
+          >
+            <LabelBlahMarquee type="1" />
           </div>
 
           {/* Label BLAH 2 */}
-          <div className="flex justify-end mb-[-15px]" style={{ transform: 'translateY(-30%)' }}>
-            <LabelAnimation direction="left" maxOffset={200} startX={-200}>
-              <img
-                src={labelBlah2Icon}
-                alt="Label BLAH 2"
-                className="object-contain"
-                style={{
-                  width: `${(1220 / 16) * scale}rem`,
-                  height: `${(140 / 16) * scale}rem`,
-                  minWidth: `${(1220 / 16) * scale}rem`,
-                  minHeight: `${(140 / 16) * scale}rem`,
-                  marginRight: `${(100 / 16) * scale}rem`,
-                  imageRendering: 'crisp-edges',
-                  display: 'block',
-                }}
-              />
-            </LabelAnimation>
+          <div
+            className="flex justify-end"
+            style={{ transform: 'translateY(-30%)', marginRight: `${(110 / 16) * scale}rem` }}
+          >
+            <LabelBlahMarquee type="2" />
           </div>
-        </motion.div>
+        </div>
 
         {/* 숫자 */}
 
