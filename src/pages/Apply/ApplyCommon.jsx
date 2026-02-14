@@ -21,8 +21,9 @@ export default function ApplyCommon() {
 
   // 다음페이지로 넘어가기 가능 여부 확인
   const handleNext = () => {
-    const commonQuestions = questions.filter((item) => item.track === 'COMMON'); // 공통 질문만 가져오기
-    const isAllAnswered = validateAnswers(commonQuestions, formData.answers);
+    // const commonQuestions = questions.filter((item) => item.track === 'COMMON'); // 공통 질문만 가져오기
+    // const isAllAnswered = validateAnswers(commonQuestions, formData.answers);
+    const isAllAnswered = validateAnswers(questions, formData.answers);
 
     if (!isAllAnswered) {
       setIsModalOpen(true);
@@ -37,9 +38,12 @@ export default function ApplyCommon() {
     const answers = currentAnswers || {};
 
     return questions.every((q) => {
-      const answer = answers[q.id];
+      //const answer = answers[q.id];
+      const answer = answers[q.questionId];
       // 값이 존재하고, 공백을 제외한 길이가 0보다 큰지 확인
-      return typeof answer === 'string' && answer.trim().length > 0;
+      //return typeof answer === 'string' && answer.trim().length > 0;
+      const content = typeof answer === 'object' ? answer?.content : answer;
+      return typeof content === 'string' && content.trim().length > 0;
     });
   };
 
