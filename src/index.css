@@ -320,3 +320,43 @@ select {
   --breakpoint-pad: 768px;
   --breakpoint-web: 1024px;
 }
+
+/* blah-line 전광판 애니메이션 */
+@keyframes blah-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes blah-marquee-offset {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes blah-marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.blah-marquee-content {
+  animation: blah-marquee 20s linear infinite;
+}
+
+.blah-marquee-content-offset {
+  animation: blah-marquee-offset 20s linear infinite;
+}
+
+.blah-marquee-content-reverse {
+  animation: blah-marquee-reverse 20s linear infinite;
+}
