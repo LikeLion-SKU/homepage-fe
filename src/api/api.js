@@ -47,7 +47,7 @@ privateAPI.interceptors.response.use(
         // refresh 실패 401시 상태 초기화하고 alert 표시
         isRefreshing = false;
         useAuthStore.getState().setLogout();
-        window.location.href = 'error/401';
+        window.location.href = '/error/401';
         return Promise.reject(refreshError);
       }
     }
