@@ -116,7 +116,9 @@ export default function Apply() {
 
   // 임시저장 api 호출
   // 사용자 인적사항 정보의 track이 null 일때 isFirst = true
-  const recordDraft = async (isFirst = false) => {
+  const isFirst = userInfoData?.track == null;
+
+  const recordDraft = async () => {
     try {
       const { commonAnswers, trackAnswers } = formatAnswers();
 
