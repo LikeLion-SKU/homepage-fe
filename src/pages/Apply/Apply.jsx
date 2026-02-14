@@ -4,6 +4,7 @@ import { useLoaderData, useLocation } from 'react-router';
 
 import { APIService } from '@/api/api';
 import { getQuesAndAnswerByTrack } from '@/api/getQuestionAnswer';
+import Toast from '@/components/common/Toast/Toast';
 
 export default function Apply() {
   // 원본 데이터 불러오기 (from back)
@@ -11,6 +12,7 @@ export default function Apply() {
   const { userInfoData } = useLoaderData(); // 사용자 인적사항 조회 api
   const [questions, setQuestions] = useState([]); // 트랙별 질문 조회 api
   const [recordAnswer, setRecordAnswer] = useState({}); // 트랙별 질문별 답변 조회 api
+  const [isToast, setIsToast] = useState(false); // 토스트 상태 관리
 
   // 세션 스토리지 상태관리
   const [formData, setFormData] = useState(() => {
@@ -116,7 +118,9 @@ export default function Apply() {
 
   // 임시저장 api 호출
   // 사용자 인적사항 정보의 track이 null 일때 isFirst = true
-  const recordDraft = async (isFirst = false) => {
+  const isFirst = userInfoData?.track == null;
+
+  const recordDraft = async () => {
     try {
       const { commonAnswers, trackAnswers } = formatAnswers();
 
@@ -132,6 +136,10 @@ export default function Apply() {
       } else {
         await APIService.private.put('/v1/applications/records/draft', record);
       }
+
+      // 임시저장 성공 시 토스트 표시
+      setIsToast(true);
+      setTimeout(() => setIsToast(false), 3000);
     } catch (error) {
       console.error('저장 실패:', error);
     }
@@ -168,6 +176,7 @@ export default function Apply() {
   console.log('원본데이터:', userInfoData);
   return (
     <div>
+      <Toast isToast={isToast} message="임시저장 되었습니다" />
       <Outlet
         context={{
           formData,
