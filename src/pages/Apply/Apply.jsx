@@ -49,18 +49,17 @@ export default function Apply() {
         setRecordAnswer(formattedAnswers);
 
         setFormData((prev) => {
-          // 백에서 불러온 트랙별 질문과 답변 정보의 track을 type으로 직접 주입
-          const typedNewAnswers = Object.entries(formattedAnswers).reduce(
-            (acc, [questionId, content]) => {
-              const existingContent = prev.answers?.[questionId]?.content; // sessionStorage의 내용 prev.answers?.[questionId]이 없으면 원래 api 원본 데이터로
-              acc[questionId] = {
-                content: existingContent !== undefined ? existingContent : content || '',
-                type: track, // 여기서 API 응답의 track 정보를 사용
-              };
-              return acc;
-            },
-            {}
-          );
+          // 모든 질문에 대해 type을 설정 (저장된 답변이 없는 질문도 포함)
+          // formattedAnswers만 순회하면 저장된 답변이 없는 질문은 type이 누락됨
+          const typedNewAnswers = questions.reduce((acc, q) => {
+            const existingContent = prev.answers?.[q.questionId]?.content; // sessionStorage의 내용, 없으면 API 원본 데이터로
+            const apiContent = formattedAnswers[q.questionId]; // API에서 가져온 저장된 답변
+            acc[q.questionId] = {
+              content: existingContent !== undefined ? existingContent : apiContent || '',
+              type: track, // 여기서 API 응답의 track 정보를 사용
+            };
+            return acc;
+          }, {});
           const nextData = {
             ...prev,
             name: prev.name || userInfoData?.name || '',
@@ -118,7 +117,8 @@ export default function Apply() {
 
   // 임시저장 api 호출
   // 사용자 인적사항 정보의 track이 null 일때 isFirst = true
-  const isFirst = userInfoData?.track == null;
+  // loader 데이터는 갱신되지 않으므로 state로 관리하여 first-draft 성공 후 업데이트
+  const [isFirst, setIsFirst] = useState(userInfoData?.track == null);
 
   const recordDraft = async () => {
     try {
@@ -133,6 +133,7 @@ export default function Apply() {
 
       if (isFirst) {
         await APIService.private.post('/v1/applications/records/first-draft', record);
+        setIsFirst(false); // first-draft 성공 후 다음부터는 draft(PUT)로 요청
       } else {
         await APIService.private.put('/v1/applications/records/draft', record);
       }
