@@ -1,13 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { getAwardList } from '@/api/projectApi';
 import awardBlahIcon from '@/assets/icons/main/award/winner-blah.svg';
-import Award3Image from '@/assets/images/artium.png';
-import Award4Image from '@/assets/images/danchu.png';
-import Award2Image from '@/assets/images/livfit.png';
 import Award1Image from '@/assets/images/pickle.png';
-import Award5Image from '@/assets/images/setbang.png';
-import Award6Image from '@/assets/images/setbang.png';
 import useScale from '@/components/main/hooks/useScale';
 import MainSectionLayout from '@/components/main/layout';
 import useMediaQuery from '@/hooks/useMediaQuery';
@@ -22,17 +17,19 @@ function Award() {
   const isMobile760 = useMediaQuery('(max-width: 760px)');
 
   const [awardCards, setAwardCards] = useState([]);
-  const hasFetchedRef = useRef(false);
+  const [lastCursor, setLastCursor] = useState(null);
+  const [hasNext, setHasNext] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // 중복 호출 방지
-    if (hasFetchedRef.current) return;
-    hasFetchedRef.current = true;
+  const observerRef = useRef(null); // 오른쪽 끝을 감지할 요소의 참조
 
-    const fetchAwardCards = async () => {
+  const fetchAwardCards = useCallback(
+    async (isInitial = false) => {
+      if (loading || (!isInitial && !hasNext)) return;
+
+      setLoading(true);
       try {
-        // 수상작 목록 조회
-        const response = await getAwardList();
+        const response = await getAwardList(isInitial ? null : lastCursor, 10);
         console.log('API 응답 전체:', response);
 
         // API 응답 구조 확인: response.content 또는 response.data.content 또는 response.data
@@ -40,8 +37,6 @@ function Award() {
         console.log('수상작 목록:', awardList);
 
         if (Array.isArray(awardList) && awardList.length > 0) {
-          // data.content의 projectId를 순서대로 카드 형식으로 변환
-          // API 응답의 thumbnailUrl을 카드 이미지로 사용
           const cards = awardList
             .filter((item) => {
               const hasProjectId = !!item.projectId;
@@ -51,36 +46,60 @@ function Award() {
               return hasProjectId;
             })
             .map((item) => {
-              // thumbnailUrl이 문자열인지 확인하고 사용
               const imageUrl = item.thumbnailUrl || item.imageUrl;
               console.log(`프로젝트 ${item.projectId} 이미지 URL:`, imageUrl);
 
               return {
-                image: imageUrl || Award1Image, // API 응답의 thumbnailUrl 사용
+                image: imageUrl || Award1Image,
                 hasDragButton: item.hasDragButton || false,
                 to: '/project/viewDetail',
-                projectId: item.projectId, // 각 카드 클릭 시 해당 projectId로 viewDetail 이동
+                projectId: item.projectId,
                 title: item.title || '',
               };
             });
 
-          console.log('생성된 카드 개수:', cards.length);
-          console.log('카드 데이터:', cards);
-
-          // 수상작이 있으면 API 데이터 사용, 없으면 더미 데이터 유지
-          if (cards.length > 0) {
+          // 초기화 로드면 새로 갈아끼우고, 추가 로드면 기존 뒤에 붙임
+          if (isInitial) {
             setAwardCards(cards);
+          } else {
+            setAwardCards((prev) => [...prev, ...cards]);
           }
+
+          // 상태 업데이트
+          setLastCursor(response?.lastCursor || null);
+          setHasNext(response?.hasNext !== false);
+        } else {
+          setHasNext(false);
         }
       } catch (error) {
         console.error('수상작 카드 데이터 로드 실패:', error);
-        // 에러 발생 시 더미 데이터 유지
-        hasFetchedRef.current = false; // 에러 시 재시도 가능하도록
+      } finally {
+        setLoading(false);
       }
-    };
+    },
+    [lastCursor, hasNext, loading]
+  );
 
-    fetchAwardCards();
+  useEffect(() => {
+    fetchAwardCards(true); // 초기화 모드로 실행
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!hasNext || loading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchAwardCards(false); // 오른쪽 끝에 닿으면 추가 로드 호출
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerRef.current) observer.observe(observerRef.current);
+    return () => observer.disconnect();
+  }, [hasNext, loading, fetchAwardCards]);
 
   return (
     <MainSectionLayout
@@ -127,7 +146,7 @@ function Award() {
             </div>
             {/* 카드 */}
             <div style={{ paddingTop: `${(20 / 16) * scale}rem` }}>
-              <AwardCardList cards={awardCards} />
+              <AwardCardList cards={awardCards} observerRef={observerRef} loading={loading} />
             </div>
           </>
         ) : (
@@ -161,7 +180,7 @@ function Award() {
             />
             {/* 카드만 아래로 내리기 */}
             <div style={{ paddingTop: `${(60 / 16) * scale}rem` }}>
-              <AwardCardList cards={awardCards} />
+              <AwardCardList cards={awardCards} observerRef={observerRef} loading={loading} />
             </div>
           </>
         )}
