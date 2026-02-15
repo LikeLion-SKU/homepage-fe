@@ -296,6 +296,11 @@ export default function NoticeTableData({ children }) {
         } else if (editingIndex > deleteTargetIndex) {
           setEditingIndex(editingIndex - 1);
         }
+        if (confirmModeIndex === deleteTargetIndex) {
+          setConfirmModeIndex(-1);
+        } else if (confirmModeIndex > deleteTargetIndex) {
+          setConfirmModeIndex(confirmModeIndex - 1);
+        }
         setDeleteTargetIndex(-1);
         showToast('삭제되었습니다.');
       }
@@ -329,6 +334,11 @@ export default function NoticeTableData({ children }) {
         setEditingIndex(-1);
       } else if (editingIndex > idx) {
         setEditingIndex(editingIndex - 1);
+      }
+      if (confirmModeIndex === idx) {
+        setConfirmModeIndex(-1);
+      } else if (confirmModeIndex > idx) {
+        setConfirmModeIndex(confirmModeIndex - 1);
       }
     });
     setNoticeData((prev) => prev.filter((_, idx) => !checkedList.includes(idx)));
