@@ -45,8 +45,8 @@ export default function RootLayout() {
       setToastData({ onToast: false, toastMessage: toastMessage });
     }, 1500);
   };
-  const handleSideBar = (isOpen = null) => {
-    if (isOpen != null) {
+  const handleSideBar = (isOpen) => {
+    if (isOpen === true || isOpen === false) {
       setOnSideBar(isOpen);
     } else {
       setOnSideBar(!onSideBar);
@@ -64,7 +64,7 @@ export default function RootLayout() {
   return (
     <main className="flex flex-col w-full min-h-screen overflow-y-hidden overflow-x-hidden no-scrollbar">
       <CustomCursor />
-      <Header handleSideBar={() => handleSideBar()} showResult={showResult} />
+      <Header handleSideBar={handleSideBar} showResult={showResult} />
       <div className="relative flex-1 min-h-fit bg-[#FAFBF8] isolate">
         <div
           className={`transition-opacity duration-500 ease-out ${
