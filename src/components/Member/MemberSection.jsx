@@ -2,8 +2,6 @@ import MemberCard from '@/components/Member/MemberCard';
 
 export default function MemberSection({ title, data }) {
   const trackMap = {
-    LEAD: '대표',
-    COLEAD: '부대표',
     PO: 'PO',
     PM: 'PM',
     PMDESIGN: 'PM&DESIGN',
@@ -20,7 +18,7 @@ export default function MemberSection({ title, data }) {
             (memberData.position == 'LEAD' || memberData.position == 'COLEAD') && (
               <div className="flex flex-col gap-5">
                 <p className="text-[1rem] pad:text-[1.25rem] font-semibold">
-                  {trackMap[memberData.track]}
+                  {memberData.position == 'LEAD' ? '대표' : '부대표'}
                 </p>
                 <div className="flex flex-wrap gap-2 pad:gap-4 web:gap-5.5">
                   {memberData.clubMembers.map((data, index) => (
