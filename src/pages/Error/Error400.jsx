@@ -4,7 +4,7 @@ import RedirectButton from '@/components/common/Button/RedirectButton';
 import StatusMessage from '@/components/common/StatusMessage';
 import GridSection from '@/components/layout/background/GridSection';
 
-export default function Error401() {
+export default function Error400() {
   const title = '400 ERROR';
   const content = '올바르지 않은 요청입니다.\n이용에 불편을 드려 죄송합니다.';
   const buttonName = '홈으로 돌아가기';
