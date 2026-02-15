@@ -73,6 +73,12 @@ export default function Member() {
     return () => observer.disconnect();
   }, [hasNext, loading]);
 
+  useEffect(() => {
+    if (semesterData && semesterData.length > 0 && !selectSemester) {
+      setSelectSemester(semesterData[0]);
+    }
+  }, [semesterData]);
+
   return (
     <div className="flex flex-col py-14 px-5 pad:px-7  web:px-14 relative mb-70">
       <TitleSection

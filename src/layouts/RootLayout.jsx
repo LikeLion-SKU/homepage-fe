@@ -45,8 +45,12 @@ export default function RootLayout() {
       setToastData({ onToast: false, toastMessage: toastMessage });
     }, 1500);
   };
-  const handleSideBar = () => {
-    setOnSideBar(!onSideBar);
+  const handleSideBar = (isOpen = null) => {
+    if (isOpen != null) {
+      setOnSideBar(isOpen);
+    } else {
+      setOnSideBar(!onSideBar);
+    }
   };
 
   useEffect(() => {

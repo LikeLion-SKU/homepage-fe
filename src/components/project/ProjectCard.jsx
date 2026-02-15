@@ -21,14 +21,14 @@ export default function ProjectCard({ props, isAdmin }) {
         />
         <div className="flex flex-col pad:gap-2 web:gap-4 pad:w-82 web:w-101 p-5">
           <div className="flex justify-between items-center">
-            <p className="text-[1rem] web:text-[1.1rem] flex-1 font-bold">{props.title}</p>
+            <p className="text-[1rem] web:text-[1.1rem] flex-1 font-bold truncate">{props.title}</p>
             <ProjectCategory
               award={props.award}
               semester={props.semester}
               projectTypeName={props.projectTypeName}
             />
           </div>
-          <p className="text-[0.7rem] web:text-[0.9rem]">{props.content}</p>
+          <p className="text-[0.7rem] web:text-[0.9rem] line-clamp-2">{props.content}</p>
         </div>
       </div>
 
