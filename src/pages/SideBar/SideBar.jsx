@@ -29,7 +29,7 @@ export default function SideBar({ handleSideBar, showResult }) {
   ];
   const outLinkName = [
     { name: 'kakao talk', imgUrl: kakao, link: 'http://pf.kakao.com/_hCEzX' },
-    { name: 'instaram', imgUrl: instagram, link: 'https://www.instagram.com/likelion_skuniv/' },
+    { name: 'instagram', imgUrl: instagram, link: 'https://www.instagram.com/likelion_skuniv/' },
     { name: 'github', imgUrl: github, link: 'https://github.com/LikeLion-SKU' },
   ];
   return (
