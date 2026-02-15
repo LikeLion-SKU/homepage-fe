@@ -75,7 +75,7 @@ export default function AdminUser() {
             isGuest: true,
             lastUserId: guestData[0].userInformationList.lastCursor,
             size: 10,
-            keyword: '',
+            keyword: debouncedGuestName[0],
           };
 
           const filteredParameter = Object.entries(parameter).reduce((acc, [key, value]) => {
@@ -111,7 +111,7 @@ export default function AdminUser() {
             isGuest: false,
             lastUserId: guestData[1].userInformationList.lastCursor,
             size: 6,
-            keyword: '',
+            keyword: debouncedGuestName[1],
           };
 
           const filteredParameter = Object.entries(parameter).reduce((acc, [key, value]) => {
