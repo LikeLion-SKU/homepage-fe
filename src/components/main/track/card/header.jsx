@@ -7,6 +7,11 @@ import GridPattern from './GridPattern';
 function CardHeader({ title }) {
   const scale = useScale();
   const isMobile = useMediaQuery('(max-width: 480px)');
+  const isMedium = useMediaQuery('(min-width: 481px) and (max-width: 759px)');
+  const isTablet = useMediaQuery('(min-width: 760px) and (max-width: 1199px)');
+  const isPO = title === 'PO 프로젝트 오너';
+  const isFE = title === 'FRONTEND 프론트엔드 개발자';
+  const isBE = title === 'BACKEND 백엔드 개발자';
 
   return (
     <GridPattern
@@ -23,7 +28,23 @@ function CardHeader({ title }) {
         style={{
           // 가로 길이를 더 늘려 헤더 안 텍스트 영역을 넉넉하게
           width: `calc(100% - ${isMobile ? (40 / 16) * scale : (32 / 16) * scale}rem)`,
-          maxWidth: `${isMobile ? (950 / 16) * scale : (380 / 16) * scale}rem`,
+          maxWidth: `${
+            isMobile
+              ? (920 / 16) * scale
+              : isMedium && isPO
+                ? (220 / 16) * scale
+                : isMedium && isFE
+                  ? (315 / 16) * scale
+                  : isMedium && isBE
+                    ? (280 / 16) * scale
+                    : isTablet && isPO
+                      ? (220 / 16) * scale
+                      : isTablet && isFE
+                        ? (315 / 16) * scale
+                        : isTablet && isBE
+                          ? (280 / 16) * scale
+                          : (380 / 16) * scale
+          }rem`,
           height: `${isMobile ? (80 / 16) * scale : (40 / 16) * scale}rem`,
           left: `${isMobile ? (70 / 16) * scale : (23 / 16) * scale}rem`,
           top: `${isMobile ? (35 / 16) * scale : (16 / 16) * scale}rem`,

@@ -4,6 +4,7 @@ import { useLoaderData, useLocation } from 'react-router';
 
 import { APIService } from '@/api/api';
 import { getQuesAndAnswerByTrack } from '@/api/getQuestionAnswer';
+import Toast from '@/components/common/Toast/Toast';
 
 export default function Apply() {
   // 원본 데이터 불러오기 (from back)
@@ -11,6 +12,7 @@ export default function Apply() {
   const { userInfoData } = useLoaderData(); // 사용자 인적사항 조회 api
   const [questions, setQuestions] = useState([]); // 트랙별 질문 조회 api
   const [recordAnswer, setRecordAnswer] = useState({}); // 트랙별 질문별 답변 조회 api
+  const [isToast, setIsToast] = useState(false); // 토스트 상태 관리
 
   // 세션 스토리지 상태관리
   const [formData, setFormData] = useState(() => {
@@ -47,18 +49,17 @@ export default function Apply() {
         setRecordAnswer(formattedAnswers);
 
         setFormData((prev) => {
-          // 백에서 불러온 트랙별 질문과 답변 정보의 track을 type으로 직접 주입
-          const typedNewAnswers = Object.entries(formattedAnswers).reduce(
-            (acc, [questionId, content]) => {
-              const existingContent = prev.answers?.[questionId]?.content; // sessionStorage의 내용 prev.answers?.[questionId]이 없으면 원래 api 원본 데이터로
-              acc[questionId] = {
-                content: existingContent !== undefined ? existingContent : content || '',
-                type: track, // 여기서 API 응답의 track 정보를 사용
-              };
-              return acc;
-            },
-            {}
-          );
+          // 모든 질문에 대해 type을 설정 (저장된 답변이 없는 질문도 포함)
+          // formattedAnswers만 순회하면 저장된 답변이 없는 질문은 type이 누락됨
+          const typedNewAnswers = questions.reduce((acc, q) => {
+            const existingContent = prev.answers?.[q.questionId]?.content; // sessionStorage의 내용, 없으면 API 원본 데이터로
+            const apiContent = formattedAnswers[q.questionId]; // API에서 가져온 저장된 답변
+            acc[q.questionId] = {
+              content: existingContent !== undefined ? existingContent : apiContent || '',
+              type: track, // 여기서 API 응답의 track 정보를 사용
+            };
+            return acc;
+          }, {});
           const nextData = {
             ...prev,
             name: prev.name || userInfoData?.name || '',
@@ -116,7 +117,10 @@ export default function Apply() {
 
   // 임시저장 api 호출
   // 사용자 인적사항 정보의 track이 null 일때 isFirst = true
-  const recordDraft = async (isFirst = false) => {
+  // loader 데이터는 갱신되지 않으므로 state로 관리하여 first-draft 성공 후 업데이트
+  const [isFirst, setIsFirst] = useState(userInfoData?.track == null);
+
+  const recordDraft = async () => {
     try {
       const { commonAnswers, trackAnswers } = formatAnswers();
 
@@ -129,9 +133,14 @@ export default function Apply() {
 
       if (isFirst) {
         await APIService.private.post('/v1/applications/records/first-draft', record);
+        setIsFirst(false); // first-draft 성공 후 다음부터는 draft(PUT)로 요청
       } else {
         await APIService.private.put('/v1/applications/records/draft', record);
       }
+
+      // 임시저장 성공 시 토스트 표시
+      setIsToast(true);
+      setTimeout(() => setIsToast(false), 3000);
     } catch (error) {
       console.error('저장 실패:', error);
     }
@@ -165,9 +174,17 @@ export default function Apply() {
     });
   };
 
+  // Apply 페이지를 벗어나면  세션 스토리지 비우기
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem('apply_draft');
+    };
+  }, []);
+
   console.log('원본데이터:', userInfoData);
   return (
     <div>
+      <Toast isToast={isToast} message="임시저장 되었습니다" />
       <Outlet
         context={{
           formData,

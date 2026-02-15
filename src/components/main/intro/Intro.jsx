@@ -113,7 +113,7 @@ function Intro() {
         }}
       >
         <h1
-          className="text-[#1a1a1a] m-0 whitespace-nowrap inline-flex items-center"
+          className="text-[#3C3C3C] m-0 whitespace-nowrap inline-flex items-center"
           style={{
             fontFamily:
               'HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
@@ -180,7 +180,7 @@ function Intro() {
         }}
       >
         <h2
-          className="text-[#1a1a1a] m-0 inline-flex items-center"
+          className="text-[#3C3C3C] m-0 inline-flex items-center"
           style={{
             fontFamily:
               'HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',

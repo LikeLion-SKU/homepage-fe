@@ -39,7 +39,7 @@ export default function Header({ handleSideBar, showResult }) {
   }, [isLogin]);
 
   return (
-    <header className="w-full h-13 pad:h-17 web:h-19  flex justify-between border-b">
+    <header className="relative z-50 w-full h-13 pad:h-17 web:h-19  flex justify-between border-b bg-white">
       <div
         onClick={() => {
           clickMenu('/');
