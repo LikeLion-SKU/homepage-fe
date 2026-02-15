@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLoaderData, useNavigate } from 'react-router';
+import { useLoaderData, useLocation, useNavigate } from 'react-router';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -19,6 +19,7 @@ import { availbleChangeInterview } from '@/utils/availableChangeInterview';
 export default function Result() {
   dayjs.locale('ko');
   const navigate = useNavigate();
+  const location = useLocation();
   const [onModal, setOnModal] = useState(false);
   const [allChecked, setAllChecked] = useState([false, false]);
   const resultData = useLoaderData();
@@ -27,12 +28,16 @@ export default function Result() {
   const { myInterviews } = useInterviewStore();
   const [resultDate, setResultData] = useState({ finalResultAt: '' });
   useEffect(() => {
+    if (!location.state?.fromA) {
+      alert('잘못된 접근입니다. A 페이지를 통해서 들어와주세요.');
+      navigate('/', { replace: true }); // 메인으로 튕겨내기 (replace: 뒤로가기 방지)
+    }
     const getInterviewDate = async () => {
       setInterviewDate(await availbleChangeInterview());
       setResultData(await getCurrentForm());
     };
     getInterviewDate();
-  }, []);
+  }, [location, navigate]);
 
   const buttonClick = () => {
     if (resultData.test === 'document' && resultData.result) {
