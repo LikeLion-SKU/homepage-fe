@@ -7,7 +7,7 @@ function GridPattern({ className = '', style = {}, children = null }) {
 
   // 모바일에서는 scale을 적용하지 않고 고정값 사용 (웹과 동일한 격자 크기)
   const gridSize = isMobile ? `${20 / 16}rem` : `${(20 / 16) * scale}rem`;
-  const bgPositionX = isMobile ? `${-3 / 16}rem` : `${(-3 / 16) * scale}rem`;
+  const bgPositionX = isMobile ? `${-1 / 16}rem` : `${(-4 / 16) * scale}rem`;
   const bgPositionY = isMobile ? `${1 / 16}rem` : `${(1 / 16) * scale}rem`;
 
   return (
