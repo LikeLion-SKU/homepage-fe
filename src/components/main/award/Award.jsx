@@ -107,7 +107,7 @@ function Award() {
       showTopBorder={false}
       paddingScale={isMobile480 ? 0.6 : 0.25}
       paddingBottomScale={isMobile480 ? 5 : 1}
-      frameTopOffset={isMobile480 ? -80 : null}
+      frameTopOffset={isMobile480 ? -80 : -85}
       backgroundStyle={{
         isolation: 'isolate',
         zIndex: 10,
@@ -157,7 +157,7 @@ function Award() {
               style={{
                 position: 'absolute',
                 right: `${(-70 / 16) * scale}rem`,
-                top: `${(-160 / 16) * scale}rem`,
+                top: `${(-150 / 16) * scale}rem`,
                 zIndex: 100,
                 maxWidth: `${(520 / 16) * scale}rem`,
               }}
@@ -171,8 +171,8 @@ function Award() {
               alt="award blah"
               className="absolute pointer-events-none"
               style={{
-                left: `${(110 / 16) * scale}rem`,
-                top: `${(-30 / 16) * scale}rem`,
+                left: `${(150 / 16) * scale}rem`,
+                top: `${(-70 / 16) * scale}rem`,
                 width: `${(159 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
                 height: 'auto',
                 zIndex: 30,
