@@ -3,7 +3,7 @@ export default function Question({ question, className, value, onChange }) {
     <div className="flex flex-col gap-3">
       <div className="self-stretch text-sm pad:text-lg font-semibold">{question}</div>
 
-      <textarea className={className} value={value} onChange={onChange} maxLength={499}></textarea>
+      <textarea className={className} value={value} onChange={onChange} maxLength={500}></textarea>
 
       <div>{value?.length || 0}/500</div>
     </div>
