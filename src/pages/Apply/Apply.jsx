@@ -174,6 +174,13 @@ export default function Apply() {
     });
   };
 
+  // Apply 페이지를 벗어나면  세션 스토리지 비우기
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem('apply_draft');
+    };
+  }, []);
+
   console.log('원본데이터:', userInfoData);
   return (
     <div>
