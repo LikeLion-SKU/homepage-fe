@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLoaderData } from 'react-router';
 
 import { getClubMemberAdmin, getGuest } from '@/api/userApi';
@@ -63,6 +63,7 @@ export default function AdminUser() {
   const [memberData, setMemberData] = useState([]);
   const [debouncedSearchName, setDebouncedSearch] = useState('');
   const [trigger, setTrigger] = useState(true);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -159,7 +160,15 @@ export default function AdminUser() {
       }
     };
     getUserData();
-  }, [isUser, trigger, selectedSemester, selectedPosition, selectedTrack, debouncedSearchName]);
+  }, [
+    isUser,
+    trigger,
+    selectedSemester,
+    selectedPosition,
+    selectedTrack,
+    debouncedSearchName,
+    debouncedGuestName,
+  ]);
 
   const handleGuestData = async (getDataNum) => {
     if (getDataNum == 0) {
@@ -204,7 +213,10 @@ export default function AdminUser() {
   };
 
   useEffect(() => {
-    if (debouncedGuestName[0] === '' && debouncedGuestName[1] === '') return;
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     const getSearchName = async () => {
       if (debouncedGuestName[0] !== '') {
         const parameter = {
