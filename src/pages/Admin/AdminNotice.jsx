@@ -4,6 +4,7 @@ import AdminTitleSection from '@/components/admin/AdminTitleSection';
 import NoticeButton from '@/components/admin/Notice/NoticeButton';
 import NoticeTableData from '@/components/admin/Notice/NoticeTableData';
 import NoticeTableRow from '@/components/admin/Notice/NoticeTableRow';
+import CheckModal from '@/components/common/Modal/CheckModal';
 
 export default function AdminNotice() {
   // RootLayout의 openModal 사용
@@ -30,6 +31,8 @@ export default function AdminNotice() {
         handleOpenEditModal,
         confirmModeIndex,
         setConfirmMode,
+        isCheckModalOpen,
+        setIsCheckModalOpen,
       }) => (
         <div className="flex flex-col gap-8 px-21 py-30">
           <AdminTitleSection props={propsData}>{null}</AdminTitleSection>
@@ -90,6 +93,11 @@ export default function AdminNotice() {
               <NoticeButton type="plus" onClick={handleAddRow} />
             </div>
           </div>
+          {isCheckModalOpen && (
+            <CheckModal isOpen={isCheckModalOpen} cancel={() => setIsCheckModalOpen(false)}>
+              모집 공고 일정을 채워주세요.
+            </CheckModal>
+          )}
         </div>
       )}
     </NoticeTableData>
