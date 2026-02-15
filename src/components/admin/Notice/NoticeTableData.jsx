@@ -81,6 +81,7 @@ export default function NoticeTableData({ children }) {
   const [checkedList, setCheckedList] = useState([]);
   const [deleteTargetIndex, setDeleteTargetIndex] = useState(-1);
   const [confirmModeIndex, setConfirmModeIndex] = useState(-1);
+  const [isCheckModalOpen, setIsCheckModalOpen] = useState(false);
 
   // 페이지 로드 시 서버에서 기존 공고 목록 가져오기
   useEffect(() => {
@@ -103,6 +104,12 @@ export default function NoticeTableData({ children }) {
   }, []);
 
   const handleAddRow = () => {
+    // 이미 생성 중인 행이 있는지 확인 (editingIndex가 -1이 아니거나 confirmModeIndex가 -1이 아닌 경우)
+    if (editingIndex !== -1 || confirmModeIndex !== -1) {
+      setIsCheckModalOpen(true);
+      return;
+    }
+
     // 빈 행 추가 (모든 값이 비어있음)
     const emptyRow = {
       id: null,
@@ -289,6 +296,11 @@ export default function NoticeTableData({ children }) {
         } else if (editingIndex > deleteTargetIndex) {
           setEditingIndex(editingIndex - 1);
         }
+        if (confirmModeIndex === deleteTargetIndex) {
+          setConfirmModeIndex(-1);
+        } else if (confirmModeIndex > deleteTargetIndex) {
+          setConfirmModeIndex(confirmModeIndex - 1);
+        }
         setDeleteTargetIndex(-1);
         showToast('삭제되었습니다.');
       }
@@ -322,6 +334,11 @@ export default function NoticeTableData({ children }) {
         setEditingIndex(-1);
       } else if (editingIndex > idx) {
         setEditingIndex(editingIndex - 1);
+      }
+      if (confirmModeIndex === idx) {
+        setConfirmModeIndex(-1);
+      } else if (confirmModeIndex > idx) {
+        setConfirmModeIndex(confirmModeIndex - 1);
       }
     });
     setNoticeData((prev) => prev.filter((_, idx) => !checkedList.includes(idx)));
@@ -365,5 +382,7 @@ export default function NoticeTableData({ children }) {
     handleOpenEditModal,
     confirmModeIndex,
     setConfirmMode,
+    isCheckModalOpen,
+    setIsCheckModalOpen,
   });
 }
