@@ -41,7 +41,10 @@ export default function Header({ handleSideBar, showResult }) {
   return (
     <header className="relative z-50 w-full h-13 pad:h-17 web:h-19  flex justify-between border-b bg-white">
       <div
-        onClick={() => clickMenu('/')}
+        onClick={() => {
+          clickMenu('/');
+          handleSideBar(false);
+        }}
         className="flex items-center justify-center text-[1.1rem] font-bold web:border-r cursor-pointer"
       >
         <img src={Logo} className="w-11 h-11 pad:w-18 pad:h-18 web:w-23 web:h-23" />
@@ -103,6 +106,7 @@ export default function Header({ handleSideBar, showResult }) {
             onClick={() => {
               if (isLogin) clickMenu('/mypage');
               else clickMenu('/login');
+              handleSideBar(false);
             }}
             className="px-10 font-semibold items-center justify-center 
           border-x web:border-l web:border-r-0"

@@ -52,6 +52,7 @@ import ProjectViewDetail from '@/pages/Project/ProjectViewDetail';
 import Recruitment from '@/pages/Recruitment/Recruitment';
 import Result from '@/pages/Result/Result';
 import ResultNotice from '@/pages/Result/ResultNotice';
+import AdminRoute from '@/router/AdminRoute';
 
 const router = createBrowserRouter([
   // 일반 서비스 브랜치 (RootLayout 사용)
@@ -109,7 +110,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/admin',
-        /*Component: AdminRoute, */
+        Component: AdminRoute,
         children: [
           { index: true, Component: AdminPage },
           { path: 'user', Component: AdminUser, loader: getSemester },
