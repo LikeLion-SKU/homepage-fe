@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import CardSlideAnimation from '@/components/animation/CardSlideAnimation';
 import useScale from '@/components/main/hooks/useScale';
 import { useDragScroll } from '@/hooks/useDragScroll';
-import useMediaQuery from '@/hooks/useMediaQuery';
 
 import AwardCard from './AwardCard';
 import ClickCursor from './ClickCursor';
@@ -11,9 +11,10 @@ import ClickCursor from './ClickCursor';
 function AwardCardList({ cards = [], observerRef = null, loading = false }) {
   const scale = useScale();
   const navigate = useNavigate();
-  const isScrollingRef = useRef(false);
-  const isMobile480 = useMediaQuery('(max-width: 480px)');
-  const hasInitializedRef = useRef(false);
+
+  // 자동 스크롤 관련 refs (사용자 스크롤 처리에서 사용)
+  const virtualPosRef = useRef(0);
+  const isAutoSettingRef = useRef(false);
 
   // 드래그 비활성화, 마우스 휠과 커서만 활성화
   const { containerRef, cursorRef } = useDragScroll({
@@ -21,70 +22,50 @@ function AwardCardList({ cards = [], observerRef = null, loading = false }) {
     wheelToHorizontal: true, // 마우스 휠 스크롤 활성화
   });
 
-  // 초기 스크롤 위치 설정: 세 개의 카드가 동시에 보이도록
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container || cards.length === 0 || hasInitializedRef.current) return;
-
-    // 카드 하나의 너비와 마진 계산
-    const cardWidth = (699 / 16) * scale * (isMobile480 ? 1.6 : 1);
-    const cardMargin = (35 / 16) * scale;
-    const cardTotalWidth = cardWidth + cardMargin;
-
-    // 세 개의 카드가 보이도록 스크롤 위치 계산
-    // 두 번째 카드가 중앙에 오도록: 첫 번째 카드 너비 + 마진 + (뷰포트 너비 / 2) - (카드 너비 / 2)
-    const viewportWidth = window.innerWidth;
-    const targetScrollLeft = cardTotalWidth + viewportWidth / 4 - cardWidth / 2;
-
-    // 초기 스크롤 위치 설정 (한 번만 실행)
-    setTimeout(() => {
-      if (container && !hasInitializedRef.current) {
-        container.scrollTo({
-          left: targetScrollLeft,
-          behavior: 'auto',
-        });
-        hasInitializedRef.current = true;
-      }
-    }, 100);
-  }, [containerRef, cards, scale, isMobile480]);
-
-  // 무한 스크롤 구현: 카드 리스트를 복제하여 순환 효과 생성
+  // 사용자 스크롤 시 virtualPos 동기화 및 무한 루프 처리
   useEffect(() => {
     const container = containerRef.current;
     if (!container || cards.length === 0) return;
 
     const handleScroll = () => {
-      if (isScrollingRef.current) return;
+      // 자동 스크롤로 발생한 scroll 이벤트는 무시
+      if (isAutoSettingRef.current) return;
 
       const scrollLeft = container.scrollLeft;
       const scrollWidth = container.scrollWidth;
-      const halfWidth = scrollWidth / 2;
+      if (!scrollWidth) return;
+      const halfWidth = Math.floor(scrollWidth / 2);
+      if (!halfWidth) return;
 
+      // 사용자 입력일 때만 virtualPos 동기화
+      virtualPosRef.current = scrollLeft % halfWidth;
+
+      // 사용자 스크롤 시 경계 처리 (왼쪽/오른쪽 모두)
       // 오른쪽 끝에 도달하면 (복제된 시작 부분) 부드럽게 원래 위치로 이동
       if (scrollLeft >= halfWidth) {
-        isScrollingRef.current = true;
+        isAutoSettingRef.current = true;
         container.scrollTo({
           left: scrollLeft - halfWidth,
-          behavior: 'auto', // 부드러운 전환 없이 즉시 이동
+          behavior: 'auto',
         });
-        setTimeout(() => {
-          isScrollingRef.current = false;
-        }, 50);
+        requestAnimationFrame(() => {
+          isAutoSettingRef.current = false;
+        });
       }
       // 왼쪽 끝에 도달하면 (시작 부분) 마지막 위치로 이동
       else if (scrollLeft <= 0) {
-        isScrollingRef.current = true;
+        isAutoSettingRef.current = true;
         container.scrollTo({
           left: scrollLeft + halfWidth,
-          behavior: 'auto', // 부드러운 전환 없이 즉시 이동
+          behavior: 'auto',
         });
-        setTimeout(() => {
-          isScrollingRef.current = false;
-        }, 50);
+        requestAnimationFrame(() => {
+          isAutoSettingRef.current = false;
+        });
       }
     };
 
-    container.addEventListener('scroll', handleScroll);
+    container.addEventListener('scroll', handleScroll, { passive: true });
     return () => container.removeEventListener('scroll', handleScroll);
   }, [containerRef, cards]);
 
@@ -93,6 +74,15 @@ function AwardCardList({ cards = [], observerRef = null, loading = false }) {
 
   return (
     <>
+      {/* 자동 스크롤 애니메이션 적용 */}
+      {cards.length > 0 && (
+        <CardSlideAnimation
+          containerRef={containerRef}
+          cards={cards}
+          virtualPosRef={virtualPosRef}
+          isAutoSettingRef={isAutoSettingRef}
+        />
+      )}
       <div
         ref={containerRef}
         style={{
@@ -101,6 +91,7 @@ function AwardCardList({ cards = [], observerRef = null, loading = false }) {
           overflowX: 'auto',
           overflowY: 'hidden',
           paddingBottom: `${(16 / 16) * scale}rem`,
+          position: 'relative',
         }}
         className="no-scrollbar award-drag-container"
       >
@@ -129,22 +120,38 @@ function AwardCardList({ cards = [], observerRef = null, loading = false }) {
               <AwardCard title={card.title} image={card.image} />
             </div>
           ))}
-          {/* 무한 스크롤 감지 요소 - 오른쪽 끝에 배치 */}
-          {observerRef && (
-            <div
-              ref={observerRef}
-              style={{
-                minWidth: '100px',
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              {loading && <div className="text-sm">로딩 중...</div>}
-            </div>
-          )}
         </div>
+        {/* 무한 스크롤 감지 요소 - absolute로 배치하여 scrollWidth에 영향 없게 */}
+        {observerRef && (
+          <div
+            ref={observerRef}
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              width: '1px',
+              height: '1px',
+              pointerEvents: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {loading && (
+              <div
+                style={{
+                  position: 'absolute',
+                  right: '50px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                }}
+                className="text-sm"
+              >
+                로딩 중...
+              </div>
+            )}
+          </div>
+        )}
       </div>
       {/* 커서 따라다니는 네모 박스 */}
       <ClickCursor cursorRef={cursorRef} />
