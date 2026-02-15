@@ -29,7 +29,7 @@ export default function Result() {
   const [resultDate, setResultData] = useState({ finalResultAt: '' });
   useEffect(() => {
     if (!location.state?.fromA) {
-      alert('잘못된 접근입니다. A 페이지를 통해서 들어와주세요.');
+      alert('잘못된 접근입니다. 정해진 페이지를 통해서 들어와주세요.');
       navigate('/', { replace: true }); // 메인으로 튕겨내기 (replace: 뒤로가기 방지)
     }
     const getInterviewDate = async () => {
@@ -44,7 +44,13 @@ export default function Result() {
       if (interviewDate) {
         if (myInterviews.booking.scheduleId) {
           if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
-            putInterviewChange(selectedTime.scheduleId);
+            try {
+              putInterviewChange(selectedTime.scheduleId);
+            } catch (error) {
+              if (error.response.status === 409) {
+                setOnModal(true);
+              }
+            }
           }
         } else {
           interviewBooking(selectedTime.scheduleId);
@@ -57,12 +63,16 @@ export default function Result() {
       navigate('/');
     }
   };
-  const getModalMessage = () => {
+  const getModalMessage = (success) => {
     if (allChecked[0] && allChecked[1]) {
-      if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
-        return '면접 일정이 확정되었습니다.';
+      if (success) {
+        if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
+          return '면접 일정이 확정되었습니다.';
+        } else {
+          return '이전 일정을 유지합니다.';
+        }
       } else {
-        return '이전 일정을 유지합니다.';
+        return '이미 예약된 면접 일정입니다.';
       }
     } else if (!allChecked[0]) {
       return '면접 날짜를 선택해주세요.';
@@ -70,10 +80,14 @@ export default function Result() {
       return '모든 동의 항목에 동의해주세요.';
     }
   };
-  const modalClick = () => {
+  const modalClick = (success) => {
     setOnModal(false);
     if (allChecked[0] && allChecked[1]) {
-      navigate('/');
+      if (success) {
+        navigate('/');
+      } else {
+        window.location.reload();
+      }
     }
   };
   return (
