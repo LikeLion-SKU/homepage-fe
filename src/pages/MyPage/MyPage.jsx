@@ -1,8 +1,9 @@
 import { useState } from 'react';
+//import { useRevalidator } from 'react-router-dom';
+
+import { TailSpin } from 'react-loader-spinner';
 import { useLoaderData, useNavigate } from 'react-router';
 import { useFetcher } from 'react-router-dom';
-
-//import { useRevalidator } from 'react-router-dom';
 
 import { APIService } from '@/api/api';
 import Home from '@/assets/icons/4.svg';
@@ -10,6 +11,8 @@ import Camera from '@/assets/icons/mdi-light_camera.svg';
 import defaultProfileImage from '@/assets/icons/profile_smile.svg';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
+import Toast from '@/components/common/Toast/Toast';
+import useSpinnerStore from '@/store/useSpinnerStore';
 
 export default function MyPage() {
   const userData = useLoaderData(); // 데이터 가져오기
@@ -35,39 +38,28 @@ export default function MyPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
   const [isError, setIsError] = useState(false); // 이미지 로딩 실패
-  const [preview, setPreview] = useState(null); // 이미지 미리보기
+  const [profileImageUrl, setProfileImageUrl] = useState(userData.profileImageUrl); // 프로필 이미지 URL
+  const [isToast, setIsToast] = useState(false); // 토스트 상태 관리
+
+  // 프로필 이미지 업로드 스피너
+  const isUploading = useSpinnerStore((state) => state.buttonSpinners['profileImage'] || false);
+  const setButtonLoading = useSpinnerStore((state) => state.setButtonLoading);
 
   const renderProfileImage = () => {
-    if (isError) {
+    if (isError || !profileImageUrl) {
       return (
         <div className="w-full h-full bg-toggle-green flex items-center justify-center">
           <img src={defaultProfileImage} className="w-16 h-16 pad:w-24 pad:h-24"></img>
         </div>
       );
     }
-    if (preview) {
-      return (
-        <img
-          src={preview}
-          className="w-full h-full object-cover" // 미리보기 강조 스타일
-          alt="미리보기"
-        />
-      );
-    }
-    if (userData.profileImageUrl) {
-      return (
-        <img
-          src={userData.profileImageUrl}
-          onError={() => setIsError(true)}
-          className="w-full h-full object-cover"
-          alt="사용자 프로필"
-        />
-      );
-    }
     return (
-      <div className="w-full h-full bg-toggle-green flex items-center justify-center">
-        <img src={defaultProfileImage} className="w-16 h-16 pad:w-24 pad:h-24"></img>
-      </div>
+      <img
+        src={profileImageUrl}
+        onError={() => setIsError(true)}
+        className="w-full h-full object-cover"
+        alt="사용자 프로필"
+      />
     );
   };
 
@@ -83,33 +75,29 @@ export default function MyPage() {
   const minHeight =
     'min-h-[calc(100vh-52px)] pad:min-h-[calc(100vh-68px)] web:min-h-[calc(100vh-76px)]';
 
-  // 프로필 이미지 수정
+  // 프로필 이미지 수정 (선택 즉시 업로드)
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
 
     if (file) {
-      const reader = new FileReader(); // 선택한 사진의 url
-
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-
-      reader.readAsDataURL(file);
-
-      // 서버에 사용자가 변경한 사진 url 전달
       const formData = new FormData();
       formData.append('profile-image', file);
+
+      setButtonLoading('profileImage', true); // 스피너 시작
 
       try {
         const response = await APIService.private.patch('/v1/users/me/image', formData);
         if (response.success) {
-          //revalidator.revalidate();
-          setPreview(response.data.profileImageUrl); // 서버에 이미지 보내고 받은 이미지 url 띄우기
-          console.log(response);
+          setProfileImageUrl(response.data.profileImageUrl); // 서버에서 받은 URL로 즉시 교체
+          setIsError(false); // 이전 에러 상태 초기화
+          setIsToast(true);
+          setTimeout(() => setIsToast(false), 3000);
           console.log('프로필 이미지 수정 완료');
         }
       } catch (error) {
         console.error('프로필 이미지 수정 실패', error);
+      } finally {
+        setButtonLoading('profileImage', false); // 스피너 종료 (성공/실패 모두)
       }
     }
   };
@@ -118,12 +106,18 @@ export default function MyPage() {
     <div
       className={`w-full ${minHeight} relative flex flex-col items-center web:items-stretch justify-center bg-white isolate overflow-hidden"`}
     >
+      <Toast isToast={isToast} message="프로필 사진이 업로드되었습니다" />
       <div className="flex flex-col web:flex-row items-center web:justify-between px-6 pad:px-20 web:px-36 gap-16">
         {/* 좌측 개인정보 부분 */}
         <div className="relative flex flex-col web:flex-row justify-start items-center gap-x-9 gap-y-14">
           <div className="w-40 h-40 pad:w-44 pad:h-44 relative">
             <div className="relative w-40 h-40 pad:w-44 pad:h-44 bg-zinc-300 border border-black group">
               {renderProfileImage()}
+              {isUploading && (
+                <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
+                  <TailSpin color="#64a772" width={40} height={40} />
+                </div>
+              )}
               <label
                 htmlFor="profile-upload"
                 className="outline cursor-pointer w-full h-10 items-center justify-center flex flex-row gap-6 bg-button-green hover:bg-button-hover"
