@@ -1,5 +1,6 @@
 import { startTransition, useEffect, useRef, useState } from 'react';
 
+import exclamationSvg from '@/assets/icons/main/intro/!.svg';
 import TypingAnimation from '@/components/animation/TypingAnimation';
 import BigFrameBox from '@/components/layout/frame/Frame';
 import IntroIcons from '@/components/main/intro/IntroIcons';
@@ -23,12 +24,6 @@ function Intro() {
 
   const stableLayoutRef = useRef({ squareSizeRem: null, scale: null });
   const stableTimeoutRef = useRef(null);
-
-  //ios 텍스트 매트릭 적용
-  const isIOS =
-    typeof navigator !== 'undefined' &&
-    /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-    !window['MSStream'];
 
   // 값이 80ms 동안 유지되면 표시 (타이머와 동기화)
   useEffect(() => {
@@ -78,10 +73,13 @@ function Intro() {
     document.fonts.load('16px Aclonica').then(() => setIsAclonicaReady(true));
   }, []);
 
-  // "!" 위치 미세조정(오른쪽/아래) - 값만 바꾸면 됨
-  const exclamationOffsetX = 8 * scale; // 오른쪽으로 이동 (px)
-  const exclamationOffsetY = (7 + (isIOS ? 1 : 0)) * scale; // 아래로 이동 (px, iOS 조정)
-  const exclamationCaretOffsetX = 20 * scale; // 느낌표 뒤 커서(작대기) 추가로 오른쪽 이동 (px)
+  // "!" X 이동만 정수화해서 사용
+  const exclamationOffsetX = Math.round(-110 * scale);
+  const exclamationCaretOffsetX = Math.round(-100 * scale); // 막대기 왼쪽으로 이동
+
+  // Y 미세조정: 여기만 건드리면 됨 (1~3 권장)
+  const exclamationYOffset = Math.round(2 * scale);
+  const exclamationOnlyDownPx = Math.round(-8 * scale); // 느낌표만 추가로 아래로 이동 (px)
 
   // squareSize를 rem으로 변환하는 헬퍼 함수
   const pxToRem = (px) => {
@@ -106,6 +104,7 @@ function Intro() {
       }}
     >
       <Square onScaleChange={setScale} onSquareSizeRemChange={setSquareSizeRem} />
+
       {/* 아이콘 배치 - 격자 배경 아래 */}
       <div
         style={{
@@ -115,6 +114,7 @@ function Intro() {
       >
         <IntroIcons squareSizeRem={squareSizeRem || 0} scale={scale} />
       </div>
+
       {/* Intro 내용 - 4.5-3 위치에 배치 */}
       <div
         className="absolute z-20 pointer-events-none"
@@ -142,6 +142,7 @@ function Intro() {
             onComplete={() => setShouldStartImaginationTyping(true)}
             showCursor={false}
           />
+
           {/* "상상" 텍스트 - 프레임 있음 */}
           <span
             className="text-[#1928B0] inline-block"
@@ -178,6 +179,7 @@ function Intro() {
           </span>
         </h1>
       </div>
+
       {/* 세상 밖으로 텍스트 - 8-10.3 위치에 배치 */}
       <div
         className="absolute z-20 pointer-events-none"
@@ -204,45 +206,65 @@ function Intro() {
             minWidth: 'max-content',
           }}
         >
-          <TypingAnimation
-            text="세상 밖으로"
-            speed={150}
-            fontSize={`${(120 / 16) * scale}rem`}
-            fontFamily="HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
-            shouldStart={shouldStartSecondTyping}
-            showCursor={false}
-            onComplete={() => {
-              setTimeout(() => setShowExclamation(true), 150);
-            }}
-          />
-          {showExclamation && isAclonicaReady && (
-            <span
-              style={{
-                fontSize: `${(130 / 16) * scale}rem`,
-                fontFamily: 'Aclonica, sans-serif',
-                display: 'inline-block',
-                lineHeight: '1',
-                position: 'relative',
-                top: `${(isIOS ? 1 : 0) * scale}px`,
-                transform: `translate(${exclamationOffsetX}px, ${exclamationOffsetY}px)`,
-              }}
-            >
-              !
-            </span>
-          )}
-          {showExclamation && isAclonicaReady && (
-            <span
-              className="inline-block w-0.5 bg-[#1a1a1a] ml-0.5 animate-blink"
-              style={{
-                height: `${(120 / 16) * scale * 1.2}rem`,
-                verticalAlign: 'middle',
-                transform: `translateX(${exclamationCaretOffsetX}px)`,
+          {/* TypingAnimation을 anchor로 만들고, !와 커서를 absolute로 분리 */}
+          <span style={{ position: 'relative', display: 'inline-block' }}>
+            <TypingAnimation
+              text="세상 밖으로"
+              speed={150}
+              fontSize={`${(120 / 16) * scale}rem`}
+              fontFamily="HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
+              shouldStart={shouldStartSecondTyping}
+              showCursor={false}
+              onComplete={() => {
+                setTimeout(() => setShowExclamation(true), 150);
               }}
             />
-          )}
+
+            {showExclamation && isAclonicaReady && (
+              <span
+                style={{
+                  position: 'absolute',
+                  left: '100%',
+                  top: '50%',
+                  // 컨테이너에서만 X/Y 보정 (한 번만)
+                  transform: `translate(${exclamationOffsetX}px, -50%) translateY(${exclamationYOffset}px)`,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {/* 느낌표는 자연 흐름 */}
+                <img
+                  src={exclamationSvg}
+                  alt="!"
+                  style={{
+                    width: `${Math.round(280 * scale)}px`,
+                    height: `${Math.round(108 * scale)}px`,
+                    display: 'inline-block',
+                    position: 'relative',
+                    top: `${exclamationOnlyDownPx}px`,
+                    imageRendering: 'crisp-edges',
+                    maxWidth: 'none',
+                    maxHeight: 'none',
+                    flexShrink: 0,
+                  }}
+                />
+
+                {/* 막대기도 자연 흐름 + 기존처럼 추가 X만 */}
+                <span
+                  className="inline-block w-0.5 bg-[#1a1a1a] ml-0.5 animate-blink"
+                  style={{
+                    height: `${(120 / 16) * scale * 1.2}rem`,
+                    transform: `translateX(${exclamationCaretOffsetX}px)`,
+                  }}
+                />
+              </span>
+            )}
+          </span>
         </h2>
       </div>
-      {/* SCROLL 텍스트와 화살표 */}
+
+      {/*  SCROLL 블록: 네 원본 그대로 */}
       <div
         className="absolute z-20 pointer-events-none"
         style={{
