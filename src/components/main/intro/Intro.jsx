@@ -19,6 +19,8 @@ function Intro() {
   const [shouldStartImaginationTyping, setShouldStartImaginationTyping] = useState(false);
   const [showExclamation, setShowExclamation] = useState(false);
   const [isAclonicaReady, setIsAclonicaReady] = useState(false);
+  const isMac =
+    typeof navigator !== 'undefined' && navigator.platform.toUpperCase().indexOf('MAC') >= 0;
   const isMobile760 = useMediaQuery('(max-width: 760px)');
   const isMobile480 = useMediaQuery('(max-width: 480px)');
 
@@ -80,6 +82,10 @@ function Intro() {
   // Y 미세조정: 여기만 건드리면 됨 (1~3 권장)
   const exclamationYOffset = Math.round(2 * scale);
   const exclamationOnlyDownPx = Math.round(-8 * scale); // 느낌표만 추가로 아래로 이동 (px)
+  // Mac일 때만 추가로 내림
+  const finalExclamationDown = isMac
+    ? exclamationOnlyDownPx + Math.round(12 * scale)
+    : exclamationOnlyDownPx;
 
   // squareSize를 rem으로 변환하는 헬퍼 함수
   const pxToRem = (px) => {
@@ -238,7 +244,7 @@ function Intro() {
                   height: `${Math.round(108 * scale)}px`,
                   display: 'inline-block',
                   position: 'relative',
-                  top: `${exclamationOnlyDownPx}px`,
+                  top: `${finalExclamationDown}px`, // Mac 여부에 따라 다른 값 적용
                   imageRendering: 'crisp-edges',
                   maxWidth: 'none',
                   maxHeight: 'none',
