@@ -27,6 +27,9 @@ export default function Result() {
   const [selectedTime, setSelectedTime] = useState({ date: '', scheduleId: 0 });
   const { myInterviews } = useInterviewStore();
   const [resultDate, setResultData] = useState({ finalResultAt: '' });
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorCode, setErrorCode] = useState(0);
+
   useEffect(() => {
     if (!location.state?.fromA) {
       alert('잘못된 접근입니다. 정해진 페이지를 통해서 들어와주세요.');
@@ -39,23 +42,32 @@ export default function Result() {
     getInterviewDate();
   }, [location, navigate]);
 
-  const buttonClick = () => {
+  const buttonClick = async () => {
     if (resultData.test === 'document' && resultData.result) {
       if (interviewDate) {
         if (myInterviews.booking.scheduleId) {
           if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
             try {
-              putInterviewChange(selectedTime.scheduleId);
+              setIsLoading(true);
+              await putInterviewChange(selectedTime.scheduleId);
             } catch (error) {
-              if (error.response.status === 409) {
-                setOnModal(true);
-              }
+              setErrorCode(error.response.status);
+            } finally {
+              setIsLoading(false);
+              setOnModal(true);
             }
           }
         } else {
-          interviewBooking(selectedTime.scheduleId);
+          try {
+            setIsLoading(true);
+            interviewBooking(selectedTime.scheduleId);
+          } catch (error) {
+            setErrorCode(error.response.status);
+          } finally {
+            setIsLoading(false);
+            setOnModal(true);
+          }
         }
-        setOnModal(true);
       } else {
         navigate('/'); //추후 면접 확인 페이지로 경로 변동 예정
       }
@@ -63,16 +75,18 @@ export default function Result() {
       navigate('/');
     }
   };
-  const getModalMessage = (success) => {
+  const getModalMessage = () => {
     if (allChecked[0] && allChecked[1]) {
-      if (success) {
+      if (errorCode == 0) {
         if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
           return '면접 일정이 확정되었습니다.';
         } else {
           return '이전 일정을 유지합니다.';
         }
-      } else {
+      } else if (errorCode === 409) {
         return '이미 예약된 면접 일정입니다.';
+      } else {
+        return '면접 예약에 실패했습니다.';
       }
     } else if (!allChecked[0]) {
       return '면접 날짜를 선택해주세요.';
@@ -80,13 +94,13 @@ export default function Result() {
       return '모든 동의 항목에 동의해주세요.';
     }
   };
-  const modalClick = (success) => {
+  const modalClick = () => {
     setOnModal(false);
     if (allChecked[0] && allChecked[1]) {
-      if (success) {
-        navigate('/');
-      } else {
+      if (errorCode !== 0) {
         window.location.reload();
+      } else {
+        navigate('/');
       }
     }
   };
@@ -115,7 +129,7 @@ export default function Result() {
           onClick={() => buttonClick()}
         />
       </div>
-      {onModal && (
+      {onModal && !isLoading && (
         <CheckModal isOpen={onModal} cancel={() => modalClick()}>
           {getModalMessage()}
         </CheckModal>
