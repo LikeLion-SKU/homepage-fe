@@ -9,7 +9,7 @@ export default function TimeBar({
   disabled = false,
 }) {
   const date = new Date(data.date);
-  const month = date.getMonth();
+  const month = date.getMonth() + 1;
   const day = date.getDate();
   // 요일 이름을 담은 배열 (0: 일요일 ~ 6: 토요일)
   const weekDays = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];

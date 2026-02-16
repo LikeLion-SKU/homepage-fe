@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
-import { getUserRole } from '@/api/userApi';
+import { getUserRole, myPageLoader } from '@/api/userApi';
 import Logo from '@/assets/icons/Logo_icon.png';
 //@ts-ignore
 import Hamberger from '@/assets/icons/hambergerBar_icon.svg?react';
@@ -18,6 +18,7 @@ export default function Header({ handleSideBar, showResult }) {
   const isPhone = useIsPhone();
   const isLogin = useAuthStore((state) => state.isLoggedIn);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isDocumentSubmitted, setIsDocumentSubmitted] = useState(false);
 
   const clickMenu = (menu) => {
     navigate(menu);
@@ -27,12 +28,14 @@ export default function Header({ handleSideBar, showResult }) {
     const showAdmin = async () => {
       if (isLogin) {
         const userRole = await getUserRole();
+        const { documentSubmitted } = await myPageLoader();
 
         if (userRole === 'ADMIN') {
           setIsAdmin(true);
         } else {
           setIsAdmin(false);
         }
+        setIsDocumentSubmitted(documentSubmitted);
       }
     };
     showAdmin();
@@ -62,7 +65,7 @@ export default function Header({ handleSideBar, showResult }) {
                 관리자
               </button>
             )}
-            {showResult && (
+            {showResult && isDocumentSubmitted && (
               <button onClick={() => clickMenu('/result/notice')}>
                 <motion.span
                   className="font-bold bg-clip-text text-transparent block"

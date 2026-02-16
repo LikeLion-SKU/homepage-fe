@@ -80,7 +80,7 @@ export default function ResultNotice() {
       showToast('아직 결과 확인 기간이 아닙니다.');
       return;
     }
-    navigate('/result');
+    navigate('/result', { state: { fromA: true } });
   };
 
   return (

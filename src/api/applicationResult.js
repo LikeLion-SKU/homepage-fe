@@ -7,12 +7,9 @@ export const getResult = async () => {
     const nowDate = new Date().getTime();
     const resultDate = await getCurrentForm();
     const applicationResultAt = new Date(resultDate.applicationResultAt).getTime();
-    const interviewScheduleConfirmedAt = new Date(
-      resultDate.interviewScheduleConfirmedAt
-    ).getTime();
     const finalResultAt = new Date(resultDate.finalResultAt).getTime();
 
-    if (applicationResultAt <= nowDate && nowDate <= interviewScheduleConfirmedAt) {
+    if (applicationResultAt <= nowDate && nowDate <= finalResultAt) {
       const resultData = await getDocumentResult();
       return {
         test: 'document',
