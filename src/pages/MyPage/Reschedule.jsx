@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { interviewBooking, putInterviewChange } from '@/api/interviewBooking';
+import CheckModal from '@/components/common/Modal/CheckModal';
 import Toast from '@/components/common/Toast/Toast';
 import GridSection from '@/components/layout/background/GridSection';
 import CheckButton from '@/components/result/CheckButton';
@@ -16,6 +17,8 @@ export default function Reschedule() {
   const [isToast, setIsToast] = useState(false);
   const [isErrorToast, setIsErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isErrorModal, setIsErrorModal] = useState(false);
+  const [errorModalMessage, setErrorModalMessage] = useState('');
 
   const buttonClick = async () => {
     // 날짜 선택 여부 확인 (allChecked[0]이 true여야 함)
@@ -46,9 +49,9 @@ export default function Reschedule() {
       }, 3000);
     } catch (error) {
       console.error('면접 일정 변경 중 오류 발생:', error);
-      setErrorMessage('일정 변경에 실패했습니다.');
-      setIsErrorToast(true);
-      setTimeout(() => setIsErrorToast(false), 3000);
+      const serverMessage = error?.response?.data?.message || '일정 변경에 실패했습니다.';
+      setErrorModalMessage(serverMessage);
+      setIsErrorModal(true);
     }
   };
 
@@ -65,6 +68,9 @@ export default function Reschedule() {
       </div>
       <Toast isToast={isToast} message="수정되었습니다!" />
       <Toast isToast={isErrorToast} message={errorMessage} />
+      <CheckModal isOpen={isErrorModal} cancel={() => window.location.reload()}>
+        {errorModalMessage}
+      </CheckModal>
     </GridSection>
   );
 }
