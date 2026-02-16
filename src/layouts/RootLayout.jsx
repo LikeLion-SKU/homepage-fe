@@ -45,8 +45,8 @@ export default function RootLayout() {
       setToastData({ onToast: false, toastMessage: toastMessage });
     }, 1500);
   };
-  const handleSideBar = (isOpen = null) => {
-    if (isOpen != null) {
+  const handleSideBar = (isOpen) => {
+    if (isOpen === true || isOpen === false) {
       setOnSideBar(isOpen);
     } else {
       setOnSideBar(!onSideBar);
@@ -59,12 +59,28 @@ export default function RootLayout() {
       setShowResult(await showResultButton());
     };
     getSettingData();
+    // 1. 데스크탑 기준 미디어 쿼리 생성 (예: 1024px 이상)
+    const mql = window.matchMedia('(min-width: 1024px)');
+
+    // 2. 크기 변화 시 실행될 핸들러
+    const handleDesktopChange = (e) => {
+      if (e.matches) {
+        // 데스크탑 크기에 진입하면 사이드바를 닫음
+        setOnSideBar(false);
+      }
+    };
+
+    // 3. 리스너 등록
+    mql.addEventListener('change', handleDesktopChange);
+
+    // 5. 언마운트 시 리스너 제거 (메모리 누수 방지)
+    return () => mql.removeEventListener('change', handleDesktopChange);
   }, []);
 
   return (
     <main className="flex flex-col w-full min-h-screen overflow-y-hidden overflow-x-hidden no-scrollbar">
       <CustomCursor />
-      <Header handleSideBar={() => handleSideBar()} showResult={showResult} />
+      <Header handleSideBar={handleSideBar} showResult={showResult} />
       <div className="relative flex-1 min-h-fit bg-[#FAFBF8] isolate">
         <div
           className={`transition-opacity duration-500 ease-out ${

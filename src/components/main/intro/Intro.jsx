@@ -17,6 +17,7 @@ function Intro() {
   const [shouldStartSecondTyping, setShouldStartSecondTyping] = useState(false);
   const [shouldStartImaginationTyping, setShouldStartImaginationTyping] = useState(false);
   const [showExclamation, setShowExclamation] = useState(false);
+  const [isAclonicaReady, setIsAclonicaReady] = useState(false);
   const isMobile760 = useMediaQuery('(max-width: 760px)');
   const isMobile480 = useMediaQuery('(max-width: 480px)');
 
@@ -65,10 +66,16 @@ function Intro() {
     };
   }, [squareSizeRem, scale]);
 
+  // Aclonica 폰트 로드 확인
+  useEffect(() => {
+    if (!document?.fonts) return;
+    document.fonts.load('16px Aclonica').then(() => setIsAclonicaReady(true));
+  }, []);
+
   // "!" 위치 미세조정(오른쪽/아래) - 값만 바꾸면 됨
-  const exclamationOffsetX = (8 / 16) * scale; // 오른쪽으로 이동 (px)
-  const exclamationOffsetY = (6 / 16) * scale; // 아래로 이동 (px)
-  const exclamationCaretOffsetX = (20 / 16) * scale; // 느낌표 뒤 커서(작대기) 추가로 오른쪽 이동 (px)
+  const exclamationOffsetX = 8 * scale; // 오른쪽으로 이동 (px)
+  const exclamationOffsetY = 6 * scale; // 아래로 이동 (px)
+  const exclamationCaretOffsetX = 20 * scale; // 느낌표 뒤 커서(작대기) 추가로 오른쪽 이동 (px)
 
   // squareSize를 rem으로 변환하는 헬퍼 함수
   const pxToRem = (px) => {
@@ -202,26 +209,27 @@ function Intro() {
               setTimeout(() => setShowExclamation(true), 150);
             }}
           />
-          {showExclamation && (
+          {showExclamation && isAclonicaReady && (
             <span
               style={{
                 fontSize: `${(130 / 16) * scale}rem`,
                 fontFamily: 'Aclonica, sans-serif',
                 display: 'inline-block',
                 lineHeight: '1',
-                transform: `translate(${exclamationOffsetX}rem, ${exclamationOffsetY}rem)`,
+                verticalAlign: 'middle',
+                transform: `translate(${exclamationOffsetX}px, ${exclamationOffsetY}px)`,
               }}
             >
               !
             </span>
           )}
-          {showExclamation && (
+          {showExclamation && isAclonicaReady && (
             <span
               className="inline-block w-0.5 bg-[#1a1a1a] ml-0.5 animate-blink"
               style={{
                 height: `${(120 / 16) * scale * 1.2}rem`,
                 verticalAlign: 'middle',
-                transform: `translateX(${exclamationCaretOffsetX}rem)`,
+                transform: `translateX(${exclamationCaretOffsetX}px)`,
               }}
             />
           )}
