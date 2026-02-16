@@ -24,6 +24,12 @@ function Intro() {
   const stableLayoutRef = useRef({ squareSizeRem: null, scale: null });
   const stableTimeoutRef = useRef(null);
 
+  //ios 텍스트 매트릭 적용
+  const isIOS =
+    typeof navigator !== 'undefined' &&
+    /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+    !window['MSStream'];
+
   // 값이 80ms 동안 유지되면 표시 (타이머와 동기화)
   useEffect(() => {
     if (!squareSizeRem || squareSizeRem === 0 || !scale) {
@@ -74,7 +80,7 @@ function Intro() {
 
   // "!" 위치 미세조정(오른쪽/아래) - 값만 바꾸면 됨
   const exclamationOffsetX = 8 * scale; // 오른쪽으로 이동 (px)
-  const exclamationOffsetY = 6 * scale; // 아래로 이동 (px)
+  const exclamationOffsetY = (7 + (isIOS ? 1 : 0)) * scale; // 아래로 이동 (px, iOS 조정)
   const exclamationCaretOffsetX = 20 * scale; // 느낌표 뒤 커서(작대기) 추가로 오른쪽 이동 (px)
 
   // squareSize를 rem으로 변환하는 헬퍼 함수
@@ -216,7 +222,8 @@ function Intro() {
                 fontFamily: 'Aclonica, sans-serif',
                 display: 'inline-block',
                 lineHeight: '1',
-                verticalAlign: 'middle',
+                position: 'relative',
+                top: `${(isIOS ? 1 : 0) * scale}px`,
                 transform: `translate(${exclamationOffsetX}px, ${exclamationOffsetY}px)`,
               }}
             >
