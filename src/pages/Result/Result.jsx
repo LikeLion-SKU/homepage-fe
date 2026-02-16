@@ -56,6 +56,8 @@ export default function Result() {
               setIsLoading(false);
               setOnModal(true);
             }
+          } else {
+            setOnModal(true);
           }
         } else {
           try {
@@ -106,7 +108,7 @@ export default function Result() {
   };
   return (
     <GridSection>
-      <div className="flex flex-col items-center gap-19 mb-60">
+      <div className="flex flex-col items-center gap-19 pb-60">
         <ResultSection pass={resultData} />
         {resultData.test === 'document' && resultData.result && interviewDate && (
           <div className="w-78 pad:w-104 h-13 bg-[#C6E400] flex justify-center items-center font-semibold text-[0.9rem] pad:text-[1.1rem] drop-shadow-[3px_4px_0px_rgba(212,212,212,1)]">
