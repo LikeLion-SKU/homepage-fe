@@ -206,61 +206,56 @@ function Intro() {
             minWidth: 'max-content',
           }}
         >
-          {/* TypingAnimation을 anchor로 만들고, !와 커서를 absolute로 분리 */}
-          <span style={{ position: 'relative', display: 'inline-block' }}>
-            <TypingAnimation
-              text="세상 밖으로"
-              speed={150}
-              fontSize={`${(120 / 16) * scale}rem`}
-              fontFamily="HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
-              shouldStart={shouldStartSecondTyping}
-              showCursor={false}
-              onComplete={() => {
-                setTimeout(() => setShowExclamation(true), 150);
+          {/* inline 흐름으로 자연스럽게 붙이기 */}
+          <TypingAnimation
+            text="세상 밖으로"
+            speed={150}
+            fontSize={`${(120 / 16) * scale}rem`}
+            fontFamily="HOTSPOT, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
+            shouldStart={shouldStartSecondTyping}
+            showCursor={false}
+            onComplete={() => {
+              setTimeout(() => setShowExclamation(true), 150);
+            }}
+          />
+
+          {showExclamation && isAclonicaReady && (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                whiteSpace: 'nowrap',
+                marginLeft: `${exclamationOffsetX}px`,
+                transform: `translateY(${exclamationYOffset}px)`,
               }}
-            />
-
-            {showExclamation && isAclonicaReady && (
-              <span
+            >
+              {/* 느낌표는 자연 흐름 */}
+              <img
+                src={exclamationSvg}
+                alt="!"
                 style={{
-                  position: 'absolute',
-                  left: '100%',
-                  top: '50%',
-                  // 컨테이너에서만 X/Y 보정 (한 번만)
-                  transform: `translate(${exclamationOffsetX}px, -50%) translateY(${exclamationYOffset}px)`,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  whiteSpace: 'nowrap',
+                  width: `${Math.round(280 * scale)}px`,
+                  height: `${Math.round(108 * scale)}px`,
+                  display: 'inline-block',
+                  position: 'relative',
+                  top: `${exclamationOnlyDownPx}px`,
+                  imageRendering: 'crisp-edges',
+                  maxWidth: 'none',
+                  maxHeight: 'none',
+                  flexShrink: 0,
                 }}
-              >
-                {/* 느낌표는 자연 흐름 */}
-                <img
-                  src={exclamationSvg}
-                  alt="!"
-                  style={{
-                    width: `${Math.round(280 * scale)}px`,
-                    height: `${Math.round(108 * scale)}px`,
-                    display: 'inline-block',
-                    position: 'relative',
-                    top: `${exclamationOnlyDownPx}px`,
-                    imageRendering: 'crisp-edges',
-                    maxWidth: 'none',
-                    maxHeight: 'none',
-                    flexShrink: 0,
-                  }}
-                />
+              />
 
-                {/* 막대기도 자연 흐름 + 기존처럼 추가 X만 */}
-                <span
-                  className="inline-block w-0.5 bg-[#1a1a1a] ml-0.5 animate-blink"
-                  style={{
-                    height: `${(120 / 16) * scale * 1.2}rem`,
-                    transform: `translateX(${exclamationCaretOffsetX}px)`,
-                  }}
-                />
-              </span>
-            )}
-          </span>
+              {/* 막대기도 자연 흐름 + 기존처럼 추가 X만 */}
+              <span
+                className="inline-block w-0.5 bg-[#1a1a1a] ml-0.5 animate-blink"
+                style={{
+                  height: `${(120 / 16) * scale * 1.2}rem`,
+                  transform: `translateX(${exclamationCaretOffsetX}px)`,
+                }}
+              />
+            </span>
+          )}
         </h2>
       </div>
 
