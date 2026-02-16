@@ -71,7 +71,7 @@ export default function Result() {
           }
         }
       } else {
-        navigate('/'); //추후 면접 확인 페이지로 경로 변동 예정
+        navigate('/mypage'); //추후 면접 확인 페이지로 경로 변동 예정
       }
     } else {
       navigate('/');
@@ -87,6 +87,8 @@ export default function Result() {
         }
       } else if (errorCode === 409) {
         return '이미 예약된 면접 일정입니다.';
+      } else if (errorCode === 400) {
+        return '면접 예약 기간이 아닙니다.';
       } else {
         return '면접 예약에 실패했습니다.';
       }
@@ -100,7 +102,11 @@ export default function Result() {
     setOnModal(false);
     if (allChecked[0] && allChecked[1]) {
       if (errorCode !== 0) {
-        window.location.reload();
+        if (errorCode === 409) {
+          window.location.reload();
+        } else if (errorCode === 400) {
+          navigate('/mypage');
+        }
       } else {
         navigate('/');
       }
