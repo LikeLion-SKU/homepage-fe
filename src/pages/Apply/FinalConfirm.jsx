@@ -28,16 +28,31 @@ export default function FinalConfirm() {
   // 지원서 제출 api에 요청하는 함수
   const handleSubmit = async () => {
     try {
-      const { track, commonAnswers, trackAnswers } = formatAnswers(); // trackAnswers를 못가져오는 중
+      const { track, commonAnswers, trackAnswers } = formatAnswers();
       const submitData = {
         track: track,
         commonAnswers: commonAnswers,
         trackAnswers: trackAnswers,
       };
-      await applicationSubmit(submitData);
-      navigate('/apply/complete');
+      const response = await applicationSubmit(submitData);
+
+      // 응답이 정상인 경우에만 완료 페이지로 이동
+      if (response?.success) {
+        navigate('/apply/complete', { replace: true });
+      } else {
+        // success가 false인 경우 (에러가 throw되지 않고 응답은 온 경우)
+        navigate('/error/400', { replace: true });
+      }
     } catch (error) {
       console.error('지원서 제출 실패', error);
+      const status = error?.response?.status || error?.status;
+      if (status === 400) {
+        navigate('/error/400', { replace: true });
+      } else if (status === 403) {
+        navigate('/error/403', { replace: true });
+      } else {
+        navigate('/error/500', { replace: true });
+      }
     }
   };
   //@ts-ignore

@@ -24,7 +24,7 @@ export default function MyPage() {
   const documentActive = userData.documentActive; // 최종결과 전 모집 기간 여부 (최종 결과 나오면 false)
 
   // 둘다 true면 면접 스케줄 변경 가능, 면접 일정 변경 가능 여부만 false면 면접 일정 확인하기
-  const interviewScheduleSubmitted = userData.interviewScheduleSubmitted; // 면접 일정 설정 완료 여부
+  //const interviewScheduleSubmitted = userData.interviewScheduleSubmitted; // 면접 일정 설정 완료 여부
   const interviewScheduleChangeable = userData.interviewScheduleChangeable; // 면접 일정 변경 가능 여부
 
   const fetcher = useFetcher();
@@ -175,24 +175,24 @@ export default function MyPage() {
             )}
           </div>
           {/* 면접 예약 여부로 생겼다가 없어져야 하는 면접 일정 수정하기 버튼 -> 추후 어색하면 스켈레톤 넣자 */}
-          {interviewScheduleSubmitted && (
-            <div className="self-stretch">
-              <Button
-                onClick={() => {
-                  if (interviewScheduleChangeable) {
-                    navigate('/mypage/reschedule');
-                  } else {
-                    navigate('/mypage/schedule-check');
-                  }
-                }}
-                data-variant=""
-                data-size=""
-                className={buttonStyle}
-              >
-                {interviewScheduleChangeable ? '면접 일정 수정하기' : '면접 일정 확인하기'}
-              </Button>
-            </div>
-          )}
+
+          <div className="self-stretch">
+            <Button
+              onClick={() => {
+                if (interviewScheduleChangeable) {
+                  navigate('/mypage/reschedule');
+                } else {
+                  navigate('/mypage/schedule-check');
+                }
+              }}
+              data-variant=""
+              data-size=""
+              className={buttonStyle}
+            >
+              {interviewScheduleChangeable ? '면접 일정 수정하기' : '면접 일정 확인하기'}
+            </Button>
+          </div>
+
           <div className="self-stretch">
             <Button
               onClick={() => {
