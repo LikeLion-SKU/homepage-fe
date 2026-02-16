@@ -19,6 +19,7 @@ export default function Reschedule() {
   const [errorMessage, setErrorMessage] = useState('');
   const [isErrorModal, setIsErrorModal] = useState(false);
   const [errorModalMessage, setErrorModalMessage] = useState('');
+  const [errorStatus, setErrorStatus] = useState(null);
 
   const buttonClick = async () => {
     // 날짜 선택 여부 확인 (allChecked[0]이 true여야 함)
@@ -50,7 +51,9 @@ export default function Reschedule() {
     } catch (error) {
       console.error('면접 일정 변경 중 오류 발생:', error);
       const serverMessage = error?.response?.data?.message || '일정 변경에 실패했습니다.';
+      const status = error?.response?.status || error?.response?.data?.code;
       setErrorModalMessage(serverMessage);
+      setErrorStatus(status);
       setIsErrorModal(true);
     }
   };
@@ -68,7 +71,17 @@ export default function Reschedule() {
       </div>
       <Toast isToast={isToast} message="수정되었습니다!" />
       <Toast isToast={isErrorToast} message={errorMessage} />
-      <CheckModal isOpen={isErrorModal} cancel={() => window.location.reload()}>
+      <CheckModal
+        isOpen={isErrorModal}
+        cancel={() => {
+          if (errorStatus === 400) {
+            // 면접 일정 수정 중에 수정 기간 종료되면, 에러 모달 후 확인 버튼 누르면 400 에러 페이지로 이동
+            navigate('/error/400', { replace: true });
+          } else {
+            window.location.reload();
+          }
+        }}
+      >
         {errorModalMessage}
       </CheckModal>
     </GridSection>
