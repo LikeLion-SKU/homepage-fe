@@ -8,6 +8,7 @@ export const interviewBooking = async (scheduleId) => {
     return res;
   } catch (error) {
     console.log('면접 예약 실패:', error);
+    throw error;
   }
 };
 
@@ -28,6 +29,7 @@ export const putInterviewChange = async (scheduleId) => {
     return res;
   } catch (error) {
     console.log('면접 변경 실패:', error);
+    throw error;
   }
 };
 
