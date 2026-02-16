@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLoaderData, useLocation, useNavigate } from 'react-router';
+import { useLoaderData, useLocation, useNavigate, useOutletContext } from 'react-router';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -29,6 +29,8 @@ export default function Result() {
   const [resultDate, setResultData] = useState({ finalResultAt: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [errorCode, setErrorCode] = useState(0);
+  //@ts-ignore
+  const { showToast } = useOutletContext();
 
   useEffect(() => {
     if (!location.state?.fromA) {
@@ -44,34 +46,43 @@ export default function Result() {
 
   const buttonClick = async () => {
     if (resultData.test === 'document' && resultData.result) {
-      if (interviewDate) {
-        if (myInterviews.booking.scheduleId) {
-          if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
-            try {
-              setIsLoading(true);
-              await putInterviewChange(selectedTime.scheduleId);
-            } catch (error) {
-              setErrorCode(error.response.status);
-            } finally {
-              setIsLoading(false);
-              setOnModal(true);
+      if (allChecked[0] && allChecked[1]) {
+        if (interviewDate) {
+          if (myInterviews.booking.scheduleId) {
+            if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
+              try {
+                setIsLoading(true);
+                await putInterviewChange(selectedTime.scheduleId);
+                showToast('면접 일정이 변경되었습니다.');
+                navigate('/');
+              } catch (error) {
+                setErrorCode(error.response.status);
+                setOnModal(true);
+              } finally {
+                setIsLoading(false);
+              }
+            } else {
+              showToast('기존 일정을 유지합니다.');
+              navigate('/');
             }
           } else {
-            setOnModal(true);
+            try {
+              setIsLoading(true);
+              interviewBooking(selectedTime.scheduleId);
+              showToast('면접 일정이 제출되었습니다.');
+              navigate('/');
+            } catch (error) {
+              setErrorCode(error.response.status);
+              setOnModal(true);
+            } finally {
+              setIsLoading(false);
+            }
           }
         } else {
-          try {
-            setIsLoading(true);
-            interviewBooking(selectedTime.scheduleId);
-          } catch (error) {
-            setErrorCode(error.response.status);
-          } finally {
-            setIsLoading(false);
-            setOnModal(true);
-          }
+          navigate('/mypage'); //추후 면접 확인 페이지로 경로 변동 예정
         }
       } else {
-        navigate('/mypage'); //추후 면접 확인 페이지로 경로 변동 예정
+        setOnModal(true);
       }
     } else {
       navigate('/');
@@ -79,13 +90,7 @@ export default function Result() {
   };
   const getModalMessage = () => {
     if (allChecked[0] && allChecked[1]) {
-      if (errorCode == 0) {
-        if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
-          return '면접 일정이 확정되었습니다.';
-        } else {
-          return '이전 일정을 유지합니다.';
-        }
-      } else if (errorCode === 409) {
+      if (errorCode === 409) {
         return '이미 예약된 면접 일정입니다.';
       } else if (errorCode === 400) {
         return '면접 예약 기간이 아닙니다.';
@@ -101,14 +106,12 @@ export default function Result() {
   const modalClick = () => {
     setOnModal(false);
     if (allChecked[0] && allChecked[1]) {
-      if (errorCode !== 0) {
-        if (errorCode === 409) {
-          window.location.reload();
-        } else if (errorCode === 400) {
-          navigate('/mypage');
-        }
+      if (errorCode === 409) {
+        window.location.reload();
+      } else if (errorCode === 400) {
+        navigate('/mypage');
       } else {
-        navigate('/');
+        window.location.reload();
       }
     }
   };
