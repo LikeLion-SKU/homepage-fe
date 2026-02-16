@@ -1,4 +1,4 @@
-export const getResultText = (pass) => {
+export const getResultText = (pass, interviewScheduleConfirmedAt = '0월 00일') => {
   const documentPass = (
     <p>
       {`안녕하세요. IT 동아리 멋쟁이사자처럼 서경대학교 ${pass.semester}기입니다.
@@ -9,7 +9,7 @@ export const getResultText = (pass) => {
       2차 면접을 통해 지원자님을 직접 만나 뵙기를 기대하고 있겠습니다.
       아래에서 면접 가능 날짜를 선택하신 후,
       `}
-      <span className="text-[#FF7D56] font-bold">{`3월 9일 자정`}</span>
+      <span className="text-[#FF7D56] font-bold">{`${interviewScheduleConfirmedAt} 자정`}</span>
       {`까지 반드시 입력해 주시기 바랍니다.
 
       `}

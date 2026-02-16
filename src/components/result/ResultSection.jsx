@@ -2,8 +2,8 @@ import PageTitle from '@/components/common/PageTitle';
 import TextTile from '@/components/result/TextTile';
 import { getResultText } from '@/components/result/getResultText';
 
-export default function ResultSection({ pass }) {
-  const text = getResultText(pass);
+export default function ResultSection({ pass, interviewScheduleConfirmedAt }) {
+  const text = getResultText(pass, interviewScheduleConfirmedAt);
 
   const getTitle = () => {
     if (pass.test == 'document') {
