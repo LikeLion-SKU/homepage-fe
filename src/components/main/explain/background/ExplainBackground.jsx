@@ -80,7 +80,7 @@ function ExplainBackground({ children }) {
         }}
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.5 }}
         transition={{
           duration: 1.5,
           ease: 'easeOut',
