@@ -66,7 +66,7 @@ export default function Header({ handleSideBar, showResult }) {
               </button>
             )}
             {showResult && isDocumentSubmitted && (
-              <button onClick={() => clickMenu('/result/notice')}>
+              <button onClick={() => navigate('/result/notice', { state: { fromA: true } })}>
                 <motion.span
                   className="font-bold bg-clip-text text-transparent block"
                   style={{
