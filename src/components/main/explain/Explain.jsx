@@ -165,7 +165,11 @@ function Explain() {
         {/* 숫자 */}
 
         <Number value={42} initialX={495} initialY={20 + (isMobile440 ? 100 : 0)} />
-        <Number value={108} initialX={140} initialY={-180 + (isMobile440 ? 100 : 0)} />
+        <Number
+          value={108}
+          initialX={140}
+          initialY={-180 + (isMobile440 ? 100 : 0) + (!isMobile440 ? 80 : 0)}
+        />
       </motion.div>
     </ExplainBackground>
   );
