@@ -14,7 +14,7 @@ function ExplainBackground({ children }) {
   const widthRem = (1440 / 16) * scale;
   const minHeightRem = (1358 / 16) * scale;
   const paddingRem = (160 / 16) * scale;
-  const paddingBottomRem = (170 / 16) * scale; // 하단 패딩 (track과의 간격을 위해 증가)
+  const paddingBottomRem = (125 / 16) * scale; // 하단 패딩 (track과의 간격을 위해 증가)
   const backgroundWidthRem = (1453 / 16) * scale;
   const containerPaddingRem = (175 / 16) * scale;
 

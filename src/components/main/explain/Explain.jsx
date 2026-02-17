@@ -163,8 +163,8 @@ function Explain() {
 
         {/* 숫자 */}
 
-        <Number value={42} initialX={495} initialY={40} />
-        <Number value={108} initialX={140} initialY={-100} />
+        <Number value={42} initialX={495} initialY={20} />
+        <Number value={108} initialX={140} initialY={-120} />
       </motion.div>
     </ExplainBackground>
   );
