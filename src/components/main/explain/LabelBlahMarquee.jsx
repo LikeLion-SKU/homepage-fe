@@ -12,8 +12,8 @@ function LabelBlahMarquee({ type = '1' }) {
 
   // 텍스트 설정
   const text = 'LIKELION';
-  const fontSize = `${(65 / 16) * scale}rem`; // 크기 증가 (32 -> 48)
-  const letterSpacing = `${(10 / 16) * scale}rem`;
+  const fontSize = `${(64 / 16) * scale}rem`; // 크기 증가 (32 -> 48)
+  const letterSpacing = `${(7 / 16) * scale}rem`;
 
   return (
     <div className="relative" style={{ position: 'relative' }}>

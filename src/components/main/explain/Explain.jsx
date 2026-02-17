@@ -16,12 +16,13 @@ function Explain() {
   const scale = useScale();
   const isMobile760 = useMediaQuery('(max-width: 760px)');
   const isMobile480 = useMediaQuery('(max-width: 480px)');
+  const isMobile440 = useMediaQuery('(max-width: 440px)');
 
   // 모바일에서 blah 이미지 위치 조정
   // 480px 이하일 때는 별도 위치 값 사용
-  const leftBlahLift = isMobile480 ? 50 : isMobile760 ? 80 : 60; // 좌측은 아래로 (양수)
+  const leftBlahLift = (isMobile480 ? 50 : isMobile760 ? 80 : 60) + (isMobile440 ? 30 : 0); // 좌측은 아래로 (양수), 440px 이하에서 추가로 아래로
   const skullionLift = isMobile480 ? -30 : isMobile760 ? -20 : 20; // skullionIcon만 데스크톱에서 위로
-  const leftBlahShift = isMobile480 ? -10 : isMobile760 ? -10 : 0; // 좌측은 왼쪽으로 (음수)
+  const leftBlahShift = (isMobile480 ? -10 : isMobile760 ? -10 : 0) + (isMobile440 ? 20 : 0); // 좌측은 왼쪽으로 (음수), 440px 이하에서 projects만 오른쪽으로
   const rightBlahShift = 0; // 우측은 움직이지 않음
 
   return (
@@ -163,8 +164,12 @@ function Explain() {
 
         {/* 숫자 */}
 
-        <Number value={42} initialX={495} initialY={40} />
-        <Number value={108} initialX={140} initialY={-100} />
+        <Number value={42} initialX={495} initialY={20 + (isMobile440 ? 100 : 0)} />
+        <Number
+          value={108}
+          initialX={140}
+          initialY={-180 + (isMobile440 ? 100 : 0) + (!isMobile440 ? 80 : 0)}
+        />
       </motion.div>
     </ExplainBackground>
   );

@@ -54,8 +54,9 @@ function lerpColor(a, b, t) {
   };
 }
 
-export default function Square({ onScaleChange, onSquareSizeRemChange }) {
+export default function Square({ onScaleChange, onSquareSizeRemChange, isMobile }) {
   const [layout, setLayout] = useState({ squareSize: baseSquareSize, scale: 1, squareSizeRem: 0 });
+  const [mobileRows, setMobileRows] = useState(rows);
   const { squareSize, scale, squareSizeRem } = layout;
 
   const gridRef = useRef(null);
@@ -82,8 +83,20 @@ export default function Square({ onScaleChange, onSquareSizeRemChange }) {
     points: [], // [{x,y,t}]
   });
 
-  // per-cell intensity (현재값)
+  // 모바일에서 columns 수 (가로 15개)
+  const mobileColumns = 15;
+  const currentColumns = isMobile ? mobileColumns : columns;
+
+  // per-cell intensity (현재값) - 모바일 rows 고려
+  const currentRows = isMobile ? mobileRows : rows;
   const intensityRef = useRef(new Float32Array(rows * columns)); // current intensity 0..1
+
+  // 모바일 rows 변경 시 intensityRef 크기 조정
+  useEffect(() => {
+    if (intensityRef.current.length !== currentRows * currentColumns) {
+      intensityRef.current = new Float32Array(currentRows * currentColumns);
+    }
+  }, [currentRows, currentColumns]);
 
   // "최근에 손댄 칸"만 업데이트하기 위한 active set
   const activeRef = useRef(new Set());
@@ -98,24 +111,45 @@ export default function Square({ onScaleChange, onSquareSizeRemChange }) {
   useLayoutEffect(() => {
     const calculateLayout = () => {
       const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
       const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 
-      const calculatedScale = windowWidth / (baseGridWidth * (rootFontSize / 16));
-      const calculatedSquareSize = baseSquareSize * (windowWidth / baseGridWidth);
-      const calculatedSquareSizeRem = pxToRem(calculatedSquareSize);
+      // 440px 이하 모바일에서만 가로 15개로 고정하고 화면에 가득 차게
+      if (isMobile) {
+        const mobileColumns = 15;
+        const mobileSquareSize = windowWidth / mobileColumns; // 화면 너비에 맞춰 가득 차게
+        const calculatedSquareSizeRem = pxToRem(mobileSquareSize);
 
-      // 한 번에 업데이트
-      setLayout({
-        squareSize: calculatedSquareSize,
-        scale: calculatedScale,
-        squareSizeRem: calculatedSquareSizeRem,
-      });
+        // 세로도 화면 높이에 맞게 rows 계산
+        const calculatedRows = Math.ceil(windowHeight / mobileSquareSize);
+        setMobileRows(calculatedRows);
+
+        const calculatedScale =
+          windowWidth / (mobileColumns * mobileSquareSize * (rootFontSize / 16));
+
+        setLayout({
+          squareSize: mobileSquareSize,
+          scale: calculatedScale,
+          squareSizeRem: calculatedSquareSizeRem,
+        });
+      } else {
+        const calculatedScale = windowWidth / (baseGridWidth * (rootFontSize / 16));
+        const calculatedSquareSize = baseSquareSize * (windowWidth / baseGridWidth);
+        const calculatedSquareSizeRem = pxToRem(calculatedSquareSize);
+        setMobileRows(rows);
+
+        setLayout({
+          squareSize: calculatedSquareSize,
+          scale: calculatedScale,
+          squareSizeRem: calculatedSquareSizeRem,
+        });
+      }
     };
 
     calculateLayout();
     window.addEventListener('resize', calculateLayout);
     return () => window.removeEventListener('resize', calculateLayout);
-  }, []);
+  }, [isMobile]);
 
   // 부모에 한 번에 전달
   useLayoutEffect(() => {
@@ -270,9 +304,9 @@ export default function Square({ onScaleChange, onSquareSizeRemChange }) {
       }
 
       const minCol = Math.max(0, Math.floor(minX / squareSize));
-      const maxCol = Math.min(columns - 1, Math.floor(maxX / squareSize));
+      const maxCol = Math.min(currentColumns - 1, Math.floor(maxX / squareSize));
       const minRow = Math.max(0, Math.floor(minY / squareSize));
-      const maxRow = Math.min(rows - 1, Math.floor(maxY / squareSize));
+      const maxRow = Math.min(currentRows - 1, Math.floor(maxY / squareSize));
 
       const touched = new Set();
 
@@ -325,7 +359,7 @@ export default function Square({ onScaleChange, onSquareSizeRemChange }) {
           const centerY = row * squareSize + squareSize / 2;
 
           const target = targetAtCell(centerX, centerY);
-          const idx = row * columns + col;
+          const idx = row * currentColumns + col;
 
           if (target <= EPS && current[idx] <= EPS) continue;
 
@@ -379,21 +413,21 @@ export default function Square({ onScaleChange, onSquareSizeRemChange }) {
 
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [squareSize]);
+  }, [squareSize, currentColumns, currentRows]);
 
   return (
     <>
-      {/* 인트로 섹션 전용 격자 배경 (24 x 18 고정) */}
+      {/* 인트로 섹션 전용 격자 배경 (모바일: 15 x N, 데스크톱: 24 x 18) */}
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col z-0 box-border pointer-events-none"
         style={{
-          width: `${squareSizeRem * columns}rem`,
-          height: `${squareSizeRem * rows}rem`,
+          width: `${squareSizeRem * currentColumns}rem`,
+          height: isMobile ? '100vh' : `${squareSizeRem * rows}rem`,
         }}
       >
-        {Array.from({ length: rows }).map((_, row) => (
+        {Array.from({ length: currentRows }).map((_, row) => (
           <div key={row} className="flex">
-            {Array.from({ length: columns }).map((_, col) => (
+            {Array.from({ length: currentColumns }).map((_, col) => (
               <div
                 key={`${row}-${col}`}
                 className="box-border"
@@ -413,14 +447,14 @@ export default function Square({ onScaleChange, onSquareSizeRemChange }) {
         ref={gridRef}
         className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col z-10 max-w-screen box-border pointer-events-none"
         style={{
-          width: `${squareSizeRem * columns}rem`,
-          height: `${squareSizeRem * rows}rem`,
+          width: `${squareSizeRem * currentColumns}rem`,
+          height: isMobile ? '100vh' : `${squareSizeRem * rows}rem`,
         }}
       >
-        {Array.from({ length: rows }).map((_, row) => (
+        {Array.from({ length: currentRows }).map((_, row) => (
           <div key={row} className="flex">
-            {Array.from({ length: columns }).map((_, col) => {
-              const idx = row * columns + col;
+            {Array.from({ length: currentColumns }).map((_, col) => {
+              const idx = row * currentColumns + col;
               return (
                 <div
                   key={`${row}-${col}`}
