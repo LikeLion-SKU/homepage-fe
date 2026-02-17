@@ -80,7 +80,7 @@ export default function Result() {
               try {
                 //골랐으면 새로 예약
                 setIsLoading(true);
-                interviewBooking(selectedTime.scheduleId);
+                await interviewBooking(selectedTime.scheduleId);
                 showToast('면접 일정이 제출되었습니다.');
                 navigate('/');
               } catch (error) {
