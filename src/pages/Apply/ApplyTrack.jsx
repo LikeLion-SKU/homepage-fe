@@ -138,7 +138,7 @@ export default function ApplyTrack() {
                 className="w-45 pad:w-47 web:w-53 h-11 pad:h-14 bg-button-green outline -outline-offset-1 outline-black flex justify-center items-center transition-all hover:bg-button-hover"
               >
                 <span className="opacity-70 text-black text-base font-semibold pad:text-lg pad:font-medium">
-                  다음단계
+                  최종확인
                 </span>
               </Button>
             </div>

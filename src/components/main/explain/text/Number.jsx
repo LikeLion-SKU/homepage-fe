@@ -17,6 +17,7 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
   const scale = useScale();
   const isMobile = useMediaQuery('(max-width: 640px)');
+  const isMobile440 = useMediaQuery('(max-width: 440px)');
   const [shouldStart, setShouldStart] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1440
@@ -117,11 +118,13 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
         className="inline-flex items-end gap-2"
         style={{
           fontFamily: 'pixel, monospace',
-          fontSize: isMobile
-            ? `${(55 / 16) * scale}rem` // 모바일에서 50px 기준
-            : isTablet
-              ? `${(65 / 16) * scale}rem`
-              : `${(70 / 16) * scale}rem`,
+          fontSize: isMobile440
+            ? `${(70 / 16) * scale}rem` // 440px 이하에서 숫자 크기 키움
+            : isMobile
+              ? `${(55 / 16) * scale}rem` // 모바일에서 50px 기준
+              : isTablet
+                ? `${(65 / 16) * scale}rem`
+                : `${(70 / 16) * scale}rem`,
           fontWeight: 'bold',
           lineHeight: 1,
           color: '#00156A',
@@ -134,11 +137,13 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
               key={index}
               style={{
                 fontFamily: 'pixel, monospace',
-                fontSize: isMobile
-                  ? `${(55 / 16) * scale}rem` // 모바일에서 50px 기준
-                  : isTablet
-                    ? `${(60 / 16) * scale}rem`
-                    : `${(72 / 16) * scale}rem`,
+                fontSize: isMobile440
+                  ? `${(70 / 16) * scale}rem` // 440px 이하에서 숫자 크기 키움
+                  : isMobile
+                    ? `${(55 / 16) * scale}rem` // 모바일에서 50px 기준
+                    : isTablet
+                      ? `${(60 / 16) * scale}rem`
+                      : `${(72 / 16) * scale}rem`,
                 fontWeight: 'bold',
                 letterSpacing: '0.05em',
                 color: '#00156A',
@@ -152,11 +157,13 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
         <span
           style={{
             fontFamily: 'pixel, monospace',
-            fontSize: isMobile
-              ? `${(55 / 16) * scale}rem` // 모바일에서 비례적으로 크게
-              : isTablet
-                ? `${(60 / 16) * scale}rem`
-                : `${(72 / 16) * scale}rem`,
+            fontSize: isMobile440
+              ? `${(70 / 16) * scale}rem` // 440px 이하에서 숫자 크기 키움
+              : isMobile
+                ? `${(55 / 16) * scale}rem` // 모바일에서 비례적으로 크게
+                : isTablet
+                  ? `${(60 / 16) * scale}rem`
+                  : `${(72 / 16) * scale}rem`,
             fontWeight: 'bold',
             lineHeight: 1,
             color: '#00156A',
