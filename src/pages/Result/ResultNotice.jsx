@@ -61,7 +61,7 @@ export default function ResultNotice() {
     ) {
       const finalEndStr = finalResultEnd.toISOString();
       return {
-        date: `${formatDate(date.applicationResultAt)} ~ ${formatDate(finalEndStr)}`,
+        date: `${formatDate(realFinalResultTime)} ~ ${formatDate(finalEndStr)}`,
         test: '최종 결과 확인하기',
       };
     }
