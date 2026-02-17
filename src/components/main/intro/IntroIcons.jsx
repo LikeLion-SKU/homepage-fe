@@ -10,6 +10,7 @@ import rocketIcon from '@/assets/icons/main/intro/rocket.svg';
 
 const columns = 24;
 const rows = 18;
+const mobileColumns = 15;
 
 // 아이콘 위치 정의
 // 격자 좌표 방식: { row, col, icon, size, alt, offsetX?, offsetY? }
@@ -25,9 +26,12 @@ const iconPositions = [
   { row: 3.2, col: 19, icon: rocketIcon, size: 570, alt: 'rocket', offsetX: 0, offsetY: 0 },
 ];
 
-function IntroIcons({ squareSizeRem, scale }) {
+function IntroIcons({ squareSizeRem, scale, isMobile, scrollOffsetRem = 0 }) {
+  // 모바일에서는 15개, 데스크톱에서는 24개
+  const currentColumns = isMobile ? mobileColumns : columns;
+
   // SCROLL 텍스트 위치 계산 (Intro.jsx와 동일)
-  const scrollTop = 15.2 * (squareSizeRem || 0);
+  const scrollTop = 15.2 * (squareSizeRem || 0) + (scrollOffsetRem || 0);
   const scrollMarginBottom = 16 / 16; // scale에 상관없이 고정된 간격
   const scrollFontSize = (16 / 16) * scale;
   const scrollTextHeight = scrollFontSize * 1.5; // 대략적인 텍스트 높이
@@ -44,8 +48,8 @@ function IntroIcons({ squareSizeRem, scale }) {
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none"
         style={{
-          width: `${(squareSizeRem || 0) * columns}rem`,
-          height: `${(squareSizeRem || 0) * rows}rem`,
+          width: `${(squareSizeRem || 0) * currentColumns}rem`,
+          height: isMobile ? '100vh' : `${(squareSizeRem || 0) * rows}rem`,
           zIndex: 11, // 격자 오버레이(z-10) 위에 배치하여 보이도록
         }}
       >
@@ -60,9 +64,39 @@ function IntroIcons({ squareSizeRem, scale }) {
             top = `${iconData.top}rem`;
           } else if ('row' in iconData && 'col' in iconData) {
             // 격자 좌표 방식 (기본)
-            const { row, col } = iconData;
+            let { row, col } = iconData;
             const sizeRem = squareSizeRem || 0;
-            const baseLeft = col * sizeRem + sizeRem / 2;
+
+            // 모바일에서는 col 좌표를 15 columns 기준으로 스케일링
+            // 데스크톱: col은 24 columns 기준
+            // 모바일: col을 15 columns 기준으로 변환 (col * (15 / 24))
+            const scaledCol = isMobile ? col * (mobileColumns / columns) : col;
+
+            // 모바일에서 모든 아이콘의 위치를 화면 높이 기준으로 조정
+            if (isMobile) {
+              const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
+              const rootFontSize =
+                parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+              const windowHeightRem = windowHeight / rootFontSize;
+
+              if (alt === 'brain') {
+                row = (windowHeightRem / sizeRem) * 0.4; // brain은 약 40% 위치
+              } else if (alt === 'bulb') {
+                row = (windowHeightRem / sizeRem) * 0.58; // bulb는 약 58% 위치
+              } else if (alt === 'code') {
+                row = (windowHeightRem / sizeRem) * 0.7; // code는 약 85% 위치
+              } else if (alt === 'computer') {
+                row = (windowHeightRem / sizeRem) * 0.8; // computer는 약 88% 위치
+              } else if (alt === 'make') {
+                row = (windowHeightRem / sizeRem) * 0.05; // make는 약 15% 위치 (상단)
+              } else if (alt === 'moon') {
+                row = (windowHeightRem / sizeRem) * 0.08; // moon은 약 12% 위치 (상단)
+              } else if (alt === 'rocket') {
+                row = (windowHeightRem / sizeRem) * 0.22; // rocket은 약 25% 위치 (상단)
+              }
+            }
+
+            const baseLeft = scaledCol * sizeRem + sizeRem / 2;
             const baseTop = row * sizeRem + sizeRem / 2;
             left = `${baseLeft + (offsetX / 16) * scale}rem`;
             top = `${baseTop + (offsetY / 16) * scale}rem`;
