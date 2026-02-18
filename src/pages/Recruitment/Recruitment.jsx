@@ -7,8 +7,7 @@ import ApplyStickyBox from '@/components/animation/ApplyStickyBox';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
 import useSemesterStore from '@/store/useSemesterStore';
-import { checkExpired } from '@/utils/Date';
-import { formatDeadline } from '@/utils/Date';
+import { formatDeadline, isWithinPeriod } from '@/utils/Date';
 
 export default function Recruitment() {
   // 열려있는 토글들의 인덱스 배열로 저장
@@ -45,8 +44,9 @@ export default function Recruitment() {
     }
   };
 
-  // 마감일 지났는지 확인
-  const isExpired = checkExpired(semesterData?.closeAt);
+  // 지원 기간(openAt ~ closeAt) 내인지 확인
+  const isOpen = isWithinPeriod(semesterData?.openAt, semesterData?.closeAt);
+  const isExpired = !isOpen;
 
   // 스크롤 시 지원하기 박스 고정 (body 스크롤에서도 동작하도록)
   const stickyBoxRef = useRef(null);
@@ -229,7 +229,7 @@ export default function Recruitment() {
         </div>
         <div
           ref={stickyBoxRef}
-          className="absolute inset-x-4.5 pad:inset-x-10 top-[55vh] web:top-18 web:left-auto web:right-0 web:px-21 z-20"
+          className="absolute inset-x-4.5 pad:inset-x-10 top-[55vh] web:top-18 web:left-auto web:right-0 web:px-21 z-60"
         >
           {/* 웹에서만 더미 유지 */}
           {stickyState.isSticky && (
@@ -241,7 +241,7 @@ export default function Recruitment() {
               // 웹이 아닐 때는 무조건 fixed로 화면 하단에 고정
               // 웹일 때는 기존 스티키 로직
               isMobileOrPad
-                ? 'fixed bottom-10 left-4.5 right-4.5 pad:left-10 pad:right-10 z-50'
+                ? 'fixed bottom-10 left-4.5 right-4.5 pad:left-10 pad:right-10 z-70'
                 : stickyState.isSticky
                   ? 'fixed z-10 flex justify-end web:right-21'
                   : 'w-full'

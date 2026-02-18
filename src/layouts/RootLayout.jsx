@@ -81,7 +81,7 @@ export default function RootLayout() {
     <main className="flex flex-col w-full min-h-screen overflow-y-hidden overflow-x-hidden no-scrollbar">
       <CustomCursor />
       <Header handleSideBar={handleSideBar} showResult={showResult} />
-      <div className="relative flex-1 min-h-fit bg-[#FAFBF8] isolate">
+      <div className="relative flex-1 min-h-fit bg-[#FAFBF8]">
         <div
           className={`transition-opacity duration-500 ease-out ${
             onSideBar ? 'opacity-0 h-0 pointer-events-none' : 'opacity-100'

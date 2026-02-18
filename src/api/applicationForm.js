@@ -2,7 +2,7 @@ import { APIService } from '@/api/api';
 
 export const getCurrentForm = async () => {
   try {
-    const res = await APIService.public.get('/v1/applications/current-forms');
+    const res = await APIService.public.get('/v1/applications/nearest-forms');
 
     return res.data;
   } catch (error) {
@@ -47,7 +47,7 @@ export const deleteAdminForm = async (applicationFormId) => {
 // 사용자 진행중 지원 일정 조회
 export const getSemester = async () => {
   try {
-    const response = await APIService.public.get('v1/applications/current-forms');
+    const response = await APIService.public.get('v1/applications/nearest-forms');
     return response.data || [];
   } catch (error) {
     console.log('진행중 지원 일정 조회', error);
