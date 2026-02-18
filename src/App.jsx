@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from 'react-router';
+import { RouterProvider, createBrowserRouter, redirect } from 'react-router';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -53,6 +53,7 @@ import Recruitment from '@/pages/Recruitment/Recruitment';
 import Result from '@/pages/Result/Result';
 import ResultNotice from '@/pages/Result/ResultNotice';
 import AdminRoute from '@/router/AdminRoute';
+import { isWithinPeriod } from '@/utils/Date';
 
 const router = createBrowserRouter([
   // 일반 서비스 브랜치 (RootLayout 사용)
@@ -75,7 +76,16 @@ const router = createBrowserRouter([
           {
             path: '/apply',
             Component: Apply,
-            loader: basicInfoLoader,
+            loader: async () => {
+              const [basicInfo, formData] = await Promise.all([
+                basicInfoLoader(),
+                getCurrentForm(),
+              ]);
+              if (!isWithinPeriod(formData?.openAt, formData?.closeAt)) {
+                return redirect('/recruit');
+              }
+              return basicInfo;
+            },
             children: [
               { index: true, Component: ApplyBasicInfo },
               { path: 'info', Component: ApplyBasicInfo },

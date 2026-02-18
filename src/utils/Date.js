@@ -2,7 +2,15 @@
 export const checkExpired = (deadlineString) => {
   const now = new Date();
   const deadline = new Date(deadlineString);
-  return now > deadline; // 마감시간 지났으면 false
+  return now > deadline;
+};
+
+// openAt ~ closeAt 기간 안에 있는지 확인 (기간 내면 true)
+export const isWithinPeriod = (openAt, closeAt) => {
+  const now = new Date();
+  const open = new Date(openAt);
+  const close = new Date(closeAt);
+  return now >= open && now <= close;
 };
 
 // 백엔드에서 보내주는 시간 -> 일반적인 방식으로 포멧팅
