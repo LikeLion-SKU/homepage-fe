@@ -57,5 +57,6 @@ export const deleteBookingInterview = async (bookingId) => {
     return res.data;
   } catch (error) {
     console.log('예약된 면접 일정 삭제 실패:', error);
+    throw error;
   }
 };
