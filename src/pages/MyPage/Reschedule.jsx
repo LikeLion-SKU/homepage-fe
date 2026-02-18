@@ -33,10 +33,7 @@ export default function Reschedule() {
     try {
       // 기존 예약 정보가 있는지 확인
       if (myInterviews?.booking?.scheduleId) {
-        // 기존 예약과 다를 때만 수정(PUT) 호출
-        if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
-          await putInterviewChange(selectedTime.scheduleId);
-        }
+        await putInterviewChange(selectedTime.scheduleId);
       } else {
         // 기존 예약이 없으면 신규 등록(POST) 호출
         await interviewBooking(selectedTime.scheduleId);
