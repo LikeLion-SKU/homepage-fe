@@ -1,7 +1,10 @@
 import ModalTitleBar from '@/components/main/schedule/modal/ModalTitleBar';
 
+import ModalContent from './ModalContent';
+
 function ModalWindow({
   title,
+  trackType,
 
   titleBarBgColor,
   titleBarIconBoxColor,
@@ -41,6 +44,8 @@ function ModalWindow({
         scale={scale}
         isTrackModal={true}
       />
+
+      <ModalContent trackType={trackType} scale={scale} />
 
       {/* 하단 세 개의 파란색 사각형 */}
       <div

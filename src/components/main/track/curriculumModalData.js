@@ -1,17 +1,39 @@
+// Figma에서 제공한 이미지 URL (임시 - 나중에 실제 아이콘 파일로 교체 필요)
+import adobeIcon from '@/assets/icons/main/track/adobe.svg';
+import figmaIcon from '@/assets/icons/main/track/figma.svg';
+import framerIcon from '@/assets/icons/main/track/framer.svg';
+import notionIcon from '@/assets/icons/main/track/notion.svg';
+import protopieIcon from '@/assets/icons/main/track/protopie.svg';
+
 export const curriculumData = {
-  PO: [
-    {
-      title: '트랙 커리큘럼',
-    },
-  ],
-  FRONTEND: [
-    {
-      title: '트랙 커리큘럼',
-    },
-  ],
-  BACKEND: [
-    {
-      title: '트랙 커리큘럼',
-    },
-  ],
+  PO: {
+    title: 'PO TRACK CURRICULUM',
+    subtitle: '_기획적 사고와 디자이너의 시선으로 세상을 바라보기',
+    techStack: [
+      { name: 'figma', size: 39, icon: figmaIcon },
+      { name: 'framer', size: 41, icon: framerIcon },
+      { name: 'protopie', size: 29, icon: protopieIcon },
+      { name: 'adobe', size: 37, icon: adobeIcon },
+      { name: 'notion', size: 37, icon: notionIcon },
+    ],
+  },
+  FRONTEND: {
+    title: 'FRONTEND TRACK CURRICULUM',
+    subtitle: '_Re:액트부터 시작하는 프론트 생활',
+    techStack: [
+      { name: 'react', size: 40 },
+      { name: 'javascript', size: 40 },
+      { name: 'tailwindcss', size: 40 },
+    ],
+  },
+  BACKEND: {
+    title: 'BACKEND TRACK CURRICULUM',
+    subtitle: '_쉽게 풀어 공부하는 스프링 백엔드 개발',
+    techStack: [
+      { name: 'java', size: 40 },
+      { name: 'docker', size: 40 },
+      { name: 'springboot', size: 40 },
+      { name: 'aws', size: 40 },
+    ],
+  },
 };

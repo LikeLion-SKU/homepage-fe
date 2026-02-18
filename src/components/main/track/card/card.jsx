@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 import ModalOverlay from '@/components/main/schedule/modal/ModalOverlay';
-import { curriculumData } from '@/components/main/track/curriculumModalData';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
 import ModalWindow from '../modal/ModalWindow';
@@ -32,8 +31,8 @@ function Card({ title, description, image = null }) {
 
   const trackType = getTrackType();
   const modalsToShow = useMemo(() => {
-    const modalData = trackType ? curriculumData[trackType] : [];
-    return modalData.slice(0, 2);
+    if (!trackType) return [];
+    return [{ trackType, title: '트랙 커리큘럼' }];
   }, [trackType]);
   const count = modalsToShow.length;
 
@@ -164,11 +163,12 @@ function Card({ title, description, image = null }) {
                 <ModalWindow
                   key={index}
                   title={data.title}
+                  trackType={data.trackType}
                   titleBarBgColor="transparent"
                   titleBarIconBoxColor="#00156A"
                   titleBarTitleBoxColor="#B3B3B3"
                   titleBarBoxSize={1}
-                  windowBgColor="#FFFFFF"
+                  windowBgColor="#F9F9F9"
                   windowBorderColor="#A8A8A8"
                   windowBorderWidth={2.5}
                   scale={fitScale}
