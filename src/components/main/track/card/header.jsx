@@ -24,7 +24,7 @@ function CardHeader({ title }) {
       }}
     >
       <div
-        className="bg-[#FFFFFF] absolute"
+        className="bg-[#FFFFFF] absolute border border-[#686868]"
         style={{
           // 가로 길이를 더 늘려 헤더 안 텍스트 영역을 넉넉하게
           width: `calc(100% - ${isMobile ? (40 / 16) * scale : (32 / 16) * scale}rem)`,
@@ -52,7 +52,7 @@ function CardHeader({ title }) {
         }}
       />
       <div
-        className="bg-[#c6e400] flex items-center justify-center flex-shrink-0 relative"
+        className="bg-[#c6e400] flex items-center justify-center flex-shrink-0 relative border border-[#686868]"
         style={{
           padding: `${isMobile ? (10 / 16) * scale : (8 / 16) * scale}rem`,
           width: `${isMobile ? (80 / 16) * scale : (40 / 16) * scale}rem`,
