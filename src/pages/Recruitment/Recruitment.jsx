@@ -7,8 +7,7 @@ import ApplyStickyBox from '@/components/animation/ApplyStickyBox';
 import Button from '@/components/common/Button/Button';
 import Modal from '@/components/common/Modal/ConfirmModal';
 import useSemesterStore from '@/store/useSemesterStore';
-import { checkExpired } from '@/utils/Date';
-import { formatDeadline } from '@/utils/Date';
+import { formatDeadline, isWithinPeriod } from '@/utils/Date';
 
 export default function Recruitment() {
   // 열려있는 토글들의 인덱스 배열로 저장
@@ -45,8 +44,9 @@ export default function Recruitment() {
     }
   };
 
-  // 마감일 지났는지 확인
-  const isExpired = checkExpired(semesterData?.closeAt);
+  // 지원 기간(openAt ~ closeAt) 내인지 확인
+  const isOpen = isWithinPeriod(semesterData?.openAt, semesterData?.closeAt);
+  const isExpired = !isOpen;
 
   // 스크롤 시 지원하기 박스 고정 (body 스크롤에서도 동작하도록)
   const stickyBoxRef = useRef(null);
