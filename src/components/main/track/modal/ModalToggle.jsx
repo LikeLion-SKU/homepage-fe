@@ -147,12 +147,20 @@ function ModalToggle({ items = [], scale = 1 }) {
               <div className="flex items-center gap-3">
                 {item.badge && (
                   <span
-                    className="px-3 py-1 rounded-full font-semibold"
+                    className="py-1 rounded-full font-semibold"
                     style={{
                       backgroundColor: item.badgeColor || '#C6E400',
                       color: '#FFFFFF',
-                      borderRadius: `${(15 / 16) * scale}rem`,
+                      borderRadius: `${(13 / 16) * scale}rem`,
                       fontSize: `${(badgeFontSize / 16) * scale}rem`,
+                      paddingLeft:
+                        item.badge === '공통'
+                          ? `${(16 / 16) * scale}rem`
+                          : `${(12 / 16) * scale}rem`,
+                      paddingRight:
+                        item.badge === '공통'
+                          ? `${(16 / 16) * scale}rem`
+                          : `${(12 / 16) * scale}rem`,
                     }}
                   >
                     {item.badge}
