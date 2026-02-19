@@ -178,19 +178,21 @@ function ModalContent({ trackType, scale = 1 }) {
       {/* 커리큘럼 토글 - 스크롤 가능한 영역 */}
       {content.curriculum && content.curriculum.length > 0 && (
         <div
-          className={
-            isMobile760
-              ? 'flex-1 min-h-0 overflow-y-auto no-scrollbar'
-              : 'flex-1 min-h-0 overflow-y-auto no-scrollbar'
-          }
+          className="relative flex-1 min-h-0"
           style={{
             marginTop: `${(24 / 16) * scale}rem`,
-            paddingRight: `${(20 / 16) * scale}rem`,
-            paddingBottom: `${(20 / 16) * scale}rem`,
-            minHeight: isMobile760 ? 'auto' : undefined,
+            overflow: 'hidden',
           }}
         >
-          <ModalToggle items={content.curriculum} scale={scale} />
+          <div
+            className="h-full overflow-y-auto no-scrollbar"
+            style={{
+              paddingRight: `${(20 / 16) * scale}rem`,
+              paddingBottom: `${(20 / 16) * scale}rem`,
+            }}
+          >
+            <ModalToggle items={content.curriculum} scale={scale} />
+          </div>
         </div>
       )}
     </div>

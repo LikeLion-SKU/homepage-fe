@@ -13,7 +13,9 @@ function ModalWindow({
   titleBarBoxSize,
 
   windowBgColor = '#F9F9F9',
+  // eslint-disable-next-line no-unused-vars
   windowBorderColor = '#1a1a1a',
+  // eslint-disable-next-line no-unused-vars
   windowBorderWidth = 1,
 
   scale = 1,
@@ -32,7 +34,7 @@ function ModalWindow({
       className="relative z-[1001] flex flex-col"
       style={{
         backgroundColor: windowBgColor,
-        border: `${windowBorderWidth}px solid ${windowBorderColor}`,
+        border: 'none',
         borderRadius: `${(32 / 16) * scale}rem`,
         width: `${(BASE_W / 16) * scale}rem`,
         height: `${(BASE_H / 16) * scale}rem`,
@@ -40,7 +42,6 @@ function ModalWindow({
         maxHeight: 'calc(100vh - 48px)',
         overflow: 'hidden',
         flexShrink: 0,
-        boxShadow: 'inset 0px 0px 8.3px 0px rgba(0, 0, 0, 0.47)',
       }}
     >
       <ModalTitleBar
@@ -63,6 +64,16 @@ function ModalWindow({
         <ModalContent trackType={trackType} scale={scale} />
       </div>
 
+      {/* 모달 shadow 효과 오버레이 - 토글 위에 표시 */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          borderRadius: `${(32 / 16) * scale}rem`,
+          boxShadow: 'inset 0px 0px 8.3px 0px rgba(0, 0, 0, 0.47)',
+          zIndex: 15,
+        }}
+      />
+
       {/* 하단 세 개의 파란색 사각형 */}
       <div
         className="flex items-center absolute pointer-events-none"
@@ -70,7 +81,7 @@ function ModalWindow({
           gap: `${(15 / 16) * scale}rem`,
           bottom: `${(35 / 16) * scale}rem`,
           right: `${(50 / 16) * scale}rem`,
-          zIndex: 2,
+          zIndex: 1,
         }}
       >
         {[1, 2, 3, 4].map((index) => (
