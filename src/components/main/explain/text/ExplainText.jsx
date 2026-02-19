@@ -44,7 +44,7 @@ function ExplainText() {
           fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
         }}
       >
-        안녕하세요{' '}
+        안녕하세요,{' '}
       </span>
       <span
         style={{
