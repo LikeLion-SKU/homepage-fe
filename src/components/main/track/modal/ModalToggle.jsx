@@ -24,13 +24,30 @@ function ModalToggle({ items = [], scale = 1 }) {
       {items.map((item, index) => {
         const isOpen = openToggle.includes(index);
         return (
-          <div key={index} className="w-full" style={{ paddingRight: `${(50 / 16) * scale}rem` }}>
+          <div key={index} className="w-full" style={{ paddingRight: `${(30 / 16) * scale}rem` }}>
             <button
               onClick={() => handleToggle(index)}
-              className="h-14 pl-4 pr-7 py-5 bg-white border border-[#686868] flex items-center justify-between text-black text-xs pad:text-base font-medium transition-all duration-200  active:translate-x-[0.5px] active:translate-y-[0.5px]"
+              className="h-14 pl-4 pr-7 py-5 flex items-center justify-between text-black text-xs pad:text-base font-medium active:translate-x-[0.5px] active:translate-y-[0.5px]"
               style={{
-                borderRadius: `${(20 / 16) * scale}rem`,
+                borderRadius: isOpen
+                  ? `${(20 / 16) * scale}rem ${(20 / 16) * scale}rem 0 0`
+                  : `${(20 / 16) * scale}rem`,
                 width: '100%',
+                backgroundColor: isOpen ? '#F8FBE7' : '#FFFFFF',
+                border: isOpen
+                  ? `${(2 / 16) * scale}rem solid #686868`
+                  : `${(1 / 16) * scale}rem solid #686868`,
+                transition: 'background-color 0s, border-width 0s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#F8FBE7';
+                e.currentTarget.style.borderWidth = `${(2 / 16) * scale}rem`;
+              }}
+              onMouseLeave={(e) => {
+                if (!isOpen) {
+                  e.currentTarget.style.backgroundColor = '#FFFFFF';
+                  e.currentTarget.style.borderWidth = `${(1 / 16) * scale}rem`;
+                }
               }}
             >
               <div className="flex items-center gap-3">
@@ -48,24 +65,38 @@ function ModalToggle({ items = [], scale = 1 }) {
                 )}
                 <span>{item.text}</span>
               </div>
-              <div
-                className="w-3.5 h-3.5 flex items-center justify-center transition-transform duration-200"
-                style={{
-                  transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                }}
-              >
+              <div className="w-3.5 h-3.5 flex items-center justify-center">
                 <img src={Toggle} alt="toggle" />
               </div>
             </button>
-            {isOpen && item.content && (
+            {isOpen && item.explainText && (
               <div
-                className="px-6 py-5 bg-toggle-green border border-black border-t-0 flex items-center justify-between text-black text-xs pad:text-base font-medium font-['Pretendard'] whitespace-pre-wrap"
+                className="px-6 py-3"
                 style={{
-                  borderRadius: `0 0 ${(20 / 16) * scale}rem ${(20 / 16) * scale}rem`,
+                  backgroundColor: '#F8FBE7',
+                  borderRadius: `0 0 ${(15 / 16) * scale}rem ${(15 / 16) * scale}rem`,
                   width: '100%',
+                  marginTop: `-${(2 / 16) * scale}rem`,
+                  border: `${(2 / 16) * scale}rem solid #686868`,
+                  borderTop: 'none',
                 }}
               >
-                {item.content}
+                <p
+                  style={{
+                    fontFamily:
+                      'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+                    fontSize: `${(14 / 16) * scale}rem`,
+                    fontWeight: 400,
+                    color: '#686868',
+                    lineHeight: `${(10 / 16) * scale}rem`,
+                    marginLeft: `${(-5 / 16) * scale}rem`,
+                    marginTop: `${(-5 / 16) * scale}rem`,
+                    marginBottom: `${(10 / 16) * scale}rem`,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {item.explainText}
+                </p>
               </div>
             )}
           </div>
