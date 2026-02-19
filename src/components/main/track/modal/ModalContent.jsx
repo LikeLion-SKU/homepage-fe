@@ -2,10 +2,13 @@
 import { motion } from 'framer-motion';
 
 import { curriculumData } from '@/components/main/track/curriculumModalData';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 import ModalToggle from './ModalToggle';
 
 function ModalContent({ trackType, scale = 1 }) {
+  const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isTab1199 = useMediaQuery('(min-width: 761px) and (max-width: 1199px)');
   const content = curriculumData[trackType] || curriculumData.PO;
 
   // title에서 TRACK 부분만 추출
@@ -48,7 +51,11 @@ function ModalContent({ trackType, scale = 1 }) {
           style={{
             fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
             fontWeight: 800,
-            fontSize: `${(28 / 16) * scale}rem`,
+            fontSize: isMobile760
+              ? `${(20 / 16) * scale}rem`
+              : isTab1199
+                ? `${(28 / 16) * scale}rem`
+                : `${(28 / 16) * scale}rem`,
             lineHeight: 'normal',
             margin: 0,
             display: 'flex',
@@ -81,7 +88,11 @@ function ModalContent({ trackType, scale = 1 }) {
           style={{
             fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
             fontWeight: 600,
-            fontSize: `${(15 / 16) * scale}rem`,
+            fontSize: isMobile760
+              ? `${(12 / 16) * scale}rem`
+              : isTab1199
+                ? `${(15 / 16) * scale}rem`
+                : `${(15 / 16) * scale}rem`,
             color: '#686868',
             lineHeight: `${(10 / 16) * scale}rem`,
             margin: 0,
@@ -167,14 +178,21 @@ function ModalContent({ trackType, scale = 1 }) {
       {/* 커리큘럼 토글 - 스크롤 가능한 영역 */}
       {content.curriculum && content.curriculum.length > 0 && (
         <div
-          className="flex-1 min-h-0 overflow-y-auto no-scrollbar"
+          className="relative flex-1 min-h-0"
           style={{
             marginTop: `${(24 / 16) * scale}rem`,
-            paddingRight: `${(20 / 16) * scale}rem`,
-            paddingBottom: `${(20 / 16) * scale}rem`,
+            overflow: 'hidden',
           }}
         >
-          <ModalToggle items={content.curriculum} scale={scale} />
+          <div
+            className="h-full overflow-y-auto no-scrollbar"
+            style={{
+              paddingRight: `${(20 / 16) * scale}rem`,
+              paddingBottom: `${(20 / 16) * scale}rem`,
+            }}
+          >
+            <ModalToggle items={content.curriculum} scale={scale} />
+          </div>
         </div>
       )}
     </div>
