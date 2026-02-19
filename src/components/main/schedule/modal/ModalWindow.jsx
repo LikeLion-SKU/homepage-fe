@@ -24,7 +24,9 @@ function ModalWindow({
   textBgColor,
 
   windowBgColor = '#FFFFFF',
+  // eslint-disable-next-line no-unused-vars
   windowBorderColor = '#1a1a1a',
+  // eslint-disable-next-line no-unused-vars
   windowBorderWidth = 1,
 
   scale = 1,
@@ -61,7 +63,7 @@ function ModalWindow({
       className="relative z-[1001] flex flex-col"
       style={{
         backgroundColor: windowBgColor,
-        border: `${windowBorderWidth}px solid ${windowBorderColor}`,
+        border: 'none',
         borderRadius: `${(32 / 16) * scale}rem`,
         width: `${(468 / 16) * scale}rem`,
         height: `${(552 / 16) * scale * heightMultiplier}rem`,
@@ -79,6 +81,16 @@ function ModalWindow({
         boxSize={titleBarBoxSize}
         onClose={onClose}
         scale={scale}
+      />
+
+      {/* 모달 shadow 효과 오버레이 - 콘텐츠 위에 표시 */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          borderRadius: `${(32 / 16) * scale}rem`,
+          boxShadow: 'inset 0px 0px 8.3px 0px rgba(0, 0, 0, 0.47)',
+          zIndex: 15,
+        }}
       />
 
       {/* 본문 */}
