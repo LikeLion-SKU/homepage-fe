@@ -2,7 +2,7 @@ import defaultImg from '@/assets/icons/default_Img.svg';
 
 export default function MemberCard({ data }) {
   return (
-    <div className="flex flex-col w-40 h-fit pad:w-54 pad:h-fit web:w-59 border-2">
+    <div className="flex flex-col w-40 h-fit pad:w-54 pad:h-fit web:w-59 border pad:border-2">
       <img
         src={data.profileImageUrl || defaultImg}
         className="w-40 h-37 pad:w-54 pad:h-54 web:w-59 bg-[#F9F9F9] object-cover object-center"
