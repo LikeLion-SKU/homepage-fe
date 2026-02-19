@@ -25,7 +25,7 @@ export const showResultButton = async () => {
   return {
     show:
       (now.isAfter(startShow) || now.isSame(startShow)) &&
-      (now.isBefore(finalResultTime) || now.isSame(finalResultTime)),
+      (now.isBefore(finalResultEnd) || now.isSame(finalResultEnd)),
     isFinal:
       (now.isAfter(finalResultDisplayStart) || now.isSame(finalResultDisplayStart)) &&
       now.isBefore(finalResultEnd),
