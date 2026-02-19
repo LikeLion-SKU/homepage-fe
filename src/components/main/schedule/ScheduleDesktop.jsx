@@ -238,7 +238,7 @@ function ScheduleDesktop({ months, onMonthClick }) {
           className="h-auto"
           style={{
             width: `${(380 / 16) * scale}rem`,
-            marginTop: `${(103 / 16) * scale}rem`,
+            marginTop: `${(95 / 16) * scale}rem`,
           }}
         />
       </div>

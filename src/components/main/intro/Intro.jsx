@@ -26,7 +26,6 @@ function Intro() {
     typeof navigator !== 'undefined' && navigator.platform.toUpperCase().indexOf('MAC') >= 0;
   const isMobile760 = useMediaQuery('(max-width: 760px)');
   const isMobile480 = useMediaQuery('(max-width: 480px)');
-  const isMobile440 = useMediaQuery('(max-width: 440px)');
 
   // 윈도우 크기 추적
   useEffect(() => {
@@ -97,11 +96,11 @@ function Intro() {
   const baseSquareSize = 60;
   const gridHeightRem = squareSizeRem > 0 ? squareSizeRem * rows : pxToRem(rows * baseSquareSize);
 
-  // 440px 이하에서만 격자 셀 크기 비율을 기준으로 모든 요소 스케일링 (격자 제외)
+  // 480px 이하에서만 격자 셀 크기 비율을 기준으로 모든 요소 스케일링 (격자 제외)
   let effectiveScale = scale;
   let textScale = scale;
 
-  if (isMobile440) {
+  if (isMobile480) {
     // 데스크톱: 1440px / 24 = 60px per cell
     // 모바일: windowWidth / 15 = 실제 셀 크기
     // 비율: (windowWidth / 15) / 60 = windowWidth / 900
@@ -112,8 +111,8 @@ function Intro() {
     const mobileCellSize = windowWidth / mobileColumns;
     const cellSizeRatio = mobileCellSize / desktopCellSize;
 
-    // 440px 이하에서만: 격자 셀 크기 비율을 기준으로 모든 요소 스케일링 (격자 제외)
-    // 텍스트 스케일 (440px 이하에서만)
+    // 480px 이하에서만: 격자 셀 크기 비율을 기준으로 모든 요소 스케일링 (격자 제외)
+    // 텍스트 스케일 (480px 이하에서만)
     effectiveScale = scale * cellSizeRatio;
     textScale = effectiveScale * 0.8; // 텍스트를 더 크게
   }
@@ -130,14 +129,14 @@ function Intro() {
     ? exclamationOnlyDownPx + Math.round(12 * textScale)
     : exclamationOnlyDownPx;
 
-  // 440px 이하에서만: (1) 텍스트+SCROLL+화살표를 같이 내리는 기본 오프셋 (이전 동작 유지)
-  const mobileDownShiftRem = (190 / 16) * (isMobile440 ? effectiveScale : 0);
-  // 440px 이하에서만: "당신의 상상" 텍스트만 추가로 아래로 이동
-  const imaginationExtraDownShiftRem = (35 / 16) * (isMobile440 ? effectiveScale : 0);
-  // 440px 이하에서만: "당신의 상상" / "세상 밖으로!" 텍스트를 동시에 왼쪽으로 이동
-  const textLeftShiftRem = (70 / 16) * (isMobile440 ? textScale : 0);
-  // 440px 이하에서만: (2) SCROLL+화살표만 추가로 더 내리는 오프셋
-  const scrollExtraDownShiftRem = (200 / 16) * (isMobile440 ? effectiveScale : 0);
+  // 480px 이하에서만: (1) 텍스트+SCROLL+화살표를 같이 내리는 기본 오프셋 (이전 동작 유지)
+  const mobileDownShiftRem = (190 / 16) * (isMobile480 ? effectiveScale : 0);
+  // 480px 이하에서만: "당신의 상상" 텍스트만 추가로 아래로 이동
+  const imaginationExtraDownShiftRem = (35 / 16) * (isMobile480 ? effectiveScale : 0);
+  // 480px 이하에서만: "당신의 상상" / "세상 밖으로!" 텍스트를 동시에 왼쪽으로 이동
+  const textLeftShiftRem = (70 / 16) * (isMobile480 ? textScale : 0);
+  // 480px 이하에서만: (2) SCROLL+화살표만 추가로 더 내리는 오프셋
+  const scrollExtraDownShiftRem = (200 / 16) * (isMobile480 ? effectiveScale : 0);
   const scrollDownShiftRem = mobileDownShiftRem + scrollExtraDownShiftRem;
 
   return (
@@ -145,12 +144,12 @@ function Intro() {
       className="relative w-full"
       style={{
         cursor: 'none',
-        height: isMobile440
+        height: isMobile480
           ? '100vh'
           : squareSizeRem > 0
             ? `${squareSizeRem * rows}rem`
             : `${pxToRem(rows * baseSquareSize)}rem`,
-        minHeight: isMobile440 ? '100vh' : `${gridHeightRem}rem`,
+        minHeight: isMobile480 ? '100vh' : `${gridHeightRem}rem`,
         marginBottom: 0,
         paddingBottom: 0,
         overflow: 'visible',
@@ -159,7 +158,7 @@ function Intro() {
       <Square
         onScaleChange={setScale}
         onSquareSizeRemChange={setSquareSizeRem}
-        isMobile={isMobile440}
+        isMobile={isMobile480}
       />
 
       {/* 아이콘 배치 - 격자 배경 아래 */}
@@ -172,7 +171,7 @@ function Intro() {
         <IntroIcons
           squareSizeRem={squareSizeRem || 0}
           scale={effectiveScale}
-          isMobile={isMobile440}
+          isMobile={isMobile480}
           scrollOffsetRem={scrollDownShiftRem}
         />
       </div>
@@ -181,7 +180,7 @@ function Intro() {
       <div
         className="absolute z-20 pointer-events-none"
         style={{
-          left: isMobile440
+          left: isMobile480
             ? `calc(50% - ${((squareSizeRem || 0) * columns) / 2}rem + ${2.5 * (squareSizeRem || 0)}rem + ${(300 / 16) * textScale}rem - ${textLeftShiftRem}rem)`
             : `calc(50% - ${((squareSizeRem || 0) * columns) / 2}rem + ${2.5 * (squareSizeRem || 0)}rem)`,
           top: `calc(${4.5 * (squareSizeRem || 0)}rem + ${mobileDownShiftRem}rem + ${imaginationExtraDownShiftRem}rem)`,
@@ -248,7 +247,7 @@ function Intro() {
       <div
         className="absolute z-20 pointer-events-none"
         style={{
-          left: isMobile440
+          left: isMobile480
             ? `calc(50% - ${((squareSizeRem || 0) * columns) / 2}rem + ${9.6 * (squareSizeRem || 0)}rem - ${textLeftShiftRem}rem)`
             : `calc(50% - ${((squareSizeRem || 0) * columns) / 2}rem + ${9.6 * (squareSizeRem || 0)}rem)`,
           top: `calc(${8 * (squareSizeRem || 0)}rem + ${mobileDownShiftRem}rem)`,
