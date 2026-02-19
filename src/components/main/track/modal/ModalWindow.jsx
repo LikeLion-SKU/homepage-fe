@@ -1,4 +1,5 @@
 import ModalTitleBar from '@/components/main/schedule/modal/ModalTitleBar';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 import ModalContent from './ModalContent';
 
@@ -18,6 +19,14 @@ function ModalWindow({
   scale = 1,
   onClose,
 }) {
+  const isMobile760 = useMediaQuery('(max-width: 760px)');
+
+  // 화면 크기에 따라 다른 기준 크기 사용
+  // 760px 이상: 1440px 기준, 1012x716
+  // 760px 미만: 760px 기준, 592x663
+  const BASE_W = isMobile760 ? 592 : 1012;
+  const BASE_H = isMobile760 ? 663 : 716;
+
   return (
     <div
       className="relative z-[1001] flex flex-col"
@@ -25,8 +34,8 @@ function ModalWindow({
         backgroundColor: windowBgColor,
         border: `${windowBorderWidth}px solid ${windowBorderColor}`,
         borderRadius: `${(32 / 16) * scale}rem`,
-        width: `${(1012 / 16) * scale}rem`,
-        height: `${(716 / 16) * scale}rem`,
+        width: `${(BASE_W / 16) * scale}rem`,
+        height: `${(BASE_H / 16) * scale}rem`,
         maxWidth: 'calc(100vw - 48px)',
         maxHeight: 'calc(100vh - 48px)',
         overflow: 'hidden',

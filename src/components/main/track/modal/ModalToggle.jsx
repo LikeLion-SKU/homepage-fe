@@ -1,8 +1,10 @@
 import { useState } from 'react';
 
 import Toggle from '@/assets/icons/under_toggle.svg';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 function ModalToggle({ items = [], scale = 1 }) {
+  const isMobile760 = useMediaQuery('(max-width: 760px)');
   const [openToggle, setOpenToggle] = useState([]);
 
   const handleToggle = (index) => {
@@ -53,17 +55,24 @@ function ModalToggle({ items = [], scale = 1 }) {
               <div className="flex items-center gap-3">
                 {item.badge && (
                   <span
-                    className="px-3 py-1 rounded-full text-xs pad:text-sm font-semibold"
+                    className="px-3 py-1 rounded-full font-semibold"
                     style={{
                       backgroundColor: item.badgeColor || '#C6E400',
                       color: '#FFFFFF',
                       borderRadius: `${(15 / 16) * scale}rem`,
+                      fontSize: isMobile760 ? `${(14 / 16) * scale}rem` : `${(12 / 16) * scale}rem`,
                     }}
                   >
                     {item.badge}
                   </span>
                 )}
-                <span>{item.text}</span>
+                <span
+                  style={{
+                    fontSize: isMobile760 ? `${(14 / 16) * scale}rem` : undefined,
+                  }}
+                >
+                  {item.text}
+                </span>
               </div>
               <div className="w-3.5 h-3.5 flex items-center justify-center">
                 <img src={Toggle} alt="toggle" />
@@ -79,6 +88,10 @@ function ModalToggle({ items = [], scale = 1 }) {
                   marginTop: `-${(2 / 16) * scale}rem`,
                   border: `${(2 / 16) * scale}rem solid #686868`,
                   borderTop: 'none',
+                  paddingTop: isMobile760 ? `${(0 / 16) * scale}rem` : `${(12 / 16) * scale}rem`,
+                  paddingBottom: isMobile760
+                    ? `${(12 / 16) * scale}rem`
+                    : `${(12 / 16) * scale}rem`,
                 }}
               >
                 <p
@@ -88,11 +101,14 @@ function ModalToggle({ items = [], scale = 1 }) {
                     fontSize: `${(14 / 16) * scale}rem`,
                     fontWeight: 400,
                     color: '#686868',
-                    lineHeight: `${(10 / 16) * scale}rem`,
+                    lineHeight: isMobile760 ? `${(20 / 16) * scale}rem` : `${(10 / 16) * scale}rem`,
                     marginLeft: `${(-5 / 16) * scale}rem`,
-                    marginTop: `${(-5 / 16) * scale}rem`,
-                    marginBottom: `${(10 / 16) * scale}rem`,
-                    whiteSpace: 'nowrap',
+                    marginTop: isMobile760 ? `${(-2 / 16) * scale}rem` : `${(-5 / 16) * scale}rem`,
+                    marginBottom: isMobile760
+                      ? `${(4 / 16) * scale}rem`
+                      : `${(10 / 16) * scale}rem`,
+                    whiteSpace: isMobile760 ? 'normal' : 'nowrap',
+                    wordBreak: isMobile760 ? 'break-word' : 'normal',
                   }}
                 >
                   {item.explainText}

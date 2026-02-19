@@ -54,11 +54,13 @@ function Card({ title, description, image = null }) {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
 
-      // 1440px 기준 디자인 크기
-      const BASE_W = 1012;
-      const BASE_H = 716;
-      const R = BASE_H / BASE_W; // 종횡비 (약 0.7075)
-      const BASE_SCREEN = 1440; // 기준 화면 크기
+      // 화면 크기에 따라 다른 기준 크기 사용
+      // 760px 이상: 1440px 기준, 1012x716
+      // 760px 미만: 760px 기준, 592x663
+      const BASE_W = isMobile760 ? 592 : 1012;
+      const BASE_H = isMobile760 ? 663 : 716;
+      const R = BASE_H / BASE_W; // 종횡비
+      const BASE_SCREEN = isMobile760 ? 760 : 1440; // 기준 화면 크기
 
       // 화면 여백
       const MARGIN_X = isMobile760 ? 16 : 24;
@@ -67,7 +69,7 @@ function Card({ title, description, image = null }) {
       const availW = Math.max(0, vw - MARGIN_X * 2);
       const availH = Math.max(0, vh - MARGIN_Y * 2);
 
-      // 1440px 기준으로 스케일 계산 (비율 유지)
+      // 기준 화면 크기 기준으로 스케일 계산 (비율 유지)
       const scaleRatio = vw / BASE_SCREEN;
       let w = BASE_W * scaleRatio;
       let h = BASE_H * scaleRatio;
