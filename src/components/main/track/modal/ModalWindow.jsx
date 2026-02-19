@@ -45,7 +45,14 @@ function ModalWindow({
         isTrackModal={true}
       />
 
-      <ModalContent trackType={trackType} scale={scale} />
+      <div
+        className="flex flex-col flex-1 min-h-0"
+        style={{
+          overflow: 'hidden',
+        }}
+      >
+        <ModalContent trackType={trackType} scale={scale} />
+      </div>
 
       {/* 하단 세 개의 파란색 사각형 */}
       <div

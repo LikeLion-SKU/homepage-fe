@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 
 import { curriculumData } from '@/components/main/track/curriculumModalData';
 
+import ModalToggle from './ModalToggle';
+
 function ModalContent({ trackType, scale = 1 }) {
   const content = curriculumData[trackType] || curriculumData.PO;
 
@@ -26,16 +28,17 @@ function ModalContent({ trackType, scale = 1 }) {
 
   return (
     <div
-      className="flex flex-col"
+      className="flex flex-col h-full"
       style={{
         paddingLeft: `${(63 / 16) * scale}rem`,
         paddingRight: `${(30 / 16) * scale}rem`,
         paddingTop: `${(28 / 16) * scale}rem`,
+        overflow: 'hidden',
       }}
     >
-      {/* 제목과 서브타이틀 */}
+      {/* 제목과 서브타이틀 - 고정 */}
       <div
-        className="flex items-baseline"
+        className="flex items-baseline flex-shrink-0"
         style={{
           gap: `${(10 / 16) * scale}rem`,
           marginBottom: `${(15 / 16) * scale}rem`,
@@ -88,9 +91,9 @@ function ModalContent({ trackType, scale = 1 }) {
         </p>
       </div>
 
-      {/* 활용 기술 스택 */}
+      {/* 활용 기술 스택 - 고정 */}
       <div
-        className="flex items-center"
+        className="flex items-center flex-shrink-0"
         style={{
           gap: `${(12 / 16) * scale}rem`,
           marginBottom: `${(12 / 16) * scale}rem`,
@@ -160,6 +163,20 @@ function ModalContent({ trackType, scale = 1 }) {
           ))}
         </div>
       </div>
+
+      {/* 커리큘럼 토글 - 스크롤 가능한 영역 */}
+      {content.curriculum && content.curriculum.length > 0 && (
+        <div
+          className="flex-1 min-h-0 overflow-y-auto no-scrollbar"
+          style={{
+            marginTop: `${(24 / 16) * scale}rem`,
+            paddingRight: `${(20 / 16) * scale}rem`,
+            paddingBottom: `${(20 / 16) * scale}rem`,
+          }}
+        >
+          <ModalToggle items={content.curriculum} scale={scale} />
+        </div>
+      )}
     </div>
   );
 }

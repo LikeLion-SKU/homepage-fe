@@ -23,6 +23,48 @@ export const curriculumData = {
       { name: 'adobe', size: 37, icon: adobeIcon },
       { name: 'notion', size: 37, icon: notionIcon },
     ],
+    curriculum: [
+      {
+        badge: '공통',
+        badgeColor: '#FF7D56',
+        text: 'Figma + Notion 기본 기능 알아보기',
+      },
+      {
+        badge: '1주차',
+        badgeColor: '#C6E400',
+        text: '개발 프로세스의 이해 / Figma 기초',
+      },
+      {
+        badge: '2주차',
+        badgeColor: '#C6E400',
+        text: '리서치 기획하기 / Constraints, Auto Layout',
+      },
+      {
+        badge: '3주차',
+        badgeColor: '#C6E400',
+        text: 'IA, 와이어프레임 / Design system, Variables',
+      },
+      {
+        badge: '4주차',
+        badgeColor: '#C6E400',
+        text: '아이디어 크리틱 / 디자인 기초 이론, Variants',
+      },
+      {
+        badge: '5주차',
+        badgeColor: '#C6E400',
+        text: '기획을 발표자료로 정리하기, BM / Dev mode',
+      },
+      {
+        badge: '6주차',
+        badgeColor: '#C6E400',
+        text: '발표자료 피드백 / figma 기능 총 복습',
+      },
+      {
+        badge: '7주차',
+        badgeColor: '#C6E400',
+        text: '개인별 프로젝트 PT 및 피드백',
+      },
+    ],
   },
   FRONTEND: {
     title: 'FRONTEND TRACK CURRICULUM',
@@ -32,6 +74,7 @@ export const curriculumData = {
       { name: 'react', size: 40, icon: reactIcon },
       { name: 'tailwindcss', size: 40, icon: tailwindcssIcon },
     ],
+    curriculum: [],
   },
   BACKEND: {
     title: 'BACKEND TRACK CURRICULUM',
@@ -42,5 +85,6 @@ export const curriculumData = {
       { name: 'docker', size: 33, icon: dockerIcon },
       { name: 'aws', size: 36, icon: awsIcon },
     ],
+    curriculum: [],
   },
 };
