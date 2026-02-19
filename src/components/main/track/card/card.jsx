@@ -127,6 +127,7 @@ function Card({ title, description, image = null }) {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setIsHovered(false);
   };
 
   return (
