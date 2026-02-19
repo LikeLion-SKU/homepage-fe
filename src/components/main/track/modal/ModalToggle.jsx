@@ -39,7 +39,21 @@ function ModalToggle({ items = [], scale = 1 }) {
   useEffect(() => {
     const calculateFontSizes = () => {
       const width = window.innerWidth;
-      if (width <= 760) {
+      if (width <= 480) {
+        // 480px 이하: 480px 기준, 뱃지와 타이틀 12px
+        const BASE_SCREEN = 480;
+        const BASE_W = 375;
+        const currentScaleRatio = width / BASE_SCREEN;
+        const currentW = BASE_W * currentScaleRatio;
+        const currentScale = currentW / BASE_W;
+
+        const targetBadgeTitlePx = 12;
+        const badgeTitleFontSize = targetBadgeTitlePx / currentScale;
+
+        setBadgeFontSize(badgeTitleFontSize);
+        setTitleFontSize(badgeTitleFontSize);
+        setExplainFontSize(14);
+      } else if (width <= 760) {
         setBadgeFontSize(14);
         setTitleFontSize(14);
         setExplainFontSize(14);

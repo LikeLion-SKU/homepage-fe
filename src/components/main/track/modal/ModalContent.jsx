@@ -7,6 +7,7 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 import ModalToggle from './ModalToggle';
 
 function ModalContent({ trackType, scale = 1 }) {
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
   const isMobile760 = useMediaQuery('(max-width: 760px)');
   const isTab1199 = useMediaQuery('(min-width: 761px) and (max-width: 1199px)');
   const content = curriculumData[trackType] || curriculumData.PO;
@@ -33,17 +34,17 @@ function ModalContent({ trackType, scale = 1 }) {
     <div
       className="flex flex-col h-full"
       style={{
-        paddingLeft: `${(63 / 16) * scale}rem`,
+        paddingLeft: isMobile480 ? `${(35 / 16) * scale}rem` : `${(63 / 16) * scale}rem`,
         paddingRight: `${(30 / 16) * scale}rem`,
-        paddingTop: `${(28 / 16) * scale}rem`,
+        paddingTop: isMobile480 ? `${(15 / 16) * scale}rem` : `${(28 / 16) * scale}rem`,
         overflow: 'hidden',
       }}
     >
       {/* 제목과 서브타이틀 - 고정 */}
       <div
-        className="flex items-baseline flex-shrink-0"
+        className="flex flex-col flex-shrink-0"
         style={{
-          gap: `${(10 / 16) * scale}rem`,
+          gap: `${(8 / 16) * scale}rem`,
           marginBottom: `${(15 / 16) * scale}rem`,
         }}
       >
@@ -51,11 +52,13 @@ function ModalContent({ trackType, scale = 1 }) {
           style={{
             fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
             fontWeight: 800,
-            fontSize: isMobile760
-              ? `${(20 / 16) * scale}rem`
-              : isTab1199
-                ? `${(28 / 16) * scale}rem`
-                : `${(28 / 16) * scale}rem`,
+            fontSize: isMobile480
+              ? `${(16 / 16) * scale}rem`
+              : isMobile760
+                ? `${(20 / 16) * scale}rem`
+                : isTab1199
+                  ? `${(28 / 16) * scale}rem`
+                  : `${(28 / 16) * scale}rem`,
             lineHeight: 'normal',
             margin: 0,
             display: 'flex',
@@ -88,13 +91,15 @@ function ModalContent({ trackType, scale = 1 }) {
           style={{
             fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
             fontWeight: 600,
-            fontSize: isMobile760
-              ? `${(12 / 16) * scale}rem`
-              : isTab1199
-                ? `${(15 / 16) * scale}rem`
-                : `${(15 / 16) * scale}rem`,
+            fontSize: isMobile480
+              ? `${(11 / 16) * scale}rem`
+              : isMobile760
+                ? `${(12 / 16) * scale}rem`
+                : isTab1199
+                  ? `${(15 / 16) * scale}rem`
+                  : `${(15 / 16) * scale}rem`,
             color: '#686868',
-            lineHeight: `${(10 / 16) * scale}rem`,
+            lineHeight: 'normal',
             margin: 0,
           }}
         >
@@ -108,13 +113,14 @@ function ModalContent({ trackType, scale = 1 }) {
         style={{
           gap: `${(12 / 16) * scale}rem`,
           marginBottom: `${(12 / 16) * scale}rem`,
+          flexWrap: 'nowrap',
         }}
       >
         <p
           style={{
             fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
             fontWeight: 600,
-            fontSize: `${(14 / 16) * scale}rem`,
+            fontSize: isMobile480 ? `${(13 / 16) * scale}rem` : `${(14 / 16) * scale}rem`,
             color: '#3C3C3C',
             lineHeight: `${(28 / 16) * scale}rem`,
             margin: 0,
@@ -126,15 +132,21 @@ function ModalContent({ trackType, scale = 1 }) {
           className="flex items-center"
           style={{
             gap: `${(12 / 16) * scale}rem`,
-            marginLeft: `${(15 / 16) * scale}rem`,
+            marginLeft: isMobile480 ? `${(-5 / 16) * scale}rem` : `${(15 / 16) * scale}rem`,
+            flexWrap: 'nowrap',
+            flexShrink: 0,
           }}
         >
           {content.techStack.map((tech, index) => (
             <div
               key={index}
               style={{
-                width: `${(tech.size / 16) * scale}rem`,
-                height: `${(tech.size / 16) * scale}rem`,
+                width: isMobile480
+                  ? `${((tech.size * 0.7) / 16) * scale}rem`
+                  : `${(tech.size / 16) * scale}rem`,
+                height: isMobile480
+                  ? `${((tech.size * 0.7) / 16) * scale}rem`
+                  : `${(tech.size / 16) * scale}rem`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

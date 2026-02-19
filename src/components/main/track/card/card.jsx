@@ -55,16 +55,18 @@ function Card({ title, description, image = null }) {
       const vh = window.innerHeight;
 
       // 화면 크기에 따라 다른 기준 크기 사용
+      // 480px 이하: 480px 기준, 375x525
+      // 481px~760px: 760px 기준, 592x663
       // 760px 이상: 1440px 기준, 1012x716
-      // 760px 미만: 760px 기준, 592x663
-      const BASE_W = isMobile760 ? 592 : 1012;
-      const BASE_H = isMobile760 ? 663 : 716;
+      const isMobile480 = vw <= 480;
+      const BASE_W = isMobile480 ? 375 : isMobile760 ? 592 : 1012;
+      const BASE_H = isMobile480 ? 525 : isMobile760 ? 663 : 716;
       const R = BASE_H / BASE_W; // 종횡비
-      const BASE_SCREEN = isMobile760 ? 760 : 1440; // 기준 화면 크기
+      const BASE_SCREEN = isMobile480 ? 480 : isMobile760 ? 760 : 1440; // 기준 화면 크기
 
       // 화면 여백
-      const MARGIN_X = isMobile760 ? 16 : 24;
-      const MARGIN_Y = isMobile760 ? 16 : 24;
+      const MARGIN_X = isMobile480 ? 16 : isMobile760 ? 16 : 24;
+      const MARGIN_Y = isMobile480 ? 16 : isMobile760 ? 16 : 24;
 
       const availW = Math.max(0, vw - MARGIN_X * 2);
       const availH = Math.max(0, vh - MARGIN_Y * 2);
@@ -89,7 +91,7 @@ function Card({ title, description, image = null }) {
 
       // 최소/최대 스케일 제한
       const MAX_S = 1.5;
-      const MIN_S = isMobile760 ? 0.3 : 0.4;
+      const MIN_S = isMobile480 ? 0.3 : isMobile760 ? 0.3 : 0.4;
 
       setFitScale(clamp(s, MIN_S, MAX_S));
     };

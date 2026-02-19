@@ -22,12 +22,14 @@ function ModalWindow({
   onClose,
 }) {
   const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
 
   // 화면 크기에 따라 다른 기준 크기 사용
+  // 480px 이하: 480px 기준, 375x525
+  // 481px~760px: 760px 기준, 592x663
   // 760px 이상: 1440px 기준, 1012x716
-  // 760px 미만: 760px 기준, 592x663
-  const BASE_W = isMobile760 ? 592 : 1012;
-  const BASE_H = isMobile760 ? 663 : 716;
+  const BASE_W = isMobile480 ? 375 : isMobile760 ? 592 : 1012;
+  const BASE_H = isMobile480 ? 525 : isMobile760 ? 663 : 716;
 
   return (
     <div
