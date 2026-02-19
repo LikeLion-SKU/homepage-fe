@@ -274,12 +274,18 @@ function ModalToggle({ items = [], scale = 1 }) {
                   borderLeft: `${(2 / 16) * scale}rem solid #686868`,
                   borderRight: `${(2 / 16) * scale}rem solid #686868`,
                   borderBottom: `${(2 / 16) * scale}rem solid #686868`,
-                  paddingTop: isMobile760 ? `${(3 / 16) * scale}rem` : `${(2 / 16) * scale}rem`,
-                  paddingBottom: isMobile760
-                    ? `${(14 / 16) * scale}rem`
-                    : `${(16 / 16) * scale}rem`,
-                  paddingLeft: `${(25 / 16) * scale}rem`,
-                  paddingRight: `${(24 / 16) * scale}rem`,
+                  paddingTop: isMobile480
+                    ? `${(8 / 16) * scale}rem`
+                    : isMobile760
+                      ? `${(3 / 16) * scale}rem`
+                      : `${(2 / 16) * scale}rem`,
+                  paddingBottom: isMobile480
+                    ? `${(12 / 16) * scale}rem`
+                    : isMobile760
+                      ? `${(14 / 16) * scale}rem`
+                      : `${(16 / 16) * scale}rem`,
+                  paddingLeft: isMobile480 ? `${(16 / 16) * scale}rem` : `${(25 / 16) * scale}rem`,
+                  paddingRight: isMobile480 ? `${(16 / 16) * scale}rem` : `${(24 / 16) * scale}rem`,
                   minHeight: 'auto',
                 }}
               >
@@ -290,11 +296,13 @@ function ModalToggle({ items = [], scale = 1 }) {
                     fontSize: `${(explainFontSize / 16) * scale}rem`,
                     fontWeight: 400,
                     color: '#686868',
-                    lineHeight: isMobile760
-                      ? `${(22 / 16) * scale}rem`
-                      : isTab1199
-                        ? `${(30 / 16) * scale}rem`
-                        : `${(26 / 16) * scale}rem`,
+                    lineHeight: isMobile480
+                      ? `${(18 / 16) * scale}rem`
+                      : isMobile760
+                        ? `${(22 / 16) * scale}rem`
+                        : isTab1199
+                          ? `${(30 / 16) * scale}rem`
+                          : `${(26 / 16) * scale}rem`,
                     margin: 0,
                     whiteSpace: isDesktop1440 ? 'nowrap' : 'normal',
                     wordBreak: isDesktop1440 ? 'normal' : 'break-word',

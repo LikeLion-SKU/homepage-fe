@@ -62,8 +62,9 @@ function ModalContent({ trackType, scale = 1 }) {
             lineHeight: 'normal',
             margin: 0,
             display: 'flex',
-            alignItems: 'baseline',
-            gap: `${(4 / 16) * scale}rem`,
+            flexDirection: isMobile480 ? 'column' : 'row',
+            alignItems: isMobile480 ? 'flex-start' : 'baseline',
+            gap: isMobile480 ? `${(4 / 16) * scale}rem` : `${(4 / 16) * scale}rem`,
           }}
         >
           {trackText && (
