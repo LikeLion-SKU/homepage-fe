@@ -1,9 +1,16 @@
 // Figma에서 제공한 이미지 URL (임시 - 나중에 실제 아이콘 파일로 교체 필요)
 import adobeIcon from '@/assets/icons/main/track/adobe.svg';
+import awsIcon from '@/assets/icons/main/track/aws.svg';
+import dockerIcon from '@/assets/icons/main/track/docker.svg';
 import figmaIcon from '@/assets/icons/main/track/figma.svg';
 import framerIcon from '@/assets/icons/main/track/framer.svg';
+import javaIcon from '@/assets/icons/main/track/java.svg';
+import jsIcon from '@/assets/icons/main/track/js.svg';
 import notionIcon from '@/assets/icons/main/track/notion.svg';
 import protopieIcon from '@/assets/icons/main/track/protopie.svg';
+import reactIcon from '@/assets/icons/main/track/react.svg';
+import springbootIcon from '@/assets/icons/main/track/springboot.svg';
+import tailwindcssIcon from '@/assets/icons/main/track/tailwind.svg';
 
 export const curriculumData = {
   PO: {
@@ -21,19 +28,19 @@ export const curriculumData = {
     title: 'FRONTEND TRACK CURRICULUM',
     subtitle: '_Re:액트부터 시작하는 프론트 생활',
     techStack: [
-      { name: 'react', size: 40 },
-      { name: 'javascript', size: 40 },
-      { name: 'tailwindcss', size: 40 },
+      { name: 'javascript', size: 40, icon: jsIcon },
+      { name: 'react', size: 40, icon: reactIcon },
+      { name: 'tailwindcss', size: 40, icon: tailwindcssIcon },
     ],
   },
   BACKEND: {
     title: 'BACKEND TRACK CURRICULUM',
     subtitle: '_쉽게 풀어 공부하는 스프링 백엔드 개발',
     techStack: [
-      { name: 'java', size: 40 },
-      { name: 'docker', size: 40 },
-      { name: 'springboot', size: 40 },
-      { name: 'aws', size: 40 },
+      { name: 'java', size: 36, icon: javaIcon },
+      { name: 'springboot', size: 36, icon: springbootIcon },
+      { name: 'docker', size: 33, icon: dockerIcon },
+      { name: 'aws', size: 36, icon: awsIcon },
     ],
   },
 };

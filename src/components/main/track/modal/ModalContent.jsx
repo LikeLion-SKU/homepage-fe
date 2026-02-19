@@ -69,7 +69,7 @@ function ModalContent({ trackType, scale = 1 }) {
         <div
           className="flex items-center"
           style={{
-            gap: `${(10 / 16) * scale}rem`,
+            gap: `${(12 / 16) * scale}rem`,
             marginLeft: `${(15 / 16) * scale}rem`,
           }}
         >
@@ -83,7 +83,15 @@ function ModalContent({ trackType, scale = 1 }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 position: 'relative',
-                marginLeft: tech.name === 'framer' ? `${(-9 / 16) * scale}rem` : '0',
+                marginLeft:
+                  tech.name === 'framer'
+                    ? `${(-9 / 16) * scale}rem`
+                    : tech.name === 'aws'
+                      ? `${(3 / 16) * scale}rem`
+                      : tech.name === 'protopie'
+                        ? `${(-2 / 16) * scale}rem`
+                        : '0',
+                marginTop: tech.name === 'java' ? `${(-8 / 16) * scale}rem` : '0',
               }}
             >
               {tech.icon ? (
