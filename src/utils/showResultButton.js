@@ -17,9 +17,10 @@ export const showResultButton = async () => {
 
   // 2. 최종 발표일의 '날짜' 기준 + 7일 뒤의 23:59:59 (그날 전체 포함)
   const endShow = dayjs(resultDate.finalResultAt).add(7, 'day').endOf('day');
+  const finalResultTime = dayjs(resultDate.finalResultAt);
 
   const finalResultDisplayStart = dayjs(resultDate.finalResultAt).startOf('day');
-  const finalResultEnd = finalResultDisplayStart.add(7, 'day').endOf('day');
+  const finalResultEnd = finalResultTime.add(7, 'day');
 
   // 현재 시간이 시작점보다 같거나 늦고, 끝점보다 같거나 이르면 true
   return {
