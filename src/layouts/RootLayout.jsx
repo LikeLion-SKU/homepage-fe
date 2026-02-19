@@ -99,7 +99,7 @@ export default function RootLayout() {
       <CustomCursor />
       <Header
         handleSideBar={handleSideBar}
-        showResult={showResult}
+        showResult={showResult.show}
         isDocumentSubmitted={isDocumentSubmitted}
         interviewScheduleConfirmed={showResult.isFinal ? interviewScheduleConfirmed : true}
       />
@@ -123,7 +123,7 @@ export default function RootLayout() {
         >
           <SideBar
             handleSideBar={handleSideBar}
-            showResult={showResult}
+            showResult={showResult.show}
             isDocumentSubmitted={isDocumentSubmitted}
             interviewScheduleConfirmed={showResult.isFinal ? interviewScheduleConfirmed : true}
           />
