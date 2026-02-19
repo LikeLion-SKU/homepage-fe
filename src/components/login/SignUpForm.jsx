@@ -454,6 +454,7 @@ export default function SignUpForm({ onSubmit }) {
             required={true}
             hideToggle={false}
             defaultShowPassword={false}
+            isSuccess={passwordTouched && signupPassword && isValidPassword(signupPassword)}
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
             <p
@@ -480,6 +481,11 @@ export default function SignUpForm({ onSubmit }) {
             mb="mb-0"
             required
             defaultShowPassword={false}
+            isSuccess={
+              confirmPassword &&
+              isValidPassword(signupPassword) &&
+              signupPassword === confirmPassword
+            }
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
             {confirmPassword &&
