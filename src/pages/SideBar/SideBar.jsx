@@ -5,7 +5,7 @@ import MenuButton from '@/components/sideBar/MenuButton';
 import OutLinkButton from '@/components/sideBar/OutLinkButton';
 import useAuthStore from '@/store/useAuthStore';
 
-export default function SideBar({ handleSideBar, showResult }) {
+export default function SideBar({ handleSideBar, showResult, isDocumentSubmitted }) {
   const isLogin = useAuthStore((state) => state.isLoggedIn);
   const getLastMenu = () => {
     if (isLogin) {
@@ -16,7 +16,11 @@ export default function SideBar({ handleSideBar, showResult }) {
   };
   const getResultMenu = () => {
     if (showResult) {
-      return { name: '지원결과', path: '/result/notice' };
+      if (isDocumentSubmitted) {
+        return { name: '지원결과', path: '/result/notice' };
+      } else {
+        return null;
+      }
     } else {
       return { name: '지원하기', path: '/recruit' };
     }
@@ -26,7 +30,7 @@ export default function SideBar({ handleSideBar, showResult }) {
     { name: '프로젝트', path: '/project' },
     { name: '구성원', path: '/member' },
     getLastMenu(),
-  ];
+  ].filter(Boolean);
   const outLinkName = [
     { name: 'kakao talk', imgUrl: kakao, link: 'http://pf.kakao.com/_hCEzX' },
     { name: 'instagram', imgUrl: instagram, link: 'https://www.instagram.com/likelion_skuniv/' },

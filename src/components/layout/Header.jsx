@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
-import { getUserRole, myPageLoader } from '@/api/userApi';
+import { getUserRole } from '@/api/userApi';
 import Logo from '@/assets/icons/Logo_icon.png';
 //@ts-ignore
 import Hamberger from '@/assets/icons/hambergerBar_icon.svg?react';
@@ -12,13 +12,12 @@ import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { useIsPhone } from '@/hooks/useIsPhone';
 import useAuthStore from '@/store/useAuthStore';
 
-export default function Header({ handleSideBar, showResult }) {
+export default function Header({ handleSideBar, showResult, isDocumentSubmitted }) {
   const navigate = useNavigate();
   const isDesktop = useIsDesktop();
   const isPhone = useIsPhone();
   const isLogin = useAuthStore((state) => state.isLoggedIn);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [isDocumentSubmitted, setIsDocumentSubmitted] = useState(false);
 
   const clickMenu = (menu) => {
     navigate(menu);
@@ -28,14 +27,12 @@ export default function Header({ handleSideBar, showResult }) {
     const showAdmin = async () => {
       if (isLogin) {
         const userRole = await getUserRole();
-        const { documentSubmitted } = await myPageLoader();
 
         if (userRole === 'ADMIN') {
           setIsAdmin(true);
         } else {
           setIsAdmin(false);
         }
-        setIsDocumentSubmitted(documentSubmitted);
       }
     };
     showAdmin();

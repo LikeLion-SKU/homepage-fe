@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Outlet, ScrollRestoration } from 'react-router';
 
+import { myPageLoader } from '@/api/userApi';
 import CustomCursor from '@/components/common/CustomCursor';
 import Modal from '@/components/common/Modal/ConfirmModal';
 import Toast from '@/components/common/Toast/Toast';
@@ -23,6 +24,7 @@ export default function RootLayout() {
   const [onSideBar, setOnSideBar] = useState(false);
   const { fetchSemesters } = useSemesterListStore();
   const [showResult, setShowResult] = useState(false);
+  const [isDocumentSubmitted, setIsDocumentSubmitted] = useState(false);
 
   const openModal = (message, onConfirm) => {
     setModalData({
@@ -57,6 +59,10 @@ export default function RootLayout() {
     const getSettingData = async () => {
       await fetchSemesters();
       setShowResult(await showResultButton());
+      const data = await myPageLoader();
+      if (data && typeof data.documentSubmitted !== 'undefined') {
+        setIsDocumentSubmitted(data.documentSubmitted);
+      }
     };
     getSettingData();
     // 1. 데스크탑 기준 미디어 쿼리 생성 (예: 1024px 이상)
@@ -80,7 +86,11 @@ export default function RootLayout() {
   return (
     <main className="flex flex-col w-full min-h-screen overflow-y-hidden overflow-x-hidden no-scrollbar">
       <CustomCursor />
-      <Header handleSideBar={handleSideBar} showResult={showResult} />
+      <Header
+        handleSideBar={handleSideBar}
+        showResult={showResult}
+        isDocumentSubmitted={isDocumentSubmitted}
+      />
       <div className="relative flex-1 min-h-fit bg-[#FAFBF8]">
         <div
           className={`transition-opacity duration-500 ease-out ${
@@ -99,7 +109,11 @@ export default function RootLayout() {
           className={`w-full h-fit transform transition-transform 
             duration-500 ease-out ${onSideBar ? 'relative translate-x-0' : 'absolute top-0 translate-x-full overflow-hidden'}`}
         >
-          <SideBar handleSideBar={handleSideBar} showResult={showResult} />
+          <SideBar
+            handleSideBar={handleSideBar}
+            showResult={showResult}
+            isDocumentSubmitted={isDocumentSubmitted}
+          />
         </div>
       </div>
       <ScrollRestoration />

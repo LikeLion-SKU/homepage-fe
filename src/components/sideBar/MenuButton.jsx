@@ -8,7 +8,7 @@ export default function MenuButton({ name, path, handleSideBar }) {
   return (
     <button
       onClick={() => {
-        navigate(path);
+        navigate(path, { state: { fromA: true } });
         handleSideBar();
       }}
       className="w-full flex h-15 justify-between items-center bg-[#F9F9F9] pl-7 pr-9 
