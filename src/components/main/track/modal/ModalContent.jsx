@@ -8,6 +8,7 @@ import ModalToggle from './ModalToggle';
 
 function ModalContent({ trackType, scale = 1 }) {
   const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isTab1199 = useMediaQuery('(min-width: 761px) and (max-width: 1199px)');
   const content = curriculumData[trackType] || curriculumData.PO;
 
   // title에서 TRACK 부분만 추출
@@ -50,7 +51,11 @@ function ModalContent({ trackType, scale = 1 }) {
           style={{
             fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
             fontWeight: 800,
-            fontSize: isMobile760 ? `${(20 / 16) * scale}rem` : `${(28 / 16) * scale}rem`,
+            fontSize: isMobile760
+              ? `${(20 / 16) * scale}rem`
+              : isTab1199
+                ? `${(28 / 16) * scale}rem`
+                : `${(28 / 16) * scale}rem`,
             lineHeight: 'normal',
             margin: 0,
             display: 'flex',
@@ -83,7 +88,11 @@ function ModalContent({ trackType, scale = 1 }) {
           style={{
             fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
             fontWeight: 600,
-            fontSize: isMobile760 ? `${(12 / 16) * scale}rem` : `${(15 / 16) * scale}rem`,
+            fontSize: isMobile760
+              ? `${(12 / 16) * scale}rem`
+              : isTab1199
+                ? `${(15 / 16) * scale}rem`
+                : `${(15 / 16) * scale}rem`,
             color: '#686868',
             lineHeight: `${(10 / 16) * scale}rem`,
             margin: 0,
