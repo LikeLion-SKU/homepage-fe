@@ -114,7 +114,7 @@ export default function Square({ onScaleChange, onSquareSizeRemChange, isMobile 
       const windowHeight = window.innerHeight;
       const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 
-      // 440px 이하 모바일에서만 가로 15개로 고정하고 화면에 가득 차게
+      // 480px 이하 모바일에서만 가로 15개로 고정하고 화면에 가득 차게
       if (isMobile) {
         const mobileColumns = 15;
         const mobileSquareSize = windowWidth / mobileColumns; // 화면 너비에 맞춰 가득 차게

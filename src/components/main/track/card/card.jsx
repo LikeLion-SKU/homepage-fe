@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import { motion } from 'framer-motion';
 import HoverDownIcon from '@/assets/icons/main/track/hover-down.svg';
 import HoverUpIcon from '@/assets/icons/main/track/hover-up.svg';
+import { useModalScrollLock } from '@/components/main/ModalScroll';
 import useScale from '@/components/main/hooks/useScale';
 
 import ModalOverlay from '@/components/main/schedule/modal/ModalOverlay';
@@ -28,6 +29,7 @@ function Card({ title, description, image = null }) {
   const isMobile = useMediaQuery('(max-width: 480px)');
   const isTablet = useMediaQuery('(min-width: 481px) and (max-width: 1199px)');
   const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isBelow1199 = useMediaQuery('(max-width: 1199px)');
 
   // title에서 트랙 추출
   const getTrackType = () => {
@@ -44,6 +46,9 @@ function Card({ title, description, image = null }) {
   }, [trackType]);
   const count = modalsToShow.length;
 
+  // 모달이 열릴 때 body 스크롤 막기
+  useModalScrollLock(isModalOpen);
+
   // 모달 크기 계산 (ScheduleModal과 동일한 로직)
   useEffect(() => {
     if (!isModalOpen) return;
@@ -55,16 +60,18 @@ function Card({ title, description, image = null }) {
       const vh = window.innerHeight;
 
       // 화면 크기에 따라 다른 기준 크기 사용
+      // 480px 이하: 480px 기준, 375x525
+      // 481px~760px: 760px 기준, 592x663
       // 760px 이상: 1440px 기준, 1012x716
-      // 760px 미만: 760px 기준, 592x663
-      const BASE_W = isMobile760 ? 592 : 1012;
-      const BASE_H = isMobile760 ? 663 : 716;
+      const isMobile480 = vw <= 480;
+      const BASE_W = isMobile480 ? 375 : isMobile760 ? 592 : 1012;
+      const BASE_H = isMobile480 ? 525 : isMobile760 ? 663 : 716;
       const R = BASE_H / BASE_W; // 종횡비
-      const BASE_SCREEN = isMobile760 ? 760 : 1440; // 기준 화면 크기
+      const BASE_SCREEN = isMobile480 ? 480 : isMobile760 ? 760 : 1440; // 기준 화면 크기
 
       // 화면 여백
-      const MARGIN_X = isMobile760 ? 16 : 24;
-      const MARGIN_Y = isMobile760 ? 16 : 24;
+      const MARGIN_X = isMobile480 ? 16 : isMobile760 ? 16 : 24;
+      const MARGIN_Y = isMobile480 ? 16 : isMobile760 ? 16 : 24;
 
       const availW = Math.max(0, vw - MARGIN_X * 2);
       const availH = Math.max(0, vh - MARGIN_Y * 2);
@@ -89,7 +96,7 @@ function Card({ title, description, image = null }) {
 
       // 최소/최대 스케일 제한
       const MAX_S = 1.5;
-      const MIN_S = isMobile760 ? 0.3 : 0.4;
+      const MIN_S = isMobile480 ? 0.3 : isMobile760 ? 0.3 : 0.4;
 
       setFitScale(clamp(s, MIN_S, MAX_S));
     };
@@ -110,14 +117,17 @@ function Card({ title, description, image = null }) {
   const effectiveGap = 40;
   const gapRem = useMemo(() => `${(effectiveGap / 16) * fitScale}rem`, [effectiveGap, fitScale]);
 
-  const handleHeaderClick = () => {
+  const handleCardClick = () => {
     if (trackType) {
       setIsModalOpen(true);
     }
   };
 
+  const handleHeaderClick = handleCardClick;
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setIsHovered(false);
   };
 
   return (
@@ -126,12 +136,12 @@ function Card({ title, description, image = null }) {
       onMouseLeave={() => setIsHovered(false)}
       className="w-full h-full relative"
     >
-      {/* 상단 텍스트 - 호버 시 표시 */}
-      {isHovered && (
+      {/* 상단 텍스트 - 호버 시 표시 (1199px 초과에서만) */}
+      {isHovered && !isBelow1199 && (
         <div
           className="absolute flex items-center gap-2 pointer-events-none z-20"
           style={{
-            top: `${(-25 / 16) * scale}rem`,
+            top: `${(-35 / 16) * scale}rem`,
             left: '50%',
             transform: 'translateX(-50%)',
             opacity: isHovered ? 1 : 0,
@@ -142,15 +152,15 @@ function Card({ title, description, image = null }) {
             src={HoverDownIcon}
             alt="hover down"
             style={{
-              width: `${(16 / 16) * scale}rem`,
-              height: `${(16 / 16) * scale}rem`,
+              width: `${(18 / 16) * scale}rem`,
+              height: `${(18 / 16) * scale}rem`,
             }}
           />
           <motion.span
             className="font-bold bg-clip-text text-transparent"
             style={{
               fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-              fontSize: `${(14 / 16) * scale}rem`,
+              fontSize: `${(16 / 16) * scale}rem`,
               whiteSpace: 'nowrap',
               backgroundImage: 'linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%)',
               backgroundSize: '200% 100%',
@@ -174,7 +184,11 @@ function Card({ title, description, image = null }) {
         <div
           className="absolute flex items-center gap-2 pointer-events-none z-20"
           style={{
-            bottom: `${(-25 / 16) * scale}rem`,
+            bottom: isMobile
+              ? `${(-80 / 16) * scale}rem`
+              : isBelow1199
+                ? `${(-35 / 16) * scale}rem`
+                : `${(-35 / 16) * scale}rem`,
             left: '50%',
             transform: 'translateX(-50%)',
             opacity: isHovered ? 1 : 0,
@@ -185,15 +199,15 @@ function Card({ title, description, image = null }) {
             src={HoverUpIcon}
             alt="hover up"
             style={{
-              width: `${(16 / 16) * scale}rem`,
-              height: `${(16 / 16) * scale}rem`,
+              width: isMobile ? `${(30 / 16) * scale}rem` : `${(18 / 16) * scale}rem`,
+              height: isMobile ? `${(30 / 16) * scale}rem` : `${(18 / 16) * scale}rem`,
             }}
           />
           <motion.span
             className="font-bold bg-clip-text text-transparent"
             style={{
               fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-              fontSize: `${(14 / 16) * scale}rem`,
+              fontSize: isMobile ? `${(30 / 16) * scale}rem` : `${(16 / 16) * scale}rem`,
               whiteSpace: 'nowrap',
               backgroundImage: 'linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%)',
               backgroundSize: '200% 100%',
@@ -213,13 +227,16 @@ function Card({ title, description, image = null }) {
       )}
 
       <GridPattern
-        className="w-full border flex flex-col bg-[#FAFBF8] relative overflow-hidden transition-colors duration-200"
+        className="w-full border flex flex-col bg-[#FAFBF8] relative overflow-hidden cursor-pointer"
         style={{
           aspectRatio: isMobile ? '3/4' : undefined,
           height: isMobile ? undefined : '100%',
           borderColor: isHovered ? '#C6E400' : '#00156A',
           borderWidth: '1px',
+          outline: isHovered ? '4px solid #C6E400' : 'none',
+          outlineOffset: '0px',
         }}
+        onClick={handleCardClick}
       >
         {/* 카드 전체 격자 위에 콘텐츠 배치 */}
         <div className="relative z-10 flex flex-col w-full h-full overflow-hidden">
@@ -244,24 +261,10 @@ function Card({ title, description, image = null }) {
         {isModalOpen &&
           modalsToShow.length > 0 &&
           ReactDOM.createPortal(
-            <div className="fixed inset-0 z-[1000] flex items-center justify-center overflow-hidden">
-              <ModalOverlay
-                onClick={handleCloseModal}
-                backgroundColor="rgba(0, 0, 0, 0.5)"
-                opacity={0.7}
-              />
+            <div className="fixed inset-0 z-[50] flex items-center justify-center">
+              <ModalOverlay onClick={handleCloseModal} />
 
-              <div
-                className="flex items-center justify-center"
-                style={{
-                  gap: gapRem,
-                  flexWrap: 'nowrap',
-                  maxWidth: 'calc(100vw - 24px)',
-                  maxHeight: 'calc(100vh - 24px)',
-                  overflow: 'hidden',
-                  padding: '12px',
-                }}
-              >
+              <div className="relative z-[51]" onClick={(e) => e.stopPropagation()}>
                 {modalsToShow.map((data, index) => (
                   <ModalWindow
                     key={index}
