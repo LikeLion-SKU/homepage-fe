@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 
 /* eslint-disable no-unused-vars */
 import { motion } from 'framer-motion';
-
 import HoverDownIcon from '@/assets/icons/main/track/hover-down.svg';
 import HoverUpIcon from '@/assets/icons/main/track/hover-up.svg';
 import useScale from '@/components/main/hooks/useScale';
+
 import ModalOverlay from '@/components/main/schedule/modal/ModalOverlay';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
