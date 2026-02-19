@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Outlet, ScrollRestoration } from 'react-router';
 
-import { myPageLoader } from '@/api/userApi';
+import { getApplicationStatus } from '@/api/userApi';
 import CustomCursor from '@/components/common/CustomCursor';
 import Modal from '@/components/common/Modal/ConfirmModal';
 import Toast from '@/components/common/Toast/Toast';
@@ -65,7 +65,7 @@ export default function RootLayout() {
         const { show, isFinal } = await showResultButton();
         setShowResult({ show: show, isFinal: isFinal });
         if (isLogin) {
-          const data = await myPageLoader();
+          const data = await getApplicationStatus();
           setIsDocumentSubmitted(data?.documentSubmitted);
           if (isFinal) {
             setInterviewScheduleConfirmed(data?.interviewScheduleConfirmed);
