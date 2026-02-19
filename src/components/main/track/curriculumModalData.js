@@ -64,6 +64,41 @@ export const curriculumData = {
         badgeColor: '#C6E400',
         text: '개인별 프로젝트 PT 및 피드백',
       },
+      {
+        badge: '8주차',
+        badgeColor: '#C6E400',
+        text: '기능명세서 / 컨셉, 컬러, 타이포그래피',
+      },
+      {
+        badge: '9주차',
+        badgeColor: '#C6E400',
+        text: 'API 활용 / effects, 이미지 활용',
+      },
+      {
+        badge: '10주차',
+        badgeColor: '#C6E400',
+        text: '프로토타이핑',
+      },
+      {
+        badge: '11주차',
+        badgeColor: '#C6E400',
+        text: '프로젝트 최종 발표 및 크리틱',
+      },
+      {
+        badge: '12주차',
+        badgeColor: '#C6E400',
+        text: '기획 / 디자인 워크숍',
+      },
+      {
+        badge: '13주차',
+        badgeColor: '#C6E400',
+        text: '기획 / 디자인 워크숍',
+      },
+      {
+        badge: '14주차',
+        badgeColor: '#C6E400',
+        text: '기획 / 디자인 워크숍',
+      },
     ],
   },
   FRONTEND: {
@@ -74,7 +109,63 @@ export const curriculumData = {
       { name: 'react', size: 40, icon: reactIcon },
       { name: 'tailwindcss', size: 40, icon: tailwindcssIcon },
     ],
-    curriculum: [],
+    curriculum: [
+      {
+        badge: '공통',
+        badgeColor: '#FF7D56',
+        text: 'Figma + Notion 기본 기능 알아보기',
+      },
+      {
+        badge: '1주차',
+        badgeColor: '#C6E400',
+        text: 'JavaScript 및 React 입문',
+      },
+      {
+        badge: '2주차',
+        badgeColor: '#C6E400',
+        text: 'GitHub 기초 입문',
+      },
+      {
+        badge: '3주차',
+        badgeColor: '#C6E400',
+        text: 'JSX, hook과 스타일링 다루기',
+      },
+      {
+        badge: '4주차',
+        badgeColor: '#C6E400',
+        text: 'Figma, CSS, 폴더구조 익히기',
+      },
+      {
+        badge: '5주차',
+        badgeColor: '#C6E400',
+        text: '라우팅과 API 구조 이해하기',
+      },
+      {
+        badge: '6주차',
+        badgeColor: '#C6E400',
+        text: 'API 연동 실습',
+      },
+      {
+        badge: '7주차',
+        badgeColor: '#C6E400',
+        text: 'Figma로 웹사이트 제작하기',
+      },
+      {
+        badge: '8주차',
+        badgeColor: '#C6E400',
+        text: 'Vercel & Netlify로 배포하기',
+      },
+      {
+        badge: '9주차',
+        badgeColor: '#C6E400',
+        text: ' GitHub 협업 실습',
+      },
+      {
+        badge: '10주차',
+        badgeColor: '#C6E400',
+        text: '연합세션',
+      },
+    ],
   },
   BACKEND: {
     title: 'BACKEND TRACK CURRICULUM',
@@ -85,6 +176,62 @@ export const curriculumData = {
       { name: 'docker', size: 33, icon: dockerIcon },
       { name: 'aws', size: 36, icon: awsIcon },
     ],
-    curriculum: [],
+    curriculum: [
+      {
+        badge: '공통',
+        badgeColor: '#FF7D56',
+        text: 'Figma + Notion 기본 기능 알아보기',
+      },
+      {
+        badge: '1주차',
+        badgeColor: '#C6E400',
+        text: '기초 GitHub 다루기',
+      },
+      {
+        badge: '2주차',
+        badgeColor: '#C6E400',
+        text: 'SpringBoot의 이해',
+      },
+      {
+        badge: '3주차',
+        badgeColor: '#C6E400',
+        text: 'API 명세와 CRUD',
+      },
+      {
+        badge: '4주차',
+        badgeColor: '#C6E400',
+        text: 'Entity, Controller, Swagger 명세 ',
+      },
+      {
+        badge: '5주차',
+        badgeColor: '#C6E400',
+        text: 'Repository, Dto, Service',
+      },
+      {
+        badge: '6주차',
+        badgeColor: '#C6E400',
+        text: 'MySQL과 ERD 활용',
+      },
+      {
+        badge: '7주차',
+        badgeColor: '#C6E400',
+        text: 'SpringSecurity와 JWT',
+      },
+      {
+        badge: '8주차',
+        badgeColor: '#C6E400',
+        text: '응답 통일과 예외 처리 + 로깅',
+      },
+      {
+        badge: '9주차',
+        badgeColor: '#C6E400',
+        text: 'IA 보고 ERD 작성 & API 생성하기 (기획 협업)',
+      },
+      {
+        badge: '10주차',
+        badgeColor: '#C6E400',
+        text: 'AWS를 활용한 배포',
+      },
+    ],
   },
 };
