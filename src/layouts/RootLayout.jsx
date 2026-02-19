@@ -24,9 +24,10 @@ export default function RootLayout() {
   });
   const [onSideBar, setOnSideBar] = useState(false);
   const { fetchSemesters } = useSemesterListStore();
-  const [showResult, setShowResult] = useState(false);
+  const [showResult, setShowResult] = useState({ show: false, isFinal: false });
   const [isDocumentSubmitted, setIsDocumentSubmitted] = useState(false);
   const isLogin = useAuthStore((state) => state.isLoggedIn);
+  const [interviewScheduleConfirmed, setInterviewScheduleConfirmed] = useState(false);
 
   const openModal = (message, onConfirm) => {
     setModalData({
@@ -61,10 +62,14 @@ export default function RootLayout() {
     const getSettingData = async () => {
       try {
         await fetchSemesters();
-        setShowResult(await showResultButton());
+        const { show, isFinal } = await showResultButton();
+        setShowResult({ show: show, isFinal: isFinal });
         if (isLogin) {
           const data = await myPageLoader();
           setIsDocumentSubmitted(data?.documentSubmitted);
+          if (isFinal) {
+            setInterviewScheduleConfirmed(data?.interviewScheduleConfirmed);
+          }
         }
       } catch (error) {
         console.log('헤더 데이터 세팅 실패:', error);
@@ -96,6 +101,7 @@ export default function RootLayout() {
         handleSideBar={handleSideBar}
         showResult={showResult}
         isDocumentSubmitted={isDocumentSubmitted}
+        interviewScheduleConfirmed={showResult.isFinal ? interviewScheduleConfirmed : true}
       />
       <div className="relative flex-1 min-h-fit bg-[#FAFBF8]">
         <div
@@ -119,6 +125,7 @@ export default function RootLayout() {
             handleSideBar={handleSideBar}
             showResult={showResult}
             isDocumentSubmitted={isDocumentSubmitted}
+            interviewScheduleConfirmed={showResult.isFinal ? interviewScheduleConfirmed : true}
           />
         </div>
       </div>

@@ -12,7 +12,12 @@ import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { useIsPhone } from '@/hooks/useIsPhone';
 import useAuthStore from '@/store/useAuthStore';
 
-export default function Header({ handleSideBar, showResult, isDocumentSubmitted }) {
+export default function Header({
+  handleSideBar,
+  showResult,
+  isDocumentSubmitted,
+  interviewScheduleConfirmed,
+}) {
   const navigate = useNavigate();
   const isDesktop = useIsDesktop();
   const isPhone = useIsPhone();
@@ -62,7 +67,7 @@ export default function Header({ handleSideBar, showResult, isDocumentSubmitted 
                 관리자
               </button>
             )}
-            {showResult && isDocumentSubmitted && (
+            {showResult && isDocumentSubmitted && interviewScheduleConfirmed && (
               <button onClick={() => navigate('/result/notice', { state: { fromA: true } })}>
                 <motion.span
                   className="font-bold bg-clip-text text-transparent block"

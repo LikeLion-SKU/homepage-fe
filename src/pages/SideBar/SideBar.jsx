@@ -5,7 +5,12 @@ import MenuButton from '@/components/sideBar/MenuButton';
 import OutLinkButton from '@/components/sideBar/OutLinkButton';
 import useAuthStore from '@/store/useAuthStore';
 
-export default function SideBar({ handleSideBar, showResult, isDocumentSubmitted }) {
+export default function SideBar({
+  handleSideBar,
+  showResult,
+  isDocumentSubmitted,
+  interviewScheduleConfirmed,
+}) {
   const isLogin = useAuthStore((state) => state.isLoggedIn);
   const getLastMenu = () => {
     if (isLogin) {
@@ -16,7 +21,7 @@ export default function SideBar({ handleSideBar, showResult, isDocumentSubmitted
   };
   const getResultMenu = () => {
     if (showResult) {
-      if (isDocumentSubmitted) {
+      if (isDocumentSubmitted && interviewScheduleConfirmed) {
         return { name: '지원결과', path: '/result/notice' };
       } else {
         return null;
