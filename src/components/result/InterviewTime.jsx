@@ -20,11 +20,11 @@ export default function InterviewTime({
       setInterviewSchdule(await getInterviewSchedule()); // 전체 면접 스케줄
       const bookingData = await getInterviewBooking(); // 사용자가 예약한 면접 스케줄
       setSelectedTime(
-        bookingData.booking.scheduleId
+        bookingData?.booking.scheduleId
           ? { date: bookingData.booking.date, scheduleId: bookingData.booking.scheduleId }
           : { date: '', scheduleId: 0 }
       );
-      if (bookingData.booking.scheduleId) {
+      if (bookingData?.booking.scheduleId) {
         setAllChecked((prev) => prev.map((item, index) => (index === 0 ? true : item)));
       }
       setMyInterview(bookingData);
