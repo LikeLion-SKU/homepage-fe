@@ -116,11 +116,13 @@ function Card({ title, description, image = null }) {
   const effectiveGap = 40;
   const gapRem = useMemo(() => `${(effectiveGap / 16) * fitScale}rem`, [effectiveGap, fitScale]);
 
-  const handleHeaderClick = () => {
+  const handleCardClick = () => {
     if (trackType) {
       setIsModalOpen(true);
     }
   };
+
+  const handleHeaderClick = handleCardClick;
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -219,13 +221,14 @@ function Card({ title, description, image = null }) {
       )}
 
       <GridPattern
-        className="w-full border flex flex-col bg-[#FAFBF8] relative overflow-hidden transition-colors duration-200"
+        className="w-full border flex flex-col bg-[#FAFBF8] relative overflow-hidden transition-colors duration-200 cursor-pointer"
         style={{
           aspectRatio: isMobile ? '3/4' : undefined,
           height: isMobile ? undefined : '100%',
           borderColor: isHovered ? '#C6E400' : '#00156A',
           borderWidth: '1px',
         }}
+        onClick={handleCardClick}
       >
         {/* 카드 전체 격자 위에 콘텐츠 배치 */}
         <div className="relative z-10 flex flex-col w-full h-full overflow-hidden">
@@ -250,42 +253,24 @@ function Card({ title, description, image = null }) {
         {isModalOpen &&
           modalsToShow.length > 0 &&
           ReactDOM.createPortal(
-            <div className="fixed inset-0 z-[1000] flex items-center justify-center overflow-hidden">
-              <ModalOverlay
-                onClick={handleCloseModal}
-                backgroundColor="rgba(0, 0, 0, 0.5)"
-                opacity={0.7}
-              />
-
-              <div
-                className="flex items-center justify-center"
-                style={{
-                  gap: gapRem,
-                  flexWrap: 'nowrap',
-                  maxWidth: 'calc(100vw - 24px)',
-                  maxHeight: 'calc(100vh - 24px)',
-                  overflow: 'hidden',
-                  padding: '12px',
-                }}
-              >
-                {modalsToShow.map((data, index) => (
-                  <ModalWindow
-                    key={index}
-                    title={data.title}
-                    trackType={data.trackType}
-                    titleBarBgColor="transparent"
-                    titleBarIconBoxColor="#00156A"
-                    titleBarTitleBoxColor="#B3B3B3"
-                    titleBarBoxSize={1}
-                    windowBgColor="#F9F9F9"
-                    windowBorderColor="#A8A8A8"
-                    windowBorderWidth={2.5}
-                    scale={fitScale}
-                    onClose={handleCloseModal}
-                  />
-                ))}
-              </div>
-            </div>,
+            <>
+              {modalsToShow.map((data, index) => (
+                <ModalWindow
+                  key={index}
+                  title={data.title}
+                  trackType={data.trackType}
+                  titleBarBgColor="transparent"
+                  titleBarIconBoxColor="#00156A"
+                  titleBarTitleBoxColor="#B3B3B3"
+                  titleBarBoxSize={1}
+                  windowBgColor="#F9F9F9"
+                  windowBorderColor="#A8A8A8"
+                  windowBorderWidth={2.5}
+                  scale={fitScale}
+                  onClose={handleCloseModal}
+                />
+              ))}
+            </>,
             document.getElementById('modal-root') || document.body
           )}
       </GridPattern>
