@@ -10,6 +10,7 @@ import Home from '@/assets/icons/4.svg';
 import Camera from '@/assets/icons/mdi-light_camera.svg';
 import defaultProfileImage from '@/assets/icons/profile_smile.svg';
 import Button from '@/components/common/Button/Button';
+import CheckModal from '@/components/common/Modal/CheckModal';
 import Modal from '@/components/common/Modal/ConfirmModal';
 import Toast from '@/components/common/Toast/Toast';
 import useSpinnerStore from '@/store/useSpinnerStore';
@@ -41,6 +42,8 @@ export default function MyPage() {
   const [isError, setIsError] = useState(false); // 이미지 로딩 실패
   const [profileImageUrl, setProfileImageUrl] = useState(userData.profileImageUrl); // 프로필 이미지 URL
   const [isToast, setIsToast] = useState(false); // 토스트 상태 관리
+  const [isErrorModal, setIsErrorModal] = useState(false); // 이미지 업로드 실패 모달
+  const [errorModalMessage, setErrorModalMessage] = useState('');
 
   // 프로필 이미지 업로드 스피너
   const isUploading = useSpinnerStore((state) => state.buttonSpinners['profileImage'] || false);
@@ -97,6 +100,9 @@ export default function MyPage() {
         }
       } catch (error) {
         console.error('프로필 이미지 수정 실패', error);
+        const serverMessage = error?.response?.data?.message || '이미지 업로드에 실패했습니다.';
+        setErrorModalMessage(serverMessage);
+        setIsErrorModal(true);
       } finally {
         setButtonLoading('profileImage', false); // 스피너 종료 (성공/실패 모두)
       }
@@ -223,6 +229,9 @@ export default function MyPage() {
       <Modal isOpen={isModalOpen} cancel={() => setIsModalOpen(false)} confirm={handleLogout}>
         로그아웃 하시겠습니까?
       </Modal>
+      <CheckModal isOpen={isErrorModal} cancel={() => setIsErrorModal(false)}>
+        {errorModalMessage}
+      </CheckModal>
       <div className="w-72 h-72 pad:w-113.5 pad:h-96 web:w-146 web:h-145 left-18.75 bottom-0 pad:left-69.5 pad:bottom-0 web:left-186 web:bottom-0 absolute -z-10">
         <img src={Home}></img>
       </div>
