@@ -1,7 +1,28 @@
+/* eslint-disable no-unused-vars */
+import { motion } from 'framer-motion';
+
 import { curriculumData } from '@/components/main/track/curriculumModalData';
 
 function ModalContent({ trackType, scale = 1 }) {
   const content = curriculumData[trackType] || curriculumData.PO;
+
+  // title에서 TRACK 부분만 추출
+  const getTrackText = (title) => {
+    if (title.includes('PO TRACK')) return 'PO TRACK';
+    if (title.includes('FRONTEND TRACK')) return 'FRONTEND TRACK';
+    if (title.includes('BACKEND TRACK')) return 'BACKEND TRACK';
+    return '';
+  };
+
+  const getRestText = (title) => {
+    if (title.includes('PO TRACK')) return title.replace('PO TRACK', '');
+    if (title.includes('FRONTEND TRACK')) return title.replace('FRONTEND TRACK', '');
+    if (title.includes('BACKEND TRACK')) return title.replace('BACKEND TRACK', '');
+    return title;
+  };
+
+  const trackText = getTrackText(content.title);
+  const restText = getRestText(content.title);
 
   return (
     <div
@@ -25,12 +46,33 @@ function ModalContent({ trackType, scale = 1 }) {
             fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
             fontWeight: 800,
             fontSize: `${(28 / 16) * scale}rem`,
-            color: '#00156A',
             lineHeight: 'normal',
             margin: 0,
+            display: 'flex',
+            alignItems: 'baseline',
+            gap: `${(4 / 16) * scale}rem`,
           }}
         >
-          {content.title}
+          {trackText && (
+            <motion.span
+              className="font-bold bg-clip-text text-transparent"
+              style={{
+                backgroundImage: 'linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%)',
+                backgroundSize: '200% 100%',
+              }}
+              animate={{
+                backgroundPosition: ['100% 0%', '-100% 0%'],
+              }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            >
+              {trackText}
+            </motion.span>
+          )}
+          <span style={{ color: '#00156A' }}>{restText}</span>
         </h2>
         <p
           style={{
