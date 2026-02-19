@@ -18,16 +18,16 @@ export default function Footer() {
 
         <div className="flex flex-wrap items-baseline gap-1">
           <div className="flex items-baseline gap-1">
-            <span className="font-sku-text text-[0.7rem] text-gray-800">SEOKEYONG UNIVERSITY,</span>
+            <span className="font-sku-text text-[0.7rem] text-gray-800">SEOKYEONG UNIVERSITY,</span>
             <span className="font-[nerko] text-[0.8rem] text-gray-800">124</span>
           </div>
 
-          <span className="font-sku-text text-[0.7rem] text-gray-800">SEOKEYONG, SEONGBUK-GU,</span>
+          <span className="font-sku-text text-[0.7rem] text-gray-800">SEOKYEONG, SEONGBUK-GU,</span>
 
           <div>
             <span className="font-sku-text text-[0.7rem] text-gray-800">SEOUL,</span>
             <span className="font-[nerko] text-[0.8rem] text-gray-800">02726</span>
-            <span className="font-sku-text text-[0.7rem] text-gray-800">, RRPUBLIC OF KOREA</span>
+            <span className="font-sku-text text-[0.7rem] text-gray-800">, RPUBLIC OF KOREA</span>
           </div>
         </div>
       </div>
