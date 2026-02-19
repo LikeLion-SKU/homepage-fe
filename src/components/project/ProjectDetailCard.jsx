@@ -35,7 +35,7 @@ export default function ProjectDetailCard({ data, imgNum, setImgNum }) {
   const handleLeft = `${(imgNum / imgCount) * 100}%`;
 
   return (
-    <div className="relative w-full max-w-285 z-2 flex flex-col bg-[#F9F9F9] py-7 pad:py-7 web:py-10 px-5 pad:px-5 web:px-8 gap-10 rounded-3xl shadow-[0_0_9px_0_rgba(0,0,0,0.25)]">
+    <div className="relative w-full max-w-77 pad:max-w-159 web:max-w-285 z-2 flex flex-col bg-[#F9F9F9] py-7 pad:py-7 web:py-10 px-5 pad:px-5 web:px-8 gap-10 rounded-3xl shadow-[0_0_9px_0_rgba(0,0,0,0.25)]">
       <img src={imgUrl} className="h-40 pad:h-84 web:h-151 bg-[#D9D9D9]" />
 
       <div className="flex flex-col gap-3">
@@ -65,15 +65,15 @@ export default function ProjectDetailCard({ data, imgNum, setImgNum }) {
             <div className="flex gap-3 pad:gap-5">
               <button
                 onClick={() => changeImg(-1)}
-                className="flex justify-center items-center bg-[#00156A] w-5 h-5 pad:w-9 pad:h-9 web:w-12 web:h-12"
+                className="flex justify-center items-center bg-[#00156A] w-7 h-7 pad:w-9 pad:h-9 web:w-12 web:h-12"
               >
-                <Left className="w-3 pad:w-5 web:w-7" />
+                <Left className="w-4 pad:w-5 web:w-7" />
               </button>
               <button
                 onClick={() => changeImg(+1)}
-                className="flex justify-center items-center bg-[#00156A] w-5 h-5 pad:w-9 pad:h-9 web:w-12 web:h-12"
+                className="flex justify-center items-center bg-[#00156A] w-7 h-7 pad:w-9 pad:h-9 web:w-12 web:h-12"
               >
-                <Right className="w-3 pad:w-5 web:w-7" />
+                <Right className="w-4 pad:w-5 web:w-7" />
               </button>
             </div>
           </div>

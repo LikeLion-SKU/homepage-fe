@@ -27,7 +27,7 @@ export default function Footer() {
           <div>
             <span className="font-sku-text text-[0.7rem] text-gray-800">SEOUL,</span>
             <span className="font-[nerko] text-[0.8rem] text-gray-800">02726</span>
-            <span className="font-sku-text text-[0.7rem] text-gray-800">, RPUBLIC OF KOREA</span>
+            <span className="font-sku-text text-[0.7rem] text-gray-800">, REPUBLIC OF KOREA</span>
           </div>
         </div>
       </div>
