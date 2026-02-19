@@ -225,13 +225,13 @@ function ModalToggle({ items = [], scale = 1 }) {
                   style={{
                     fontSize: `${(titleFontSize / 16) * scale}rem`,
                     whiteSpace: isMobile480 ? 'nowrap' : 'normal',
-                    overflow: isMobile480 ? 'hidden' : 'visible',
+                    overflow: isMobile480 ? 'visible' : 'visible',
                     textOverflow: isMobile480 ? 'ellipsis' : 'clip',
                     minWidth: isMobile480 ? 0 : 'auto',
                     flex: isMobile480 ? 1 : 'none',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    lineHeight: 1,
+                    lineHeight: isMobile480 ? 1.3 : 1,
                   }}
                 >
                   {item.text}
@@ -275,7 +275,7 @@ function ModalToggle({ items = [], scale = 1 }) {
                   borderRight: `${(2 / 16) * scale}rem solid #686868`,
                   borderBottom: `${(2 / 16) * scale}rem solid #686868`,
                   paddingTop: isMobile480
-                    ? `${(8 / 16) * scale}rem`
+                    ? `${(0 / 16) * scale}rem`
                     : isMobile760
                       ? `${(3 / 16) * scale}rem`
                       : `${(2 / 16) * scale}rem`,
