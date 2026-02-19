@@ -8,6 +8,7 @@ import Toast from '@/components/common/Toast/Toast';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import SideBar from '@/pages/SideBar/SideBar';
+import useAuthStore from '@/store/useAuthStore';
 import useSemesterListStore from '@/store/useSemesterListStore';
 import { showResultButton } from '@/utils/showResultButton';
 
@@ -25,6 +26,7 @@ export default function RootLayout() {
   const { fetchSemesters } = useSemesterListStore();
   const [showResult, setShowResult] = useState(false);
   const [isDocumentSubmitted, setIsDocumentSubmitted] = useState(false);
+  const isLogin = useAuthStore((state) => state.isLoggedIn);
 
   const openModal = (message, onConfirm) => {
     setModalData({
@@ -57,11 +59,15 @@ export default function RootLayout() {
 
   useEffect(() => {
     const getSettingData = async () => {
-      await fetchSemesters();
-      setShowResult(await showResultButton());
-      const data = await myPageLoader();
-      if (data && typeof data.documentSubmitted !== 'undefined') {
-        setIsDocumentSubmitted(data.documentSubmitted);
+      try {
+        await fetchSemesters();
+        setShowResult(await showResultButton());
+        if (isLogin) {
+          const data = await myPageLoader();
+          setIsDocumentSubmitted(data?.documentSubmitted);
+        }
+      } catch (error) {
+        console.log('헤더 데이터 세팅 실패:', error);
       }
     };
     getSettingData();
@@ -81,7 +87,7 @@ export default function RootLayout() {
 
     // 5. 언마운트 시 리스너 제거 (메모리 누수 방지)
     return () => mql.removeEventListener('change', handleDesktopChange);
-  }, []);
+  }, [isLogin]);
 
   return (
     <main className="flex flex-col w-full min-h-screen overflow-y-hidden overflow-x-hidden no-scrollbar">
