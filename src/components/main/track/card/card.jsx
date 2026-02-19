@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 
 import HoverDownIcon from '@/assets/icons/main/track/hover-down.svg';
 import HoverUpIcon from '@/assets/icons/main/track/hover-up.svg';
+import { useModalScrollLock } from '@/components/main/ModalScroll';
 import useScale from '@/components/main/hooks/useScale';
 import ModalOverlay from '@/components/main/schedule/modal/ModalOverlay';
 import useMediaQuery from '@/hooks/useMediaQuery';
@@ -43,6 +44,9 @@ function Card({ title, description, image = null }) {
     return [{ trackType, title: '트랙 커리큘럼' }];
   }, [trackType]);
   const count = modalsToShow.length;
+
+  // 모달이 열릴 때 body 스크롤 막기
+  useModalScrollLock(isModalOpen);
 
   // 모달 크기 계산 (ScheduleModal과 동일한 로직)
   useEffect(() => {
