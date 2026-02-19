@@ -12,6 +12,7 @@ function ModalTitleBar({
   boxSize = 1,
   onClose,
   scale = 1,
+  isTrackModal = false,
 }) {
   return (
     <>
@@ -68,7 +69,9 @@ function ModalTitleBar({
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: '#C6E400',
-            width: `${(48 / 16) * scale * boxSize}rem`,
+            width: isTrackModal
+              ? `${(76 / 16) * scale * boxSize}rem`
+              : `${(48 / 16) * scale * boxSize}rem`,
             height: `${(21 / 16) * scale * boxSize}rem`,
             borderRadius: `${(32 / 16) * scale * boxSize}rem 0 0 ${(32 / 16) * scale * boxSize}rem`,
           }}
@@ -79,7 +82,9 @@ function ModalTitleBar({
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: '#1928B0',
-            width: `${(48 / 16) * scale * boxSize}rem`,
+            width: isTrackModal
+              ? `${(76 / 16) * scale * boxSize}rem`
+              : `${(48 / 16) * scale * boxSize}rem`,
             height: `${(21 / 16) * scale * boxSize}rem`,
             borderRadius: `0 ${(32 / 16) * scale * boxSize}rem ${(32 / 16) * scale * boxSize}rem 0`,
           }}
@@ -139,6 +144,7 @@ function ModalTitleBar({
               paddingLeft: `${(12 / 16) * scale * boxSize}rem`,
               paddingRight: `${(12 / 16) * scale * boxSize}rem`,
               overflow: 'visible',
+              whiteSpace: 'nowrap',
             }}
           >
             <span
@@ -146,7 +152,9 @@ function ModalTitleBar({
                 position: 'absolute',
                 left: `${(-33 / 16) * scale * boxSize}rem`,
                 top: 0,
-                width: `${(95 / 16) * scale * boxSize}rem`,
+                width: isTrackModal
+                  ? `${(160 / 16) * scale * boxSize}rem`
+                  : `${(95 / 16) * scale * boxSize}rem`,
                 height: `${(42 / 16) * scale * boxSize}rem`,
                 backgroundColor: '#E9E9E9',
                 borderRadius: `${(10 / 16) * scale * boxSize}rem`,
@@ -169,7 +177,10 @@ function ModalTitleBar({
               style={{
                 position: 'relative',
                 zIndex: 1,
-                transform: `translate(${(-8 / 16) * scale * boxSize}rem, ${(2 / 16) * scale * boxSize}rem)`,
+                transform: isTrackModal
+                  ? `translate(${(25 / 16) * scale * boxSize}rem, ${(2 / 16) * scale * boxSize}rem)`
+                  : `translate(${(-8 / 16) * scale * boxSize}rem, ${(2 / 16) * scale * boxSize}rem)`,
+                whiteSpace: 'nowrap',
               }}
             >
               {title}

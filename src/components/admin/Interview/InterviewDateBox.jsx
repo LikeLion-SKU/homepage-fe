@@ -11,8 +11,10 @@ export default function InterviewDateBox({ track, date, startTime, endTime, pers
   const deleteInterview = async () => {
     try {
       await deleteBookingInterview(personalData.bookingId);
+      showToast('삭제되었습니다!');
     } catch (error) {
       console.log('면접 일정 삭제 실패:', error);
+      showToast('삭제를 실패하였습니다.');
     } finally {
       const parameter = {
         semester: parseInt(bookingInterviews.semester),
@@ -21,7 +23,6 @@ export default function InterviewDateBox({ track, date, startTime, endTime, pers
       };
       const data = await getInterviewBookingAdmin(parameter);
       setTrackBookingSchedule(data.tracks[0].track, data.tracks[0].dates);
-      showToast('삭제되었습니다!');
     }
   };
   return (

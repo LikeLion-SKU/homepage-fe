@@ -485,12 +485,12 @@ export default function SignUpForm({ onSubmit }) {
             {confirmPassword &&
               isValidPassword(signupPassword) &&
               signupPassword === confirmPassword && (
-                <p className="text-[#00A424] text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
+                <p className="text-[#00A424] text-xs min-[761px]:text-sm font-['Pretendard'] font-medium">
                   비밀번호가 일치합니다.
                 </p>
               )}
             {confirmPassword && signupPassword !== confirmPassword && (
-              <p className="text-[#FF7D56] text-xs min-[761px]:text-base font-['Pretendard'] font-medium">
+              <p className="text-[#FF7D56] text-xs min-[761px]:text-sm font-['Pretendard'] font-medium">
                 비밀번호가 일치하지 않습니다.
               </p>
             )}
