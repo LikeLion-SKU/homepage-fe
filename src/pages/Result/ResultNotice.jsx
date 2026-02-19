@@ -27,7 +27,7 @@ export default function ResultNotice() {
   // 2. 실제 버튼 활성화용 (데이터에 포함된 진짜 시간 기준)
   const realAppResultTime = dayjs(date.applicationResultAt);
   const realFinalResultTime = dayjs(date.finalResultAt);
-  const realFinalResultEnd = realFinalResultTime.add(7, 'day').endOf('day');
+  const realFinalResultEnd = realFinalResultTime.add(7, 'day');
 
   // 현재 버튼이 작동할 수 있는 '진짜 시간'인지 체크
   const isClickable = () => {

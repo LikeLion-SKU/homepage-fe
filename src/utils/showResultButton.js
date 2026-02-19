@@ -16,7 +16,6 @@ export const showResultButton = async () => {
   const startShow = dayjs(resultDate.applicationResultAt).startOf('day');
 
   // 2. 최종 발표일의 '날짜' 기준 + 7일 뒤의 23:59:59 (그날 전체 포함)
-  const endShow = dayjs(resultDate.finalResultAt).add(7, 'day').endOf('day');
   const finalResultTime = dayjs(resultDate.finalResultAt);
 
   const finalResultDisplayStart = dayjs(resultDate.finalResultAt).startOf('day');
@@ -26,7 +25,7 @@ export const showResultButton = async () => {
   return {
     show:
       (now.isAfter(startShow) || now.isSame(startShow)) &&
-      (now.isBefore(endShow) || now.isSame(endShow)),
+      (now.isBefore(finalResultTime) || now.isSame(finalResultTime)),
     isFinal:
       (now.isAfter(finalResultDisplayStart) || now.isSame(finalResultDisplayStart)) &&
       now.isBefore(finalResultEnd),
