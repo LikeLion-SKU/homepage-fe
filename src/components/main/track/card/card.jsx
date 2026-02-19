@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 
+/* eslint-disable no-unused-vars */
+import { motion } from 'framer-motion';
+
+import HoverDownIcon from '@/assets/icons/main/track/hover-down.svg';
+import HoverUpIcon from '@/assets/icons/main/track/hover-up.svg';
+import useScale from '@/components/main/hooks/useScale';
 import ModalOverlay from '@/components/main/schedule/modal/ModalOverlay';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
@@ -16,7 +22,9 @@ function clamp(n, min, max) {
 
 function Card({ title, description, image = null }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [fitScale, setFitScale] = useState(1);
+  const scale = useScale();
   const isMobile = useMediaQuery('(max-width: 480px)');
   const isTablet = useMediaQuery('(min-width: 481px) and (max-width: 1199px)');
   const isMobile760 = useMediaQuery('(max-width: 760px)');
@@ -111,75 +119,169 @@ function Card({ title, description, image = null }) {
   };
 
   return (
-    <GridPattern
-      className="w-full border border-[#00156A] flex flex-col bg-[#FAFBF8] relative overflow-hidden"
-      style={{
-        aspectRatio: isMobile ? '3/4' : undefined,
-        height: isMobile ? undefined : '100%',
-      }}
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="w-full h-full relative"
     >
-      {/* 카드 전체 격자 위에 콘텐츠 배치 */}
-      <div className="relative z-10 flex flex-col w-full h-full overflow-hidden">
-        <CardHeader title={title} onHeaderClick={handleHeaderClick} />
-        {/* 461px~1199px 구간: 이미지 좌측, 텍스트 우측 */}
-        {isTablet ? (
-          <div className="flex flex-row flex-1 min-h-0">
-            <div className="flex-1 min-w-0">
-              <CardPlaceholder image={image} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <CardContent description={description} />
-            </div>
-          </div>
-        ) : (
-          <>
-            <CardPlaceholder image={image} />
-            <CardContent description={description} />
-          </>
-        )}
-      </div>
-      {isModalOpen &&
-        modalsToShow.length > 0 &&
-        ReactDOM.createPortal(
-          <div className="fixed inset-0 z-[1000] flex items-center justify-center overflow-hidden">
-            <ModalOverlay
-              onClick={handleCloseModal}
-              backgroundColor="rgba(0, 0, 0, 0.5)"
-              opacity={0.7}
-            />
+      {/* 상단 텍스트 - 호버 시 표시 */}
+      {isHovered && (
+        <div
+          className="absolute flex items-center gap-2 pointer-events-none z-20"
+          style={{
+            top: `${(-25 / 16) * scale}rem`,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            opacity: isHovered ? 1 : 0,
+            transition: 'opacity 0.2s ease-in-out',
+          }}
+        >
+          <img
+            src={HoverDownIcon}
+            alt="hover down"
+            style={{
+              width: `${(16 / 16) * scale}rem`,
+              height: `${(16 / 16) * scale}rem`,
+            }}
+          />
+          <motion.span
+            className="font-bold bg-clip-text text-transparent"
+            style={{
+              fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+              fontSize: `${(14 / 16) * scale}rem`,
+              whiteSpace: 'nowrap',
+              backgroundImage: 'linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%)',
+              backgroundSize: '200% 100%',
+            }}
+            animate={{
+              backgroundPosition: ['100% 0%', '-100% 0%'],
+            }}
+            transition={{
+              duration: 2.5,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+          >
+            트랙을 클릭해 상세 커리큘럼을 확인해보세요!
+          </motion.span>
+        </div>
+      )}
 
-            <div
-              className="flex items-center justify-center"
-              style={{
-                gap: gapRem,
-                flexWrap: 'nowrap',
-                maxWidth: 'calc(100vw - 24px)',
-                maxHeight: 'calc(100vh - 24px)',
-                overflow: 'hidden',
-                padding: '12px',
-              }}
-            >
-              {modalsToShow.map((data, index) => (
-                <ModalWindow
-                  key={index}
-                  title={data.title}
-                  trackType={data.trackType}
-                  titleBarBgColor="transparent"
-                  titleBarIconBoxColor="#00156A"
-                  titleBarTitleBoxColor="#B3B3B3"
-                  titleBarBoxSize={1}
-                  windowBgColor="#F9F9F9"
-                  windowBorderColor="#A8A8A8"
-                  windowBorderWidth={2.5}
-                  scale={fitScale}
-                  onClose={handleCloseModal}
-                />
-              ))}
+      {/* 하단 텍스트 - 호버 시 표시 */}
+      {isHovered && (
+        <div
+          className="absolute flex items-center gap-2 pointer-events-none z-20"
+          style={{
+            bottom: `${(-25 / 16) * scale}rem`,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            opacity: isHovered ? 1 : 0,
+            transition: 'opacity 0.2s ease-in-out',
+          }}
+        >
+          <img
+            src={HoverUpIcon}
+            alt="hover up"
+            style={{
+              width: `${(16 / 16) * scale}rem`,
+              height: `${(16 / 16) * scale}rem`,
+            }}
+          />
+          <motion.span
+            className="font-bold bg-clip-text text-transparent"
+            style={{
+              fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+              fontSize: `${(14 / 16) * scale}rem`,
+              whiteSpace: 'nowrap',
+              backgroundImage: 'linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%)',
+              backgroundSize: '200% 100%',
+            }}
+            animate={{
+              backgroundPosition: ['100% 0%', '-100% 0%'],
+            }}
+            transition={{
+              duration: 2.5,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+          >
+            트랙을 클릭해 상세 커리큘럼을 확인해보세요!
+          </motion.span>
+        </div>
+      )}
+
+      <GridPattern
+        className="w-full border flex flex-col bg-[#FAFBF8] relative overflow-hidden transition-colors duration-200"
+        style={{
+          aspectRatio: isMobile ? '3/4' : undefined,
+          height: isMobile ? undefined : '100%',
+          borderColor: isHovered ? '#C6E400' : '#00156A',
+          borderWidth: '1px',
+        }}
+      >
+        {/* 카드 전체 격자 위에 콘텐츠 배치 */}
+        <div className="relative z-10 flex flex-col w-full h-full overflow-hidden">
+          <CardHeader title={title} onHeaderClick={handleHeaderClick} />
+          {/* 461px~1199px 구간: 이미지 좌측, 텍스트 우측 */}
+          {isTablet ? (
+            <div className="flex flex-row flex-1 min-h-0">
+              <div className="flex-1 min-w-0">
+                <CardPlaceholder image={image} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <CardContent description={description} />
+              </div>
             </div>
-          </div>,
-          document.getElementById('modal-root') || document.body
-        )}
-    </GridPattern>
+          ) : (
+            <>
+              <CardPlaceholder image={image} />
+              <CardContent description={description} />
+            </>
+          )}
+        </div>
+        {isModalOpen &&
+          modalsToShow.length > 0 &&
+          ReactDOM.createPortal(
+            <div className="fixed inset-0 z-[1000] flex items-center justify-center overflow-hidden">
+              <ModalOverlay
+                onClick={handleCloseModal}
+                backgroundColor="rgba(0, 0, 0, 0.5)"
+                opacity={0.7}
+              />
+
+              <div
+                className="flex items-center justify-center"
+                style={{
+                  gap: gapRem,
+                  flexWrap: 'nowrap',
+                  maxWidth: 'calc(100vw - 24px)',
+                  maxHeight: 'calc(100vh - 24px)',
+                  overflow: 'hidden',
+                  padding: '12px',
+                }}
+              >
+                {modalsToShow.map((data, index) => (
+                  <ModalWindow
+                    key={index}
+                    title={data.title}
+                    trackType={data.trackType}
+                    titleBarBgColor="transparent"
+                    titleBarIconBoxColor="#00156A"
+                    titleBarTitleBoxColor="#B3B3B3"
+                    titleBarBoxSize={1}
+                    windowBgColor="#F9F9F9"
+                    windowBorderColor="#A8A8A8"
+                    windowBorderWidth={2.5}
+                    scale={fitScale}
+                    onClose={handleCloseModal}
+                  />
+                ))}
+              </div>
+            </div>,
+            document.getElementById('modal-root') || document.body
+          )}
+      </GridPattern>
+    </div>
   );
 }
 
