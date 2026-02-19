@@ -253,24 +253,28 @@ function Card({ title, description, image = null }) {
         {isModalOpen &&
           modalsToShow.length > 0 &&
           ReactDOM.createPortal(
-            <>
-              {modalsToShow.map((data, index) => (
-                <ModalWindow
-                  key={index}
-                  title={data.title}
-                  trackType={data.trackType}
-                  titleBarBgColor="transparent"
-                  titleBarIconBoxColor="#00156A"
-                  titleBarTitleBoxColor="#B3B3B3"
-                  titleBarBoxSize={1}
-                  windowBgColor="#F9F9F9"
-                  windowBorderColor="#A8A8A8"
-                  windowBorderWidth={2.5}
-                  scale={fitScale}
-                  onClose={handleCloseModal}
-                />
-              ))}
-            </>,
+            <div className="fixed inset-0 z-[50] flex items-center justify-center">
+              <ModalOverlay onClick={handleCloseModal} />
+
+              <div className="relative z-[51]" onClick={(e) => e.stopPropagation()}>
+                {modalsToShow.map((data, index) => (
+                  <ModalWindow
+                    key={index}
+                    title={data.title}
+                    trackType={data.trackType}
+                    titleBarBgColor="transparent"
+                    titleBarIconBoxColor="#00156A"
+                    titleBarTitleBoxColor="#B3B3B3"
+                    titleBarBoxSize={1}
+                    windowBgColor="#F9F9F9"
+                    windowBorderColor="#A8A8A8"
+                    windowBorderWidth={2.5}
+                    scale={fitScale}
+                    onClose={handleCloseModal}
+                  />
+                ))}
+              </div>
+            </div>,
             document.getElementById('modal-root') || document.body
           )}
       </GridPattern>

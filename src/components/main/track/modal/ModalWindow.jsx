@@ -33,72 +33,65 @@ function ModalWindow({
 
   return (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center"
-      style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
-      onClick={onClose}
+      className="relative flex flex-col"
+      style={{
+        backgroundColor: windowBgColor,
+        border: 'none',
+        borderRadius: `${(32 / 16) * scale}rem`,
+        width: `${(BASE_W / 16) * scale}rem`,
+        height: `${(BASE_H / 16) * scale}rem`,
+        maxWidth: 'calc(100vw - 48px)',
+        maxHeight: 'calc(100vh - 48px)',
+        overflow: 'hidden',
+        flexShrink: 0,
+      }}
     >
+      <ModalTitleBar
+        title={title}
+        backgroundColor={titleBarBgColor}
+        iconBoxColor={titleBarIconBoxColor}
+        titleBoxColor={titleBarTitleBoxColor}
+        boxSize={titleBarBoxSize}
+        onClose={onClose}
+        scale={scale}
+        isTrackModal={true}
+      />
+
+      <div className="flex flex-col flex-1 min-h-0" style={{ overflow: 'hidden' }}>
+        <ModalContent trackType={trackType} scale={scale} />
+      </div>
+
       <div
-        className="relative z-[1001] flex flex-col pointer-events-auto"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundColor: windowBgColor,
-          border: 'none',
           borderRadius: `${(32 / 16) * scale}rem`,
-          width: `${(BASE_W / 16) * scale}rem`,
-          height: `${(BASE_H / 16) * scale}rem`,
-          maxWidth: 'calc(100vw - 48px)',
-          maxHeight: 'calc(100vh - 48px)',
-          overflow: 'hidden',
-          flexShrink: 0,
+          boxShadow: 'inset 0px 0px 8.3px 0px rgba(0, 0, 0, 0.47)',
+          zIndex: 15,
         }}
-        onClick={(e) => e.stopPropagation()}
+      />
+
+      {/* 하단 세 개의 파란색 사각형 */}
+      <div
+        className="flex items-center absolute pointer-events-none"
+        style={{
+          gap: `${(15 / 16) * scale}rem`,
+          bottom: `${(35 / 16) * scale}rem`,
+          right: `${(50 / 16) * scale}rem`,
+          zIndex: 1,
+        }}
       >
-        <ModalTitleBar
-          title={title}
-          backgroundColor={titleBarBgColor}
-          iconBoxColor={titleBarIconBoxColor}
-          titleBoxColor={titleBarTitleBoxColor}
-          boxSize={titleBarBoxSize}
-          onClose={onClose}
-          scale={scale}
-          isTrackModal={true}
-        />
-
-        <div className="flex flex-col flex-1 min-h-0" style={{ overflow: 'hidden' }}>
-          <ModalContent trackType={trackType} scale={scale} />
-        </div>
-
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            borderRadius: `${(32 / 16) * scale}rem`,
-            boxShadow: 'inset 0px 0px 8.3px 0px rgba(0, 0, 0, 0.47)',
-            zIndex: 15,
-          }}
-        />
-
-        {/* 하단 세 개의 파란색 사각형 */}
-        <div
-          className="flex items-center absolute pointer-events-none"
-          style={{
-            gap: `${(15 / 16) * scale}rem`,
-            bottom: `${(35 / 16) * scale}rem`,
-            right: `${(50 / 16) * scale}rem`,
-            zIndex: 1,
-          }}
-        >
-          {[1, 2, 3, 4].map((index) => (
-            <div
-              key={index}
-              style={{
-                display: 'inline-flex',
-                backgroundColor: '#1928B0',
-                width: `${(24 / 16) * scale}rem`,
-                height: `${(105 / 16) * scale}rem`,
-                opacity: 0.1,
-              }}
-            />
-          ))}
-        </div>
+        {[1, 2, 3, 4].map((index) => (
+          <div
+            key={index}
+            style={{
+              display: 'inline-flex',
+              backgroundColor: '#1928B0',
+              width: `${(24 / 16) * scale}rem`,
+              height: `${(105 / 16) * scale}rem`,
+              opacity: 0.1,
+            }}
+          />
+        ))}
       </div>
     </div>
   );
