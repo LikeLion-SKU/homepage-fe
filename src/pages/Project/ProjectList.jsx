@@ -65,7 +65,7 @@ export default function Project() {
           />
         </TitleSection>
         <ProjectSection data={projectListData} isLoading={isLoading} />
-        {!(projectListData.content.length > 0) && (
+        {!isLoading && !(projectListData.content.length > 0) && (
           <p className="flex h-90 justify-center items-center text-[1.1rem] font-bold">
             검색 결과가 없습니다.
           </p>
