@@ -183,11 +183,11 @@ function ModalToggle({ items = [], scale = 1 }) {
                   borderLeft: `${(2 / 16) * scale}rem solid #686868`,
                   borderRight: `${(2 / 16) * scale}rem solid #686868`,
                   borderBottom: `${(2 / 16) * scale}rem solid #686868`,
-                  paddingTop: isMobile760 ? `${(12 / 16) * scale}rem` : `${(16 / 16) * scale}rem`,
+                  paddingTop: isMobile760 ? `${(3 / 16) * scale}rem` : `${(2 / 16) * scale}rem`,
                   paddingBottom: isMobile760
-                    ? `${(16 / 16) * scale}rem`
-                    : `${(20 / 16) * scale}rem`,
-                  paddingLeft: `${(24 / 16) * scale}rem`,
+                    ? `${(14 / 16) * scale}rem`
+                    : `${(16 / 16) * scale}rem`,
+                  paddingLeft: `${(25 / 16) * scale}rem`,
                   paddingRight: `${(24 / 16) * scale}rem`,
                   minHeight: 'auto',
                 }}
