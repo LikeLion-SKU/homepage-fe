@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export default function ProjectCategory({ award, semester, projectTypeName }) {
   return (
-    <div className="flex gap-1 items-center ml-2">
+    <div className="flex gap-1 items-center">
       {award && (
         <motion.div
           className="flex items-center justify-center rounded-3xl p-[1.5px]" // p값이 곧 테두리 두께입니다.
@@ -23,7 +23,7 @@ export default function ProjectCategory({ award, semester, projectTypeName }) {
           {/* 내부 배경 (안쪽을 채워 테두리만 남김) */}
           <div
             className="flex bg-white rounded-[calc(1.5rem-1.5px)] h-3.5 pad:h-5 px-2 
-               text-[0.7rem] web:text-[0.9rem] text-center items-center justify-center w-full h-full"
+               text-[0.6rem] web:text-[0.9rem] text-center items-center justify-center w-full"
           >
             <motion.span
               className="font-bold bg-clip-text text-transparent block whitespace-nowrap"
@@ -47,13 +47,13 @@ export default function ProjectCategory({ award, semester, projectTypeName }) {
       )}
       <div
         className="flex border rounded-3xl h-3.5 pad:h-5 px-1
-      text-[0.7rem] web:text-[0.9rem] text-center items-center bg-white"
+      text-[0.6rem] web:text-[0.9rem] text-center items-center bg-white"
       >
         {semester}기
       </div>
       <div
         className="flex border rounded-3xl h-3.5 pad:h-5 px-2
-      text-[0.7rem] web:text-[0.9rem] text-center items-center bg-white"
+      text-[0.6rem] web:text-[0.9rem] text-center items-center bg-white"
       >
         {projectTypeName}
       </div>
