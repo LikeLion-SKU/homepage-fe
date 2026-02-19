@@ -111,7 +111,7 @@ export const getResultText = (pass, interviewScheduleConfirmedAt = '0월 00일')
     if (pass.result) {
       return interviewPass;
     } else {
-      interviewNotPass;
+      return interviewNotPass;
     }
   }
 };
