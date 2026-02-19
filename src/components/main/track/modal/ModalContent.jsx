@@ -34,7 +34,7 @@ function ModalContent({ trackType, scale = 1 }) {
     <div
       className="flex flex-col h-full"
       style={{
-        paddingLeft: isMobile480 ? `${(35 / 16) * scale}rem` : `${(63 / 16) * scale}rem`,
+        paddingLeft: isMobile480 ? `${(32 / 16) * scale}rem` : `${(63 / 16) * scale}rem`,
         paddingRight: `${(30 / 16) * scale}rem`,
         paddingTop: isMobile480 ? `${(15 / 16) * scale}rem` : `${(28 / 16) * scale}rem`,
         overflow: 'hidden',
@@ -199,7 +199,7 @@ function ModalContent({ trackType, scale = 1 }) {
           <div
             className="h-full overflow-y-auto no-scrollbar"
             style={{
-              paddingRight: `${(20 / 16) * scale}rem`,
+              paddingRight: isMobile480 ? `${(0 / 16) * scale}rem` : `${(20 / 16) * scale}rem`,
               paddingBottom: `${(20 / 16) * scale}rem`,
             }}
           >

@@ -4,6 +4,7 @@ import Toggle from '@/assets/icons/under_toggle.svg';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
 function ModalToggle({ items = [], scale = 1 }) {
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
   const isMobile760 = useMediaQuery('(max-width: 760px)');
   const isTab1199 = useMediaQuery('(min-width: 761px) and (max-width: 1199px)');
   const isDesktop1440 = useMediaQuery('(min-width: 1440px)');
@@ -20,6 +21,7 @@ function ModalToggle({ items = [], scale = 1 }) {
   const [titleFontSize, setTitleFontSize] = useState(() => {
     if (typeof window !== 'undefined') {
       const width = window.innerWidth;
+      if (width <= 480) return 11; // 480px 이하
       if (width <= 760) return 14;
       if (width >= 761 && width <= 1199) return 13;
       return 14;
@@ -29,6 +31,7 @@ function ModalToggle({ items = [], scale = 1 }) {
   const [explainFontSize, setExplainFontSize] = useState(() => {
     if (typeof window !== 'undefined') {
       const width = window.innerWidth;
+      if (width <= 480) return 10; // 480px 이하
       if (width <= 760) return 14;
       if (width >= 761 && width <= 1199) return 11;
       return 14;
@@ -48,11 +51,16 @@ function ModalToggle({ items = [], scale = 1 }) {
         const currentScale = currentW / BASE_W;
 
         const targetBadgeTitlePx = 12;
+        const targetTitlePx = 11; // 타이틀은 더 작게
         const badgeTitleFontSize = targetBadgeTitlePx / currentScale;
+        const titleFontSize = targetTitlePx / currentScale;
+
+        const targetExplainPx = 10; // 하단 텍스트도 작게
+        const explainFontSize = targetExplainPx / currentScale;
 
         setBadgeFontSize(badgeTitleFontSize);
-        setTitleFontSize(badgeTitleFontSize);
-        setExplainFontSize(14);
+        setTitleFontSize(titleFontSize);
+        setExplainFontSize(explainFontSize);
       } else if (width <= 760) {
         setBadgeFontSize(14);
         setTitleFontSize(14);
@@ -127,7 +135,13 @@ function ModalToggle({ items = [], scale = 1 }) {
       {items.map((item, index) => {
         const isOpen = openToggle.includes(index);
         return (
-          <div key={index} className="w-full" style={{ paddingRight: `${(30 / 16) * scale}rem` }}>
+          <div
+            key={index}
+            className="w-full"
+            style={{
+              paddingRight: isMobile480 ? `${(0 / 16) * scale}rem` : `${(30 / 16) * scale}rem`,
+            }}
+          >
             <button
               onClick={() => handleToggle(index)}
               className="h-14 pl-4 pr-7 py-5 flex items-center justify-between text-black text-xs pad:text-base font-medium active:translate-x-[0.5px] active:translate-y-[0.5px]"
@@ -142,6 +156,7 @@ function ModalToggle({ items = [], scale = 1 }) {
                   : `${(1 / 16) * scale}rem solid #686868`,
                 borderBottom: isOpen ? 'none' : `${(1 / 16) * scale}rem solid #686868`,
                 transition: 'background-color 0s, border-width 0s',
+                overflow: isMobile480 ? 'hidden' : 'visible',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#F8FBE7';
@@ -158,23 +173,49 @@ function ModalToggle({ items = [], scale = 1 }) {
                 }
               }}
             >
-              <div className="flex items-center gap-3">
+              <div
+                className="flex items-center"
+                style={{
+                  gap: isMobile480 ? `${(6 / 16) * scale}rem` : `${(12 / 16) * scale}rem`,
+                  marginLeft: isMobile480 ? `${(-8 / 16) * scale}rem` : '0',
+                  minWidth: isMobile480 ? 0 : 'auto',
+                  flex: isMobile480 ? 1 : 'none',
+                  overflow: isMobile480 ? 'hidden' : 'visible',
+                  alignItems: 'left',
+                }}
+              >
                 {item.badge && (
                   <span
-                    className="py-1 rounded-full font-semibold"
+                    className="rounded-full font-semibold"
                     style={{
                       backgroundColor: item.badgeColor || '#C6E400',
                       color: '#FFFFFF',
                       borderRadius: `${(13 / 16) * scale}rem`,
                       fontSize: `${(badgeFontSize / 16) * scale}rem`,
+                      paddingTop: isMobile480 ? `${(6 / 16) * scale}rem` : `${(4 / 16) * scale}rem`,
+                      paddingBottom: isMobile480
+                        ? `${(6 / 16) * scale}rem`
+                        : `${(4 / 16) * scale}rem`,
                       paddingLeft:
                         item.badge === '공통'
-                          ? `${(16 / 16) * scale}rem`
-                          : `${(12 / 16) * scale}rem`,
+                          ? isMobile480
+                            ? `${(10 / 16) * scale}rem`
+                            : `${(16 / 16) * scale}rem`
+                          : isMobile480
+                            ? `${(6 / 16) * scale}rem`
+                            : `${(12 / 16) * scale}rem`,
                       paddingRight:
                         item.badge === '공통'
-                          ? `${(16 / 16) * scale}rem`
-                          : `${(12 / 16) * scale}rem`,
+                          ? isMobile480
+                            ? `${(10 / 16) * scale}rem`
+                            : `${(16 / 16) * scale}rem`
+                          : isMobile480
+                            ? `${(6 / 16) * scale}rem`
+                            : `${(12 / 16) * scale}rem`,
+                      whiteSpace: 'nowrap',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      lineHeight: 1,
                     }}
                   >
                     {item.badge}
@@ -183,14 +224,42 @@ function ModalToggle({ items = [], scale = 1 }) {
                 <span
                   style={{
                     fontSize: `${(titleFontSize / 16) * scale}rem`,
+                    whiteSpace: isMobile480 ? 'nowrap' : 'normal',
+                    overflow: isMobile480 ? 'hidden' : 'visible',
+                    textOverflow: isMobile480 ? 'ellipsis' : 'clip',
+                    minWidth: isMobile480 ? 0 : 'auto',
+                    flex: isMobile480 ? 1 : 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    lineHeight: 1,
                   }}
                 >
                   {item.text}
                 </span>
               </div>
-              <div className="w-3.5 h-3.5 flex items-center justify-center">
-                <img src={Toggle} alt="toggle" />
-              </div>
+              {isMobile480 ? (
+                <div
+                  className="flex items-center justify-center"
+                  style={{
+                    width: `${(10 / 16) * scale}rem`,
+                    height: `${(10 / 16) * scale}rem`,
+                    marginRight: `${(-10 / 16) * scale}rem`,
+                  }}
+                >
+                  <img
+                    src={Toggle}
+                    alt="toggle"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="w-3.5 h-3.5 flex items-center justify-center">
+                  <img src={Toggle} alt="toggle" />
+                </div>
+              )}
             </button>
             {isOpen && item.explainText && (
               <div

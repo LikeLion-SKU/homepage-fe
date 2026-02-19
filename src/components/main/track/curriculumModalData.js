@@ -1,6 +1,5 @@
 import adobeIcon from '@/assets/icons/main/track/adobe.svg';
 import awsIcon from '@/assets/icons/main/track/aws.svg';
-import dockerIcon from '@/assets/icons/main/track/docker.svg';
 import figmaIcon from '@/assets/icons/main/track/figma.svg';
 import framerIcon from '@/assets/icons/main/track/framer.svg';
 import javaIcon from '@/assets/icons/main/track/java.svg';
@@ -221,7 +220,6 @@ export const curriculumData = {
     techStack: [
       { name: 'java', size: 36, icon: javaIcon },
       { name: 'springboot', size: 36, icon: springbootIcon },
-      { name: 'docker', size: 33, icon: dockerIcon },
       { name: 'aws', size: 36, icon: awsIcon },
     ],
     curriculum: [
