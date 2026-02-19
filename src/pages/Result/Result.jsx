@@ -53,9 +53,9 @@ export default function Result() {
         //약관 동의 검사
         if (allChecked[1]) {
           //면접 예약 여부 검사
-          if (myInterviews.booking.scheduleId) {
+          if (myInterviews?.booking.scheduleId) {
             //같은 시간으로 하는지 검사
-            if (selectedTime.scheduleId !== myInterviews.booking.scheduleId) {
+            if (selectedTime.scheduleId !== myInterviews?.booking.scheduleId) {
               try {
                 //이전과 일정이 다르면 put
                 setIsLoading(true);
