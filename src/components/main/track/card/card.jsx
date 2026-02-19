@@ -29,6 +29,7 @@ function Card({ title, description, image = null }) {
   const isMobile = useMediaQuery('(max-width: 480px)');
   const isTablet = useMediaQuery('(min-width: 481px) and (max-width: 1199px)');
   const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isBelow1199 = useMediaQuery('(max-width: 1199px)');
 
   // title에서 트랙 추출
   const getTrackType = () => {
@@ -134,12 +135,12 @@ function Card({ title, description, image = null }) {
       onMouseLeave={() => setIsHovered(false)}
       className="w-full h-full relative"
     >
-      {/* 상단 텍스트 - 호버 시 표시 */}
-      {isHovered && (
+      {/* 상단 텍스트 - 호버 시 표시 (1199px 초과에서만) */}
+      {isHovered && !isBelow1199 && (
         <div
           className="absolute flex items-center gap-2 pointer-events-none z-20"
           style={{
-            top: `${(-25 / 16) * scale}rem`,
+            top: `${(-35 / 16) * scale}rem`,
             left: '50%',
             transform: 'translateX(-50%)',
             opacity: isHovered ? 1 : 0,
@@ -150,15 +151,15 @@ function Card({ title, description, image = null }) {
             src={HoverDownIcon}
             alt="hover down"
             style={{
-              width: `${(16 / 16) * scale}rem`,
-              height: `${(16 / 16) * scale}rem`,
+              width: `${(18 / 16) * scale}rem`,
+              height: `${(18 / 16) * scale}rem`,
             }}
           />
           <motion.span
             className="font-bold bg-clip-text text-transparent"
             style={{
               fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-              fontSize: `${(14 / 16) * scale}rem`,
+              fontSize: `${(16 / 16) * scale}rem`,
               whiteSpace: 'nowrap',
               backgroundImage: 'linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%)',
               backgroundSize: '200% 100%',
@@ -182,7 +183,11 @@ function Card({ title, description, image = null }) {
         <div
           className="absolute flex items-center gap-2 pointer-events-none z-20"
           style={{
-            bottom: `${(-25 / 16) * scale}rem`,
+            bottom: isMobile
+              ? `${(-80 / 16) * scale}rem`
+              : isBelow1199
+                ? `${(-35 / 16) * scale}rem`
+                : `${(-35 / 16) * scale}rem`,
             left: '50%',
             transform: 'translateX(-50%)',
             opacity: isHovered ? 1 : 0,
@@ -193,15 +198,15 @@ function Card({ title, description, image = null }) {
             src={HoverUpIcon}
             alt="hover up"
             style={{
-              width: `${(16 / 16) * scale}rem`,
-              height: `${(16 / 16) * scale}rem`,
+              width: isMobile ? `${(30 / 16) * scale}rem` : `${(18 / 16) * scale}rem`,
+              height: isMobile ? `${(30 / 16) * scale}rem` : `${(18 / 16) * scale}rem`,
             }}
           />
           <motion.span
             className="font-bold bg-clip-text text-transparent"
             style={{
               fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-              fontSize: `${(14 / 16) * scale}rem`,
+              fontSize: isMobile ? `${(30 / 16) * scale}rem` : `${(16 / 16) * scale}rem`,
               whiteSpace: 'nowrap',
               backgroundImage: 'linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%)',
               backgroundSize: '200% 100%',
@@ -221,12 +226,14 @@ function Card({ title, description, image = null }) {
       )}
 
       <GridPattern
-        className="w-full border flex flex-col bg-[#FAFBF8] relative overflow-hidden transition-colors duration-200 cursor-pointer"
+        className="w-full border flex flex-col bg-[#FAFBF8] relative overflow-hidden cursor-pointer"
         style={{
           aspectRatio: isMobile ? '3/4' : undefined,
           height: isMobile ? undefined : '100%',
           borderColor: isHovered ? '#C6E400' : '#00156A',
           borderWidth: '1px',
+          outline: isHovered ? '4px solid #C6E400' : 'none',
+          outlineOffset: '0px',
         }}
         onClick={handleCardClick}
       >
