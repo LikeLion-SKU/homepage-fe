@@ -16,7 +16,7 @@ function ExplainBackground({ children }) {
   const widthRem = (1440 / 16) * scale;
   const minHeightRem = (1358 / 16) * scale;
   const paddingRem = (160 / 16) * scale;
-  const paddingBottomRem = (125 / 16) * scale; // 하단 패딩 (track과의 간격을 위해 증가)
+  const paddingBottomRem = (60 / 16) * scale; // 하단 패딩 (track과의 간격을 위해 증가)
   const backgroundWidthRem = (1453 / 16) * scale;
   const containerPaddingRem = (175 / 16) * scale;
 
@@ -53,7 +53,7 @@ function ExplainBackground({ children }) {
         borderTopRightRadius: '20px',
         borderBottomLeftRadius: '0',
         borderBottomRightRadius: '0',
-        overflow: 'hidden',
+        overflow: isMobile440 ? 'visible' : 'hidden',
       }}
     >
       {/* 배경 - black dot pattern 및 이미지 */}
