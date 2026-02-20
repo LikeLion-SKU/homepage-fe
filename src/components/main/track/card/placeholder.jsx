@@ -19,15 +19,15 @@ function CardPlaceholder({ image }) {
           alt=""
           className="absolute object-contain"
           style={{
-            left: isTablet ? '-10%' : isMobile ? '50%' : '50%',
+            left: isTablet ? '18%' : isMobile ? '50%' : '50%',
             top: isMobile ? '45%' : '50%',
             transform: isTablet
-              ? 'translate(0, -53%)'
+              ? 'translate(0, -70%)'
               : isMobile
                 ? 'translate(-50%, -50%)'
                 : 'translate(-50%, -50%)',
-            width: isMobile ? '60%' : isTablet ? '85%' : '88%',
-            height: isMobile ? '60%' : isTablet ? '85%' : '88%',
+            width: isMobile ? '60%' : isTablet ? '55%' : '88%',
+            height: isMobile ? '60%' : isTablet ? '55%' : '88%',
           }}
         />
       )}

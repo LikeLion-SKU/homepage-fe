@@ -28,10 +28,10 @@ function CardHeader({ title, onHeaderClick }) {
         onClick={onHeaderClick}
         style={{
           // 가로 길이를 더 늘려 헤더 안 텍스트 영역을 넉넉하게
-          width: `calc(100% - ${isMobile ? (40 / 16) * scale : (32 / 16) * scale}rem)`,
+          width: `calc(100% - ${isMobile ? (80 / 16) * scale : (32 / 16) * scale}rem)`,
           maxWidth: `${
             isMobile
-              ? (920 / 16) * scale
+              ? (800 / 16) * scale
               : isMedium && isPO
                 ? (220 / 16) * scale
                 : isMedium && isFE

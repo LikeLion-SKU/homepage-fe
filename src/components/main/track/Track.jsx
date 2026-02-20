@@ -17,6 +17,7 @@ function Track() {
   const scale = useScale();
   const isMobile760 = useMediaQuery('(max-width: 760px)');
   const isTablet = useMediaQuery('(min-width: 761px) and (max-width: 1199px)');
+  const isPad = useMediaQuery('(min-width: 376px) and (max-width: 759px)');
   const card1Ref = useRef(null);
   const card2Ref = useRef(null);
   const card3Ref = useRef(null);
@@ -100,6 +101,13 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
+              maxWidth: isPad
+                ? `${(1500 / 16) * scale}rem`
+                : isTablet
+                  ? `${(850 / 16) * scale}rem`
+                  : undefined,
+              marginLeft: isPad || isTablet ? 'auto' : undefined,
+              marginRight: isPad || isTablet ? 'auto' : undefined,
             }}
           >
             <Card title="PO 프로젝트 오너" description={poDescription} image={POImage} />
@@ -126,6 +134,13 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
+              maxWidth: isPad
+                ? `${(1500 / 16) * scale}rem`
+                : isTablet
+                  ? `${(850 / 16) * scale}rem`
+                  : undefined,
+              marginLeft: isPad || isTablet ? 'auto' : undefined,
+              marginRight: isPad || isTablet ? 'auto' : undefined,
             }}
           >
             <Card title="FRONTEND 프론트엔드 개발자" description={feDescription} image={FEImage} />
@@ -152,6 +167,13 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
+              maxWidth: isPad
+                ? `${(1500 / 16) * scale}rem`
+                : isTablet
+                  ? `${(850 / 16) * scale}rem`
+                  : undefined,
+              marginLeft: isPad || isTablet ? 'auto' : undefined,
+              marginRight: isPad || isTablet ? 'auto' : undefined,
             }}
           >
             <Card title="BACKEND 백엔드 개발자" description={beDescription} image={BEImage} />
