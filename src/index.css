@@ -362,13 +362,43 @@ select {
 }
 
 .blah-marquee-content {
-  animation: blah-marquee 33s linear infinite;
+  animation: blah-marquee 100s linear infinite;
+  animation-delay: 0s;
+  animation-fill-mode: both;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-animation: blah-marquee 100s linear infinite;
+  -webkit-animation-delay: 0s;
+  -webkit-animation-fill-mode: both;
 }
 
 .blah-marquee-content-offset {
-  animation: blah-marquee-offset 33s linear infinite;
+  animation: blah-marquee-offset 100s linear infinite;
+  animation-delay: 0s;
+  animation-fill-mode: both;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-animation: blah-marquee-offset 100s linear infinite;
+  -webkit-animation-delay: 0s;
+  -webkit-animation-fill-mode: both;
 }
 
 .blah-marquee-content-reverse {
-  animation: blah-marquee-reverse 33s linear infinite;
+  animation: blah-marquee-reverse 100s linear infinite;
+  animation-delay: 0s;
+  animation-fill-mode: both;
+  will-change: transform;
+  transform: translate3d(-50%, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translate3d(-50%, 0, 0);
+  -webkit-animation: blah-marquee-reverse 100s linear infinite;
+  -webkit-animation-delay: 0s;
+  -webkit-animation-fill-mode: both;
 }
