@@ -35,7 +35,7 @@ export const scheduleMonthData = {
       contentImage: AprilImage1,
       contentTitle: '동아리 알림제',
       contentDescription:
-        '국내 최대 규모 IT 창업 동아리로서, 교내 구성원과 멋쟁이사자처럼을 연결합니다.',
+        '국내 최대 규모 IT 창업 동아리로서, 교내 구성원과 <br/>멋쟁이사자처럼을 연결합니다.',
     },
     {
       title: '4월',
@@ -91,7 +91,7 @@ export const scheduleMonthData = {
       contentImage: AugustImage1,
       contentTitle: '국내 최대 규모 중앙해커톤',
       contentDescription:
-        '중앙 멋쟁이사자처럼이 주관하는 해커톤에 참여하여 아이디어를 <br/> 실제 서비스로 구현하는 경험을 쌓습니다.<br/>매년 본선 진출팀을 배출하는 서경대 멋쟁이사자처럼의 주요 활동입니다.',
+        '중앙 멋쟁이사자처럼이 주관하는 해커톤에 참여하여 아이디어를 <br/> 실제 서비스로 구현하는 경험을 쌓습니다.<br/>매년 본선 진출팀을 배출하는 서경대 멋쟁이사자처럼의 주요 활동 <br/>입니다.',
     },
   ],
   '9월': [
@@ -100,7 +100,7 @@ export const scheduleMonthData = {
       contentImage: SeptemberImage2,
       contentTitle: '어흥콘',
       contentDescription:
-        '숭실대 주관 멋쟁이사자처럼 대학 연합 네트워킹 행사로, 중앙 해커톤 이후 프로젝트를 리팩토링해 실제 유저에게 선보이는 데모데이 형태의 행사입니다.',
+        '숭실대 주관 멋쟁이사자처럼 대학 연합 네트워킹 행사로, <br/> 중앙 해커톤 이후 프로젝트를 리팩토링해 실제 유저에게 선보이는 <br/>데모데이 형태의 행사입니다.',
     },
   ],
   '10월': [
@@ -109,7 +109,7 @@ export const scheduleMonthData = {
       contentImage: SeptemberImage1,
       contentTitle: '교내 해커톤 SKTHON',
       contentDescription:
-        '서경대학교 멋쟁이사자처럼이 주관하는 교내 해커톤으로, 무박 2일동안 아이디어를 팀 단위로 구체화하고 결과물로 완성합니다.',
+        '서경대학교 멋쟁이사자처럼이 주관하는 교내 해커톤으로, 무박 <br/> 2일동안 아이디어를 팀 단위로 구체화하고 결과물로 완성합니다.',
     },
   ],
   '11월': [
@@ -118,7 +118,7 @@ export const scheduleMonthData = {
       contentImage: NovemberImage1,
       contentTitle: '4호선톤',
       contentDescription:
-        '4호선 라인 대학 구성원들과 함께 하는 연합 해커톤으로, 과정을 <br/> 중시해 아이디어 구현을 통해 창업 연계를 목표로 하는 해커톤입니다.',
+        '4호선 라인 대학 구성원들과 함께 하는 연합 해커톤으로, 과정을 <br/> 중시해 아이디어 구현을 통해 창업 연계를 목표로 하는 해커톤<br/>입니다.',
     },
   ],
   '12월': [
@@ -127,7 +127,7 @@ export const scheduleMonthData = {
       contentImage: DecemberImage1,
       contentTitle: '수료식',
       contentDescription:
-        '한 해 동안의 활동과 성장을 돌아보고, 멋쟁이사자처럼으로서의 여정을 수료합니다.',
+        '한 해 동안의 활동과 성장을 돌아보고, 멋쟁이사자처럼으로서의 <br/>여정을 수료합니다.',
     },
   ],
 };

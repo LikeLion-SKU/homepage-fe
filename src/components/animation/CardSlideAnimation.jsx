@@ -27,7 +27,7 @@ function CardSlideAnimation({ containerRef, cards, virtualPosRef, isAutoSettingR
     if (!container || !cards || cards.length === 0) return;
 
     // 1200px 이상에서만 속도 더 빠르게
-    const scrollSpeed = isLargeScreen ? 2 : 1.8; // px/frame
+    const scrollSpeed = isLargeScreen ? 2 : 1.1; // px/frame
 
     // 초기 virtualPos를 현재 scrollLeft로 설정
     if (virtualPosRef && virtualPosRef.current === 0) {
