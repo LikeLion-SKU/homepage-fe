@@ -15,8 +15,10 @@ import Card from './card/card.jsx';
 
 function Track() {
   const scale = useScale();
-  const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isMobile760 = useMediaQuery('(max-width: 759px)');
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
   const isTablet = useMediaQuery('(min-width: 761px) and (max-width: 1199px)');
+  const isPad = useMediaQuery('(min-width: 760px) and (max-width: 759px)');
   const card1Ref = useRef(null);
   const card2Ref = useRef(null);
   const card3Ref = useRef(null);
@@ -59,7 +61,19 @@ function Track() {
         backgroundImage: 'linear-gradient(rgb(244, 244, 244) 0%, rgba(217, 217, 217, 0) 100%)',
       }}
     >
-      <div className="relative">
+      <div
+        className="relative"
+        style={
+          isPad
+            ? {
+                marginLeft: `${(-175 / 16) * scale}rem`,
+                marginRight: `${(-175 / 16) * scale}rem`,
+                paddingLeft: `${(50 / 16) * scale}rem`,
+                paddingRight: `${(50 / 16) * scale}rem`,
+              }
+            : undefined
+        }
+      >
         {/* 트랙 섹션 내부에 위치하는 타이틀 옆 아이콘 (개별 위치 조정 가능) */}
         <img
           src={tracksBlahIcon}
@@ -68,9 +82,17 @@ function Track() {
           loading="lazy"
           style={{
             // 여기 값만 바꾸면 아이콘을 개별적으로 이동 가능
-            left: `${(120 / 16) * scale}rem`,
-            top: `${(-115 / 16) * scale}rem`,
-            width: `${(159 / 16) * scale * (isMobile760 ? 1.4 : 1)}rem`,
+            left: isMobile480
+              ? `${(235 / 16) * scale}rem`
+              : isPad
+                ? `${(300 / 16) * scale}rem`
+                : `${(120 / 16) * scale}rem`,
+            top: isMobile480 ? `${(-190 / 16) * scale}rem` : `${(-115 / 16) * scale}rem`,
+            width: isPad
+              ? `${(150 / 16) * scale}rem`
+              : isMobile480
+                ? `${(250 / 16) * scale}rem`
+                : `${(159 / 16) * scale * (isMobile760 ? 1.4 : 1)}rem`,
             height: 'auto',
             zIndex: 30,
             willChange: 'transform',
@@ -100,6 +122,13 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
+              maxWidth: isPad
+                ? `${(1200 / 16) * scale}rem`
+                : isTablet
+                  ? `${(850 / 16) * scale}rem`
+                  : undefined,
+              marginLeft: isPad || isTablet ? 'auto' : undefined,
+              marginRight: isPad || isTablet ? 'auto' : undefined,
             }}
           >
             <Card title="PO 프로젝트 오너" description={poDescription} image={POImage} />
@@ -126,6 +155,13 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
+              maxWidth: isPad
+                ? `${(1200 / 16) * scale}rem`
+                : isTablet
+                  ? `${(850 / 16) * scale}rem`
+                  : undefined,
+              marginLeft: isPad || isTablet ? 'auto' : undefined,
+              marginRight: isPad || isTablet ? 'auto' : undefined,
             }}
           >
             <Card title="FRONTEND 프론트엔드 개발자" description={feDescription} image={FEImage} />
@@ -152,6 +188,13 @@ function Track() {
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
+              maxWidth: isPad
+                ? `${(1200 / 16) * scale}rem`
+                : isTablet
+                  ? `${(850 / 16) * scale}rem`
+                  : undefined,
+              marginLeft: isPad || isTablet ? 'auto' : undefined,
+              marginRight: isPad || isTablet ? 'auto' : undefined,
             }}
           >
             <Card title="BACKEND 백엔드 개발자" description={beDescription} image={BEImage} />
