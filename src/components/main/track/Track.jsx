@@ -15,9 +15,10 @@ import Card from './card/card.jsx';
 
 function Track() {
   const scale = useScale();
-  const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isMobile760 = useMediaQuery('(max-width: 759px)');
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
   const isTablet = useMediaQuery('(min-width: 761px) and (max-width: 1199px)');
-  const isPad = useMediaQuery('(min-width: 376px) and (max-width: 759px)');
+  const isPad = useMediaQuery('(min-width: 760px) and (max-width: 759px)');
   const card1Ref = useRef(null);
   const card2Ref = useRef(null);
   const card3Ref = useRef(null);
@@ -81,11 +82,17 @@ function Track() {
           loading="lazy"
           style={{
             // 여기 값만 바꾸면 아이콘을 개별적으로 이동 가능
-            left: isPad ? `${(300 / 16) * scale}rem` : `${(120 / 16) * scale}rem`,
-            top: `${(-115 / 16) * scale}rem`,
+            left: isMobile480
+              ? `${(235 / 16) * scale}rem`
+              : isPad
+                ? `${(300 / 16) * scale}rem`
+                : `${(120 / 16) * scale}rem`,
+            top: isMobile480 ? `${(-190 / 16) * scale}rem` : `${(-115 / 16) * scale}rem`,
             width: isPad
               ? `${(150 / 16) * scale}rem`
-              : `${(159 / 16) * scale * (isMobile760 ? 1.4 : 1)}rem`,
+              : isMobile480
+                ? `${(250 / 16) * scale}rem`
+                : `${(159 / 16) * scale * (isMobile760 ? 1.4 : 1)}rem`,
             height: 'auto',
             zIndex: 30,
             willChange: 'transform',
