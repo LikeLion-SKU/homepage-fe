@@ -22,7 +22,7 @@ export default function ProjectCategory({ award, semester, projectTypeName }) {
         >
           {/* 내부 배경 (안쪽을 채워 테두리만 남김) */}
           <div
-            className="flex bg-white rounded-[calc(1.5rem-1.5px)] h-3.5 pad:h-5 px-2 
+            className="flex bg-white rounded-[calc(1.5rem-1.5px)] h-3 pad:h-4.5 px-2 
                text-[0.6rem] web:text-[0.9rem] text-center items-center justify-center w-full"
           >
             <motion.span
@@ -46,7 +46,7 @@ export default function ProjectCategory({ award, semester, projectTypeName }) {
         </motion.div>
       )}
       <div
-        className="flex border rounded-3xl h-3.5 pad:h-5 px-1
+        className="flex border rounded-3xl h-3.5 pad:h-5 px-2
       text-[0.6rem] web:text-[0.9rem] text-center items-center bg-white"
       >
         {semester}기
