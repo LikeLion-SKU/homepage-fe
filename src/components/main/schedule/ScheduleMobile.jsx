@@ -9,9 +9,13 @@ import novemberIcon from '@/assets/icons/main/schedule/november.svg';
 import octoberIcon from '@/assets/icons/main/schedule/october.svg';
 import sebtemberIcon from '@/assets/icons/main/schedule/sebtember.svg';
 import umbrellaIcon from '@/assets/icons/main/schedule/umbrella.svg';
+import useScale from '@/components/main/hooks/useScale';
 import ClickBox from '@/components/main/schedule/ClickBox';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 function ScheduleMobile({ onMonthClick }) {
+  const scale = useScale();
+  const isMobile = useMediaQuery('(max-width: 480px)');
   // 월별 아이콘 매핑
   const monthIconMap = {
     '3월': marchIcon,
@@ -47,12 +51,15 @@ function ScheduleMobile({ onMonthClick }) {
         {/* Dot icons - 장식용 */}
         {/* 상단 중앙 dot 그룹 */}
         <div className="absolute" style={{ left: '26%', top: '-5px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(5)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -62,12 +69,15 @@ function ScheduleMobile({ onMonthClick }) {
 
         {/* 상단 오른쪽 dot 그룹 */}
         <div className="absolute" style={{ left: '89%', top: '-5px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(5)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -77,12 +87,15 @@ function ScheduleMobile({ onMonthClick }) {
 
         {/* 중간 왼쪽 dot 그룹 */}
         <div className="absolute" style={{ left: '5%', top: '80px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(3)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -92,12 +105,15 @@ function ScheduleMobile({ onMonthClick }) {
 
         {/* 중간 중앙 dot 그룹 */}
         <div className="absolute" style={{ left: '50%', top: '80px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(2)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -106,12 +122,15 @@ function ScheduleMobile({ onMonthClick }) {
         </div>
         {/* 중간 중앙2 dot 그룹 */}
         <div className="absolute" style={{ left: '77%', top: '80px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(1)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -120,12 +139,15 @@ function ScheduleMobile({ onMonthClick }) {
         </div>
         {/* 중간 오른쪽 dot 그룹 */}
         <div className="absolute" style={{ left: '102%', top: '80px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(5)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -135,12 +157,15 @@ function ScheduleMobile({ onMonthClick }) {
 
         {/* 하단 왼쪽 dot 그룹 */}
         <div className="absolute" style={{ left: '-28%', top: '185px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(5)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -150,12 +175,15 @@ function ScheduleMobile({ onMonthClick }) {
 
         {/* 하단 중앙 dot 그룹 */}
         <div className="absolute" style={{ left: '33%', top: '185px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(5)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -165,12 +193,15 @@ function ScheduleMobile({ onMonthClick }) {
 
         {/* 하단 오른쪽 dot 그룹 */}
         <div className="absolute" style={{ left: '89%', top: '185px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(5)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -180,12 +211,15 @@ function ScheduleMobile({ onMonthClick }) {
 
         {/* 최하단 왼쪽 dot 그룹 */}
         <div className="absolute" style={{ left: '-15%', top: '290px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(1)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -194,12 +228,15 @@ function ScheduleMobile({ onMonthClick }) {
         </div>
         {/* 최하단 중간 dot 그룹 */}
         <div className="absolute" style={{ left: '16%', top: '290px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -208,12 +245,15 @@ function ScheduleMobile({ onMonthClick }) {
         </div>
         {/* 최하단 오른쪽 dot 그룹 */}
         <div className="absolute" style={{ left: '63%', top: '290px' }}>
-          <div className="flex gap-2.5">
+          <div className="flex" style={{ gap: `${(0 / 16) * scale}rem` }}>
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
                 className="text-[#00156a] text-5xl font-bold"
-                style={{ fontFamily: 'pixel game, monospace' }}
+                style={{
+                  fontFamily: 'pixel game, monospace',
+                  marginLeft: i > 0 ? `${(-25 / 16) * scale}rem` : '0',
+                }}
               >
                 .
               </div>
@@ -224,7 +264,7 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 3월 - 상단 왼쪽 */}
         <div
           className="absolute group"
-          style={{ left: '3%', top: '8px', width: '50px', height: '48px' }}
+          style={{ left: isMobile ? '8%' : '3%', top: '8px', width: '50px', height: '48px' }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['3월'].x} offsetYPx={CLICKBOX_OFFSET['3월'].y} />
           <button
@@ -240,7 +280,7 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 5월 - 상단 오른쪽 */}
         <div
           className="absolute group"
-          style={{ left: '60%', top: '-17px', width: '53px', height: '60px' }}
+          style={{ left: isMobile ? '65%' : '60%', top: '-17px', width: '53px', height: '60px' }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['5월'].x} offsetYPx={CLICKBOX_OFFSET['5월'].y} />
           <button
@@ -256,7 +296,7 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 6월 - 중간 왼쪽 */}
         <div
           className="absolute group"
-          style={{ left: '30%', top: '77px', width: '45px', height: '50px' }}
+          style={{ left: isMobile ? '35%' : '30%', top: '77px', width: '45px', height: '50px' }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['6월'].x} offsetYPx={CLICKBOX_OFFSET['6월'].y} />
           <button
@@ -272,7 +312,7 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 7월 - 중간 오른쪽 */}
         <div
           className="absolute group"
-          style={{ left: '83%', top: '91px', width: '32px', height: '32px' }}
+          style={{ left: isMobile ? '88%' : '83%', top: '91px', width: '32px', height: '32px' }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['7월'].x} offsetYPx={CLICKBOX_OFFSET['7월'].y} />
           <button
@@ -291,7 +331,7 @@ function ScheduleMobile({ onMonthClick }) {
           alt="umbrella"
           className="absolute"
           style={{
-            left: '65%',
+            left: isMobile ? '70%' : '65%',
             top: '97px',
             width: '22px',
             height: '24px',
@@ -301,7 +341,7 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 8월 - 하단 왼쪽 */}
         <div
           className="absolute group"
-          style={{ left: '10%', top: '186px', width: '40px', height: '45px' }}
+          style={{ left: isMobile ? '15%' : '10%', top: '186px', width: '40px', height: '45px' }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['8월'].x} offsetYPx={CLICKBOX_OFFSET['8월'].y} />
           <button
@@ -317,7 +357,7 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 9월 - 중앙 */}
         <div
           className="absolute group"
-          style={{ left: '69%', top: '189px', width: '42px', height: '38px' }}
+          style={{ left: isMobile ? '74%' : '69%', top: '189px', width: '42px', height: '38px' }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['9월'].x} offsetYPx={CLICKBOX_OFFSET['9월'].y} />
           <button
@@ -333,7 +373,7 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 10월 - 하단 왼쪽 */}
         <div
           className="absolute group"
-          style={{ left: '-9%', top: '270px', width: '73px', height: '80px' }}
+          style={{ left: isMobile ? '-4%' : '-9%', top: '270px', width: '73px', height: '80px' }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['10월'].x} offsetYPx={CLICKBOX_OFFSET['10월'].y} />
           <button
@@ -349,7 +389,12 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 11월 - 하단 중앙 */}
         <div
           className="absolute group"
-          style={{ left: '46.27%', top: '298px', width: '35px', height: '32px' }}
+          style={{
+            left: isMobile ? '51.27%' : '46.27%',
+            top: '298px',
+            width: '35px',
+            height: '32px',
+          }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['11월'].x} offsetYPx={CLICKBOX_OFFSET['11월'].y} />
           <button
@@ -365,7 +410,7 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 12월 - 하단 오른쪽 */}
         <div
           className="absolute group"
-          style={{ left: '92%', top: '275px', width: '45px', height: '63px' }}
+          style={{ left: isMobile ? '97%' : '92%', top: '275px', width: '45px', height: '63px' }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['12월'].x} offsetYPx={CLICKBOX_OFFSET['12월'].y} />
           <button
@@ -381,7 +426,7 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 4월 - 상단 중앙 (필요시 추가) */}
         <div
           className="absolute group"
-          style={{ left: '-14%', top: '90px', width: '35px', height: '35px' }}
+          style={{ left: isMobile ? '-9%' : '-14%', top: '90px', width: '35px', height: '35px' }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['4월'].x} offsetYPx={CLICKBOX_OFFSET['4월'].y} />
           <button
