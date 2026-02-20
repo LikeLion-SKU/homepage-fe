@@ -17,13 +17,25 @@ function Explain() {
   const isMobile760 = useMediaQuery('(max-width: 760px)');
   const isMobile480 = useMediaQuery('(max-width: 480px)');
   const isMobile440 = useMediaQuery('(max-width: 440px)');
+  const isDesktop1440 = useMediaQuery('(min-width: 1440px)');
+  const isDesktop1200 = useMediaQuery('(min-width: 1200px)');
 
   // 모바일에서 blah 이미지 위치 조정
   // 480px 이하일 때는 별도 위치 값 사용
-  const leftBlahLift = (isMobile480 ? 50 : isMobile760 ? 80 : 60) + (isMobile440 ? 30 : 0); // 좌측은 아래로 (양수), 440px 이하에서 추가로 아래로
-  const skullionLift = isMobile480 ? -30 : isMobile760 ? -20 : 20; // skullionIcon만 데스크톱에서 위로
-  const leftBlahShift = (isMobile480 ? -10 : isMobile760 ? -10 : 0) + (isMobile440 ? 20 : 0); // 좌측은 왼쪽으로 (음수), 440px 이하에서 projects만 오른쪽으로
-  const rightBlahShift = 0; // 우측은 움직이지 않음
+  const leftBlahLift = isMobile760
+    ? (isMobile480 ? 15 : 40) + (isMobile440 ? 40 : 0) // 760px 이하에서 위로 이동 (음수), 480px 이하에서 projects만 아래로
+    : 60 + (!isMobile760 ? 30 : 0) + (isDesktop1200 ? 20 : 0) + (isDesktop1440 ? 60 : 0); // 761px 이상에서 projects만 아래로, 1200px 이상에서 더 아래로, 1440px 이상에서 더 아래로
+  const skullionLift = isMobile480
+    ? -50 + (isMobile440 ? 30 : 0)
+    : isMobile760
+      ? -30
+      : -20 + (!isMobile440 ? -20 : 0); // skullionIcon만 480px 이하에서 위로, 440px 이하에서 아래로, 441px 이상에서 위로
+  const leftBlahShift =
+    (isMobile480 ? 30 : isMobile760 ? 40 : 70) +
+    (isMobile440 ? 20 : 0) +
+    (!isMobile440 ? 20 : 0) +
+    (isDesktop1440 ? 70 : 0); // 좌측은 왼쪽으로 (음수), 441px 이상에서 projects만 오른쪽으로, 1440px 이상에서 더 오른쪽으로
+  const rightBlahShift = !isMobile760 ? 30 : 0; // 761px 이상에서 skulions만 오른쪽으로
 
   return (
     <ExplainBackground>
@@ -61,7 +73,7 @@ function Explain() {
         </SmallFrameBox>
 
         {/* 본문 텍스트 */}
-        <div style={{ marginTop: '0.9rem' }}>
+        <div style={{ marginTop: isMobile760 ? '0.4rem' : '0.9rem' }}>
           <ExplainText />
         </div>
 
@@ -138,7 +150,7 @@ function Explain() {
         {/* Label BLAH 1 + 2 (같이 이동) */}
         <div
           style={{
-            marginTop: `${(370 / 16) * scale}rem`, // ← 여기 값만 조절
+            marginTop: `${((isMobile440 ? 260 : isMobile480 ? 140 : isMobile760 ? 160 : 240) / 16) * scale}rem`, // ← 여기 값만 조절, 440px 이하에서 간격 높임
           }}
         >
           {/* Label BLAH 1 */}
@@ -164,11 +176,23 @@ function Explain() {
 
         {/* 숫자 */}
 
-        <Number value={42} initialX={495} initialY={20 + (isMobile440 ? 100 : 0)} />
+        <Number
+          value={42}
+          initialX={495}
+          initialY={
+            20 + (isMobile440 ? 50 : 0) + (!isMobile760 ? 40 : 0) + (isDesktop1440 ? 30 : 0)
+          }
+        />
         <Number
           value={108}
           initialX={140}
-          initialY={-180 + (isMobile440 ? 100 : 0) + (!isMobile440 ? 80 : 0)}
+          initialY={
+            -180 +
+            (isMobile440 ? 100 : 0) +
+            (!isMobile440 ? 80 : 0) +
+            (!isMobile760 ? -20 : 0) +
+            (isDesktop1440 ? -30 : 0)
+          }
         />
       </motion.div>
     </ExplainBackground>

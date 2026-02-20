@@ -4,6 +4,7 @@ import figmaIcon from '@/assets/icons/main/track/figma.svg';
 import framerIcon from '@/assets/icons/main/track/framer.svg';
 import javaIcon from '@/assets/icons/main/track/java.svg';
 import jsIcon from '@/assets/icons/main/track/js.svg';
+import mysqlIcon from '@/assets/icons/main/track/mysql.svg';
 import notionIcon from '@/assets/icons/main/track/notion.svg';
 import protopieIcon from '@/assets/icons/main/track/protopie.svg';
 import reactIcon from '@/assets/icons/main/track/react.svg';
@@ -220,6 +221,7 @@ export const curriculumData = {
     techStack: [
       { name: 'java', size: 36, icon: javaIcon },
       { name: 'springboot', size: 36, icon: springbootIcon },
+      { name: 'mysql', size: 36, icon: mysqlIcon },
       { name: 'aws', size: 36, icon: awsIcon },
     ],
     curriculum: [

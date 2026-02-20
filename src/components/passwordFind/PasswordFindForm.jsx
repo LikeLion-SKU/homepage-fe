@@ -23,6 +23,10 @@ export default function PasswordFindForm({ onSubmit }) {
   // @ts-ignore
   const { showToast } = useOutletContext();
 
+  // localStorage 키
+  const COUNTDOWN_STORAGE_KEY = 'password_find_verification_countdown';
+  const COUNTDOWN_DURATION = 300; // 5분 = 300초
+
   // 에러 메시지 매핑
   const ERROR_MESSAGE_MAP = {
     INVALID_VERIFICATION_CODE: '인증번호가 일치하지 않습니다.',
@@ -38,7 +42,10 @@ export default function PasswordFindForm({ onSubmit }) {
       await requestEmailVerification({ email: finalEmail });
 
       setIsVerificationSent(true);
-      setCountdown(300); // 5분 = 300초
+      const startTime = Date.now();
+      setCountdown(COUNTDOWN_DURATION);
+      // localStorage에 시작 시간 저장
+      localStorage.setItem(COUNTDOWN_STORAGE_KEY, startTime.toString());
       setVerificationStatus(null); // 상태 초기화
     } catch (error) {
       console.error('인증번호 전송 실패:', error);
@@ -91,6 +98,8 @@ export default function PasswordFindForm({ onSubmit }) {
       }
 
       setVerificationStatus('success');
+      // 인증 성공 시 localStorage에서 카운트다운 제거
+      localStorage.removeItem(COUNTDOWN_STORAGE_KEY);
 
       // 인증 성공 시 결과 페이지로 이동
       if (onSubmit) {
@@ -111,15 +120,46 @@ export default function PasswordFindForm({ onSubmit }) {
     }
   };
 
-  // 카운트다운 타이머
+  // 컴포넌트 마운트 시 localStorage에서 카운트다운 복원
   useEffect(() => {
-    if (countdown > 0) {
+    const savedStartTime = localStorage.getItem(COUNTDOWN_STORAGE_KEY);
+    if (savedStartTime) {
+      const startTime = parseInt(savedStartTime, 10);
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const remaining = Math.max(0, COUNTDOWN_DURATION - elapsed);
+
+      if (remaining > 0) {
+        setIsVerificationSent(true);
+        setCountdown(remaining);
+      } else {
+        // 만료된 경우 localStorage에서 제거
+        localStorage.removeItem(COUNTDOWN_STORAGE_KEY);
+      }
+    }
+  }, []);
+
+  // 카운트다운 타이머 - localStorage의 시작 시간을 기준으로 계산
+  useEffect(() => {
+    if (isVerificationSent) {
       const timer = setInterval(() => {
-        setCountdown((prev) => prev - 1);
+        const savedStartTime = localStorage.getItem(COUNTDOWN_STORAGE_KEY);
+        if (savedStartTime) {
+          const startTime = parseInt(savedStartTime, 10);
+          const elapsed = Math.floor((Date.now() - startTime) / 1000);
+          const remaining = Math.max(0, COUNTDOWN_DURATION - elapsed);
+
+          setCountdown(remaining);
+
+          if (remaining <= 0) {
+            localStorage.removeItem(COUNTDOWN_STORAGE_KEY);
+          }
+        } else {
+          setCountdown(0);
+        }
       }, 1000);
       return () => clearInterval(timer);
     }
-  }, [countdown]);
+  }, [isVerificationSent]);
 
   // 카운트다운 포맷팅 (MM:SS)
   const formatTime = (seconds) => {

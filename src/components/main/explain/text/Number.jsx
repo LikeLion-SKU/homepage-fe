@@ -44,7 +44,7 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
   // string인 경우 그대로 사용, 숫자인 경우 기존 로직 적용
   const mobileRightPadding = Math.min(100, windowWidth * 0.1); // 375px면 37.5
   const maxXMobile = windowWidth / 2 - mobileRightPadding;
-  const maxXWide = 720; // 대충 안전상한 (원하면 조절)
+  const maxXWide = 1440; // 대충 안전상한 (원하면 조절)
 
   const responsiveX = isXString
     ? initialX

@@ -156,7 +156,7 @@ function ModalContent({ trackType, scale = 1 }) {
                   tech.name === 'framer'
                     ? `${(-9 / 16) * scale}rem`
                     : tech.name === 'aws'
-                      ? `${(3 / 16) * scale}rem`
+                      ? `${(-2 / 16) * scale}rem`
                       : tech.name === 'protopie'
                         ? `${(-2 / 16) * scale}rem`
                         : '0',
