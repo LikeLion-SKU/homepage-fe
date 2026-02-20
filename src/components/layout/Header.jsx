@@ -52,7 +52,7 @@ export default function Header({
         }}
         className="flex items-center justify-center text-[1.1rem] font-bold web:border-r cursor-pointer"
       >
-        <img src={Logo} className="w-16 h-16 pad:w-18 pad:h-18 web:w-23 web:h-23" />
+        <img src={Logo} className="w-18 h-18 pad:w-20 pad:h-20 web:w-23 web:h-23" />
         {isDesktop && <p className="mr-15">멋쟁이사자처럼 서경대학교</p>}
       </div>
 
