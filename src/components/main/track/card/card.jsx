@@ -190,8 +190,8 @@ function Card({ title, description, image = null }) {
               : isBelow1199
                 ? `${(-35 / 16) * scale}rem`
                 : `${(-35 / 16) * scale}rem`,
-            left: '50%',
-            transform: 'translateX(-50%)',
+            left: isTablet && !isPad ? `${(230 / 16) * scale}rem` : '50%',
+            transform: isTablet && !isPad ? 'none' : 'translateX(-50%)',
             opacity: isHovered ? 1 : 0,
             transition: 'opacity 0.2s ease-in-out',
           }}
