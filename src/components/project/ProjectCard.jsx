@@ -12,7 +12,7 @@ export default function ProjectCard({ props, isAdmin }) {
       onClick={() => {
         !isAdmin && navigate(`/project/viewDetail`, { state: { projectId: props.projectId } });
       }}
-      className="group relative border overflow-hidden bg-[#F9F9F9] w-101 pad:w-82 web:w-101 "
+      className="group relative border overflow-hidden bg-[#F9F9F9] w-80 pad:w-82 web:w-101 "
     >
       <div className="flex flex-col">
         <img

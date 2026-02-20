@@ -37,6 +37,10 @@ export default function SignUpForm({ onSubmit }) {
   const [isVerificationChecking, setIsVerificationChecking] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // localStorage 키
+  const COUNTDOWN_STORAGE_KEY = 'signup_verification_countdown';
+  const COUNTDOWN_DURATION = 300; // 5분 = 300초
+
   // 두 번째 단계 입력 필드
   const [name, setName] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
@@ -254,7 +258,10 @@ export default function SignUpForm({ onSubmit }) {
 
       console.log('인증번호 전송 (회원가입)');
       setIsVerificationSent(true);
-      setCountdown(300); // 5분
+      const startTime = Date.now();
+      setCountdown(COUNTDOWN_DURATION);
+      // localStorage에 시작 시간 저장
+      localStorage.setItem(COUNTDOWN_STORAGE_KEY, startTime.toString());
       setVerificationStatus(null);
     } catch (error) {
       console.error('인증번호 전송 실패:', error);
@@ -280,6 +287,8 @@ export default function SignUpForm({ onSubmit }) {
 
       console.log('인증번호 확인 (회원가입)');
       setVerificationStatus('success');
+      // 인증 성공 시 localStorage에서 카운트다운 제거
+      localStorage.removeItem(COUNTDOWN_STORAGE_KEY);
     } catch (error) {
       console.error('인증번호 확인 실패:', error);
       const errorResponse = error?.response?.data;
@@ -294,15 +303,46 @@ export default function SignUpForm({ onSubmit }) {
     }
   };
 
-  // 카운트다운 타이머
+  // 컴포넌트 마운트 시 localStorage에서 카운트다운 복원
   useEffect(() => {
-    if (countdown > 0) {
+    const savedStartTime = localStorage.getItem(COUNTDOWN_STORAGE_KEY);
+    if (savedStartTime) {
+      const startTime = parseInt(savedStartTime, 10);
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const remaining = Math.max(0, COUNTDOWN_DURATION - elapsed);
+
+      if (remaining > 0) {
+        setIsVerificationSent(true);
+        setCountdown(remaining);
+      } else {
+        // 만료된 경우 localStorage에서 제거
+        localStorage.removeItem(COUNTDOWN_STORAGE_KEY);
+      }
+    }
+  }, []);
+
+  // 카운트다운 타이머 - localStorage의 시작 시간을 기준으로 계산
+  useEffect(() => {
+    if (isVerificationSent) {
       const timer = setInterval(() => {
-        setCountdown((prev) => prev - 1);
+        const savedStartTime = localStorage.getItem(COUNTDOWN_STORAGE_KEY);
+        if (savedStartTime) {
+          const startTime = parseInt(savedStartTime, 10);
+          const elapsed = Math.floor((Date.now() - startTime) / 1000);
+          const remaining = Math.max(0, COUNTDOWN_DURATION - elapsed);
+
+          setCountdown(remaining);
+
+          if (remaining <= 0) {
+            localStorage.removeItem(COUNTDOWN_STORAGE_KEY);
+          }
+        } else {
+          setCountdown(0);
+        }
       }, 1000);
       return () => clearInterval(timer);
     }
-  }, [countdown]);
+  }, [isVerificationSent]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -454,6 +494,7 @@ export default function SignUpForm({ onSubmit }) {
             required={true}
             hideToggle={false}
             defaultShowPassword={false}
+            isSuccess={passwordTouched && signupPassword && isValidPassword(signupPassword)}
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
             <p
@@ -480,6 +521,11 @@ export default function SignUpForm({ onSubmit }) {
             mb="mb-0"
             required
             defaultShowPassword={false}
+            isSuccess={
+              confirmPassword &&
+              isValidPassword(signupPassword) &&
+              signupPassword === confirmPassword
+            }
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>
             {confirmPassword &&

@@ -12,7 +12,7 @@ function LabelBlahMarquee({ type = '1' }) {
 
   // 텍스트 설정
   const text = 'LIKELION';
-  const fontSize = `${(64 / 16) * scale}rem`; // 크기 증가 (32 -> 48)
+  const fontSize = `${(120 / 16) * scale}rem`; // 크기 증가 (32 -> 48)
   const letterSpacing = `${(7 / 16) * scale}rem`;
 
   return (
@@ -34,15 +34,16 @@ function LabelBlahMarquee({ type = '1' }) {
 
       {/* 전광판 텍스트 - SVG 안에 오버레이 */}
       <div
-        className="absolute inset-0"
+        className="absolute"
         style={{
           display: 'flex',
           alignItems: 'flex-end',
           justifyContent: 'flex-start',
           overflow: 'hidden',
-          marginLeft: type === '1' ? `${(50 / 16) * scale}rem` : `${(80 / 16) * scale}rem`,
-          marginRight: type === '1' ? `${(50 / 16) * scale}rem` : `${(80 / 16) * scale}rem`,
-          paddingBottom: `${(5 / 16) * scale}rem`,
+          left: type === '1' ? `${(50 / 16) * scale}rem` : `${(80 / 16) * scale}rem`,
+          right: type === '1' ? `${(50 / 16) * scale}rem` : `${(80 / 16) * scale}rem`,
+          bottom: `${(-20 / 16) * scale}rem`,
+          top: 'auto',
         }}
       >
         <div
@@ -55,7 +56,7 @@ function LabelBlahMarquee({ type = '1' }) {
           }
           style={{
             display: 'inline-flex',
-            fontFamily: 'pixel, monospace',
+            fontFamily: 'Bytebounce, pixel',
             fontSize: fontSize,
             color: '#00156A',
             fontWeight: 'bold',
