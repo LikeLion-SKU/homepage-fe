@@ -17,7 +17,7 @@ function CardContent({ description }) {
 
     // padding 값 계산
     const pad = isMobile ? 20 : isTablet ? 50 : 24;
-    const padX = isMobile ? 20 : isTablet ? 0 : 24;
+    const padX = isMobile ? 35 : isTablet ? 0 : 24;
 
     return (
       <div
@@ -40,7 +40,7 @@ function CardContent({ description }) {
           className={`font-['Pretendard',_-apple-system,_BlinkMacSystemFont,_'system-ui',_sans-serif] font-medium text-[#1a1a1a] leading-[160%] text-left ${isTablet ? 'break-normal' : 'break-words'}`}
           style={{
             fontSize: isMobile
-              ? `${(35 / 16) * scale}rem`
+              ? `${(40 / 16) * scale}rem`
               : isPad
                 ? `${(25.5 / 16) * scale}rem`
                 : isTablet

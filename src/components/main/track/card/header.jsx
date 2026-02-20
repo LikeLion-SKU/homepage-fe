@@ -20,12 +20,12 @@ function CardHeader({ title, onHeaderClick }) {
       onClick={onHeaderClick}
       style={{
         padding: isMobile
-          ? `${(35 / 16) * scale}rem ${(28 / 16) * scale}rem`
+          ? `${(50 / 16) * scale}rem ${(38 / 16) * scale}rem`
           : isTablet || isMedium
             ? `${(24 / 16) * scale}rem ${(28 / 16) * scale}rem`
             : `${(16 / 16) * scale}rem ${(22 / 16) * scale}rem`,
         gap: isMobile
-          ? `${(28 / 16) * scale}rem`
+          ? `${(38 / 16) * scale}rem`
           : isTablet || isMedium
             ? `${(20 / 16) * scale}rem`
             : `${(14 / 16) * scale}rem`,
@@ -36,7 +36,7 @@ function CardHeader({ title, onHeaderClick }) {
         onClick={onHeaderClick}
         style={{
           // 가로 길이를 더 늘려 헤더 안 텍스트 영역을 넉넉하게
-          width: `calc(100% - ${isMobile ? (80 / 16) * scale : isTablet || isMedium ? (50 / 16) * scale : (32 / 16) * scale}rem)`,
+          width: `calc(100% - ${isMobile ? (110 / 16) * scale : isTablet || isMedium ? (50 / 16) * scale : (32 / 16) * scale}rem)`,
           maxWidth: `${
             isMobile
               ? (800 / 16) * scale
@@ -48,9 +48,9 @@ function CardHeader({ title, onHeaderClick }) {
                     ? (400 / 16) * scale
                     : (380 / 16) * scale
           }rem`,
-          height: `${isMobile ? (80 / 16) * scale : isTablet || isMedium ? (50 / 16) * scale : (40 / 16) * scale}rem`,
+          height: `${isMobile ? (110 / 16) * scale : isTablet || isMedium ? (50 / 16) * scale : (40 / 16) * scale}rem`,
           left: `${isMobile ? (70 / 16) * scale : isTablet || isMedium ? (30 / 16) * scale : (23 / 16) * scale}rem`,
-          top: `${isMobile ? (35 / 16) * scale : isTablet || isMedium ? (24 / 16) * scale : (16 / 16) * scale}rem`,
+          top: `${isMobile ? (50 / 16) * scale : isTablet || isMedium ? (24 / 16) * scale : (16 / 16) * scale}rem`,
           zIndex: 1,
         }}
       />
@@ -58,10 +58,10 @@ function CardHeader({ title, onHeaderClick }) {
         className="bg-[#c6e400] flex items-center justify-center flex-shrink-0 relative border border-[#686868] cursor-pointer"
         onClick={onHeaderClick}
         style={{
-          padding: `${isMobile ? (10 / 16) * scale : isTablet || isMedium ? (12 / 16) * scale : (8 / 16) * scale}rem`,
-          width: `${isMobile ? (80 / 16) * scale : isTablet || isMedium ? (50 / 16) * scale : (40 / 16) * scale}rem`,
-          height: `${isMobile ? (80 / 16) * scale : isTablet || isMedium ? (50 / 16) * scale : (40 / 16) * scale}rem`,
-          marginLeft: isMobile ? `${(40 / 16) * scale}rem` : '0',
+          padding: `${isMobile ? (14 / 16) * scale : isTablet || isMedium ? (12 / 16) * scale : (8 / 16) * scale}rem`,
+          width: `${isMobile ? (110 / 16) * scale : isTablet || isMedium ? (50 / 16) * scale : (40 / 16) * scale}rem`,
+          height: `${isMobile ? (110 / 16) * scale : isTablet || isMedium ? (50 / 16) * scale : (40 / 16) * scale}rem`,
+          marginLeft: isMobile ? `${(34 / 16) * scale}rem` : '0',
           zIndex: 2,
         }}
       >
@@ -70,15 +70,15 @@ function CardHeader({ title, onHeaderClick }) {
           alt="arrow"
           className="brightness-[0.3] saturate-0"
           style={{
-            width: `${isMobile ? (40 / 16) * scale : isPad ? (35 / 16) * scale : isTablet || isMedium ? (30 / 16) * scale : (24 / 16) * scale}rem`,
-            height: `${isMobile ? (42 / 16) * scale : isPad ? (30 / 16) * scale : isTablet || isMedium ? (26 / 16) * scale : (18 / 16) * scale}rem`,
+            width: `${isMobile ? (55 / 16) * scale : isPad ? (35 / 16) * scale : isTablet || isMedium ? (30 / 16) * scale : (24 / 16) * scale}rem`,
+            height: `${isMobile ? (58 / 16) * scale : isPad ? (30 / 16) * scale : isTablet || isMedium ? (26 / 16) * scale : (18 / 16) * scale}rem`,
           }}
         />
       </div>
       <span
         className="font-['Pretendard',_-apple-system,_BlinkMacSystemFont,_'system-ui',_sans-serif] font-bold text-[var(--color-navy-blue)] uppercase relative"
         style={{
-          fontSize: `${isMobile ? (40 / 16) * scale : isPad ? (26 / 16) * scale : isTablet || isMedium ? (22 / 16) * scale : (18 / 16) * scale}rem`,
+          fontSize: `${isMobile ? (45 / 16) * scale : isPad ? (26 / 16) * scale : isTablet || isMedium ? (22 / 16) * scale : (18 / 16) * scale}rem`,
           letterSpacing: `${isMobile ? (0.6 / 16) * scale : isTablet || isMedium ? (0.6 / 16) * scale : (0.5 / 16) * scale}rem`,
           zIndex: 2,
         }}
