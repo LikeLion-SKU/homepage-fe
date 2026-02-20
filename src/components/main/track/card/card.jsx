@@ -30,7 +30,7 @@ function Card({ title, description, image = null }) {
   const isTablet = useMediaQuery('(min-width: 481px) and (max-width: 1199px)');
   const isMobile760 = useMediaQuery('(max-width: 760px)');
   const isBelow1199 = useMediaQuery('(max-width: 1199px)');
-  const isPad = useMediaQuery('(min-width: 376px) and (max-width: 759px)');
+  const isPad = useMediaQuery('(min-width: 481px) and (max-width: 760px)');
 
   // title에서 트랙 추출
   const getTrackType = () => {
@@ -231,9 +231,15 @@ function Card({ title, description, image = null }) {
         className="w-full border flex flex-col bg-[#FAFBF8] relative overflow-hidden cursor-pointer"
         style={{
           aspectRatio: isMobile ? '3/4' : undefined,
-          height: isMobile ? undefined : isTablet ? `${(370 / 16) * scale}rem` : '100%',
+          height: isMobile
+            ? undefined
+            : isPad
+              ? `${(450 / 16) * scale}rem`
+              : isTablet
+                ? `${(370 / 16) * scale}rem`
+                : '100%',
           maxWidth: isPad
-            ? `${(1500 / 16) * scale}rem`
+            ? `${(1300 / 16) * scale}rem`
             : isTablet
               ? `${(780 / 16) * scale}rem`
               : undefined,

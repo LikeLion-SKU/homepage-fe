@@ -3,8 +3,9 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 
 function CardContent({ description }) {
   const scale = useScale();
-  const isMobile = useMediaQuery('(max-width: 480px)');
-  const isTablet = useMediaQuery('(min-width: 481px) and (max-width: 1199px)');
+  const isMobile = useMediaQuery('(max-width: 479px)');
+  const isTablet = useMediaQuery('(min-width: 760px) and (max-width: 1199px)');
+  const isPad = useMediaQuery('(min-width: 480px) and (max-width: 759px)');
 
   if (!description) {
     return null;
@@ -40,9 +41,11 @@ function CardContent({ description }) {
           style={{
             fontSize: isMobile
               ? `${(35 / 16) * scale}rem`
-              : isTablet
-                ? `${(17.5 / 16) * scale}rem`
-                : `${(16 / 16) * scale}rem`,
+              : isPad
+                ? `${(25.5 / 16) * scale}rem`
+                : isTablet
+                  ? `${(17.5 / 16) * scale}rem`
+                  : `${(16 / 16) * scale}rem`,
             paddingLeft: isMobile ? `${(30 / 16) * scale}rem` : '0',
             wordBreak: isTablet ? 'normal' : 'break-word',
             overflowWrap: isTablet ? 'normal' : 'break-word',

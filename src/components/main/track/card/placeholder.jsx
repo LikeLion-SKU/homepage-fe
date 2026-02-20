@@ -3,8 +3,8 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 
 function CardPlaceholder({ image }) {
   const scale = useScale();
-  const isMobile = useMediaQuery('(max-width: 480px)');
-  const isTablet = useMediaQuery('(min-width: 481px) and (max-width: 1199px)');
+  const isMobile = useMediaQuery('(max-width: 479px)');
+  const isTablet = useMediaQuery('(min-width: 761px) and (max-width: 1199px)');
 
   return (
     <div
@@ -26,8 +26,8 @@ function CardPlaceholder({ image }) {
               : isMobile
                 ? 'translate(-50%, -50%)'
                 : 'translate(-50%, -50%)',
-            width: isMobile ? '60%' : isTablet ? '55%' : '88%',
-            height: isMobile ? '60%' : isTablet ? '55%' : '88%',
+            width: isMobile ? '60%' : isTablet ? '55%' : '82%',
+            height: isMobile ? '60%' : isTablet ? '55%' : '82%',
           }}
         />
       )}
