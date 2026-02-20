@@ -35,11 +35,11 @@ export default function ProjectDetailCard({ data, imgNum, setImgNum }) {
   const handleLeft = `${(imgNum / imgCount) * 100}%`;
 
   return (
-    <div className="relative w-full max-w-77 pad:max-w-159 web:max-w-285 z-2 flex flex-col bg-[#F9F9F9] py-7 pad:py-7 web:py-10 px-5 pad:px-5 web:px-8 gap-10 rounded-3xl shadow-[0_0_9px_0_rgba(0,0,0,0.25)]">
-      <img src={imgUrl} className="h-40 pad:h-84 web:h-151 bg-[#D9D9D9]" />
+    <div className="relative w-full max-w-81 pad:max-w-159 web:max-w-285 z-2 flex flex-col bg-[#F9F9F9] py-7 pad:py-7 web:py-10 px-3 pad:px-5 web:px-8 gap-3 pad:gap-10 rounded-3xl shadow-[0_0_9px_0_rgba(0,0,0,0.25)]">
+      <img src={imgUrl} className="bg-[#D9D9D9] object-contain" />
 
       <div className="flex flex-col gap-3">
-        <div className="flex justify-between flex-wrap-reverse">
+        <div className="flex justify-between flex-wrap-reverse gap-3">
           <p className="text-[1.1rem] pad:text-[1.5rem] web:text-[2rem] font-bold">{data?.title}</p>
           <div className="flex gap-4 pad:gap-7 web:gap-12 items-center">
             <div className="flex pl-2 w-33 pad:w-70 web:w-93 h-3 pad:h-4 web:h-5 bg-[#00156A] items-center overflow-hidden">
