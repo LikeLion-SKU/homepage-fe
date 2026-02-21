@@ -78,7 +78,7 @@ function ClickCursor({ cursorRef }) {
             ease: 'linear',
           }}
         >
-          CLICK
+          DRAG
         </motion.span>
         <motion.span
           className="awards-click-cursor-arrow awards-click-cursor-arrow-right"
