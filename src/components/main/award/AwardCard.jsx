@@ -14,8 +14,8 @@ function AwardCard({ title, image }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        width: `${(699 / 16) * scale * (isMobile480 ? 1.6 : 1)}rem`,
-        height: `${(393 / 16) * scale * (isMobile480 ? 1.6 : 1)}rem`,
+        width: `${(699 / 16) * scale * (isMobile480 ? 1.7 : 1)}rem`,
+        height: `${(393 / 16) * scale * (isMobile480 ? 1.7 : 1)}rem`,
         marginRight: `${(35 / 16) * scale}rem`,
         padding: isHovered ? `${(5 / 16) * scale}rem` : '0',
         background: isHovered
