@@ -17,6 +17,7 @@ export default function PasswordInput({
   disabled = false,
   defaultShowPassword = true,
   isSuccess = false,
+  isError = false,
 }) {
   const [showPassword, setShowPassword] = useState(defaultShowPassword);
 
@@ -67,7 +68,7 @@ export default function PasswordInput({
             onBlur={onBlur}
             placeholder={placeholder}
             disabled={disabled}
-            className={`w-full px-3 sm:px-4 max-[480px]:px-2.5 py-2.5 sm:py-3 max-[480px]:py-2 ${disabled ? 'bg-[#F5F5F5]' : 'bg-[#FAFBF8]'} border border-[1px] ${isSuccess ? 'border-[#1A1A1A]' : 'border-[#B0B0B0]'} ${disabled ? 'text-[#D3D3D3]' : 'text-black'} text-sm sm:text-base max-[480px]:text-xs font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed ${hideToggle ? 'pr-3 sm:pr-4 max-[480px]:pr-2.5' : 'pr-35'}`}
+            className={`w-full px-3 sm:px-4 max-[480px]:px-2.5 py-2.5 sm:py-3 max-[480px]:py-2 ${disabled ? 'bg-[#F5F5F5]' : 'bg-[#FAFBF8]'} border border-[1px] ${isSuccess || isError ? 'border-[#1A1A1A]' : 'border-[#B0B0B0]'} ${disabled ? 'text-[#D3D3D3]' : 'text-black'} text-sm sm:text-base max-[480px]:text-xs font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed ${hideToggle ? 'pr-3 sm:pr-4 max-[480px]:pr-2.5' : 'pr-35'}`}
             style={{
               minWidth: 0,
               height: isMobile

@@ -30,6 +30,7 @@ export default function LoginForm({ onSubmit, isLoading = false }) {
           placeholder=""
           mb="mb-2"
           defaultShowPassword={false}
+          isSuccess={!!password}
         />
         <ForgotPasswordLink />
         <div className="w-full">

@@ -206,6 +206,7 @@ export default function PasswordFindForm({ onSubmit }) {
             mb="mb-0"
             maxWidth="max-w-full sm:max-w-[600px]"
             disabled={!isVerificationSent || verificationStatus === 'success'}
+            isError={verificationStatus === 'error'}
             rightButton={
               <VerificationButton
                 onClick={handleVerificationCheck}
@@ -223,7 +224,9 @@ export default function PasswordFindForm({ onSubmit }) {
                 style={{ transform: 'translateY(4px)' }}
               >
                 <div className="text-[#FF7D56] text-sm text-left font-['Pretendard'] ml-0">
-                  {countdown === 0 && '입력 시간이 만료되었습니다.'}
+                  {countdown === 0 &&
+                    verificationStatus !== 'success' &&
+                    '입력 시간이 만료되었습니다.'}
                 </div>
                 <div className="text-[#B0B0B0] text-sm text-right font-['Pretendard'] ml-3">
                   입력대기시간: {formatTime(countdown)}
