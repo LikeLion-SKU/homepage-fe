@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
-import { getUserRole, myPageLoader } from '@/api/userApi';
+import { getUserRole } from '@/api/userApi';
 import Logo from '@/assets/icons/Logo_icon.png';
 //@ts-ignore
 import Hamberger from '@/assets/icons/hambergerBar_icon.svg?react';
@@ -12,13 +12,17 @@ import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { useIsPhone } from '@/hooks/useIsPhone';
 import useAuthStore from '@/store/useAuthStore';
 
-export default function Header({ handleSideBar, showResult }) {
+export default function Header({
+  handleSideBar,
+  showResult,
+  isDocumentSubmitted,
+  interviewScheduleConfirmed,
+}) {
   const navigate = useNavigate();
   const isDesktop = useIsDesktop();
   const isPhone = useIsPhone();
   const isLogin = useAuthStore((state) => state.isLoggedIn);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [isDocumentSubmitted, setIsDocumentSubmitted] = useState(false);
 
   const clickMenu = (menu) => {
     navigate(menu);
@@ -28,14 +32,12 @@ export default function Header({ handleSideBar, showResult }) {
     const showAdmin = async () => {
       if (isLogin) {
         const userRole = await getUserRole();
-        const { documentSubmitted } = await myPageLoader();
 
         if (userRole === 'ADMIN') {
           setIsAdmin(true);
         } else {
           setIsAdmin(false);
         }
-        setIsDocumentSubmitted(documentSubmitted);
       }
     };
     showAdmin();
@@ -50,7 +52,7 @@ export default function Header({ handleSideBar, showResult }) {
         }}
         className="flex items-center justify-center text-[1.1rem] font-bold web:border-r cursor-pointer"
       >
-        <img src={Logo} className="w-11 h-11 pad:w-18 pad:h-18 web:w-23 web:h-23" />
+        <img src={Logo} className="w-18 h-18 pad:w-20 pad:h-20 web:w-23 web:h-23" />
         {isDesktop && <p className="mr-15">멋쟁이사자처럼 서경대학교</p>}
       </div>
 
@@ -65,7 +67,7 @@ export default function Header({ handleSideBar, showResult }) {
                 관리자
               </button>
             )}
-            {showResult && isDocumentSubmitted && (
+            {showResult && isDocumentSubmitted && interviewScheduleConfirmed && (
               <button onClick={() => navigate('/result/notice', { state: { fromA: true } })}>
                 <motion.span
                   className="font-bold bg-clip-text text-transparent block"

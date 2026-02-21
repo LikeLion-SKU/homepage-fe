@@ -163,3 +163,13 @@ export const myPageLoader = async () => {
     return []; // 에러 두번 던짐
   }
 };
+
+export const getApplicationStatus = async () => {
+  try {
+    const response = await APIService.private.get('/v1/users/application-status');
+    return response.data || {}; // 응답 없어도 기본값 보장
+  } catch (error) {
+    console.log('지원 상태 조회 실패:', error);
+    throw error;
+  }
+};

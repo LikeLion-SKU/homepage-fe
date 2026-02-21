@@ -13,7 +13,13 @@ function ModalTitleBar({
   onClose,
   scale = 1,
   isTrackModal = false,
+  variantCount = 1,
 }) {
+  const isMobile480 = typeof window !== 'undefined' && window.innerWidth <= 480;
+  const isSafari =
+    typeof window !== 'undefined' &&
+    /^((?!chrome|android).)*safari/i.test(navigator.userAgent) &&
+    navigator.vendor.includes('Apple');
   return (
     <>
       {/* 좌측 상단 화살표 아이콘 */}
@@ -23,7 +29,15 @@ function ModalTitleBar({
           gap: 0,
           display: 'inline-flex',
           top: `${(26 / 16) * scale}rem`,
-          left: `${(20 / 16) * scale}rem`,
+          left: isMobile480
+            ? isTrackModal
+              ? `${(23 / 16) * scale}rem`
+              : isSafari && variantCount === 2
+                ? `${(20 / 16) * scale}rem`
+                : isSafari
+                  ? `${(6 / 16) * scale}rem`
+                  : `${(15 / 16) * scale}rem`
+            : `${(20 / 16) * scale}rem`,
           zIndex: 100,
           pointerEvents: 'auto',
         }}
@@ -37,17 +51,32 @@ function ModalTitleBar({
             backgroundColor: 'transparent',
             cursor: 'pointer',
             pointerEvents: 'auto',
-            padding: `${(12 / 16) * scale * boxSize}rem`,
-            minWidth: `${(56 / 16) * scale * boxSize}rem`,
-            minHeight: `${(40 / 16) * scale * boxSize}rem`,
+            padding:
+              isMobile480 && isTrackModal
+                ? `${(8 / 16) * scale * boxSize}rem`
+                : `${(12 / 16) * scale * boxSize}rem`,
+            minWidth:
+              isMobile480 && isTrackModal
+                ? `${(30 / 16) * scale * boxSize}rem`
+                : `${(56 / 16) * scale * boxSize}rem`,
+            minHeight:
+              isMobile480 && isTrackModal
+                ? `${(30 / 16) * scale * boxSize}rem`
+                : `${(40 / 16) * scale * boxSize}rem`,
           }}
         >
           <img
             src={rightIcon}
             alt="arrow"
             style={{
-              width: `${(32 / 16) * scale * boxSize}rem`,
-              height: `${(16 / 16) * scale * boxSize}rem`,
+              width:
+                isMobile480 && isTrackModal
+                  ? `${(24 / 16) * scale * boxSize}rem`
+                  : `${(32 / 16) * scale * boxSize}rem`,
+              height:
+                isMobile480 && isTrackModal
+                  ? `${(14 / 16) * scale * boxSize}rem`
+                  : `${(16 / 16) * scale * boxSize}rem`,
             }}
           />
         </div>
@@ -70,9 +99,14 @@ function ModalTitleBar({
             justifyContent: 'center',
             backgroundColor: '#C6E400',
             width: isTrackModal
-              ? `${(76 / 16) * scale * boxSize}rem`
+              ? isMobile480
+                ? `${(30 / 16) * scale * boxSize}rem`
+                : `${(76 / 16) * scale * boxSize}rem`
               : `${(48 / 16) * scale * boxSize}rem`,
-            height: `${(21 / 16) * scale * boxSize}rem`,
+            height:
+              isMobile480 && isTrackModal
+                ? `${(15 / 16) * scale * boxSize}rem`
+                : `${(21 / 16) * scale * boxSize}rem`,
             borderRadius: `${(32 / 16) * scale * boxSize}rem 0 0 ${(32 / 16) * scale * boxSize}rem`,
           }}
         />
@@ -83,9 +117,14 @@ function ModalTitleBar({
             justifyContent: 'center',
             backgroundColor: '#1928B0',
             width: isTrackModal
-              ? `${(76 / 16) * scale * boxSize}rem`
+              ? isMobile480
+                ? `${(30 / 16) * scale * boxSize}rem`
+                : `${(76 / 16) * scale * boxSize}rem`
               : `${(48 / 16) * scale * boxSize}rem`,
-            height: `${(21 / 16) * scale * boxSize}rem`,
+            height:
+              isMobile480 && isTrackModal
+                ? `${(15 / 16) * scale * boxSize}rem`
+                : `${(21 / 16) * scale * boxSize}rem`,
             borderRadius: `0 ${(32 / 16) * scale * boxSize}rem ${(32 / 16) * scale * boxSize}rem 0`,
           }}
         />
@@ -125,24 +164,45 @@ function ModalTitleBar({
               src={rightIcon}
               alt="arrow"
               style={{
-                width: `${(32 / 16) * scale * boxSize}rem`,
-                height: `${(16 / 16) * scale * boxSize}rem`,
+                width:
+                  isMobile480 && isTrackModal
+                    ? `${(24 / 16) * scale * boxSize}rem`
+                    : `${(32 / 16) * scale * boxSize}rem`,
+                height:
+                  isMobile480 && isTrackModal
+                    ? `${(12 / 16) * scale * boxSize}rem`
+                    : `${(16 / 16) * scale * boxSize}rem`,
               }}
             />
           </div>
           <span
             className="font-bold uppercase relative"
             style={{
-              fontSize: `${(18 / 16) * scale * boxSize}rem`,
+              fontSize:
+                isMobile480 && isTrackModal
+                  ? `${(13 / 16) * scale * boxSize}rem`
+                  : `${(18 / 16) * scale * boxSize}rem`,
               color: '#080808',
               fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: `${(80 / 16) * scale * boxSize}rem`,
-              height: `${(38 / 16) * scale * boxSize}rem`,
-              paddingLeft: `${(12 / 16) * scale * boxSize}rem`,
-              paddingRight: `${(12 / 16) * scale * boxSize}rem`,
+              width:
+                isMobile480 && isTrackModal
+                  ? `${(60 / 16) * scale * boxSize}rem`
+                  : `${(80 / 16) * scale * boxSize}rem`,
+              height:
+                isMobile480 && isTrackModal
+                  ? `${(28 / 16) * scale * boxSize}rem`
+                  : `${(38 / 16) * scale * boxSize}rem`,
+              paddingLeft:
+                isMobile480 && isTrackModal
+                  ? `${(12 / 16) * scale * boxSize}rem`
+                  : `${(12 / 16) * scale * boxSize}rem`,
+              paddingRight:
+                isMobile480 && isTrackModal
+                  ? `${(8 / 16) * scale * boxSize}rem`
+                  : `${(12 / 16) * scale * boxSize}rem`,
               overflow: 'visible',
               whiteSpace: 'nowrap',
             }}
@@ -150,26 +210,52 @@ function ModalTitleBar({
             <span
               style={{
                 position: 'absolute',
-                left: `${(-33 / 16) * scale * boxSize}rem`,
+                left:
+                  isMobile480 && isTrackModal
+                    ? `${(-25 / 16) * scale * boxSize}rem`
+                    : `${(-33 / 16) * scale * boxSize}rem`,
                 top: 0,
-                width: isTrackModal
-                  ? `${(160 / 16) * scale * boxSize}rem`
-                  : `${(95 / 16) * scale * boxSize}rem`,
-                height: `${(42 / 16) * scale * boxSize}rem`,
+                width:
+                  isMobile480 && isTrackModal
+                    ? isTrackModal
+                      ? `${(120 / 16) * scale * boxSize}rem`
+                      : `${(70 / 16) * scale * boxSize}rem`
+                    : isTrackModal
+                      ? `${(160 / 16) * scale * boxSize}rem`
+                      : `${(95 / 16) * scale * boxSize}rem`,
+                height:
+                  isMobile480 && isTrackModal
+                    ? `${(32 / 16) * scale * boxSize}rem`
+                    : `${(42 / 16) * scale * boxSize}rem`,
                 backgroundColor: '#E9E9E9',
-                borderRadius: `${(10 / 16) * scale * boxSize}rem`,
+                borderRadius:
+                  isMobile480 && isTrackModal
+                    ? `${(8 / 16) * scale * boxSize}rem`
+                    : `${(10 / 16) * scale * boxSize}rem`,
                 zIndex: 0,
               }}
             />
             <span
               style={{
                 position: 'absolute',
-                left: `${(-33 / 16) * scale * boxSize}rem`,
+                left:
+                  isMobile480 && isTrackModal
+                    ? `${(-25 / 16) * scale * boxSize}rem`
+                    : `${(-33 / 16) * scale * boxSize}rem`,
                 top: 0,
-                width: `${(38 / 16) * scale * boxSize}rem`,
-                height: `${(42 / 16) * scale * boxSize}rem`,
+                width:
+                  isMobile480 && isTrackModal
+                    ? `${(28 / 16) * scale * boxSize}rem`
+                    : `${(38 / 16) * scale * boxSize}rem`,
+                height:
+                  isMobile480 && isTrackModal
+                    ? `${(32 / 16) * scale * boxSize}rem`
+                    : `${(42 / 16) * scale * boxSize}rem`,
                 backgroundColor: '#00156A',
-                borderRadius: `${(10 / 16) * scale * boxSize}rem`,
+                borderRadius:
+                  isMobile480 && isTrackModal
+                    ? `${(8 / 16) * scale * boxSize}rem`
+                    : `${(10 / 16) * scale * boxSize}rem`,
                 zIndex: 0,
               }}
             />
@@ -177,9 +263,14 @@ function ModalTitleBar({
               style={{
                 position: 'relative',
                 zIndex: 1,
-                transform: isTrackModal
-                  ? `translate(${(25 / 16) * scale * boxSize}rem, ${(2 / 16) * scale * boxSize}rem)`
-                  : `translate(${(-8 / 16) * scale * boxSize}rem, ${(2 / 16) * scale * boxSize}rem)`,
+                transform:
+                  isMobile480 && isTrackModal
+                    ? isTrackModal
+                      ? `translate(${(15 / 16) * scale * boxSize}rem, ${(2 / 16) * scale * boxSize}rem)`
+                      : `translate(${(-5 / 16) * scale * boxSize}rem, ${(2 / 16) * scale * boxSize}rem)`
+                    : isTrackModal
+                      ? `translate(${(25 / 16) * scale * boxSize}rem, ${(2 / 16) * scale * boxSize}rem)`
+                      : `translate(${(-8 / 16) * scale * boxSize}rem, ${(2 / 16) * scale * boxSize}rem)`,
                 whiteSpace: 'nowrap',
               }}
             >

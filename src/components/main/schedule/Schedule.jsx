@@ -10,6 +10,7 @@ import mayIcon from '@/assets/icons/main/schedule/may.svg';
 import novemberIcon from '@/assets/icons/main/schedule/november.svg';
 import octoberIcon from '@/assets/icons/main/schedule/october.svg';
 import sebtemberIcon from '@/assets/icons/main/schedule/sebtember.svg';
+import { useModalScrollLock } from '@/components/main/ModalScroll';
 import MainSectionLayout from '@/components/main/layout';
 import ScheduleModal from '@/components/main/schedule/modal/ScheduleModal';
 import { scheduleMonthData } from '@/components/main/schedule/scheduleModalData';
@@ -34,6 +35,9 @@ function Schedule() {
     setIsModalOpen(false);
     setSelectedMonth(null);
   };
+
+  // 모달이 열릴 때 body 스크롤 막기
+  useModalScrollLock(isModalOpen);
 
   // 현재 선택된 월의 데이터 (배열 형태)
   const currentMonthData = selectedMonth

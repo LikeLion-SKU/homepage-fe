@@ -16,14 +16,14 @@ function ExplainBackground({ children }) {
   const widthRem = (1440 / 16) * scale;
   const minHeightRem = (1358 / 16) * scale;
   const paddingRem = (160 / 16) * scale;
-  const paddingBottomRem = (125 / 16) * scale; // 하단 패딩 (track과의 간격을 위해 증가)
+  const paddingBottomRem = (60 / 16) * scale; // 하단 패딩 (track과의 간격을 위해 증가)
   const backgroundWidthRem = (1453 / 16) * scale;
   const containerPaddingRem = (175 / 16) * scale;
 
   // "IT'S SKU" 텍스트 위치 (임의로 조정 가능)
-  const itsSkuTop = (115 / 16) * scale; // 상단에서의 거리 (기본값: 60px)
+  const itsSkuTop = (90 / 16) * scale; // 상단에서의 거리 (기본값: 60px)
   const itsSkuLeft = (120 / 16) * scale; // 좌측에서의 거리 (기본값: 80px)
-  const itsSkuFontSize = (24 / 16) * scale; // 폰트 크기 (기본값: 24px)
+  const itsSkuFontSize = (40 / 16) * scale; // 폰트 크기 (기본값: 24px -> 36px)
 
   // blah-line 위치 및 크기 (임의로 조정 가능)
   const blahLineTop = 37; // 상단에서의 거리 (% 단위, 기본값: 50% = 중앙)
@@ -53,7 +53,7 @@ function ExplainBackground({ children }) {
         borderTopRightRadius: '20px',
         borderBottomLeftRadius: '0',
         borderBottomRightRadius: '0',
-        overflow: 'hidden',
+        overflow: isMobile440 ? 'visible' : 'hidden',
       }}
     >
       {/* 배경 - black dot pattern 및 이미지 */}
@@ -81,7 +81,7 @@ function ExplainBackground({ children }) {
         style={{
           top: `${itsSkuTop}rem`,
           left: `${itsSkuLeft}rem`,
-          fontFamily: 'pixel, monospace',
+          fontFamily: 'Bytebounce, pixel',
           fontSize: `${itsSkuFontSize}rem`,
           color: '#1C1B1A',
           whiteSpace: 'nowrap',

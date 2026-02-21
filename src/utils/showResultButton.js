@@ -7,7 +7,7 @@ export const showResultButton = async () => {
 
   if (!resultDate || !resultDate.applicationResultAt || !resultDate.finalResultAt) {
     console.warn('진행 중인 지원 일정 데이터가 없습니다.');
-    return false;
+    return { show: false, isFinal: false };
   }
 
   const now = dayjs(); // 현재 시간
@@ -16,11 +16,18 @@ export const showResultButton = async () => {
   const startShow = dayjs(resultDate.applicationResultAt).startOf('day');
 
   // 2. 최종 발표일의 '날짜' 기준 + 7일 뒤의 23:59:59 (그날 전체 포함)
-  const endShow = dayjs(resultDate.finalResultAt).add(7, 'day').endOf('day');
+  const finalResultTime = dayjs(resultDate.finalResultAt);
+
+  const finalResultDisplayStart = dayjs(resultDate.finalResultAt).startOf('day');
+  const finalResultEnd = finalResultTime.add(7, 'day');
 
   // 현재 시간이 시작점보다 같거나 늦고, 끝점보다 같거나 이르면 true
-  return (
-    (now.isAfter(startShow) || now.isSame(startShow)) &&
-    (now.isBefore(endShow) || now.isSame(endShow))
-  );
+  return {
+    show:
+      (now.isAfter(startShow) || now.isSame(startShow)) &&
+      (now.isBefore(finalResultEnd) || now.isSame(finalResultEnd)),
+    isFinal:
+      (now.isAfter(finalResultDisplayStart) || now.isSame(finalResultDisplayStart)) &&
+      now.isBefore(finalResultEnd),
+  };
 };

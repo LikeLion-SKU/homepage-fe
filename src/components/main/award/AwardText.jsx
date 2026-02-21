@@ -10,7 +10,7 @@ function AwardText() {
       className="text-[#1a1a1a] font-medium leading-[180%] text-right"
       style={{
         fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-        fontSize: `${(18 / 15) * scale * (isMobile480 ? 1.3 : 1)}rem`,
+        fontSize: `${(18 / 15) * scale * (isMobile480 ? 1.8 : 1)}rem`,
       }}
     >
       <div style={{ whiteSpace: 'nowrap', display: 'flex', justifyContent: 'flex-end' }}>

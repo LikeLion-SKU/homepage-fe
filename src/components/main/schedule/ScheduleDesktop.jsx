@@ -56,34 +56,88 @@ function ScheduleDesktop({ months, onMonthClick }) {
           zIndex: 30,
         }}
       />
-      {/* 프레임 텍스트 아래 40px에 가로로 나열 */}
-      <div
-        className="flex items-center"
-        style={{
-          marginTop: `${(85 / 16) * scale}rem`,
-          marginLeft: `${(-5 / 16) * scale}rem`,
-          gap: `${(16 / 16) * scale}rem`,
-        }}
-      >
-        <img
-          src={doteSIcon}
-          alt="dote-s"
-          className="h-auto"
+      {/* scheduleBlahIcon을 제외한 모든 SVG를 한꺼번에 오른쪽으로 이동 */}
+      <div style={{ position: 'relative', left: `${(30 / 16) * scale}rem` }}>
+        {/* dot-square 아이콘 독립적으로 배치 */}
+        <div
           style={{
-            width: `${(75 / 16) * scale}rem`,
-            marginRight: `${(65 / 16) * scale}rem`,
+            position: 'absolute',
+            left: `${(-50 / 16) * scale}rem`,
+            top: `${(0 / 16) * scale}rem`, // 85 + 2
           }}
-        />
-        <img
-          src={doteM2Icon}
-          alt="dote-m2"
-          className="h-auto"
+        >
+          <img
+            src={dotSquareIcon}
+            alt="dot-square"
+            style={{
+              width: `${(60 / 16) * scale}rem`,
+              height: `${(60 / 16) * scale}rem`,
+            }}
+          />
+        </div>
+        {/* doteS 아이콘 독립적으로 배치 */}
+        <div
           style={{
-            width: `${(240 / 16) * scale}rem`,
-            marginLeft: `${(25 / 16) * scale}rem`,
+            position: 'absolute',
+            left: `${(15 / 16) * scale}rem`,
+            top: `${(0 / 16) * scale}rem`, // 85 - 2
           }}
-        />
-        <div className="relative group" style={{ marginRight: `${(12 / 16) * scale}rem` }}>
+        >
+          <img
+            src={doteSIcon}
+            alt="dote-s"
+            style={{
+              width: `${(80 / 16) * scale}rem`,
+            }}
+          />
+        </div>
+        {/* march 아이콘 독립적으로 배치 */}
+        <div
+          className="absolute group"
+          style={{
+            left: `${(125 / 16) * scale}rem`,
+            top: `${(-2 / 16) * scale}rem`,
+            width: `${(100 / 16) * scale}rem`,
+            height: `${(100 / 16) * scale}rem`,
+          }}
+        >
+          <ClickBox
+            scale={scale}
+            offsetXPx={CLICKBOX_OFFSET['3월'].x}
+            offsetYPx={CLICKBOX_OFFSET['3월'].y}
+          />
+          <img
+            src={marchIcon}
+            alt="march"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('3월')}
+          />
+        </div>
+        {/* doteM2 3월 옆 아이콘 독립적으로 배치 */}
+        <div
+          style={{
+            position: 'absolute',
+            left: `${(220 / 16) * scale}rem`,
+            top: `${(3 / 16) * scale}rem`, // 85 - 45
+          }}
+        >
+          <img
+            src={doteM2Icon}
+            alt="dote-m2"
+            style={{
+              width: `${(255 / 16) * scale}rem`,
+            }}
+          />
+        </div>
+        {/* april 아이콘 독립적으로 배치 */}
+        <div
+          className="group"
+          style={{
+            position: 'absolute',
+            left: `${(490 / 16) * scale}rem`, // -5 + 30 + 80 + 75 + 240 + 25
+            top: `${(0 / 16) * scale}rem`,
+          }}
+        >
           <ClickBox
             scale={scale}
             offsetXPx={CLICKBOX_OFFSET['4월'].x}
@@ -100,55 +154,157 @@ function ScheduleDesktop({ months, onMonthClick }) {
             }}
           />
         </div>
-        <img
-          src={doteM5Icon}
-          alt="dote-m5"
-          className="h-auto"
+        {/* doteM5 4월 옆 아이콘 독립적으로 배치 */}
+        <div
           style={{
-            width: `${(300 / 16) * scale}rem`,
-            marginRight: `${(-6 / 16) * scale}rem`,
+            position: 'absolute',
+            left: `${(580 / 16) * scale}rem`,
+            top: `${(7 / 16) * scale}rem`, // 85 - 43
+          }}
+        >
+          <img
+            src={doteM5Icon}
+            alt="dote-m5"
+            style={{
+              width: `${(300 / 16) * scale}rem`,
+            }}
+          />
+
+          {/* may 아이콘 독립적으로 배치 */}
+          <div
+            className="absolute group"
+            style={{
+              left: `${(290 / 16) * scale}rem`, // doteM5Icon 위치 계산
+              top: `${(-40 / 16) * scale}rem`,
+              width: `${(100 / 16) * scale}rem`,
+              height: `${(100 / 16) * scale}rem`,
+              zIndex: 10,
+              pointerEvents: 'auto',
+            }}
+          >
+            <ClickBox
+              scale={scale}
+              offsetXPx={CLICKBOX_OFFSET['5월'].x}
+              offsetYPx={CLICKBOX_OFFSET['5월'].y}
+            />
+            <img
+              src={mayIcon}
+              alt="may"
+              className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+              onClick={() => onMonthClick('5월')}
+            />
+          </div>
+          {/* dote-c5 아이콘 독립적으로 배치 */}
+          <img
+            src={doteC5Icon}
+            alt="dote-c5"
+            className="absolute h-auto"
+            style={{
+              width: `${(300 / 16) * scale}rem`,
+              left: `${(235 / 16) * scale}rem`,
+              top: `${(0 / 16) * scale}rem`,
+            }}
+          />
+        </div>
+        {/* june 아이콘 독립적으로 배치 */}
+        <div
+          className="absolute group"
+          style={{
+            left: `${(715 / 16) * scale}rem`, // doteM3Icon 위치 계산
+            top: `${(105 / 16) * scale}rem`, // marginTop(5) + marginTop(-100)
+            width: `${(100 / 16) * scale}rem`,
+            height: `${(100 / 16) * scale}rem`,
+          }}
+        >
+          <ClickBox
+            scale={scale}
+            offsetXPx={CLICKBOX_OFFSET['6월'].x}
+            offsetYPx={CLICKBOX_OFFSET['6월'].y}
+          />
+          <img
+            src={juneIcon}
+            alt="june"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('6월')}
+          />
+        </div>
+        {/* doteM3 7월 옆 아이콘 독립적으로 배치 */}
+        <div
+          style={{
+            position: 'absolute',
+            left: `${(410 / 16) * scale}rem`,
+            top: `${(140 / 16) * scale}rem`, // 더 위로 이동
+          }}
+        >
+          <img
+            src={doteM3Icon}
+            alt="dote-m3"
+            className="h-auto"
+            style={{
+              width: `${(270 / 16) * scale}rem`,
+            }}
+          />
+        </div>
+        {/* july 아이콘 독립적으로 배치 */}
+        <div
+          className="absolute group"
+          style={{
+            left: `${(320 / 16) * scale}rem`, // -55 + 350 + 16(gap)
+            top: `${(135 / 16) * scale}rem`, // 5 + 95 - 100
+            width: `${(65 / 16) * scale}rem`,
+            height: `${(65 / 16) * scale}rem`,
+          }}
+        >
+          <ClickBox
+            scale={scale}
+            offsetXPx={CLICKBOX_OFFSET['7월'].x}
+            offsetYPx={CLICKBOX_OFFSET['7월'].y}
+          />
+          <img
+            src={julyIcon}
+            alt="july"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('7월')}
+          />
+        </div>
+        {/* doteC7 아이콘 독립적으로 배치 */}
+        <div
+          style={{
+            position: 'absolute',
+            left: `${(-35 / 16) * scale}rem`,
+            top: `${(163 / 16) * scale}rem`, // 58 + 105
+          }}
+        >
+          <img
+            src={doteC7Icon}
+            alt="dote-c7"
+            className="h-auto"
+            style={{
+              width: `${(350 / 16) * scale}rem`,
+            }}
+          />
+        </div>
+        {/* umbrella 아이콘 독립적으로 배치 (august 왼쪽) */}
+        <img
+          src={umbrellaIcon}
+          alt="umbrella"
+          className="absolute"
+          style={{
+            width: `${(40 / 16) * scale}rem`,
+            height: `${(60 / 16) * scale}rem`,
+            left: `${(-45 / 16) * scale}rem`,
+            top: `${(235 / 16) * scale}rem`,
           }}
         />
-      </div>
-      {/* march, may 높이에서 50px 아래에 가로로 나열 */}
-      <div
-        className="flex items-center"
-        style={{
-          marginTop: `${(5 / 16) * scale}rem`,
-          marginLeft: `${(-55 / 16) * scale}rem`,
-          gap: `${(16 / 16) * scale}rem`,
-        }}
-      >
-        <img
-          src={doteC7Icon}
-          alt="dote-c7"
-          className="h-auto"
+        {/* august 아이콘 독립적으로 배치 */}
+        <div
+          className="group"
           style={{
-            width: `${(350 / 16) * scale}rem`,
-            marginTop: `${(95 / 16) * scale}rem`,
+            position: 'absolute',
+            left: `${(130 / 16) * scale}rem`,
+            top: `${(285 / 16) * scale}rem`, // 85 - 75
           }}
-        />
-        <img
-          src={doteM3Icon}
-          alt="dote-m3"
-          className="h-auto"
-          style={{
-            width: `${(270 / 16) * scale}rem`,
-            marginTop: `${(-113 / 16) * scale}rem`,
-            marginLeft: `${(65 / 16) * scale}rem`,
-          }}
-        />
-      </div>
-      {/* june, july 높이에서 50px 아래에 가로로 나열 */}
-      <div
-        className="flex items-center"
-        style={{
-          marginTop: `${(-75 / 16) * scale}rem`,
-          marginLeft: `${(105 / 16) * scale}rem`,
-          gap: `${(16 / 16) * scale}rem`,
-        }}
-      >
-        <div className="relative group">
+        >
           <ClickBox
             scale={scale}
             offsetXPx={CLICKBOX_OFFSET['8월'].x}
@@ -165,16 +321,31 @@ function ScheduleDesktop({ months, onMonthClick }) {
             }}
           />
         </div>
-        <img
-          src={doteM5Icon}
-          alt="dote-m5"
-          className="h-auto"
+        {/* doteM5 (8월 옆) 아이콘 독립적으로 배치 */}
+        <div
           style={{
-            width: `${(280 / 16) * scale}rem`,
-            marginTop: `${(-15 / 16) * scale}rem`,
+            position: 'absolute',
+            left: `${(225 / 16) * scale}rem`,
+            top: `${(300 / 16) * scale}rem`, // 10 - 75 - 10
           }}
-        />
-        <div className="relative group" style={{ marginLeft: `${(-5 / 16) * scale}rem` }}>
+        >
+          <img
+            src={doteM5Icon}
+            alt="dote-m5"
+            style={{
+              width: `${(295 / 16) * scale}rem`,
+            }}
+          />
+        </div>
+        {/* september 아이콘 독립적으로 배치 */}
+        <div
+          className="group"
+          style={{
+            position: 'absolute',
+            left: `${(530 / 16) * scale}rem`, // 105 + 70 + 280
+            top: `${(285 / 16) * scale}rem`,
+          }}
+        >
           <ClickBox
             scale={scale}
             offsetXPx={CLICKBOX_OFFSET['9월'].x}
@@ -191,273 +362,138 @@ function ScheduleDesktop({ months, onMonthClick }) {
             }}
           />
         </div>
-      </div>
-      {/* august 높이에서 60px 아래에 가로로 나열 */}
-      <div
-        className="flex items-center"
-        style={{
-          marginTop: `${(60 / 16) * scale}rem`,
-          marginLeft: `${(25 / 16) * scale}rem`,
-          gap: `${(16 / 16) * scale}rem`,
-        }}
-      ></div>
-      {/* november 아이콘 독립적으로 배치 */}
-      <div
-        className="absolute group"
-        style={{
-          left: `${(205 / 16) * scale}rem`,
-          top: `${(440 / 16) * scale}rem`,
-          width: `${(100 / 16) * scale}rem`,
-          height: `${(70 / 16) * scale}rem`,
-        }}
-      >
-        <ClickBox
-          scale={scale}
-          offsetXPx={CLICKBOX_OFFSET['11월'].x}
-          offsetYPx={CLICKBOX_OFFSET['11월'].y}
-        />
+        {/* dote-c9 아이콘 독립적으로 배치 */}
         <img
-          src={novemberIcon}
-          alt="november"
-          className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('11월')}
-        />
-      </div>
-      {/* november 높이에서 50px 아래에 가로로 나열 */}
-      <div
-        className="flex items-center"
-        style={{
-          marginTop: `${(52 / 16) * scale}rem`,
-          marginLeft: `${(525 / 16) * scale}rem`,
-          gap: `${(16 / 16) * scale}rem`,
-        }}
-      >
-        <img
-          src={doteLIcon}
-          alt="dote-l"
-          className="h-auto"
+          src={doteC9Icon}
+          alt="dote-c9"
+          className="absolute h-auto"
           style={{
-            width: `${(380 / 16) * scale}rem`,
-            marginTop: `${(103 / 16) * scale}rem`,
+            width: `${(280 / 16) * scale}rem`,
+            left: `${(620 / 16) * scale}rem`,
+            top: `${(298 / 16) * scale}rem`,
           }}
         />
-      </div>
-      {/* dot-square 아이콘 독립적으로 배치 (dote-s 왼쪽) */}
-      <img
-        src={dotSquareIcon}
-        alt="dot-square"
-        className="absolute"
-        style={{
-          width: `${(60 / 16) * scale}rem`,
-          height: `${(60 / 16) * scale}rem`,
-          left: `${(-74 / 16) * scale}rem`,
-          top: `${(2 / 16) * scale}rem`,
-        }}
-      />
-      {/* umbrella 아이콘 독립적으로 배치 (august 왼쪽) */}
-      <img
-        src={umbrellaIcon}
-        alt="umbrella"
-        className="absolute"
-        style={{
-          width: `${(40 / 16) * scale}rem`,
-          height: `${(60 / 16) * scale}rem`,
-          left: `${(-70 / 16) * scale}rem`,
-          top: `${(230 / 16) * scale}rem`,
-        }}
-      />
-      {/* dino 아이콘 독립적으로 배치 (dote-l 왼쪽) */}
-      <img
-        src={dinoIcon}
-        alt="dino"
-        className="absolute"
-        style={{
-          width: `${(45 / 16) * scale}rem`,
-          height: `${(60 / 16) * scale}rem`,
-          left: `${(460 / 16) * scale}rem`,
-          top: `${(560 / 16) * scale}rem`,
-        }}
-      />
-      {/* march 아이콘 독립적으로 배치 */}
-      <div
-        className="absolute group"
-        style={{
-          left: `${(90 / 16) * scale}rem`,
-          top: `${(-4 / 16) * scale}rem`,
-          width: `${(100 / 16) * scale}rem`,
-          height: `${(100 / 16) * scale}rem`,
-        }}
-      >
-        <ClickBox
-          scale={scale}
-          offsetXPx={CLICKBOX_OFFSET['3월'].x}
-          offsetYPx={CLICKBOX_OFFSET['3월'].y}
-        />
+        {/* october 아이콘 독립적으로 배치 */}
+        <div
+          className="absolute group"
+          style={{
+            left: `${(590 / 16) * scale}rem`, // marginLeft(25) + marginLeft(535)
+            top: `${(420 / 16) * scale}rem`, // marginTop(60) + marginTop(33)
+            width: `${(160 / 16) * scale}rem`,
+            height: `${(100 / 16) * scale}rem`,
+            zIndex: 10,
+            pointerEvents: 'auto',
+          }}
+        >
+          <ClickBox
+            scale={scale}
+            offsetXPx={CLICKBOX_OFFSET['10월'].x}
+            offsetYPx={CLICKBOX_OFFSET['10월'].y}
+          />
+          <img
+            src={octoberIcon}
+            alt="october"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('10월')}
+          />
+        </div>
+        {/* dote-m1 10월 옆 아이콘 독립적으로 배치 */}
         <img
-          src={marchIcon}
-          alt="march"
-          className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('3월')}
+          src={doteM1Icon}
+          alt="dote-m1"
+          className="absolute h-auto"
+          style={{
+            width: `${(230 / 16) * scale}rem`,
+            left: `${(335 / 16) * scale}rem`,
+            top: `${(445 / 16) * scale}rem`,
+          }}
         />
-      </div>
-      {/* may 아이콘 독립적으로 배치 */}
-      <div
-        className="absolute group"
-        style={{
-          left: `${(820 / 16) * scale}rem`, // doteM5Icon 위치 계산
-          top: `${(-35 / 16) * scale}rem`,
-          width: `${(100 / 16) * scale}rem`,
-          height: `${(100 / 16) * scale}rem`,
-          zIndex: 10,
-          pointerEvents: 'auto',
-        }}
-      >
-        <ClickBox
-          scale={scale}
-          offsetXPx={CLICKBOX_OFFSET['5월'].x}
-          offsetYPx={CLICKBOX_OFFSET['5월'].y}
-        />
+        {/* november 아이콘 독립적으로 배치 */}
+        <div
+          className="absolute group"
+          style={{
+            left: `${(225 / 16) * scale}rem`,
+            top: `${(440 / 16) * scale}rem`,
+            width: `${(100 / 16) * scale}rem`,
+            height: `${(70 / 16) * scale}rem`,
+          }}
+        >
+          <ClickBox
+            scale={scale}
+            offsetXPx={CLICKBOX_OFFSET['11월'].x}
+            offsetYPx={CLICKBOX_OFFSET['11월'].y}
+          />
+          <img
+            src={novemberIcon}
+            alt="november"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('11월')}
+          />
+        </div>
+        {/* dote-c11 아이콘 독립적으로 배치 */}
         <img
-          src={mayIcon}
-          alt="may"
-          className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('5월')}
+          src={doteC11Icon}
+          alt="dote-c11"
+          className="absolute h-auto"
+          style={{
+            width: `${(380 / 16) * scale}rem`,
+            left: `${(65 / 16) * scale}rem`,
+            top: `${(470 / 16) * scale}rem`,
+          }}
         />
-      </div>
-      {/* june 아이콘 독립적으로 배치 */}
-      <div
-        className="absolute group"
-        style={{
-          left: `${(675 / 16) * scale}rem`, // doteM3Icon 위치 계산
-          top: `${(105 / 16) * scale}rem`, // marginTop(5) + marginTop(-100)
-          width: `${(100 / 16) * scale}rem`,
-          height: `${(100 / 16) * scale}rem`,
-        }}
-      >
-        <ClickBox
-          scale={scale}
-          offsetXPx={CLICKBOX_OFFSET['6월'].x}
-          offsetYPx={CLICKBOX_OFFSET['6월'].y}
-        />
+        {/* dino 아이콘 독립적으로 배치 (dote-l 왼쪽) */}
         <img
-          src={juneIcon}
-          alt="june"
-          className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('6월')}
+          src={dinoIcon}
+          alt="dino"
+          className="absolute"
+          style={{
+            width: `${(50 / 16) * scale}rem`,
+            height: `${(55 / 16) * scale}rem`,
+            left: `${(470 / 16) * scale}rem`,
+            top: `${(565 / 16) * scale}rem`,
+          }}
         />
+        {/* doteL 아이콘 독립적으로 배치 */}
+        <div
+          style={{
+            position: 'absolute',
+            left: `${(550 / 16) * scale}rem`,
+            top: `${(565 / 16) * scale}rem`, // 440 + 147
+          }}
+        >
+          <img
+            src={doteLIcon}
+            alt="dote-l"
+            style={{
+              width: `${(380 / 16) * scale}rem`,
+            }}
+          />
+        </div>
+
+        {/* december 아이콘 독립적으로 배치 */}
+        <div
+          className="absolute group"
+          style={{
+            left: `${(950 / 16) * scale}rem`, // marginLeft(525) + doteLIcon width(380) + gap(16) + gap(4)
+            top: `${(518 / 16) * scale}rem`,
+            width: `${(105 / 16) * scale}rem`,
+            height: `${(105 / 16) * scale}rem`,
+          }}
+        >
+          <ClickBox
+            scale={scale}
+            offsetXPx={CLICKBOX_OFFSET['12월'].x}
+            offsetYPx={CLICKBOX_OFFSET['12월'].y}
+          />
+          <img
+            src={decemberIcon}
+            alt="december"
+            className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
+            onClick={() => onMonthClick('12월')}
+          />
+        </div>
       </div>
-      {/* july 아이콘 독립적으로 배치 */}
-      <div
-        className="absolute group"
-        style={{
-          left: `${(295 / 16) * scale}rem`, // -55 + 350 + 16(gap)
-          top: `${(135 / 16) * scale}rem`, // 5 + 95 - 100
-          width: `${(65 / 16) * scale}rem`,
-          height: `${(65 / 16) * scale}rem`,
-        }}
-      >
-        <ClickBox
-          scale={scale}
-          offsetXPx={CLICKBOX_OFFSET['7월'].x}
-          offsetYPx={CLICKBOX_OFFSET['7월'].y}
-        />
-        <img
-          src={julyIcon}
-          alt="july"
-          className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('7월')}
-        />
-      </div>
-      {/* october 아이콘 독립적으로 배치 */}
-      <div
-        className="absolute group"
-        style={{
-          left: `${(550 / 16) * scale}rem`, // marginLeft(25) + marginLeft(535)
-          top: `${(420 / 16) * scale}rem`, // marginTop(60) + marginTop(33)
-          width: `${(160 / 16) * scale}rem`,
-          height: `${(100 / 16) * scale}rem`,
-          zIndex: 10,
-          pointerEvents: 'auto',
-        }}
-      >
-        <ClickBox
-          scale={scale}
-          offsetXPx={CLICKBOX_OFFSET['10월'].x}
-          offsetYPx={CLICKBOX_OFFSET['10월'].y}
-        />
-        <img
-          src={octoberIcon}
-          alt="october"
-          className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('10월')}
-        />
-      </div>
-      {/* december 아이콘 독립적으로 배치 */}
-      <div
-        className="absolute group"
-        style={{
-          left: `${(927 / 16) * scale}rem`, // marginLeft(525) + doteLIcon width(380) + gap(16) + gap(4)
-          top: `${(523 / 16) * scale}rem`,
-          width: `${(100 / 16) * scale}rem`,
-          height: `${(100 / 16) * scale}rem`,
-        }}
-      >
-        <ClickBox
-          scale={scale}
-          offsetXPx={CLICKBOX_OFFSET['12월'].x}
-          offsetYPx={CLICKBOX_OFFSET['12월'].y}
-        />
-        <img
-          src={decemberIcon}
-          alt="december"
-          className="w-full h-full cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
-          onClick={() => onMonthClick('12월')}
-        />
-      </div>
-      {/* dote-m1 아이콘 독립적으로 배치 */}
-      <img
-        src={doteM1Icon}
-        alt="dote-m1"
-        className="absolute h-auto"
-        style={{
-          width: `${(230 / 16) * scale}rem`,
-          left: `${(310 / 16) * scale}rem`,
-          top: `${(445 / 16) * scale}rem`,
-        }}
-      />
-      {/* dote-c11 아이콘 독립적으로 배치 */}
-      <img
-        src={doteC11Icon}
-        alt="dote-c11"
-        className="absolute h-auto"
-        style={{
-          width: `${(380 / 16) * scale}rem`,
-          left: `${(60 / 16) * scale}rem`,
-          top: `${(470 / 16) * scale}rem`,
-        }}
-      />
-      {/* dote-c9 아이콘 독립적으로 배치 */}
-      <img
-        src={doteC9Icon}
-        alt="dote-c9"
-        className="absolute h-auto"
-        style={{
-          width: `${(280 / 16) * scale}rem`,
-          left: `${(570 / 16) * scale}rem`,
-          top: `${(295 / 16) * scale}rem`,
-        }}
-      />
-      {/* dote-c5 아이콘 독립적으로 배치 */}
-      <img
-        src={doteC5Icon}
-        alt="dote-c5"
-        className="absolute h-auto"
-        style={{
-          width: `${(300 / 16) * scale}rem`,
-          left: `${(755 / 16) * scale}rem`,
-          top: `${(7 / 16) * scale}rem`,
-        }}
-      />
+
       {/* 월별 아이콘들을 세로로 배치 - 기존 아이콘들 제거 */}
       <div
         className="flex flex-col"

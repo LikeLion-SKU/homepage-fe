@@ -133,6 +133,15 @@ body {
   --font-sku: 'sku', sans-serif;
 }
 
+/* Bytebounce 폰트*/
+@font-face {
+  font-family: 'Bytebounce';
+  src: url('/fonts/ByteBounce.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Nerko 폰트*/
 @font-face {
   font-family: 'nerko';
@@ -248,8 +257,7 @@ select {
   top: 0;
   min-width: calc(140px * var(--scale, 1));
   height: calc(48px * var(--scale, 1));
-  background-color: #f9f9f9;
-  border: calc(9px * var(--scale, 1)) solid #1928b0;
+  background: linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%);
   border-radius: 0;
   transform: translate3d(-9999px, -9999px, 0);
   pointer-events: none;
@@ -260,13 +268,13 @@ select {
   align-items: center;
   justify-content: center;
   gap: 0;
-  padding: 0;
+  padding: calc(9px * var(--scale, 1));
 
   transition:
     opacity 120ms ease,
     min-width 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
     height 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    border-width 150ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    padding 150ms cubic-bezier(0.34, 1.56, 0.64, 1);
   /* transform은 JS로 부드럽게 처리 */
 }
 
@@ -313,7 +321,11 @@ select {
   /* "잡는" 느낌 - 더 역동적으로 */
   min-width: calc(170px * var(--scale, 1));
   height: calc(60px * var(--scale, 1));
-  border-width: calc(12px * var(--scale, 1));
+  padding: calc(12px * var(--scale, 1));
+}
+
+.awards-click-cursor[data-state='down']::before {
+  inset: calc(12px * var(--scale, 1));
 }
 
 @theme {
@@ -322,41 +334,67 @@ select {
 }
 
 /* blah-line 전광판 애니메이션 */
+/* viewport: 잘라내기 */
+.blah-viewport {
+  overflow: hidden;
+  display: block;
+}
+
+/* track: 두 그룹을 한 줄로 붙임 */
+.blah-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  /* 핵심: 동일 애니메이션 */
+  animation: blah-marquee 100s linear infinite;
+  -webkit-animation: blah-marquee 100s linear infinite;
+
+  /* 사파리에서 시작 타이밍/리셋 흔들림 줄이기 */
+  animation-fill-mode: both;
+  -webkit-animation-fill-mode: both;
+  animation-play-state: running;
+  -webkit-animation-play-state: running;
+
+  /* 두 줄이 동시에 시작하도록 negative delay */
+  animation-delay: -10s;
+  -webkit-animation-delay: -10s;
+}
+
+/* offset은 약간의 시작 지연 */
+.blah-track.is-offset {
+  animation-delay: -5s;
+  -webkit-animation-delay: -5s;
+}
+
+/* reverse는 keyframes 새로 만들지 말고 direction으로 */
+.blah-track.is-reverse {
+  animation-direction: reverse;
+  -webkit-animation-direction: reverse;
+}
+
+/* group: 각각 컨텐츠 덩어리 */
+.blah-group {
+  display: inline-flex;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* item: 글자 간격/폰트는 여기서 */
+.blah-item {
+  display: inline-block;
+}
+
+/* 딱 절반(-50%) 이동: 그룹 2개(=200%) 전제 */
 @keyframes blah-marquee {
-  0% {
-    transform: translateX(0);
+  from {
+    transform: translate3d(0, 0, 0);
   }
-  100% {
-    transform: translateX(-50%);
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
-}
-
-@keyframes blah-marquee-offset {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes blah-marquee-reverse {
-  0% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.blah-marquee-content {
-  animation: blah-marquee 20s linear infinite;
-}
-
-.blah-marquee-content-offset {
-  animation: blah-marquee-offset 20s linear infinite;
-}
-
-.blah-marquee-content-reverse {
-  animation: blah-marquee-reverse 20s linear infinite;
 }

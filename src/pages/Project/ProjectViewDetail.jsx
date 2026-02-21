@@ -66,13 +66,14 @@ export default function ProjectViewDetail() {
 
   return (
     <GridSection>
-      <div className="flex px-8 pad:px-10 web:px-15 pt-18 pb-41 justify-center">
+      <div className="flex px-4 pad:px-10 web:px-15 pt-18 pb-41 justify-center">
         <div className="flex flex-col ">
           <button
             onClick={() => handleProjectId(-1)}
-            className="flex px-3 py-3 pad:py-5 web:px-6.5 web:py-8 rounded-l-2xl mt-50 pad:mt-85 bg-[#F9F9F9] ml-auto"
+            className="flex px-3 py-1 pad:py-5 web:px-6.5 web:py-8 rounded-l-2xl mt-50 pad:mt-85
+             bg-[#F9F9F9] ml-auto shadow-[0_0_9px_0_rgba(0,0,0,0.25)]"
           >
-            <Left className="web:w-9 pad:w-7 w-5" />
+            <Left className="web:w-9 pad:w-7 w-3" />
           </button>
           <p className="text-[0.3rem] pad:text-[0.5rem] web:text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter">
             이전 프로젝트 보기
@@ -82,9 +83,10 @@ export default function ProjectViewDetail() {
         <div className="flex flex-col ">
           <button
             onClick={() => handleProjectId(1)}
-            className="flex px-3 py-3 pad:py-5 web:px-6.5 web:py-8 rounded-r-2xl mt-50 pad:mt-85 bg-[#F9F9F9] mr-auto relative z-1"
+            className="flex px-3 py-1 pad:py-5 web:px-6.5 web:py-8 rounded-r-2xl mt-50 pad:mt-85
+             bg-[#F9F9F9] mr-auto relative z-1 shadow-[0_0_9px_0_rgba(0,0,0,0.25)]"
           >
-            <Right className="web:w-9 pad:w-7 w-5" />
+            <Right className="web:w-9 pad:w-7 w-3" />
           </button>
           <p className="text-[0.3rem] pad:text-[0.5rem] web:text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter text-end">
             다음 프로젝트 보기

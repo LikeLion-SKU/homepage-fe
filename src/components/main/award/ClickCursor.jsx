@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
 
+/* eslint-disable no-unused-vars */
+import { motion } from 'framer-motion';
+
 import useScale from '@/components/main/hooks/useScale';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
@@ -26,9 +29,78 @@ function ClickCursor({ cursorRef }) {
 
   return (
     <div className="awards-click-cursor" ref={cursorRef} aria-hidden="true">
-      <span className="awards-click-cursor-arrow awards-click-cursor-arrow-left">&lt;</span>
-      <span className="awards-click-cursor-label">CLICK</span>
-      <span className="awards-click-cursor-arrow awards-click-cursor-arrow-right">&gt;</span>
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundColor: '#f9f9f9',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 0,
+        }}
+      >
+        <motion.span
+          className="awards-click-cursor-arrow awards-click-cursor-arrow-left"
+          style={{
+            backgroundImage: 'linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%)',
+            backgroundSize: '200% 100%',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}
+          animate={{
+            backgroundPosition: ['100% 0%', '-100% 0%'],
+          }}
+          transition={{
+            duration: 2.5,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+        >
+          &lt;
+        </motion.span>
+        <motion.span
+          className="awards-click-cursor-label"
+          style={{
+            backgroundImage: 'linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%)',
+            backgroundSize: '200% 100%',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}
+          animate={{
+            backgroundPosition: ['100% 0%', '-100% 0%'],
+          }}
+          transition={{
+            duration: 2.5,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+        >
+          DRAG
+        </motion.span>
+        <motion.span
+          className="awards-click-cursor-arrow awards-click-cursor-arrow-right"
+          style={{
+            backgroundImage: 'linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%)',
+            backgroundSize: '200% 100%',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}
+          animate={{
+            backgroundPosition: ['100% 0%', '-100% 0%'],
+          }}
+          transition={{
+            duration: 2.5,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+        >
+          &gt;
+        </motion.span>
+      </div>
     </div>
   );
 }

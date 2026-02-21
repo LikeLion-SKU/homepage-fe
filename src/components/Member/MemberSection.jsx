@@ -12,7 +12,7 @@ export default function MemberSection({ title, data }) {
   return (
     <div className="flex flex-col gap-12">
       <p className="text-[1.2rem] pad:text-[1.9rem] font-bold">{title}</p>
-      <div className="flex gap-5">
+      <div className="flex gap-2 pad:gap-4 web:gap-5.5">
         {data.map(
           (memberData) =>
             (memberData.position == 'LEAD' || memberData.position == 'COLEAD') && (

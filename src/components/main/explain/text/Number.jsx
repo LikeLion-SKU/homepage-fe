@@ -18,6 +18,7 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
   const scale = useScale();
   const isMobile = useMediaQuery('(max-width: 640px)');
   const isMobile440 = useMediaQuery('(max-width: 440px)');
+  const isDesktop1024 = useMediaQuery('(min-width: 1024px)');
   const [shouldStart, setShouldStart] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1440
@@ -39,12 +40,13 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
   // 화면 크기에 따라 위치 조정
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
   const isWide = windowWidth > 1440;
+  const isMedium = windowWidth > 440 && windowWidth <= 1013;
 
   // 반응형 위치 계산
   // string인 경우 그대로 사용, 숫자인 경우 기존 로직 적용
   const mobileRightPadding = Math.min(100, windowWidth * 0.1); // 375px면 37.5
   const maxXMobile = windowWidth / 2 - mobileRightPadding;
-  const maxXWide = 720; // 대충 안전상한 (원하면 조절)
+  const maxXWide = 1440; // 대충 안전상한 (원하면 조절)
 
   const responsiveX = isXString
     ? initialX
@@ -62,10 +64,14 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
   const responsiveY = isYString
     ? initialY
     : isMobile
-      ? initialY * 0.5
+      ? value === 42 && !isMobile440
+        ? initialY * 0.5 + 15 // 640px 이하 440px 이상에서 42만 아래로 이동
+        : initialY * 0.5
       : isTablet
         ? initialY * 0.8
-        : initialY;
+        : value === 42 && isDesktop1024
+          ? initialY - 20 // 42만 1024px 이상에서 위로 이동
+          : initialY;
 
   // 숫자를 문자열로 변환 (2자리로 패딩)
   const numberString = String(count).padStart(2, '0');
@@ -121,10 +127,14 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
           fontSize: isMobile440
             ? `${(70 / 16) * scale}rem` // 440px 이하에서 숫자 크기 키움
             : isMobile
-              ? `${(55 / 16) * scale}rem` // 모바일에서 50px 기준
-              : isTablet
-                ? `${(65 / 16) * scale}rem`
-                : `${(70 / 16) * scale}rem`,
+              ? `${(74 / 16) * scale}rem` // 640px 이하에서 크기 키움
+              : isMedium
+                ? `${(74 / 16) * scale}rem` // 440px 이상 1013px 이하에서 크기 키움
+                : isTablet
+                  ? `${(65 / 16) * scale}rem`
+                  : isDesktop1024
+                    ? `${(74 / 16) * scale}rem` // 1024px 이상에서 크기 키움
+                    : `${(70 / 16) * scale}rem`,
           fontWeight: 'bold',
           lineHeight: 1,
           color: '#00156A',
@@ -140,10 +150,14 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
                 fontSize: isMobile440
                   ? `${(70 / 16) * scale}rem` // 440px 이하에서 숫자 크기 키움
                   : isMobile
-                    ? `${(55 / 16) * scale}rem` // 모바일에서 50px 기준
-                    : isTablet
-                      ? `${(60 / 16) * scale}rem`
-                      : `${(72 / 16) * scale}rem`,
+                    ? `${(74 / 16) * scale}rem` // 640px 이하에서 크기 키움
+                    : isMedium
+                      ? `${(74 / 16) * scale}rem` // 440px 이상 1013px 이하에서 크기 키움
+                      : isTablet
+                        ? `${(60 / 16) * scale}rem`
+                        : isDesktop1024
+                          ? `${(74 / 16) * scale}rem` // 1024px 이상에서 크기 키움
+                          : `${(72 / 16) * scale}rem`,
                 fontWeight: 'bold',
                 letterSpacing: '0.05em',
                 color: '#00156A',
@@ -160,10 +174,14 @@ export default function Number({ value = 50, initialX = 200, initialY = 100 }) {
             fontSize: isMobile440
               ? `${(70 / 16) * scale}rem` // 440px 이하에서 숫자 크기 키움
               : isMobile
-                ? `${(55 / 16) * scale}rem` // 모바일에서 비례적으로 크게
-                : isTablet
-                  ? `${(60 / 16) * scale}rem`
-                  : `${(72 / 16) * scale}rem`,
+                ? `${(74 / 16) * scale}rem` // 640px 이하에서 크기 키움
+                : isMedium
+                  ? `${(74 / 16) * scale}rem` // 440px 이상 1013px 이하에서 크기 키움
+                  : isTablet
+                    ? `${(60 / 16) * scale}rem`
+                    : isDesktop1024
+                      ? `${(74 / 16) * scale}rem` // 1024px 이상에서 크기 키움
+                      : `${(72 / 16) * scale}rem`,
             fontWeight: 'bold',
             lineHeight: 1,
             color: '#00156A',

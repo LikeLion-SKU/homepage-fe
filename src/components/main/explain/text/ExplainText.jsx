@@ -20,8 +20,8 @@ function ExplainText() {
     return () => window.removeEventListener('resize', calculateScale);
   }, []);
 
-  // 480px 이하에서는 더 크게 (1.5배)
-  const fontSize = `${(20 / 15) * scale * (isMobile480 ? 1.3 : 1)}rem`;
+  // 480px 이하에서는 더 크게 (1.6배)
+  const fontSize = `${(20 / 15) * scale * (isMobile480 ? 1.6 : 1)}rem`;
   const lineHeight = '160%';
 
   return (
@@ -44,7 +44,7 @@ function ExplainText() {
           fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
         }}
       >
-        안녕하세요{' '}
+        안녕하세요,{' '}
       </span>
       <span
         style={{

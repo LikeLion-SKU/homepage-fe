@@ -1,7 +1,7 @@
 import useScale from '@/components/main/hooks/useScale';
 import useMediaQuery from '@/hooks/useMediaQuery';
 
-function GridPattern({ className = '', style = {}, children = null }) {
+function GridPattern({ className = '', style = {}, children = null, onClick }) {
   const scale = useScale();
   const isMobile = useMediaQuery('(max-width: 480px)');
 
@@ -24,6 +24,7 @@ function GridPattern({ className = '', style = {}, children = null }) {
         backgroundAttachment: 'local',
         ...style,
       }}
+      onClick={onClick}
     >
       {children}
     </div>

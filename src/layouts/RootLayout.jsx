@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Outlet, ScrollRestoration } from 'react-router';
 
+import { getApplicationStatus } from '@/api/userApi';
 import CustomCursor from '@/components/common/CustomCursor';
 import Modal from '@/components/common/Modal/ConfirmModal';
 import Toast from '@/components/common/Toast/Toast';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import SideBar from '@/pages/SideBar/SideBar';
+import useAuthStore from '@/store/useAuthStore';
 import useSemesterListStore from '@/store/useSemesterListStore';
 import { showResultButton } from '@/utils/showResultButton';
 
@@ -22,7 +24,10 @@ export default function RootLayout() {
   });
   const [onSideBar, setOnSideBar] = useState(false);
   const { fetchSemesters } = useSemesterListStore();
-  const [showResult, setShowResult] = useState(false);
+  const [showResult, setShowResult] = useState({ show: false, isFinal: false });
+  const [isDocumentSubmitted, setIsDocumentSubmitted] = useState(false);
+  const isLogin = useAuthStore((state) => state.isLoggedIn);
+  const [interviewScheduleConfirmed, setInterviewScheduleConfirmed] = useState(false);
 
   const openModal = (message, onConfirm) => {
     setModalData({
@@ -55,8 +60,20 @@ export default function RootLayout() {
 
   useEffect(() => {
     const getSettingData = async () => {
-      await fetchSemesters();
-      setShowResult(await showResultButton());
+      try {
+        await fetchSemesters();
+        const { show, isFinal } = await showResultButton();
+        setShowResult({ show: show, isFinal: isFinal });
+        if (isLogin) {
+          const data = await getApplicationStatus();
+          setIsDocumentSubmitted(data?.documentSubmitted);
+          if (isFinal) {
+            setInterviewScheduleConfirmed(data?.interviewScheduleConfirmed);
+          }
+        }
+      } catch (error) {
+        console.log('헤더 데이터 세팅 실패:', error);
+      }
     };
     getSettingData();
     // 1. 데스크탑 기준 미디어 쿼리 생성 (예: 1024px 이상)
@@ -75,12 +92,17 @@ export default function RootLayout() {
 
     // 5. 언마운트 시 리스너 제거 (메모리 누수 방지)
     return () => mql.removeEventListener('change', handleDesktopChange);
-  }, []);
+  }, [isLogin]);
 
   return (
     <main className="flex flex-col w-full min-h-screen overflow-y-hidden overflow-x-hidden no-scrollbar">
       <CustomCursor />
-      <Header handleSideBar={handleSideBar} showResult={showResult} />
+      <Header
+        handleSideBar={handleSideBar}
+        showResult={showResult.show}
+        isDocumentSubmitted={isDocumentSubmitted}
+        interviewScheduleConfirmed={showResult.isFinal ? interviewScheduleConfirmed : true}
+      />
       <div className="relative flex-1 min-h-fit bg-[#FAFBF8]">
         <div
           className={`transition-opacity duration-500 ease-out ${
@@ -99,7 +121,12 @@ export default function RootLayout() {
           className={`w-full h-fit transform transition-transform 
             duration-500 ease-out ${onSideBar ? 'relative translate-x-0' : 'absolute top-0 translate-x-full overflow-hidden'}`}
         >
-          <SideBar handleSideBar={handleSideBar} showResult={showResult} />
+          <SideBar
+            handleSideBar={handleSideBar}
+            showResult={showResult.show}
+            isDocumentSubmitted={isDocumentSubmitted}
+            interviewScheduleConfirmed={showResult.isFinal ? interviewScheduleConfirmed : true}
+          />
         </div>
       </div>
       <ScrollRestoration />
