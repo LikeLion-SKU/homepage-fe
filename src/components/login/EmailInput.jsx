@@ -11,6 +11,11 @@ export default function EmailInput({
 }) {
   const isMobile = useMediaQuery('(max-width: 480px)');
   const isSmallScreen = useMediaQuery('(max-width: 640px)');
+  const borderColor = disabled
+    ? 'border-[#B0B0B0]'
+    : value && value.trim()
+      ? 'border-[#1A1A1A]'
+      : 'border-[#B0B0B0]';
   return (
     <div className={`flex flex-col gap-2 ${mb}`}>
       <label className="text-black text-sm sm:text-base font-medium font-['Pretendard']">
@@ -24,7 +29,7 @@ export default function EmailInput({
             onChange={onChange}
             placeholder={placeholder}
             disabled={disabled}
-            className={`w-full max-w-[280px] px-3 sm:px-4 max-[480px]:px-2.5 py-2.5 sm:py-3 max-[480px]:py-2 bg-[#FAFBF8] border border-[1px] border-[#B0B0B0] ${textColor} text-sm sm:text-base max-[480px]:text-xs text-left font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0`}
+            className={`w-full max-w-[280px] px-3 sm:px-4 max-[480px]:px-2.5 py-2.5 sm:py-3 max-[480px]:py-2 bg-[#FAFBF8] border border-[1px] ${borderColor} ${textColor} text-sm sm:text-base max-[480px]:text-xs text-left font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0`}
             style={{
               minWidth: 0,
               height: isMobile

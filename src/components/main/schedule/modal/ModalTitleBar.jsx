@@ -13,8 +13,13 @@ function ModalTitleBar({
   onClose,
   scale = 1,
   isTrackModal = false,
+  variantCount = 1,
 }) {
   const isMobile480 = typeof window !== 'undefined' && window.innerWidth <= 480;
+  const isSafari =
+    typeof window !== 'undefined' &&
+    /^((?!chrome|android).)*safari/i.test(navigator.userAgent) &&
+    navigator.vendor.includes('Apple');
   return (
     <>
       {/* 좌측 상단 화살표 아이콘 */}
@@ -24,7 +29,15 @@ function ModalTitleBar({
           gap: 0,
           display: 'inline-flex',
           top: `${(26 / 16) * scale}rem`,
-          left: isMobile480 && isTrackModal ? `${(23 / 16) * scale}rem` : `${(20 / 16) * scale}rem`,
+          left: isMobile480
+            ? isTrackModal
+              ? `${(23 / 16) * scale}rem`
+              : isSafari && variantCount === 2
+                ? `${(20 / 16) * scale}rem`
+                : isSafari
+                  ? `${(6 / 16) * scale}rem`
+                  : `${(15 / 16) * scale}rem`
+            : `${(20 / 16) * scale}rem`,
           zIndex: 100,
           pointerEvents: 'auto',
         }}

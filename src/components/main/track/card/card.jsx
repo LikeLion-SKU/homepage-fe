@@ -144,7 +144,7 @@ function Card({ title, description, image = null }) {
           style={{
             top: `${(-35 / 16) * scale}rem`,
             left: '50%',
-            transform: 'translateX(-50%)',
+            transform: 'translateX(-55%)',
             opacity: isHovered ? 1 : 0,
             transition: 'opacity 0.2s ease-in-out',
           }}
@@ -191,7 +191,7 @@ function Card({ title, description, image = null }) {
                 ? `${(-35 / 16) * scale}rem`
                 : `${(-35 / 16) * scale}rem`,
             left: isTablet && !isPad ? `${(230 / 16) * scale}rem` : '50%',
-            transform: isTablet && !isPad ? 'none' : 'translateX(-50%)',
+            transform: isTablet && !isPad ? 'none' : 'translateX(-55%)',
             opacity: isHovered ? 1 : 0,
             transition: 'opacity 0.2s ease-in-out',
           }}
