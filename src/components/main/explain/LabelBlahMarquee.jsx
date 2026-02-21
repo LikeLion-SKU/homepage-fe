@@ -15,6 +15,13 @@ function LabelBlahMarquee({ type = '1' }) {
   const fontSize = `${(120 / 16) * scale}rem`; // 크기 증가 (32 -> 48)
   const letterSpacing = `${(7 / 16) * scale}rem`;
 
+  // 8개 아이템으로 구성된 그룹 (2번 복제하여 정확히 200% 폭)
+  const items = Array.from({ length: 8 }).map((_, i) => (
+    <span key={i} className="blah-item">
+      {text}
+    </span>
+  ));
+
   return (
     <div className="relative" style={{ position: 'relative' }}>
       {/* 배경 SVG */}
@@ -34,7 +41,7 @@ function LabelBlahMarquee({ type = '1' }) {
 
       {/* 전광판 텍스트 - SVG 안에 오버레이 */}
       <div
-        className="absolute"
+        className="absolute blah-viewport"
         style={{
           display: 'flex',
           alignItems: 'flex-end',
@@ -47,27 +54,19 @@ function LabelBlahMarquee({ type = '1' }) {
         }}
       >
         <div
-          className={
-            isReverse
-              ? 'blah-marquee-content-reverse'
-              : type === '1'
-                ? 'blah-marquee-content-offset'
-                : 'blah-marquee-content'
-          }
+          className={`blah-track ${isReverse ? 'is-reverse' : ''} ${type === '1' ? 'is-offset' : ''}`}
           style={{
-            display: 'inline-flex',
             fontFamily: 'Bytebounce, pixel',
             fontSize: fontSize,
             color: '#00156A',
             fontWeight: 'bold',
             letterSpacing: letterSpacing,
-            whiteSpace: 'nowrap',
           }}
         >
-          {/* 텍스트를 여러 번 반복하여 무한 스크롤 효과 */}
-          {Array.from({ length: 20 }).map((_, i) => (
-            <span key={i}>{text}</span>
-          ))}
+          <div className="blah-group">{items}</div>
+          <div className="blah-group" aria-hidden="true">
+            {items}
+          </div>
         </div>
       </div>
     </div>
