@@ -334,71 +334,67 @@ select {
 }
 
 /* blah-line 전광판 애니메이션 */
-@keyframes blah-marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+/* viewport: 잘라내기 */
+.blah-viewport {
+  overflow: hidden;
+  display: block;
 }
 
-@keyframes blah-marquee-offset {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
+/* track: 두 그룹을 한 줄로 붙임 */
+.blah-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 
-@keyframes blah-marquee-reverse {
-  0% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.blah-marquee-content {
+  /* 핵심: 동일 애니메이션 */
   animation: blah-marquee 100s linear infinite;
-  animation-delay: 0s;
-  animation-fill-mode: both;
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -webkit-transform: translate3d(0, 0, 0);
   -webkit-animation: blah-marquee 100s linear infinite;
-  -webkit-animation-delay: 0s;
+
+  /* 사파리에서 시작 타이밍/리셋 흔들림 줄이기 */
+  animation-fill-mode: both;
   -webkit-animation-fill-mode: both;
+  animation-play-state: running;
+  -webkit-animation-play-state: running;
+
+  /* 두 줄이 동시에 시작하도록 negative delay */
+  animation-delay: -10s;
+  -webkit-animation-delay: -10s;
 }
 
-.blah-marquee-content-offset {
-  animation: blah-marquee-offset 100s linear infinite;
-  animation-delay: 0s;
-  animation-fill-mode: both;
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -webkit-transform: translate3d(0, 0, 0);
-  -webkit-animation: blah-marquee-offset 100s linear infinite;
-  -webkit-animation-delay: 0s;
-  -webkit-animation-fill-mode: both;
+/* offset은 약간의 시작 지연 */
+.blah-track.is-offset {
+  animation-delay: -5s;
+  -webkit-animation-delay: -5s;
 }
 
-.blah-marquee-content-reverse {
-  animation: blah-marquee-reverse 100s linear infinite;
-  animation-delay: 0s;
-  animation-fill-mode: both;
-  will-change: transform;
-  transform: translate3d(-50%, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -webkit-transform: translate3d(-50%, 0, 0);
-  -webkit-animation: blah-marquee-reverse 100s linear infinite;
-  -webkit-animation-delay: 0s;
-  -webkit-animation-fill-mode: both;
+/* reverse는 keyframes 새로 만들지 말고 direction으로 */
+.blah-track.is-reverse {
+  animation-direction: reverse;
+  -webkit-animation-direction: reverse;
+}
+
+/* group: 각각 컨텐츠 덩어리 */
+.blah-group {
+  display: inline-flex;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* item: 글자 간격/폰트는 여기서 */
+.blah-item {
+  display: inline-block;
+}
+
+/* 딱 절반(-50%) 이동: 그룹 2개(=200%) 전제 */
+@keyframes blah-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
