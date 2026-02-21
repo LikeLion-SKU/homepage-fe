@@ -91,7 +91,7 @@ export const scheduleMonthData = {
       contentImage: AugustImage1,
       contentTitle: '국내 최대 규모 중앙해커톤',
       contentDescription:
-        '중앙 멋쟁이사자처럼이 주관하는 해커톤에 참여하여 아이디어를 <br/> 실제 서비스로 구현하는 경험을 쌓습니다.<br/>매년 본선 진출팀을 배출하는 서경대 멋쟁이사자처럼의 주요 활동 <br/>입니다.',
+        '중앙 멋쟁이사자처럼이 주관하는 해커톤에 참여하여 아이디어를 <br/> 실제 서비스로 구현하는 경험을 쌓습니다.<br/>매년 본선 진출팀을 배출하는 서경대 멋쟁이사자처럼의 주요 <br/>활동입니다.',
     },
   ],
   '9월': [
@@ -118,7 +118,7 @@ export const scheduleMonthData = {
       contentImage: NovemberImage1,
       contentTitle: '4호선톤',
       contentDescription:
-        '4호선 라인 대학 구성원들과 함께 하는 연합 해커톤으로, 과정을 <br/> 중시해 아이디어 구현을 통해 창업 연계를 목표로 하는 해커톤<br/>입니다.',
+        '4호선 라인 대학 구성원들과 함께 하는 연합 해커톤으로, 과정을 중시해 아이디어 구현을 통해 <br/>창업 연계를 목표로 하는 해커톤입니다.',
     },
   ],
   '12월': [

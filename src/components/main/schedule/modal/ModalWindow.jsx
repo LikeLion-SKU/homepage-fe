@@ -81,6 +81,7 @@ function ModalWindow({
         boxSize={titleBarBoxSize}
         onClose={onClose}
         scale={scale}
+        variantCount={variantCount}
       />
 
       {/* 모달 shadow 효과 오버레이 - 콘텐츠 위에 표시 */}
