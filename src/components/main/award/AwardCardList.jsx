@@ -89,7 +89,8 @@ function AwardCardList({ cards = [], observerRef = null, loading = false }) {
           width: '100vw',
           marginLeft: 'calc(-50vw + 50%)',
           overflowX: 'auto',
-          overflowY: 'hidden',
+          overflowY: 'visible',
+          paddingTop: `${(20 / 16) * scale}rem`,
           paddingBottom: `${(16 / 16) * scale}rem`,
           position: 'relative',
         }}

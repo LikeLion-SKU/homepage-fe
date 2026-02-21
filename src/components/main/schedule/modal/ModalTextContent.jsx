@@ -1,5 +1,7 @@
 import { memo } from 'react';
 
+import useMediaQuery from '@/hooks/useMediaQuery';
+
 function ModalTextContent({
   className = '',
   style = {},
@@ -10,6 +12,12 @@ function ModalTextContent({
   backgroundColor = '#E8E8E8',
   scale = 1,
 }) {
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
+
+  // 모바일일 때 <br/> 태그를 공백으로 치환
+  const processedDescription =
+    isMobile480 && description ? description.replace(/<br\s*\/?>/gi, ' ') : description;
+
   return (
     <div
       className={className}
@@ -40,7 +48,7 @@ function ModalTextContent({
         </h3>
       )}
 
-      {description && (
+      {processedDescription && (
         <p
           style={{
             fontSize: `${(16 / 16) * scale}rem`,
@@ -48,8 +56,13 @@ function ModalTextContent({
             lineHeight: 1.6,
             fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
             margin: 0,
+            width: isMobile480 ? '100%' : 'auto',
+            maxWidth: isMobile480 ? '100%' : 'none',
+            whiteSpace: 'normal',
+            wordBreak: isMobile480 ? 'break-word' : 'normal',
+            overflowWrap: isMobile480 ? 'break-word' : 'normal',
           }}
-          dangerouslySetInnerHTML={{ __html: description }}
+          dangerouslySetInnerHTML={{ __html: processedDescription }}
         />
       )}
     </div>

@@ -391,6 +391,7 @@ export default function SignUpForm({ onSubmit }) {
                 mb="mb-0"
                 maxWidth="max-w-full sm:max-w-[600px]"
                 disabled={verificationStatus === 'success'}
+                isError={verificationStatus === 'error'}
                 rightButton={
                   <VerificationButton
                     onClick={handleVerificationCheck}
@@ -408,7 +409,9 @@ export default function SignUpForm({ onSubmit }) {
                     style={{ transform: 'translateY(4px)' }}
                   >
                     <div className="text-[#FF7D56] text-sm max-[480px]:text-xs text-left font-['Pretendard'] ml-0">
-                      {countdown === 0 && '입력 시간이 만료되었습니다.'}
+                      {countdown === 0 &&
+                        verificationStatus !== 'success' &&
+                        '입력 시간이 만료되었습니다.'}
                     </div>
                     <div className="text-[#B0B0B0] text-sm max-[480px]:text-xs text-right font-['Pretendard'] ml-3">
                       입력대기시간: {formatTime(countdown)}
@@ -525,6 +528,11 @@ export default function SignUpForm({ onSubmit }) {
               confirmPassword &&
               isValidPassword(signupPassword) &&
               signupPassword === confirmPassword
+            }
+            isError={
+              confirmPassword &&
+              isValidPassword(signupPassword) &&
+              signupPassword !== confirmPassword
             }
           />
           <div className="h-5 mb-6" style={{ transform: 'translateY(5px)' }}>

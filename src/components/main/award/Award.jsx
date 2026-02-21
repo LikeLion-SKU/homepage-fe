@@ -135,8 +135,8 @@ function Award() {
               className="text-right"
               style={{
                 position: 'relative',
-                marginTop: `${(10 / 16) * scale}rem`,
-                marginBottom: `${(20 / 16) * scale}rem`,
+                marginTop: `${(90 / 16) * scale}rem`,
+                marginBottom: `${(30 / 16) * scale}rem`,
                 transform: `translateX(${(120 / 16) * scale}rem)`,
                 maxWidth: '100%',
                 zIndex: 100,
@@ -145,7 +145,7 @@ function Award() {
               <AwardText />
             </div>
             {/* 카드 */}
-            <div style={{ paddingTop: `${(20 / 16) * scale}rem` }}>
+            <div style={{ paddingTop: `${(40 / 16) * scale}rem` }}>
               <AwardCardList cards={awardCards} observerRef={observerRef} loading={loading} />
             </div>
           </>
@@ -187,7 +187,7 @@ function Award() {
 
         {/* 하단 버튼 */}
         <div
-          style={{ marginTop: isMobile480 ? `${(50 / 16) * scale}rem` : `${(50 / 16) * scale}rem` }}
+          style={{ marginTop: isMobile480 ? `${(80 / 16) * scale}rem` : `${(50 / 16) * scale}rem` }}
         >
           <AwardButton />
         </div>
