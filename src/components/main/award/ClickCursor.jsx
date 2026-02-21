@@ -38,6 +38,7 @@ function ClickCursor({ cursorRef }) {
           alignItems: 'center',
           justifyContent: 'center',
           gap: 0,
+          padding: `calc(7px * var(--scale, ${scale}))`,
         }}
       >
         <motion.span
