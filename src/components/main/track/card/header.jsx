@@ -40,13 +40,19 @@ function CardHeader({ title, onHeaderClick }) {
           maxWidth: `${
             isMobile
               ? (800 / 16) * scale
-              : (isMedium || isTablet) && isPO
-                ? (320 / 16) * scale
-                : (isMedium || isTablet) && isFE
-                  ? (450 / 16) * scale
-                  : (isMedium || isTablet) && isBE
-                    ? (400 / 16) * scale
-                    : (380 / 16) * scale
+              : isMedium && isPO
+                ? (480 / 16) * scale
+                : isMedium && isFE
+                  ? (480 / 16) * scale
+                  : isMedium && isBE
+                    ? (480 / 16) * scale
+                    : isTablet && isPO
+                      ? (380 / 16) * scale
+                      : isTablet && isFE
+                        ? (380 / 16) * scale
+                        : isTablet && isBE
+                          ? (380 / 16) * scale
+                          : (380 / 16) * scale
           }rem`,
           height: `${isMobile ? (110 / 16) * scale : isTablet || isMedium ? (50 / 16) * scale : (40 / 16) * scale}rem`,
           left: `${isMobile ? (70 / 16) * scale : isTablet || isMedium ? (30 / 16) * scale : (23 / 16) * scale}rem`,
