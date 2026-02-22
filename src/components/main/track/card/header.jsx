@@ -39,7 +39,7 @@ function CardHeader({ title, onHeaderClick }) {
           width: `calc(100% - ${isMobile ? (110 / 16) * scale : isTablet || isMedium ? (50 / 16) * scale : (32 / 16) * scale}rem)`,
           maxWidth: `${
             isMobile
-              ? (800 / 16) * scale
+              ? (900 / 16) * scale
               : isMedium && isPO
                 ? (480 / 16) * scale
                 : isMedium && isFE
@@ -58,6 +58,7 @@ function CardHeader({ title, onHeaderClick }) {
           left: `${isMobile ? (70 / 16) * scale : isTablet || isMedium ? (30 / 16) * scale : (23 / 16) * scale}rem`,
           top: `${isMobile ? (50 / 16) * scale : isTablet || isMedium ? (24 / 16) * scale : (16 / 16) * scale}rem`,
           zIndex: 1,
+          overflow: 'hidden',
         }}
       />
       <div
@@ -87,6 +88,10 @@ function CardHeader({ title, onHeaderClick }) {
           fontSize: `${isMobile ? (45 / 16) * scale : isPad ? (26 / 16) * scale : isTablet || isMedium ? (22 / 16) * scale : (18 / 16) * scale}rem`,
           letterSpacing: `${isMobile ? (0.6 / 16) * scale : isTablet || isMedium ? (0.6 / 16) * scale : (0.5 / 16) * scale}rem`,
           zIndex: 2,
+          maxWidth: '100%',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
         }}
       >
         {title}
