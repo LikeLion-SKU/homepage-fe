@@ -257,7 +257,7 @@ select {
   top: 0;
   min-width: calc(140px * var(--scale, 1));
   height: calc(48px * var(--scale, 1));
-  background: linear-gradient(90deg, #BCD800 0%, #65C42A 50%, #BCD800 100%);
+  background: linear-gradient(90deg, #BCD800 0%, #65C42A 100%);
   border-radius: 0;
   transform: translate3d(-9999px, -9999px, 0);
   pointer-events: none;
@@ -268,7 +268,7 @@ select {
   align-items: center;
   justify-content: center;
   gap: 0;
-  padding: calc(9px * var(--scale, 1));
+  padding: calc(7px * var(--scale, 1));
 
   transition:
     opacity 120ms ease,
