@@ -172,7 +172,14 @@ export default function Recruitment() {
               <h2 className="text-lg pad:text-2xl font-bold mb-7">모집 대상</h2>
               <ul className="list-disc ml-5 flex flex-col text-xs pad:text-base gap-6 font-medium">
                 <li>1년 활동이 가능한 2026년도 기준 재학생, 휴학생, 편입생, 졸업 유예생</li>
-                <li>주중 1일(트랙별 상이) 18시 30분에 진행되는 대면 세션에 참여할 수 있는 분</li>
+                <li>
+                  주중 1일(트랙별 상이) 18시 30분에 진행되는 대면 세션에 참여할 수 있는 분
+                  <div className="mt-2 ml-1 flex flex-col gap-1">
+                    <span>PO 세션 - 수요일</span>
+                    <span>프론트엔드 세션 - 월요일</span>
+                    <span>백엔드 세션 - 화요일</span>
+                  </div>
+                </li>
                 <li>멋쟁이사자처럼 활동에 꾸준히, 적극적으로 함께할 분</li>
                 <li>지원 트랙에 대한 기본적인 역량을 갖춘 분</li>
                 <li>현실의 문제를 해결하는 프로덕트 빌딩 경험을 만들고 싶은 분</li>

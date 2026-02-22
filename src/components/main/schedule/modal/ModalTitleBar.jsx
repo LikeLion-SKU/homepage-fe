@@ -96,11 +96,13 @@ function ModalTitleBar({
               ? `${(23 / 16) * scale}rem`
               : isIOS && variantCount === 1
                 ? `${(12 / 16) * scale}rem`
-                : isSafari && variantCount === 2
-                  ? `${(20 / 16) * scale}rem`
-                  : isSafari
-                    ? `${(6 / 16) * scale}rem`
-                    : `${(15 / 16) * scale}rem`
+                : isIOS && variantCount === 2
+                  ? `${(10 / 16) * scale}rem`
+                  : isSafari && variantCount === 2
+                    ? `${(20 / 16) * scale}rem`
+                    : isSafari
+                      ? `${(6 / 16) * scale}rem`
+                      : `${(15 / 16) * scale}rem`
             : !isTrackModal && (variantCount === 1 || variantCount === 2)
               ? `${(10 / 16) * scale}rem`
               : `${(20 / 16) * scale}rem`,
