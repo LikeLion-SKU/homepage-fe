@@ -1,3 +1,4 @@
+import scheduleBlahIcon from '@/assets/icons/main/schedule/2026-blah.svg';
 import aprilIcon from '@/assets/icons/main/schedule/april.svg';
 import augustIcon from '@/assets/icons/main/schedule/august.svg';
 import decemberIcon from '@/assets/icons/main/schedule/december.svg';
@@ -46,6 +47,19 @@ function ScheduleMobile({ onMonthClick }) {
 
   return (
     <div className="relative w-full" style={{ minHeight: '455px', paddingTop: '15px' }}>
+      {/* 타이틀 옆 장식 아이콘 (2026-blah) */}
+      <img
+        src={scheduleBlahIcon}
+        alt="schedule blah"
+        className="absolute pointer-events-none"
+        style={{
+          left: isMobile ? '33%' : '40%',
+          top: `${((isMobile ? -235 : -200) / 16) * scale}rem`,
+          width: `${((isMobile ? 200 : 120) / 16) * scale}rem`,
+          height: 'auto',
+          zIndex: 30,
+        }}
+      />
       {/* 월별 아이콘들을 모바일 레이아웃에 맞게 배치 */}
       <div className="relative w-full" style={{ height: '380px' }}>
         {/* Dot icons - 장식용 */}

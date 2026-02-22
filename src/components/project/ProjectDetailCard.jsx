@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
@@ -17,6 +17,8 @@ export default function ProjectDetailCard({ data, imgNum, setImgNum }) {
 
   const imgUrl = images[imgNum]?.imageUrl || '';
   const barRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
+
   const changeImg = async (direction) => {
     const nextNum = imgNum + direction;
 
@@ -35,7 +37,10 @@ export default function ProjectDetailCard({ data, imgNum, setImgNum }) {
   const handleLeft = `${(imgNum / imgCount) * 100}%`;
 
   return (
-    <div className="relative w-full max-w-81 pad:max-w-159 web:max-w-285 z-2 flex flex-col bg-[#F9F9F9] py-7 pad:py-7 web:py-10 px-3 pad:px-5 web:px-8 gap-3 pad:gap-10 rounded-3xl shadow-[0_0_9px_0_rgba(0,0,0,0.25)]">
+    <div
+      className="relative w-full max-w-81 pad:max-w-159 web:max-w-285 z-2 flex flex-col bg-[#F9F9F9] 
+    py-7 pad:py-7 web:py-10 px-3 pad:px-5 web:px-8 gap-3 pad:gap-10 rounded-3xl shadow-[0_0_9px_0_rgba(0,0,0,0.25)]"
+    >
       <img src={imgUrl} className="bg-[#D9D9D9] object-contain" />
 
       <div className="flex flex-col gap-3">
@@ -62,19 +67,32 @@ export default function ProjectDetailCard({ data, imgNum, setImgNum }) {
               </div>
             </div>
 
-            <div className="flex gap-3 pad:gap-5">
+            <div className="relative flex gap-3 pad:gap-5">
               <button
                 onClick={() => changeImg(-1)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
                 className="flex justify-center items-center bg-[#00156A] w-7 h-7 pad:w-9 pad:h-9 web:w-12 web:h-12"
               >
                 <Left className="w-4 pad:w-5 web:w-7" />
               </button>
               <button
                 onClick={() => changeImg(+1)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
                 className="flex justify-center items-center bg-[#00156A] w-7 h-7 pad:w-9 pad:h-9 web:w-12 web:h-12"
               >
                 <Right className="w-4 pad:w-5 web:w-7" />
               </button>
+              <div
+                className={`absolute top-6 -left-8 pad:top-8 pad:-left-11 web:top-11 web:-left-13 flex flex-col 
+              w-32 h-12 pad:w-44 pad:h-14 web:w-52 web:h-20 rounded-lg pad:rounded-xl web:rounded-2xl
+               bg-[#F8FBE7BD] text-[0.55rem] pad:text-[0.75rem] web:text-[0.9rem] justify-center items-center 
+               font-semibold shadow-[0_0_9px_0_rgba(0,0,0,0.25)] transition-opacity duration-500 ease-in-out ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+              >
+                <span>화살표를 눌러 해당 프로젝트의</span>
+                다음 페이지를 확인해보세요!
+              </div>
             </div>
           </div>
         </div>
