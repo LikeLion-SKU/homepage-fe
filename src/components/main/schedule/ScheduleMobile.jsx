@@ -294,7 +294,12 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 5월 - 상단 오른쪽 */}
         <div
           className="absolute group"
-          style={{ left: isMobile ? '65%' : '60%', top: '-17px', width: '53px', height: '60px' }}
+          style={{
+            left: isMobile ? '-15%' : '60%',
+            top: isMobile ? '70px' : '-17px',
+            width: '53px',
+            height: '60px',
+          }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['5월'].x} offsetYPx={CLICKBOX_OFFSET['5월'].y} />
           <button
@@ -440,7 +445,12 @@ function ScheduleMobile({ onMonthClick }) {
         {/* 4월 - 상단 중앙 (필요시 추가) */}
         <div
           className="absolute group"
-          style={{ left: isMobile ? '-9%' : '-14%', top: '90px', width: '35px', height: '35px' }}
+          style={{
+            left: isMobile ? '73%' : '-14%',
+            top: isMobile ? '10px' : '90px',
+            width: '35px',
+            height: '35px',
+          }}
         >
           <ClickBox offsetXPx={CLICKBOX_OFFSET['4월'].x} offsetYPx={CLICKBOX_OFFSET['4월'].y} />
           <button
