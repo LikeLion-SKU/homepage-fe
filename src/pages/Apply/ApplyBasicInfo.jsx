@@ -171,7 +171,7 @@ export default function ApplyBasicInfo() {
                       readOnly
                     ></Input>
                     <div className="self-stretch flex flex-col">
-                      <label className="text-lg font-semi-bold">이메일</label>
+                      <label className="pad:text-lg text-sm font-bold">이메일</label>
                       <div className="flex items-center justify-start gap-1.5 pad:gap-2.5">
                         <div className="">
                           <Input
@@ -192,7 +192,7 @@ export default function ApplyBasicInfo() {
                     </div>
                     {/* 지원파트 부분 */}
                     <div className="self-stretch flex flex-col gap-3">
-                      <label className="text-lg font-semi-bold">지원트랙</label>
+                      <label className="pad:text-lg text-sm font-bold">지원트랙</label>
                       <div>
                         <div className="flex flex-col pad:flex-row gap-2.5">
                           {parts.map((part) => (

@@ -10,7 +10,7 @@ export default function Input({
 }) {
   return (
     <div className="self-stretch flex flex-col gap-3">
-      <label className="text-lg font-semi-bold">{label}</label>
+      <label className="pad:text-lg text-sm font-bold">{label}</label>
       <input
         name={name}
         type={type}
