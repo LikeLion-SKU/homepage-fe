@@ -32,8 +32,10 @@ export default function ProjectViewDetail() {
   const projectId = location.state.projectId;
   const { allProjectIdsByFilters } = useProjectListStore();
   const [imgNum, setImgNum] = useState(0);
+  const [usedButton, setUsedButton] = useState(false);
 
   const handleProjectId = async (value) => {
+    setUsedButton(true);
     const nextIndex = allProjectIdsByFilters.indexOf(projectData.id) + value;
     const newId = allProjectIdsByFilters[nextIndex];
     if (nextIndex < 0) {
@@ -66,16 +68,19 @@ export default function ProjectViewDetail() {
 
   return (
     <GridSection>
-      <div className="flex px-4 pad:px-10 web:px-15 pt-18 pb-41 justify-center">
-        <div className="flex flex-col ">
+      <div className="flex px-3 pad:px-0 pt-18 pb-41 justify-center">
+        <div className="flex flex-col">
           <button
             onClick={() => handleProjectId(-1)}
-            className="flex px-3 py-1 pad:py-5 web:px-6.5 web:py-8 rounded-l-2xl mt-50 pad:mt-85
+            className="flex px-3 py-1 pad:py-5 web:px-6.5 web:py-8 rounded-l-2xl mt-25 pad:mt-65 web:mt-95
              bg-[#F9F9F9] ml-auto shadow-[0_0_9px_0_rgba(0,0,0,0.25)]"
           >
             <Left className="web:w-9 pad:w-7 w-3" />
           </button>
-          <p className="text-[0.3rem] pad:text-[0.5rem] web:text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter">
+          <p
+            className={`text-[0.5rem] pad:text-[0.7rem] web:text-[0.9rem] min-w-11 mt-1 mr-1 pad:mt-3 pad:mr-3 text-center
+            text-[#B0B0B0] font-bold tracking-tighter transition-opacity duration-500 ease-in-out ${usedButton ? 'opacity-0' : 'opacity-100'}`}
+          >
             이전 프로젝트 보기
           </p>
         </div>
@@ -83,12 +88,16 @@ export default function ProjectViewDetail() {
         <div className="flex flex-col ">
           <button
             onClick={() => handleProjectId(1)}
-            className="flex px-3 py-1 pad:py-5 web:px-6.5 web:py-8 rounded-r-2xl mt-50 pad:mt-85
+            className="flex px-3 py-1 pad:py-5 web:px-6.5 web:py-8 rounded-r-2xl mt-25 pad:mt-65 web:mt-95
              bg-[#F9F9F9] mr-auto relative z-1 shadow-[0_0_9px_0_rgba(0,0,0,0.25)]"
           >
             <Right className="web:w-9 pad:w-7 w-3" />
           </button>
-          <p className="text-[0.3rem] pad:text-[0.5rem] web:text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter text-end">
+          <p
+            className={`text-[0.5rem] pad:text-[0.7rem] web:text-[0.9rem] text-[#B0B0B0] min-w-11
+              font-bold mt-1 ml-1 pad:mt-3 pad:ml-3 text-center
+            tracking-tighter transition-opacity duration-500 ease-in-out ${usedButton ? 'opacity-0' : 'opacity-100'}`}
+          >
             다음 프로젝트 보기
           </p>
         </div>
