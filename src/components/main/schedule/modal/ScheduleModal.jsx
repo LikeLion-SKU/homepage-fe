@@ -152,6 +152,7 @@ function ScheduleModal({
             windowBorderWidth={windowBorderWidth}
             scale={fitScale}
             variantCount={modalsToShow.length}
+            isOpen={isOpen}
             onClose={onClose}
           />
         ))}

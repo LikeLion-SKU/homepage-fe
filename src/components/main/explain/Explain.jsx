@@ -177,7 +177,7 @@ function Explain() {
         {/* 숫자 */}
 
         <Number
-          value={42}
+          value={72}
           initialX={495}
           initialY={
             20 + (isMobile440 ? 50 : 0) + (!isMobile760 ? 40 : 0) + (isDesktop1440 ? 30 : 0)
