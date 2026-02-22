@@ -23,7 +23,7 @@ export default function ProjectCategory({ award, semester, projectTypeName }) {
           {/* 내부 배경 (안쪽을 채워 테두리만 남김) */}
           <div
             className="flex bg-white rounded-[calc(1.5rem-1.5px)] h-3 py-1.75 pad:py-0 pad:h-4 web:h-4.5 px-2 
-               text-[0.6rem] web:text-[0.9rem] text-center items-center justify-center w-full leading-2.5"
+               text-[0.6rem] web:text-[0.9rem] text-center items-center justify-center w-full leading-4"
           >
             <motion.span
               className="font-bold bg-clip-text text-transparent block whitespace-nowrap "
