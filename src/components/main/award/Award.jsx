@@ -15,6 +15,7 @@ function Award() {
   const scale = useScale();
   const isMobile480 = useMediaQuery('(max-width: 480px)');
   const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isPad = useMediaQuery('(min-width: 481px) and (max-width: 760px)');
 
   const [awardCards, setAwardCards] = useState([]);
   const [lastCursor, setLastCursor] = useState(null);
@@ -173,7 +174,9 @@ function Award() {
               style={{
                 left: `${(150 / 16) * scale}rem`,
                 top: `${(-70 / 16) * scale}rem`,
-                width: `${(159 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
+                width: isPad
+                  ? `${(135 / 16) * scale}rem`
+                  : `${(159 / 16) * scale * (isMobile760 ? 1.2 : 1)}rem`,
                 height: 'auto',
                 zIndex: 30,
               }}
