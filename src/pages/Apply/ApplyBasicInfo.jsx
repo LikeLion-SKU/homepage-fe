@@ -231,8 +231,11 @@ export default function ApplyBasicInfo() {
         </div>
       </div>
       <Modal isOpen={isModalOpen} cancel={() => setIsModalOpen(false)} confirm={confirmTrackChange}>
-        지원서를 이미 작성한 경우, 트랙 변경 시 작성했던 ‘트랙별 질문'에 대한 답은 사라집니다. 정말
-        변경하시겠습니까?
+        <span className="whitespace-pre-wrap">
+          {`지원서를 이미 작성한 경우, 트랙 변경 시 작성했던 
+‘트랙별 질문'에 대한 답은 사라집니다. 
+정말 변경하시겠습니까?`}
+        </span>
       </Modal>
     </div>
   );
