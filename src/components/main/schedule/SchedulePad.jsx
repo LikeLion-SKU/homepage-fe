@@ -50,7 +50,7 @@ function SchedulePad({ onMonthClick }) {
         style={{
           left: `${(210 / 16) * scale}rem`,
           top: `${(-275 / 16) * scale}rem`,
-          width: `${(159 / 16) * scale}rem`,
+          width: `${(140 / 16) * scale}rem`,
           height: 'auto',
           zIndex: 30,
         }}
