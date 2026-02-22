@@ -32,8 +32,10 @@ export default function ProjectViewDetail() {
   const projectId = location.state.projectId;
   const { allProjectIdsByFilters } = useProjectListStore();
   const [imgNum, setImgNum] = useState(0);
+  const [usedButton, setUsedButton] = useState(false);
 
   const handleProjectId = async (value) => {
+    setUsedButton(true);
     const nextIndex = allProjectIdsByFilters.indexOf(projectData.id) + value;
     const newId = allProjectIdsByFilters[nextIndex];
     if (nextIndex < 0) {
@@ -75,7 +77,10 @@ export default function ProjectViewDetail() {
           >
             <Left className="web:w-9 pad:w-7 w-3" />
           </button>
-          <p className="text-[0.3rem] pad:text-[0.5rem] web:text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter">
+          <p
+            className={`text-[0.3rem] pad:text-[0.5rem] web:text-[0.7rem]
+            text-[#B0B0B0] font-bold tracking-tighter transition-opacity duration-500 ease-in-out ${usedButton ? 'opacity-0' : 'opacity-100'}`}
+          >
             이전 프로젝트 보기
           </p>
         </div>
@@ -88,7 +93,10 @@ export default function ProjectViewDetail() {
           >
             <Right className="web:w-9 pad:w-7 w-3" />
           </button>
-          <p className="text-[0.3rem] pad:text-[0.5rem] web:text-[0.7rem] text-[#B0B0B0] font-bold tracking-tighter text-end">
+          <p
+            className={`text-[0.3rem] pad:text-[0.5rem] web:text-[0.7rem] text-[#B0B0B0] font-bold 
+            tracking-tighter text-end transition-opacity duration-500 ease-in-out ${usedButton ? 'opacity-0' : 'opacity-100'}`}
+          >
             다음 프로젝트 보기
           </p>
         </div>
