@@ -46,16 +46,18 @@ function ModalWindow({
         flexShrink: 0,
       }}
     >
-      <ModalTitleBar
-        title={title}
-        backgroundColor={titleBarBgColor}
-        iconBoxColor={titleBarIconBoxColor}
-        titleBoxColor={titleBarTitleBoxColor}
-        boxSize={titleBarBoxSize}
-        onClose={onClose}
-        scale={scale}
-        isTrackModal={true}
-      />
+      <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <ModalTitleBar
+          title={title}
+          backgroundColor={titleBarBgColor}
+          iconBoxColor={titleBarIconBoxColor}
+          titleBoxColor={titleBarTitleBoxColor}
+          boxSize={titleBarBoxSize}
+          onClose={onClose}
+          scale={scale}
+          isTrackModal={true}
+        />
+      </div>
 
       <div className="flex flex-col flex-1 min-h-0" style={{ overflow: 'hidden' }}>
         <ModalContent trackType={trackType} scale={scale} />

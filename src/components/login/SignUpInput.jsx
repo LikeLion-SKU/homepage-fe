@@ -23,7 +23,12 @@ export default function SignUpInput({
   const bgColorClass = bgColor ? `bg-[${bgColor}]` : disabled ? 'bg-[#F5F5F5]' : 'bg-[#FFFFFF]';
   const textAlignClass =
     textAlign === 'center' ? 'text-center' : textAlign === 'right' ? 'text-right' : 'text-left';
-  const inputClasses = `w-full ${maxWidth || ''} px-4 max-[480px]:px-2.5 py-3 max-[480px]:py-2 ${bgColorClass} border border-[1px] border-[#B0B0B0] ${textColor} text-base max-[480px]:text-xs ${textAlignClass} font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed`;
+  const borderColor = disabled
+    ? 'border-[#B0B0B0]'
+    : value && value.trim()
+      ? 'border-[#1A1A1A]'
+      : 'border-[#B0B0B0]';
+  const inputClasses = `w-full ${maxWidth || ''} px-4 max-[480px]:px-2.5 py-3 max-[480px]:py-2 ${bgColorClass} border border-[1px] ${borderColor} ${textColor} text-base max-[480px]:text-xs ${textAlignClass} font-['Pretendard'] focus:outline-none focus:border-[#1A1A1A] focus:ring-0 disabled:cursor-not-allowed`;
 
   return (
     <div className={`flex flex-col gap-2 ${mb}`}>

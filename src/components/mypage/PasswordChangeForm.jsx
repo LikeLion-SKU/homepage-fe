@@ -148,6 +148,8 @@ export default function PasswordChangeForm({ onSubmit, isLoading = false }) {
             mb="mb-0"
             hideToggle={false}
             defaultShowPassword={false}
+            isSuccess={currentPassword && (currentPasswordStatus === 'match' || isPasswordChanged)}
+            isError={currentPasswordStatus === 'mismatch' && !isPasswordChanged}
           />
           {currentPasswordStatus === 'match' && !currentPasswordTouched && !isPasswordChanged && (
             <div className="text-[#00A424] text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">
@@ -179,6 +181,8 @@ export default function PasswordChangeForm({ onSubmit, isLoading = false }) {
             mb="mb-0"
             hideToggle={false}
             defaultShowPassword={false}
+            isSuccess={passwordTouched && newPassword && isValidPassword(newPassword)}
+            isError={passwordTouched && newPassword && !isValidPassword(newPassword)}
           />
           <div
             className={`text-xs min-[761px]:text-[13px] text-left font-['Pretendard'] mb-4 mt-1 break-words max-[375px]:whitespace-normal ${
@@ -202,6 +206,12 @@ export default function PasswordChangeForm({ onSubmit, isLoading = false }) {
             mb="mb-0"
             hideToggle={false}
             defaultShowPassword={false}
+            isSuccess={
+              confirmPassword && isValidPassword(newPassword) && newPassword === confirmPassword
+            }
+            isError={
+              confirmPassword && isValidPassword(newPassword) && passwordMatchStatus === 'mismatch'
+            }
           />
           {passwordMatchStatus === 'mismatch' && (
             <div className="text-[#FF7D56] text-xs min-[761px]:text-sm text-left font-['Pretendard'] mb-4 mt-1">

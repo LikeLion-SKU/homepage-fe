@@ -42,10 +42,12 @@ function ModalContent({ trackType, scale = 1 }) {
     >
       {/* 제목과 서브타이틀 - 고정 */}
       <div
-        className="flex flex-col flex-shrink-0"
+        className="flex flex-shrink-0"
         style={{
-          gap: `${(8 / 16) * scale}rem`,
+          flexDirection: isMobile760 ? 'column' : 'row',
+          gap: isMobile760 ? `${(8 / 16) * scale}rem` : `${(12 / 16) * scale}rem`,
           marginBottom: `${(15 / 16) * scale}rem`,
+          alignItems: isMobile760 ? 'flex-start' : 'baseline',
         }}
       >
         <h2
@@ -62,9 +64,11 @@ function ModalContent({ trackType, scale = 1 }) {
             lineHeight: 'normal',
             margin: 0,
             display: 'flex',
-            flexDirection: isMobile480 ? 'column' : 'row',
-            alignItems: isMobile480 ? 'flex-start' : 'baseline',
-            gap: isMobile480 ? `${(4 / 16) * scale}rem` : `${(4 / 16) * scale}rem`,
+            flexDirection: 'row',
+            alignItems: 'baseline',
+            gap: `${(4 / 16) * scale}rem`,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
           }}
         >
           {trackText && (
@@ -102,6 +106,7 @@ function ModalContent({ trackType, scale = 1 }) {
             color: '#686868',
             lineHeight: 'normal',
             margin: 0,
+            whiteSpace: isMobile480 ? 'normal' : 'nowrap',
           }}
         >
           {content.subtitle}

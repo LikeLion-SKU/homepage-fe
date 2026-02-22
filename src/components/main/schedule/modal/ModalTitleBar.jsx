@@ -1,6 +1,20 @@
-import { memo } from 'react';
+import { memo, useLayoutEffect, useRef, useState } from 'react';
 
 import rightIcon from '@/assets/icons/main/schedule/modal-arrow.svg';
+import useMediaQuery from '@/hooks/useMediaQuery';
+
+function useIOS() {
+  const [isIOS] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const ua = navigator.userAgent;
+    return (
+      /iPhone|iPad|iPod/.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+    );
+  });
+
+  return isIOS;
+}
 
 function ModalTitleBar({
   title = '3월',
@@ -13,8 +27,61 @@ function ModalTitleBar({
   onClose,
   scale = 1,
   isTrackModal = false,
+  variantCount = 1,
+  isOpen = true,
 }) {
-  const isMobile480 = typeof window !== 'undefined' && window.innerWidth <= 480;
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
+  const isIOS = useIOS();
+  const isSafari =
+    typeof window !== 'undefined' &&
+    /^((?!chrome|android).)*safari/i.test(navigator.userAgent) &&
+    navigator.vendor.includes('Apple');
+
+  // iOS 모바일 모달 1개일 때만 ready gate 적용
+  const shouldUseReadyGate = isMobile480 && isIOS && variantCount === 1 && !isTrackModal;
+  const [ready, setReady] = useState(!shouldUseReadyGate);
+  const raf1 = useRef(null);
+  const raf2 = useRef(null);
+
+  useLayoutEffect(() => {
+    if (!shouldUseReadyGate) return;
+
+    if (!isOpen) {
+      raf1.current = requestAnimationFrame(() => {
+        setReady(false);
+      });
+      return () => {
+        if (raf1.current) cancelAnimationFrame(raf1.current);
+      };
+    }
+
+    raf1.current = requestAnimationFrame(() => {
+      setReady(false);
+      raf2.current = requestAnimationFrame(() => {
+        setReady(true);
+      });
+    });
+
+    return () => {
+      if (raf1.current) cancelAnimationFrame(raf1.current);
+      if (raf2.current) cancelAnimationFrame(raf2.current);
+    };
+  }, [isOpen, shouldUseReadyGate]);
+
+  if (shouldUseReadyGate && !ready) {
+    return (
+      <div
+        style={{
+          backgroundColor,
+          paddingTop: `${(16 / 16) * scale}rem`,
+          paddingBottom: `${(8 / 16) * scale}rem`,
+          minHeight: `${(48 / 16) * scale}rem`,
+          visibility: 'hidden',
+        }}
+      />
+    );
+  }
+
   return (
     <>
       {/* 좌측 상단 화살표 아이콘 */}
@@ -24,7 +91,19 @@ function ModalTitleBar({
           gap: 0,
           display: 'inline-flex',
           top: `${(26 / 16) * scale}rem`,
-          left: isMobile480 && isTrackModal ? `${(23 / 16) * scale}rem` : `${(20 / 16) * scale}rem`,
+          left: isMobile480
+            ? isTrackModal
+              ? `${(23 / 16) * scale}rem`
+              : isIOS && variantCount === 1
+                ? `${(12 / 16) * scale}rem`
+                : isSafari && variantCount === 2
+                  ? `${(20 / 16) * scale}rem`
+                  : isSafari
+                    ? `${(6 / 16) * scale}rem`
+                    : `${(15 / 16) * scale}rem`
+            : !isTrackModal && (variantCount === 1 || variantCount === 2)
+              ? `${(10 / 16) * scale}rem`
+              : `${(20 / 16) * scale}rem`,
           zIndex: 100,
           pointerEvents: 'auto',
         }}
@@ -122,7 +201,10 @@ function ModalTitleBar({
           backgroundColor,
           paddingTop: `${(16 / 16) * scale}rem`,
           paddingBottom: `${(8 / 16) * scale}rem`,
-          paddingLeft: `${(16 / 16) * scale}rem`,
+          paddingLeft:
+            !isTrackModal && (variantCount === 1 || variantCount === 2)
+              ? `${(8 / 16) * scale}rem`
+              : `${(16 / 16) * scale}rem`,
           paddingRight: `${(16 / 16) * scale}rem`,
           gap: `${(12 / 16) * scale}rem`,
           minHeight: `${(48 / 16) * scale}rem`,

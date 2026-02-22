@@ -31,9 +31,13 @@ function ModalWindow({
 
   scale = 1,
   variantCount = 1,
+  isOpen = true,
   onClose,
 }) {
   const isMobile760 = useMediaQuery('(max-width: 760px)');
+  const isPad = useMediaQuery('(min-width: 481px) and (max-width: 760px)');
+  const isTab = useMediaQuery('(min-width: 761px) and (max-width: 1013px)');
+  const isMobile480 = useMediaQuery('(max-width: 480px)');
 
   // 텍스트 영역 비율 기반 높이 (scale에 따라 비례적으로 커지도록)
   // 원본 기준: 170px / 552px ≈ 0.308 (약 30.8%)
@@ -51,8 +55,21 @@ function ModalWindow({
   const textHeight = modalHeight * TEXT_RATIO;
 
   // 760px 이하 2개일 때만 이미지 영역 가로 늘리기 (패딩 줄이기)
+  // pad 사이즈이고 모달창 1개일 때도 패딩 줄이기
+  // 761px~1013px 사이에서도 패딩 줄이기
+  // 모바일일 때도 패딩 줄이기
   const effectivePaddingHorizontal =
-    isMobile760 && variantCount === 2 ? '12px' : placeholderPaddingHorizontal;
+    isMobile480 && variantCount === 2
+      ? '10px'
+      : isMobile760 && variantCount === 2
+        ? '12px'
+        : isMobile480
+          ? '18px'
+          : isPad && variantCount === 1
+            ? '18px'
+            : isTab
+              ? '18px'
+              : placeholderPaddingHorizontal;
 
   // 760px 이하 2개일 때만 이미지 영역 하단 패딩 줄여서 텍스트 위로 올리기
   const effectivePaddingBottom =
@@ -81,6 +98,8 @@ function ModalWindow({
         boxSize={titleBarBoxSize}
         onClose={onClose}
         scale={scale}
+        variantCount={variantCount}
+        isOpen={isOpen}
       />
 
       {/* 모달 shadow 효과 오버레이 - 콘텐츠 위에 표시 */}

@@ -12,7 +12,20 @@
       rel="stylesheet"
     />
     <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet" />
+    <!-- Bytebounce 폰트 preload for Safari marquee stability -->
+    <link rel="preload" as="font" href="/fonts/ByteBounce.ttf" type="font/ttf" crossorigin />
+    <!-- HOTSPOT 폰트 preload -->
+    <link rel="preload" as="font" href="/fonts/HOTSPOT-Regular.otf" type="font/otf" crossorigin />
     <title>멋쟁이사자처럼 SKU</title>
+
+    <!-- GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPNX8FW0SM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-RPNX8FW0SM');
+    </script>
   </head>
   <body>
     <div id="root"></div>
