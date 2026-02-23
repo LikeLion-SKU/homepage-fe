@@ -17,6 +17,7 @@ export default function FinalConfirm() {
   const { formatAnswers } = useOutletContext();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { _track, commonQues, trackQues } = useLoaderData(); // 로더로 가져온 데이터
 
   console.log('로더에서 온 공통질문 데이터:', commonQues);
@@ -27,6 +28,10 @@ export default function FinalConfirm() {
 
   // 지원서 제출 api에 요청하는 함수
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    setIsModalOpen(false);
+
     try {
       const { track, commonAnswers, trackAnswers } = formatAnswers();
       const submitData = {
@@ -36,11 +41,9 @@ export default function FinalConfirm() {
       };
       const response = await applicationSubmit(submitData);
 
-      // 응답이 정상인 경우에만 완료 페이지로 이동
       if (response?.success) {
         navigate('/apply/complete', { replace: true });
       } else {
-        // success가 false인 경우 (에러가 throw되지 않고 응답은 온 경우)
         navigate('/error/400', { replace: true });
       }
     } catch (error) {
@@ -50,9 +53,13 @@ export default function FinalConfirm() {
         navigate('/error/400', { replace: true });
       } else if (status === 403) {
         navigate('/error/403', { replace: true });
+      } else if (status === 401) {
+        navigate('/error/401', { replace: true });
       } else {
         navigate('/error/500', { replace: true });
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
   //@ts-ignore
