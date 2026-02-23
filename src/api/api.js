@@ -17,8 +17,20 @@ const privateAPI = axios.create({
 // 쿠키 기반 인증이므로 Authorization 헤더 삽입 불필요
 // 쿠키가 자동으로 전송됨
 
-// refresh 중복 호출 방지
+// refresh 중복 호출 방지 및 대기 큐
 let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve();
+    }
+  });
+  failedQueue = [];
+};
 
 // 응답 인터셉터: 401 에러 시 자동 refresh + 재시도
 privateAPI.interceptors.response.use(
@@ -28,10 +40,12 @@ privateAPI.interceptors.response.use(
     const status = error.response?.status;
 
     // 401 에러이고, 아직 재시도하지 않은 요청인 경우
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      // 이미 refresh 중이면 원래 요청 실패 처리
+    if (status === 401 && !originalRequest._retry) {
+      // 이미 refresh 중이면 큐에 넣고 대기
       if (isRefreshing) {
-        return Promise.reject(error);
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then(() => privateAPI(originalRequest));
       }
 
       originalRequest._retry = true;
@@ -40,12 +54,14 @@ privateAPI.interceptors.response.use(
       try {
         // refresh API 호출
         await refresh();
-        // refresh 성공 시 원래 요청 1번만 재시도
         isRefreshing = false;
+        processQueue(null);
+        // refresh 성공 시 원래 요청 1번만 재시도
         return privateAPI(originalRequest);
       } catch (refreshError) {
-        // refresh 실패 401시 상태 초기화하고 alert 표시
+        // refresh 실패 시 상태 초기화하고 대기 큐도 모두 reject
         isRefreshing = false;
+        processQueue(refreshError);
         useAuthStore.getState().setLogout();
         window.location.href = '/error/401';
         return Promise.reject(refreshError);
