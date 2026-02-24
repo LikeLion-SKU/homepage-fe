@@ -8,7 +8,7 @@ export default function Agreement({ setAllChecked, hide }) {
   console.log('현재 hide 값:', hide); // 브라우저 콘솔에서 확인
   const money = `멋쟁이사자처럼 14기 부원들께서는 
   장소 대관, 행사 운영 등을 위해
-  6만원(회비 55000원 + 보증금 5000원)의
+  6만원(회비 50000원 + 보증금 10000원)의
   운영비를 납부하셔야 합니다.
 
   운영비 사용 내역은 투명하게 공개됩니다.
