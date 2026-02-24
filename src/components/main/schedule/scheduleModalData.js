@@ -118,7 +118,7 @@ export const scheduleMonthData = {
       contentImage: NovemberImage1,
       contentTitle: '4호선톤',
       contentDescription:
-        '4호선 라인 대학 구성원들과 함께 하는 연합 해커톤으로, 과정을 중시해 아이디어 구현을 통해 <br/>창업 연계를 목표로 하는 해커톤입니다.',
+        '4호선 라인 대학 구성원들과 함께 하는 연합 해커톤으로, 과정을 중시해 아이디어 구현을 통해 창업 연계를 목표로 하는 해커톤입니다.',
     },
   ],
   '12월': [
