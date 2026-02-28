@@ -56,11 +56,19 @@ export default function LoginForm({ onSubmit, isLoading = false }) {
             아이디는 학교 이메일이며,
           </p>
           <p className="text-black text-xm max-[480px]:text-xs font-['Pretendard'] mb-0.9">
-            로그인이 어려운 경우
+            로그인이 어려운 경우 또는 아직 이메일이 없는 신입생의 경우,
           </p>
           <p className="text-black text-xm max-[480px]:text-xs font-['Pretendard'] mb-0.9">
             {' '}
-            skuofficial@likelion.org로 문의바랍니다.
+            <a
+              href="https://pf.kakao.com/_hCEzX"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 underline"
+            >
+              서경대학교 멋쟁이사자차럼 카카오톡 채널
+            </a>
+            로 문의바랍니다.
           </p>
         </div>
       </div>
