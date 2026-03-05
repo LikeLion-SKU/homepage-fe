@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useLoaderData, useLocation, useNavigate, useOutletContext } from 'react-router';
+import { useLoaderData, useNavigate, useOutletContext } from 'react-router';
 
 import dayjs from 'dayjs';
 
@@ -17,7 +16,6 @@ export default function ResultNotice() {
   const navigate = useNavigate();
   const date = useLoaderData();
   const now = dayjs(); // 현재 시간
-  const location = useLocation();
 
   // 1. 화면 표시용 (00시 기준)
   const appResultDisplayStart = dayjs(date.applicationResultAt).startOf('day');
@@ -84,13 +82,6 @@ export default function ResultNotice() {
     }
     navigate('/result', { state: { fromA: true } });
   };
-
-  useEffect(() => {
-    if (!location.state?.fromA) {
-      alert('잘못된 접근입니다. 정해진 페이지를 통해서 들어와주세요.');
-      navigate('/', { replace: true }); // 메인으로 튕겨내기 (replace: 뒤로가기 방지)
-    }
-  }, [location, navigate]);
 
   return (
     <div>
