@@ -77,7 +77,11 @@ const router = createBrowserRouter([
             Component: Reschedule,
             loader: requireSubmittedApplicationLoader,
           },
-          { path: '/mypage/schedule-check', Component: ScheduleCheck },
+          {
+            path: '/mypage/schedule-check',
+            Component: ScheduleCheck,
+            loader: requireSubmittedApplicationLoader,
+          },
           { path: '/mypage/password/change', Component: PasswordChange },
           { path: '/welcome', Component: Welcome },
           { path: '/apply/complete', Component: ApplyComplete },
