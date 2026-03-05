@@ -54,7 +54,8 @@ import Result from '@/pages/Result/Result';
 import ResultNotice from '@/pages/Result/ResultNotice';
 import AdminRoute from '@/router/AdminRoute';
 import {
-  requireSubmittedApplicationLoader,
+  requireInterviewScheduleChangeableLoader,
+  requireInterviewScheduleConfirmedLoader,
   resultNoticeLoader,
 } from '@/router/applicationAccessLoader';
 import { isWithinPeriod } from '@/utils/Date';
@@ -75,12 +76,12 @@ const router = createBrowserRouter([
           {
             path: '/mypage/reschedule',
             Component: Reschedule,
-            loader: requireSubmittedApplicationLoader,
+            loader: requireInterviewScheduleChangeableLoader,
           },
           {
             path: '/mypage/schedule-check',
             Component: ScheduleCheck,
-            loader: requireSubmittedApplicationLoader,
+            loader: requireInterviewScheduleConfirmedLoader,
           },
           { path: '/mypage/password/change', Component: PasswordChange },
           { path: '/welcome', Component: Welcome },
