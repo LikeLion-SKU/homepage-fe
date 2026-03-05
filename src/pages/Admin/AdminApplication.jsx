@@ -13,7 +13,7 @@ const TRACK_API_MAP = {
   PO: 'PO',
   PM: 'PM',
   Design: 'DESIGN',
-  'PM & Design': 'PM_DESIGN',
+  'PM & Design': 'PMDESIGN',
   Frontend: 'FRONTEND',
   Backend: 'BACKEND',
 };
