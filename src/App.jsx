@@ -53,6 +53,10 @@ import Recruitment from '@/pages/Recruitment/Recruitment';
 import Result from '@/pages/Result/Result';
 import ResultNotice from '@/pages/Result/ResultNotice';
 import AdminRoute from '@/router/AdminRoute';
+import {
+  requireSubmittedApplicationLoader,
+  resultNoticeLoader,
+} from '@/router/applicationAccessLoader';
 import { isWithinPeriod } from '@/utils/Date';
 
 const router = createBrowserRouter([
@@ -68,7 +72,11 @@ const router = createBrowserRouter([
         /*Component: ProtectedRoute,*/
         children: [
           { path: '/mypage', Component: MyPage, loader: myPageLoader },
-          { path: '/mypage/reschedule', Component: Reschedule },
+          {
+            path: '/mypage/reschedule',
+            Component: Reschedule,
+            loader: requireSubmittedApplicationLoader,
+          },
           { path: '/mypage/schedule-check', Component: ScheduleCheck },
           { path: '/mypage/password/change', Component: PasswordChange },
           { path: '/welcome', Component: Welcome },
@@ -94,7 +102,7 @@ const router = createBrowserRouter([
               { path: 'confirm', Component: FinalConfirm, loader: questionsLoader },
             ],
           },
-          { path: '/result/notice', Component: ResultNotice, loader: getCurrentForm },
+          { path: '/result/notice', Component: ResultNotice, loader: resultNoticeLoader },
           { path: '/result', Component: Result, loader: getResult },
           { path: '/application', Component: Application },
         ],
