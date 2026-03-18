@@ -10,7 +10,7 @@ function CardHeader({ title, onHeaderClick }) {
   const isMedium = useMediaQuery('(min-width: 481px) and (max-width: 759px)');
   const isTablet = useMediaQuery('(min-width: 760px) and (max-width: 1199px)');
   const isPad = useMediaQuery('(min-width: 376px) and (max-width: 759px)');
-  const isPO = title === 'PO 프로젝트 오너';
+  const isPO = title === 'PO 프로덕트 오너';
   const isFE = title === 'FRONTEND 프론트엔드 개발자';
   const isBE = title === 'BACKEND 백엔드 개발자';
 
