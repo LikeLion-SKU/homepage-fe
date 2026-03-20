@@ -131,7 +131,7 @@ function Track() {
               marginRight: isPad || isTablet ? 'auto' : undefined,
             }}
           >
-            <Card title="PO 프로젝트 오너" description={poDescription} image={POImage} />
+            <Card title="PO 프로덕트 오너" description={poDescription} image={POImage} />
           </motion.div>
           <motion.div
             ref={card2Ref}

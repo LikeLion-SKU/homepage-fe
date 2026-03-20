@@ -116,7 +116,7 @@ function SchedulePad({ onMonthClick }) {
           className="absolute h-auto"
           style={{
             width: `${(220 / 16) * scale}rem`,
-            left: `${(210 / 16) * scale}rem`, // -5 + 95 + 65 + 16(gap) - 5
+            left: `${(210 / 16) * scale}rem`,
             top: `${(58 / 16) * scale}rem`,
           }}
         />
@@ -126,7 +126,7 @@ function SchedulePad({ onMonthClick }) {
           style={{
             width: `${(85 / 16) * scale}rem`,
             height: `${(85 / 16) * scale}rem`,
-            left: `${(460 / 16) * scale}rem`, // -5 + 95 + 65 + 16 + 60 + 250 + 16 - 5
+            left: `${(460 / 16) * scale}rem`,
             top: `${(40 / 16) * scale}rem`,
           }}
         >
@@ -150,7 +150,7 @@ function SchedulePad({ onMonthClick }) {
           className="absolute h-auto"
           style={{
             width: `${(350 / 16) * scale}rem`,
-            left: `${(580 / 16) * scale}rem`, // -5 + 95 + 65 + 16 + 60 + 250 + 16 + 20 + 75 + 16 - 5
+            left: `${(580 / 16) * scale}rem`,
             top: `${(55 / 16) * scale}rem`,
           }}
         />
