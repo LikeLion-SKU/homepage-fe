@@ -1,38 +1,58 @@
-# homepage-fe
+<p align="center">
+  <a href="https://skulikelion.com/">
+    <img src="https://img.shields.io/badge/🦁_Website-skulikelion.com-C3B6FF?style=for-the-badge">
+  </a>
+</p>
 
-## LikeLion 14th homepage frontend code space
+<br>
 
-## **🎯 Git Convention**
+## 📌 About
 
-- 🎉 **Start:** Start New Project [:tada:]
-- ✨ **Feat:** 새로운 기능을 추가 [:sparkles:]
-- 🐛 **Fix:** 버그 수정 [:bug:]
-- 🎨 **Design:** CSS 등 사용자 UI 디자인 변경 [:art:]
-- ♻️ **Refactor:** 코드 리팩토링 [:recycle:]
-- 🔧 **Settings:** Changing configuration files [:wrench:]
-- 🗃️ **Comment:** 필요한 주석 추가 및 변경 [:card_file_box:]
-- ➕ **Dependency/Plugin:** Add a dependency/plugin [:heavy_plus_sign:]
-- 📝 **Docs:** 문서 수정 [:memo:]
-- 🔀 **Merge:** Merge branches [:twisted_rightwards_arrows:]
-- 🚀 **Deploy:** Deploying stuff [:rocket:]
-- 🚚 **Rename:** 파일 혹은 폴더명을 수정하거나 옮기는 작업만인 경우 [:truck:]
-- 🔥 **Remove:** 파일을 삭제하는 작업만 수행한 경우 [:fire:]
-- ⏪️ **Revert:** 전 버전으로 롤백 [:rewind:]
+**서경대학교 멋쟁이사자처럼** 공식 웹사이트의 프론트엔드 저장소입니다.
+<br>동아리 소개부터 트랙 안내, 프로젝트 아카이브, 아기사자 모집·지원까지 한 곳에서 확인할 수 있습니다.
 
-## 🌲 Branch Convention
+> **당신의 상상, 세상 밖으로!**
 
-- **`main`**: 배포 가능한 브랜치, 항상 배포 가능한 상태를 유지
-- **`develop`**: 다음 버전을 위한 개발 브랜치, 팀원들의 작업 결과물이 모이는 '중심점'
-- **`ui/#이슈번호/명칭`**: 화면 UI 구현이나 스타일링 작업을 할 때 사용
-  - _예: `ui/#12/login-form`_
-- **`api/#이슈번호/명칭`**: 데이터 통신, API 연동, 비즈니스 로직 구현 시 사용
-  - _예: `api/#45/fetch-user-profile`_
+<br>
 
-## 🌊 Flow
+## 🖼️ Preview
 
-1. Issue 생성
-2. 최신 상태의 **`develop`** 에서 새 브랜치 생성
-3. 작업 완료 후 **`develop`**으로 Pull Request
-4. 팀원들에게 리뷰 요청
-5. 리뷰한 팀원이 **`develop`** 으로 병합
-6. 병합 후 작업자가 해당 브랜치 삭제
+<img width="1387" height="868" alt="image" src="https://github.com/user-attachments/assets/6c2af041-39dc-41d0-93ca-3098509acfdd" />
+
+<img width="1389" height="868" alt="image" src="https://github.com/user-attachments/assets/de2f86ff-50c5-43ed-a96b-17ff3ce222eb" />
+
+<img width="1384" height="868" alt="image" src="https://github.com/user-attachments/assets/5ca3915f-cfcd-4639-8885-0581d855e6ab" />
+
+<img width="1385" height="868" alt="image" src="https://github.com/user-attachments/assets/964357de-646d-4e02-afc0-28c8787c162e" />
+
+
+<br>
+
+## ✨ Features
+
+- **메인 페이지**: 손그림 일러스트와 그리드 배경을 살린 랜딩 화면
+- **트랙 소개**: PO, Frontend, Backend 트랙별 소개 카드
+- **프로젝트 아카이브**: 카테고리 필터(중앙해커톤, 아이디어톤, 4호선톤, 트렌디톤, 교내해커톤)와 검색, 카드형 목록
+- **모집 안내**: 모집 일정·대상 안내와 마감일, 지원하기 버튼 UI
+- **회원 화면**: 로그인/회원가입, 마이페이지
+- **관리자 페이지**: 모집 공고 등록·수정, 지원서 조회, 프로젝트 관리
+
+<br>
+
+## 🛠️ Tech Stack
+
+### 🎨 Frontend
+
+<p>
+  <img src="https://img.shields.io/badge/JavaScript-FFE66D?style=for-the-badge&logo=JavaScript&logoColor=323330">
+  <img src="https://img.shields.io/badge/React-A6E6F7?style=for-the-badge&logo=react&logoColor=087EA4">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-99E2E2?style=for-the-badge&logo=tailwind-css&logoColor=0E7C86">
+  <img src="https://img.shields.io/badge/Vite-C4B8FC?style=for-the-badge&logo=vite&logoColor=4F46E5">
+</p>
+
+### 🛠️ Tool
+
+<p>
+  <img src="https://img.shields.io/badge/Figma-F7A8C9?style=for-the-badge&logo=figma&logoColor=D6336C">
+  <img src="https://img.shields.io/badge/Notion-D9D9D9?style=for-the-badge&logo=notion&logoColor=000000">
+</p>
